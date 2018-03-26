@@ -1,0 +1,163 @@
+nav {
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	font-size: 20px;
+	height:50px;
+	z-index: 5;
+	border-bottom:5px solid black;
+	
+}
+nav img {
+	font-size: 35px;
+	display: inline-block;
+	margin-top: 5px;
+	width: 150px;
+	text-align: center;
+	transition: left 0.5s;
+	position:absolute;
+	top:0;
+	left: calc(50% - 75px);
+}
+nav .logoGraphic {
+	position:absolute;
+	transition: left 0.5s;
+	left: calc(50% - 75px);
+}
+.menuLogo {
+	transition: left 1s;
+	position:absolute;
+	top:0;
+	left:calc(50% - 35px);
+}
+.logInForm h1 {
+	font-size: 50px;
+}
+.links {
+	position: absolute;
+	left:0;
+	top:-150px;
+	width:100%;
+	margin:0;
+	padding:0;
+	transition: top 0.5s;
+	z-index: 3;
+}
+.homeLink:visited {
+	color:#333;
+}
+.not-links {
+	position:relative;
+	z-index: 4;
+	background-color: white;
+	height:50px;
+}
+.links.open {
+	top:50px;
+}
+.links a {
+	display:block;
+	width:100%;
+	margin:0;
+	padding:0;
+	text-align: center;
+	color:white;
+	padding:10px 0;
+	text-decoration: none;
+	cursor: pointer;
+	border-bottom: 1px solid black;
+	background-color: rgba(0,0,0,0.85);
+	font-size: 15px;
+	font-weight: 700;
+}
+.links a:hover {
+	color:white;
+/*	background-color: red;*/
+}
+.links a:visited {
+	color:white;
+/*	background-color: red;*/
+}
+.hamburger {
+	display: inline-block;
+	border:1px solid black;
+	border-radius: 5px;
+	padding:3px 5px 0;
+	width:40px;
+	height:40px;
+	cursor: pointer;
+	position:absolute;
+	right:5px;
+	top:5px;
+	box-shadow: 0 3px 3px rgba(0,0,0,0.5);
+}
+.hamburger span {
+	display: block;
+	border-bottom: 1px solid black;
+	margin-top:7px;
+}
+@media (min-width: 1024px) {
+	nav {
+		text-align: left;
+		background-color: white;
+	}
+	nav img {
+		font-size: 25px;
+		top: 5px;
+		text-align: left;
+		left:30px;
+	}
+	nav .logoGraphic {
+		position:absolute;
+		left:0;
+	}
+	.menuLogo {
+		position:relative;
+		top:0;
+		left:10px;
+	}
+	.hamburger {
+		display: none;
+	}
+	.links {
+		position: relative;
+		top:0;
+		width:auto;
+		display: inline-block;
+		height:100%;
+		float:right;
+
+	}
+	.links.open {
+		top:0;
+	}
+	.links a {
+		color:black;
+		display:inline-block;
+		width:auto;
+		height:100%;
+		margin:0 15px;
+		padding:15px 0;
+		cursor:pointer;
+		text-decoration: none;
+		background-color:transparent;
+		border:none;
+		font-weight: 700;
+		position:relative;
+		text-align: center;
+	}
+	.links a:hover {
+		color:black;
+	/*	background-color: red;*/
+	}
+	.links a:visited {
+		color:black;
+	/*	background-color: red;*/
+	}
+	.not-links {
+		margin:0;
+		display: inline-block;
+		background-color: transparent;
+	}
+}
