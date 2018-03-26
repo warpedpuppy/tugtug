@@ -28,12 +28,15 @@ export default class Menu extends Component {
 	  render() {
 
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
+	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
+	  	let classes = `logoGraphic ${raiseGraphic}`;
+	  	console.log('raisegraphic = ',classes)
 	    return (
 			<div>
 				<nav>
 					<div className="not-links">
 						<Link className="homeLink" to="/">
-							<LogoGraphic className="logoGraphic" />
+							<LogoGraphic passedClasses={classes}/>
 							<img src={TugTug} alt="tugtug" />
 							</Link>
 						<div className="hamburger" onClick={() => this.showDropDown()}>

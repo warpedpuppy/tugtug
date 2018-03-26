@@ -1,3 +1,3 @@
-<h1>redoing my portfolio in react</h1>
+<h1>tugtug</h1>
 
-<p></p>
+<p>want this to be a combo of ee and tamagachi</p>

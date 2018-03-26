@@ -1,7 +1,8 @@
 .LoginRegisterContainerDiv {
-	text-align: center;;
+	text-align: center;
 }
 .LoginRegisterContainer {
+	width: 70%;
 	display: inline-block;
 	background-color: white;
 	border:5px solid black;
@@ -31,15 +32,37 @@
 }
 .LoginRegisterContainer form input {
 	display:block;
+	width:100%;
 	border:3px solid black;
 	border-radius: 5px;
-	font-size: 30px;
+	font-size: 15px;
 	margin:10px;
 	padding:3px;
 }
 .LoginRegisterContainer form input[type="submit"] {
 	display:inline-block;
+	width:auto;
 }
 .LoginRegisterContainer form div {
 	text-align: right;
+	margin:10px;
+	width:100%;
+}
+
+@media (min-width: 1024px) {
+
+	.LoginRegisterContainer {
+		width: auto;
+		display: inline-block;
+		background-color: white;
+		border:5px solid black;
+		padding:20px;
+		margin-top:100px;
+		position:relative;
+	}
+	.LoginRegisterContainer form input {
+		font-size: 30px;
+	}
+
+
 }
