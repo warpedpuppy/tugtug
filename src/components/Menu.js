@@ -17,7 +17,8 @@ export default class Menu extends Component {
 	  toggleLogin (e) {
 	  	e.preventDefault();
 	    this.setState({
-	      showLogin: !this.state.showLogin
+	      showLogin: !this.state.showLogin,
+	      showDropDown: false
 	    })
 	  }
 	  showDropDown(e){
