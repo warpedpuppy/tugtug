@@ -3,13 +3,22 @@ import { Link } from 'react-router-dom';
 import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
+import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 
 export default class Menu extends Component {
 	  constructor(props) {
 		super(props);
+		this.toggleLogin = this.toggleLogin.bind(this);
 		this.state = {
-			showDropDown:false
+			showDropDown:false, 
+			showLogin: true
 		}
+	  }
+	  toggleLogin (e) {
+	  	e.preventDefault();
+	    this.setState({
+	      showLogin: !this.state.showLogin
+	    })
 	  }
 	  showDropDown(e){
 	  	this.setState({
@@ -18,7 +27,6 @@ export default class Menu extends Component {
 	  }
 	  render() {
 
-	  	// let loginClass = (this.state.loginShow)?'':'hide';
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
 	    return (
 			<div>
@@ -35,9 +43,9 @@ export default class Menu extends Component {
 						</div>
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
-						<Link to="/experiments">
+						<a onClick={(e) => this.toggleLogin(e)} >
 						<span>login/register</span>
-						</Link>
+						</a>
 						<Link to="/about">
 						<span>about</span>
 						</Link>
@@ -47,6 +55,7 @@ export default class Menu extends Component {
 					</div>
 					
 				</nav>
+				<LoginRegisterContainer toggleLogin={this.toggleLogin} showLogin={this.state.showLogin} />
 			</div>
 	    );
 	  }

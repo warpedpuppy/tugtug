@@ -45,7 +45,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 
 	        this.app.ticker.add(this.animate.bind(this));
 	        this.resizeHandler();
-	        this.rainbowShake();
+	        //this.rainbowShake();
 	    },
 	    Stop: function () {
 	        this.app.ticker.remove(this.animate.bind(this));
@@ -163,7 +163,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 
 					bead = that.beadsOnStage[i];
 					if(bead && bead.parent){
-						if(bead.vy > 8)bead.vy -=2;
+						if(bead.vy > 2)bead.vy -=2;
 						bead.y += bead.vy;
 						bead.x += bead.vx;
 						bead.vy += gravity;

@@ -1,0 +1,45 @@
+.LoginRegisterContainerDiv {
+	text-align: center;;
+}
+.LoginRegisterContainer {
+	display: inline-block;
+	background-color: white;
+	border:5px solid black;
+	padding:20px;
+	margin-top:100px;
+	position:relative;
+}
+.LoginRegisterContainer a {
+	display: block;
+	cursor: pointer;
+	text-align: right;
+	font-style: italic;
+}
+
+.LoginRegisterContainer button.closeButton {
+	width:35px;
+	height:35px;
+	position: absolute;
+	right:-17px;
+	top:-17px;
+	padding:5px;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+	border: 3px solid black;
+	border-radius: 5px;
+
+}
+.LoginRegisterContainer form input {
+	display:block;
+	border:3px solid black;
+	border-radius: 5px;
+	font-size: 30px;
+	margin:10px;
+	padding:3px;
+}
+.LoginRegisterContainer form input[type="submit"] {
+	display:inline-block;
+}
+.LoginRegisterContainer form div {
+	text-align: right;
+}
