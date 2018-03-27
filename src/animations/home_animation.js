@@ -5,8 +5,6 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		pegs: [],
 		utils: new Utils(),
     	app: new PIXI.Application(),
-		body_radius: 10,
-		character: new PIXI.Container(),
 		body: new PIXI.Graphics(),
 		foregroundContainer: new PIXI.Container(),
 		backgroundContainer: new PIXI.Container(),
@@ -14,14 +12,21 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		shakeAllow: true,
 		tl: new TimelineMax(), 
 		beads: [],
-		beadQ: 300,
-		beadsAtATime: 100,
+		beadQ: 600,
+		beadsAtATime: 200,
 		beadCounter: 0,
 		beadsOnStage: [],
 		beadRadius: 5,
 		beadLoopingQ: 0,
+		horizBoxesQ: 5,
+		vertBoxesQ: 5,
+		totalBoxes: undefined,
+		blockContainers: [],
+		blockForegrounds: [],
+		blockBackgrounds: [],
 		Init: function(){
 			window.onresize = this.resizeHandler.bind(this);
+			this.totalBoxes =  this.horizBoxesQ * this.vertBoxesQ;
 			this.addBeadsHandler = this.addBeadsHandler.bind(this)
 	        this.gv.animate = true;
 	        this.gv.canvasWidth = this.utils.returnCanvasWidth();
@@ -37,15 +42,23 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			this.gv.stage.addChild(this.foregroundContainer);
 			this.rainbowShake = this.rainbowShake.bind(this);
 			this.shakeAllow = true;
+			this.width =  this.utils.returnCanvasWidth();
+			this.height = this.utils.returnCanvasHeight();
 
+			//make object pools
 			for(let j = 0; j < this.beadQ; j++){
 				let b = this.Bead();
 				this.beads.push(b)
 			}
+			for(let j = 0; j < this.totalBoxes; j ++){
+				this.blockContainers.push(new PIXI.Graphics());
+				this.blockForegrounds.push(new PIXI.Graphics());
+				this.blockBackgrounds.push(new PIXI.Graphics());
+			}
 
 	        this.app.ticker.add(this.animate.bind(this));
 	        this.resizeHandler();
-	        //this.rainbowShake();
+	        this.rainbowShake();
 	    },
 	    Stop: function () {
 	        this.app.ticker.remove(this.animate.bind(this));
@@ -60,31 +73,28 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			return bead;
 		},
 		resizeHandler: function (){
-			let width =  this.utils.returnCanvasWidth();
-			let height = this.utils.returnCanvasHeight();
-			this.gv.renderer.resize(width, height)
+			this.width =  this.utils.returnCanvasWidth();
+			this.height = this.utils.returnCanvasHeight();
+			this.gv.renderer.resize(this.width, this.height)
 			this.buildBoard(this.backgroundContainer);
 		},
 		buildBoard: function(){
-			let dot = new PIXI.Graphics(),
-			horizBoxesQ = 5,
-		    vertBoxesQ = 5,
-		    width =  this.utils.returnCanvasWidth(),
-			height = this.utils.returnCanvasHeight(),
-		    horizBoxesWidth = this.horizBoxesWidth = width/horizBoxesQ,
-		    vertBoxesHeight = height/vertBoxesQ,
-			block;
+			let horizBoxesWidth = this.horizBoxesWidth = this.width/this.horizBoxesQ,
+		    vertBoxesHeight = this.height/this.vertBoxesQ,
+			blockcontainer,
+			blockBackground,
+			blockForeground;
 			this.backgroundContainer.removeChildren();
 			this.pegQ = 0;
 			this.pegs = [];
-			for(let i = 0; i < horizBoxesQ; i++){
-				for(let j = 0; j < vertBoxesQ; j++){
-					block = new PIXI.Container();
-					let cont = new PIXI.Container();
-					block.cont= cont;
-					block.addChild(cont)
-					dot = new PIXI.Graphics();
-					dot
+			for(let i = 0; i < this.horizBoxesQ; i++){
+				for(let j = 0; j < this.vertBoxesQ; j++){
+					blockcontainer = this.blockContainers[this.pegQ];
+					blockBackground = this.blockBackgrounds[this.pegQ];
+					blockcontainer.cont= blockBackground;
+					blockcontainer.addChild(blockBackground)
+					blockForeground = this.blockForegrounds[this.pegQ];
+					blockForeground
 					.beginFill(0xFF00FF)
 					.lineStyle(2, 0xFFFFFF, 1)
 					.moveTo(0,0)
@@ -92,14 +102,13 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 					.lineTo(horizBoxesWidth, vertBoxesHeight)
 					.lineTo(0, vertBoxesHeight)
 					.lineTo(0, 0).endFill();
-					block.x = i*horizBoxesWidth + horizBoxesWidth/2;
-					block.y = j*vertBoxesHeight + vertBoxesHeight/2;
-					dot.radius = 10;
-					block.graphic = dot;
-					dot.pivot = new PIXI.Point(horizBoxesWidth/2, vertBoxesHeight/2);
-					this.pegs.push(block)
-					block.addChild(dot)
-					this.backgroundContainer.addChild(block);
+					blockcontainer.x = i*horizBoxesWidth + horizBoxesWidth/2;
+					blockcontainer.y = j*vertBoxesHeight + vertBoxesHeight/2;
+					blockcontainer.graphic = blockForeground;
+					blockForeground.pivot = new PIXI.Point(horizBoxesWidth/2, vertBoxesHeight/2);
+					this.pegs.push(blockcontainer)
+					blockcontainer.addChild(blockForeground)
+					this.backgroundContainer.addChild(blockcontainer);
 					this.pegQ ++;
 				}
 			}
@@ -163,7 +172,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 
 					bead = that.beadsOnStage[i];
 					if(bead && bead.parent){
-						if(bead.vy > 2)bead.vy -=2;
+						//if(bead.vy > 2)bead.vy -=2;
 						bead.y += bead.vy;
 						bead.x += bead.vx;
 						bead.vy += gravity;
