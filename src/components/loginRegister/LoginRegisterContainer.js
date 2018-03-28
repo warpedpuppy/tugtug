@@ -10,8 +10,8 @@ export default class LoginRegisterContainer extends React.Component {
 		super(props);
 		this.toggleForms = this.toggleForms.bind(this);
 		this.state = {
-			login: false,
-			register:true
+			login: true,
+			register:false
 		}
 	}
 	toggleForms (e){
@@ -29,7 +29,7 @@ export default class LoginRegisterContainer extends React.Component {
 			return (
 				<div className="LoginRegisterContainerDiv">
 				<div className="LoginRegisterContainer">
-					<button className="closeButton" onClick={(e) => this.props.toggleLogin(e)} ><img src={CloseButton} /></button>
+					<button className="closeButton" onClick={(e) => this.props.toggleLogin(e)} ><img src={CloseButton} alt="close button" /></button>
 					<LoginForm styleProp={loginClass} />
 					<Register styleProp={registerClass} />
 					<a onClick={(e) => this.toggleForms(e)} style={loginClass} >need to register?</a>

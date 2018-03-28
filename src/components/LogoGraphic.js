@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import HeaderRing from '../svgs/HeaderRing'
 
 export default function LogoGraphic (props) {

@@ -73,8 +73,11 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			return bead;
 		},
 		resizeHandler: function (){
+			this.blockForegrounds.forEach(function(item){
+				item.cacheAsBitmap = false;
+			})
 			this.width =  this.utils.returnCanvasWidth();
-			this.height = this.utils.returnCanvasHeight();
+			this.height = this.gv.canvasHeight = this.utils.returnCanvasHeight();
 			this.gv.renderer.resize(this.width, this.height)
 			this.buildBoard(this.backgroundContainer);
 		},
@@ -102,6 +105,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 					.lineTo(horizBoxesWidth, vertBoxesHeight)
 					.lineTo(0, vertBoxesHeight)
 					.lineTo(0, 0).endFill();
+					blockForeground.cacheAsBitmap = true;
 					blockcontainer.x = i*horizBoxesWidth + horizBoxesWidth/2;
 					blockcontainer.y = j*vertBoxesHeight + vertBoxesHeight/2;
 					blockcontainer.graphic = blockForeground;

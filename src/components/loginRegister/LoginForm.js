@@ -1,14 +1,42 @@
 import React from 'react';
-export default function LoginForm (props) {
-	return (
-		<form style={props.styleProp}>
+import axios from 'axios';
+import {API_BASE_URL} from '../../config';
+
+export default class LoginForm extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.sendToServer = this.sendToServer.bind(this);
+		this.state = {
+			feedback: 'start'
+		}
+	}
+	sendToServer (e){
+		e.preventDefault();
+		let that = this;
+		return axios.post(`${API_BASE_URL}auth/login`, {username: 'tyui', password: 'tyui'})
+		  .then(function(response){
+		  	console.log(response)
+		    that.setState({feedback: "done!"})
+		  })
+		  .catch((err) => {
+		  	console.error(err)
+		  });  
+
+	}
+	render () {
+		return (
+		<form style={this.props.styleProp} onClick={(e) => this.sendToServer(e)}  >
 			<h4>Log In</h4>
-			<input type="email" placeholder="email" required />
-			<input type="password" placeholder="password" required />
+			<input type="email" placeholder="email"  />
+			<input type="password" placeholder="password"  />
 			<div>
-				<input type="submit" value="log in" />
+				<button type="button" value="log in">click</button>
 			</div>
+			<div>{this.state.feedback}</div>
 		</form>
 
 		)
+	}
+	
 }

@@ -11,7 +11,7 @@ export default class Menu extends Component {
 		this.toggleLogin = this.toggleLogin.bind(this);
 		this.state = {
 			showDropDown:false, 
-			showLogin: true
+			showLogin: false
 		}
 	  }
 	  toggleLogin (e) {
@@ -31,7 +31,6 @@ export default class Menu extends Component {
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
 	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
 	  	let classes = `logoGraphic ${raiseGraphic}`;
-	  	console.log('raisegraphic = ',classes)
 	    return (
 			<div>
 				<nav>
@@ -47,9 +46,6 @@ export default class Menu extends Component {
 						</div>
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
-						<a onClick={(e) => this.toggleLogin(e)} >
-						<span>login/register</span>
-						</a>
 						<Link to="/about">
 						<span>about</span>
 						</Link>

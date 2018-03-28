@@ -4,7 +4,7 @@ import './Footer.css'
 export default function Footer (){
 	return (
 		<footer>
-			<a href="https://twitter.com/warpedPuppy" rel="noopener noreferrer" target="_blank">
+			<a href="https://twitter.com/tedwalther" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
 		</footer>
