@@ -15,7 +15,18 @@ div.homePage h1 {
 	position: absolute;
 	right:0;
 }
-
+#fpsChecker {
+	width: 300px;
+	margin:100px auto;
+	text-align: center;
+	border:10px solid white;
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0,0,0,0.5);
+	font-size: 20px;
+	background-color: black;
+	color:white;
+	padding:20px;
+}
 @media (min-width: 1024px) {
 
 	.textCont {

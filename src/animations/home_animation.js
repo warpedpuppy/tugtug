@@ -12,8 +12,8 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		shakeAllow: true,
 		tl: new TimelineMax(), 
 		beads: [],
-		beadQ: 600,
-		beadsAtATime: 200,
+		beadQ: 1200,
+		beadsAtATime: 400,
 		beadCounter: 0,
 		beadsOnStage: [],
 		beadRadius: 5,
@@ -59,9 +59,10 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 	        this.app.ticker.add(this.animate.bind(this));
 	        this.resizeHandler();
 	        this.rainbowShake();
+
 	    },
 	    Stop: function () {
-	        this.app.ticker.remove(this.animate.bind(this));
+	        this.app.ticker.destroy();
 	    },
 		Bead: function () {
 			let bead = new PIXI.Graphics();
@@ -166,15 +167,21 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			}
 			this.beadLoopingQ = this.beadsOnStage.length;
 		},
+		displayFPS: function (fps) {
+			document
+			.getElementById('fpsChecker')
+			.innerHTML = `current fps = ${Math.round(fps)}`;;
+		},
 		animate: function (stage) {
 			this.gv.renderer.render(this.gv.stage);
 			let gravity = 0.03;
-			let that = this;
 			let bead;
+			this.displayFPS(this.app.ticker.FPS)
 			
-			for(let i = 0; i < that.beadLoopingQ; i++){
 
-					bead = that.beadsOnStage[i];
+			for(let i = 0; i < this.beadLoopingQ; i++){
+
+					bead = this.beadsOnStage[i];
 					if(bead && bead.parent){
 						//if(bead.vy > 2)bead.vy -=2;
 						bead.y += bead.vy;
@@ -186,15 +193,15 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 							bead.vy =-(Math.random()*3)-1;
 						}
 
-						if(globalPoint.x < 0 || globalPoint.x > that.width) {
+						if(globalPoint.x < 0 || globalPoint.x > this.width) {
 								bead.parent.removeChild(bead);
-								that.beadsOnStage.splice(i, 1);
+								this.beadsOnStage.splice(i, 1);
 						}
 					}
 					
 			}
-				
 			
+				
 		}
 	}
 

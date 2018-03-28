@@ -1,0 +1,70 @@
+.aboutPage {
+	background-color: #FF00FF;
+	position:relative;
+	height:100vh;
+	padding-top: 75px;
+}
+.starCont {
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+}
+.starsCont {
+	position:relative;
+	top:-150px;
+	z-index: 0;
+}
+.aboutPageText {
+	width:80%;
+	padding:30px;
+	margin:0px auto;
+	background-color: rgba(255,255,255,0.75);
+	border:5px solid black;
+	border-radius: 20px;
+	position:relative;
+	z-index: 1;
+}
+.aboutPageText p{
+	margin: 20px 0;
+}
+.star1 {
+	width: 600px;
+	display:block;
+	margin:0 auto;
+}
+
+.star2 {
+	width: 500px;
+	display:block;
+	margin:50px auto;
+}
+
+.star3 {
+	width: 400px;
+	display:block;
+	margin:100px auto;
+}
+.star4 {
+	width: 300px;
+	display:block;
+	margin:150px auto;
+}
+.clockwise {
+	animation: rotating 20s linear infinite;
+}
+.clockwise2 {
+	animation: rotating 50s linear infinite;
+}
+.counterClockwise {
+	animation: rotatingReverse 30s linear infinite;
+}
+.counterClockwise2 {
+	animation: rotatingReverse 40s linear infinite;
+}
+@media (min-width: 1024px) {
+
+
+
+
+}

@@ -46,11 +46,11 @@ export default class Menu extends Component {
 						</div>
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
+						<Link to="/">
+						<span>home</span>
+						</Link>
 						<Link to="/about">
 						<span>about</span>
-						</Link>
-						<Link to="/contact">
-						<span>contact</span>
 						</Link>
 					</div>
 					

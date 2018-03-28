@@ -19,7 +19,8 @@ export default class HomeCanvas extends React.Component {
 	}
 	render () {
 		return (
-			<div id='homeCanvas' ref={item => this.canvas = item} >ain't got canvas ability!</div>
+			<div id='homeCanvas' ref={item => this.canvas = item} >
+			</div>
 		)
 	}
 	

@@ -8,6 +8,7 @@ class Home extends React.Component {
 	render () {
 		return (
 		  <div className='homePage'>
+		    <div id="fpsChecker"></div>
 			<HomeCanvas />
 	      </div>
 	    );
