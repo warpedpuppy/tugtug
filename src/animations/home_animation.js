@@ -74,13 +74,21 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			return bead;
 		},
 		resizeHandler: function (){
-			this.blockForegrounds.forEach(function(item){
-				item.cacheAsBitmap = false;
-			})
+			// this.blockForegrounds.forEach(function(item){
+			// 	item.cacheAsBitmap = false;
+			// })
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.gv.canvasHeight = this.utils.returnCanvasHeight();
-			this.gv.renderer.resize(this.width, this.height)
+			this.gv.renderer.resize(this.width, this.height);
+			this.clear();
 			this.buildBoard(this.backgroundContainer);
+		},
+		clear: function (){
+			this.backgroundContainer.removeChildren();
+			for(let j = 0; j < this.totalBoxes; j ++){
+				this.blockContainers[j].removeChildren();
+				this.blockBackgrounds[j].removeChildren();
+			}
 		},
 		buildBoard: function(){
 			let horizBoxesWidth = this.horizBoxesWidth = this.width/this.horizBoxesQ,
@@ -98,6 +106,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 					blockcontainer.cont= blockBackground;
 					blockcontainer.addChild(blockBackground)
 					blockForeground = this.blockForegrounds[this.pegQ];
+					blockForeground.clear();
 					blockForeground
 					.beginFill(0xFF00FF)
 					.lineStyle(2, 0xFFFFFF, 1)
@@ -106,7 +115,6 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 					.lineTo(horizBoxesWidth, vertBoxesHeight)
 					.lineTo(0, vertBoxesHeight)
 					.lineTo(0, 0).endFill();
-					blockForeground.cacheAsBitmap = true;
 					blockcontainer.x = i*horizBoxesWidth + horizBoxesWidth/2;
 					blockcontainer.y = j*vertBoxesHeight + vertBoxesHeight/2;
 					blockcontainer.graphic = blockForeground;
