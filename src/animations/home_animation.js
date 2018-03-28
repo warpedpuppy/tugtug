@@ -28,18 +28,15 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			window.onresize = this.resizeHandler.bind(this);
 			this.totalBoxes =  this.horizBoxesQ * this.vertBoxesQ;
 			this.addBeadsHandler = this.addBeadsHandler.bind(this)
-	        this.gv.animate = true;
-	        this.gv.canvasWidth = this.utils.returnCanvasWidth();
-	        this.gv.canvasHeight = this.utils.returnCanvasHeight();
-	        this.gv.halfHeight = this.gv.canvasHeight / 2;
-	        this.gv.halfWidth = this.gv.canvasWidth / 2;
-	        this.gv.stage = new PIXI.Container(); 
-	        this.gv.renderer = PIXI.autoDetectRenderer(this.gv.canvasWidth, this.gv.canvasHeight);
-	        this.gv.renderer.backgroundColor = 0x333333;
-	        canvas.appendChild(this.gv.renderer.view);
-	        this.gv.webGL = (this.gv.renderer instanceof PIXI.CanvasRenderer) ? false : true;
-			this.gv.stage.addChild(this.backgroundContainer);
-			this.gv.stage.addChild(this.foregroundContainer);
+	        this.canvasWidth = this.utils.returnCanvasWidth();
+	        this.canvasHeight = this.utils.returnCanvasHeight();
+	        this.stage = new PIXI.Container(); 
+	        this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
+	        this.renderer.backgroundColor = 0x333333;
+	        canvas.appendChild(this.renderer.view);
+	        this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
+			this.stage.addChild(this.backgroundContainer);
+			this.stage.addChild(this.foregroundContainer);
 			this.rainbowShake = this.rainbowShake.bind(this);
 			this.shakeAllow = true;
 			this.width =  this.utils.returnCanvasWidth();
@@ -74,12 +71,9 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			return bead;
 		},
 		resizeHandler: function (){
-			// this.blockForegrounds.forEach(function(item){
-			// 	item.cacheAsBitmap = false;
-			// })
 			this.width =  this.utils.returnCanvasWidth();
-			this.height = this.gv.canvasHeight = this.utils.returnCanvasHeight();
-			this.gv.renderer.resize(this.width, this.height);
+			this.height = this.canvasHeight = this.utils.returnCanvasHeight();
+			this.renderer.resize(this.width, this.height);
 			this.clear();
 			this.buildBoard(this.backgroundContainer);
 		},
@@ -180,8 +174,8 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			.getElementById('fpsChecker')
 			.innerHTML = `current fps = ${Math.round(fps)}`;;
 		},
-		animate: function (stage) {
-			this.gv.renderer.render(this.gv.stage);
+		animate: function () {
+			this.renderer.render(this.stage);
 			let gravity = 0.03;
 			let bead;
 			this.displayFPS(this.app.ticker.FPS)
@@ -197,7 +191,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 						bead.vy += gravity;
 
 						let globalPoint = bead.toGlobal(bead.parent, new PIXI.Point(bead.x, bead.y), false);
-						if(globalPoint.y > this.gv.canvasHeight - bead.radius){
+						if(globalPoint.y > this.canvasHeight - bead.radius){
 							bead.vy =-(Math.random()*3)-1;
 						}
 
