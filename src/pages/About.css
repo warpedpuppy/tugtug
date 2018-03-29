@@ -3,17 +3,20 @@
 	position:relative;
 	height:100vh;
 	padding-top: 75px;
+	text-align: center;
+}
+
+.starsCont {
+	position:relative;
+	display: inline-block;
+	
+	z-index: 0;
 }
 .starCont {
 	position: absolute;
 	top:0;
 	left:0;
 	width:100%;
-}
-.starsCont {
-	position:relative;
-	top:-150px;
-	z-index: 0;
 }
 .aboutPageText {
 	width:80%;
@@ -22,33 +25,34 @@
 	background-color: rgba(255,255,255,0.75);
 	border:5px solid black;
 	border-radius: 20px;
-	position:relative;
+	position: relative;
 	z-index: 1;
 }
 .aboutPageText p{
 	margin: 20px 0;
 }
 .star1 {
-	width: 600px;
+	width: 100%;
 	display:block;
 	margin:0 auto;
+
 }
 
 .star2 {
-	width: 500px;
+	width: 90%;
 	display:block;
-	margin:50px auto;
+	margin:5% auto;
 }
 
 .star3 {
-	width: 400px;
+	width: 80%;
 	display:block;
-	margin:100px auto;
+	margin:10% auto;
 }
 .star4 {
-	width: 300px;
+	width: 70%;
 	display:block;
-	margin:150px auto;
+	margin:15% auto;
 }
 .clockwise {
 	animation: rotating 20s linear infinite;
@@ -62,9 +66,19 @@
 .counterClockwise2 {
 	animation: rotatingReverse 40s linear infinite;
 }
-@media (min-width: 1024px) {
-
-
-
-
+@media (max-width: 600px) {
+	.starsCont {
+		width:100%;
+		top:-100px;
+	}
+}
+@media (min-width: 600px) {
+	.starsCont {
+		top:-150px;
+		width:600px;
+		height:600px;
+	}
+	.aboutPageText {
+		top:-550px;
+	}
 }
