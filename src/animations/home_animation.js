@@ -42,6 +42,11 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.utils.returnCanvasHeight();
 
+			if (!this.webGL) {
+				console.log('this webgl = ', this.webGL)
+				this.smallerQs();
+			}
+			
 			//make object pools
 			for(let j = 0; j < this.beadQ; j++){
 				let b = this.Bead();
@@ -57,6 +62,11 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 	        this.resizeHandler();
 	        this.rainbowShake();
 
+	    },
+	    smallerQs: function () {
+			this.beadQ = 60;
+			this.beadsAtATime = 20;
+			this.beadRadius = 20;
 	    },
 	    Stop: function () {
 	        this.app.ticker.destroy();
@@ -157,6 +167,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 				let bead = this.beads[this.beadCounter]
 				bead.x = Math.random()*this.horizBoxesWidth - (this.horizBoxesWidth/2);
 				bead.y = 0;
+				bead.blockCont = true;
 				bead.vy = (Math.random()*3)+3;
 				bead.vx = (Math.random()*1)+1;
 				if(bead.x < 0){	bead.vx *=-1;}
@@ -172,7 +183,11 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		displayFPS: function (fps) {
 			document
 			.getElementById('fpsChecker')
-			.innerHTML = `current fps = ${Math.round(fps)}`;;
+			.innerHTML = `current fps = ${Math.round(fps)}`;
+
+			// if (Number(fps) < 10) {
+			// 	this.smallerQs();
+			// }
 		},
 		animate: function () {
 			this.renderer.render(this.stage);
@@ -193,6 +208,13 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 						let globalPoint = bead.toGlobal(bead.parent, new PIXI.Point(bead.x, bead.y), false);
 						if(globalPoint.y > this.canvasHeight - bead.radius){
 							bead.vy =-(Math.random()*3)-1;
+							//switch bead to front plane if not
+							if (bead.blockCont) {
+								bead.blockCont = false;
+								bead.y = globalPoint.y;
+								bead.x = globalPoint.x;
+								this.stage.addChild(bead);
+							}
 						}
 
 						if(globalPoint.x < 0 || globalPoint.x > this.width) {
