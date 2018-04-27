@@ -49,6 +49,9 @@ export default class Menu extends Component {
 						<Link to="/">
 						<span>home</span>
 						</Link>
+						<Link to="/spiral">
+						<span>spiral experiment</span>
+						</Link>
 						<Link to="/about">
 						<span>about</span>
 						</Link>
