@@ -61,6 +61,7 @@ export default function Spiral (THREE) {
 				this.ball_mesh.position.y = (Math.random())*100+100;
 				this.ball_mesh.vy =  Math.random()*0.2;
 				this.ball_mesh.vx = 0;
+				this.ball_mesh.hit = false;
 				this.scene.add( this.ball_mesh );
 				this.collidableMeshList.push(this.ball_mesh);
 				this.balls.push(this.ball_mesh)
@@ -91,6 +92,7 @@ export default function Spiral (THREE) {
 			    	this.balls[i].position.x = Math.random()*20;
 			    	this.balls[i].vx = 0;
 			    	this.balls[i].vy =  Math.random()*0.2;
+			    	this.balls[i].hit = false;
 			    }
 		    }
 		   
@@ -109,8 +111,12 @@ export default function Spiral (THREE) {
 					for(let j = 0; j < collisionResults.length; j++) {
 						//console.log("Hit");
 						//console.log(collisionResults[j])
-						 collisionResults[j].object.vx = -2;
-						 collisionResults[j].object.vy = -1.5;
+						if(!collisionResults[j].object.hit){
+							collisionResults[j].object.hit = true;
+							collisionResults[j].object.vx = -2;
+						 	collisionResults[j].object.vy = -1.5;
+						}
+						 
 					}
 					
 				}
