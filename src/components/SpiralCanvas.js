@@ -9,7 +9,7 @@ export default class SpiralCanvas extends React.Component {
 		this.spiral_anim = {};
 	}
 	componentDidMount(){
-		this.home_page = sprial_code(THREE);
+		this.home_page = sprial_code(THREE, Utils);
 		this.home_page.init();
 	}
 	componentWillUnmount(){
