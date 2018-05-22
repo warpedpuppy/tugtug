@@ -7,6 +7,7 @@ import Experiments from './pages/Experiments.js';
 import About from './pages/About.js';
 import Spiral from './pages/Spiral.js';
 import Contact from './pages/Contact.js';
+import Game from './pages/Game.js';
 import Footer from './components/Footer.js';
 require('../node_modules/normalize.css/normalize.css');
 export default function App () {
@@ -22,6 +23,7 @@ export default function App () {
             <Route exact path="/About" component={About} />
             <Route exact path="/Contact" component={Contact} />
             <Route exact path="/Spiral" component={Spiral} />
+            <Route exact path="/Game" component={Game} />
           </main>
           <Footer />
         </div>

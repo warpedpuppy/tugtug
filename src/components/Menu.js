@@ -26,6 +26,11 @@ export default class Menu extends Component {
 	  		showDropDown: !this.state.showDropDown
 	  	})
 	  }
+	  hideDropDown(e){
+	  	this.setState({
+	  		showDropDown: false
+	  	})
+	  }
 	  render() {
 
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
@@ -46,13 +51,13 @@ export default class Menu extends Component {
 						</div>
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
-						<Link to="/">
+						<Link to="/" onClick={() => this.hideDropDown()}>
 						<span>home</span>
 						</Link>
-						<Link to="/spiral">
-						<span>spiral experiment</span>
+						<Link to="/game" onClick={() => this.hideDropDown()}>
+						<span>game</span>
 						</Link>
-						<Link to="/about">
+						<Link to="/about" onClick={() => this.hideDropDown()}>
 						<span>about</span>
 						</Link>
 					</div>
