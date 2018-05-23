@@ -25,11 +25,18 @@ export default class LoginRegisterContainer extends React.Component {
 	render(){
 		let loginClass = (!this.state.login)?{display: 'none'}:{};
 		let registerClass = (!this.state.register)?{display: 'none'}:{};
-		if(this.props.showLogin) {
+		//if(this.props.showLogin) {
 			return (
 				<div className="LoginRegisterContainerDiv">
 				<div className="LoginRegisterContainer">
-					<button className="closeButton" onClick={(e) => this.props.toggleLogin(e)} ><img src={CloseButton} alt="close button" /></button>
+					<button 
+					className="closeButton" 
+					onClick={(e) => this.props.toggleLogin(e)} 
+					>
+					<img 
+					src={CloseButton} 
+					alt="close button" 
+					/></button>
 					<LoginForm styleProp={loginClass} />
 					<Register styleProp={registerClass} />
 					<a onClick={(e) => this.toggleForms(e)} style={loginClass} >need to register?</a>
@@ -37,10 +44,10 @@ export default class LoginRegisterContainer extends React.Component {
 				</div>
 				</div>
 			)
-		} else {
-			return (
-				<div></div>
-			)
-		}
+		//} else {
+			// return (
+			// 	<div></div>
+			// )
+		//}
 	}
 }

@@ -1,9 +1,11 @@
 import React from 'react';
-import './About.css'
-import AboutStar from '../svgs/AboutStar.svg'
+import './About.css';
+import AboutStar from '../svgs/AboutStar.svg';
+
 export default function About () {
     return (
 		<section className="aboutPage">
+			
 		    <div className="starsCont">
 				<div className="starCont">
 					<img src={AboutStar} alt="s1" className="star1 counterClockwise"/>

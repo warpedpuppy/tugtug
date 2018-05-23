@@ -16,6 +16,9 @@
     "redux": "^3.7.2",
     "three": "^0.92.0"
   },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

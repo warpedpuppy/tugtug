@@ -1,5 +1,8 @@
-import {createStore} from 'redux'
-
+import {applyMiddleware, createStore} from 'redux';
+import logger from 'redux-logger';
 import {crudReducer} from './reducers';
 
-export default createStore(crudReducer);
+const initialState = window.INITIAL_STATE;
+const middleware = applyMiddleware(logger);
+ 
+export default createStore(crudReducer,initialState, middleware);

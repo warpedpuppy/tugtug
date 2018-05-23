@@ -7,14 +7,38 @@ export default class Register extends React.Component {
 	constructor(props){
 		super(props);
 		this.sendToServer = this.sendToServer.bind(this);
+		this.updateUsername = this.updateUsername.bind(this);
+		this.updatePassword = this.updatePassword.bind(this);
 		this.state = {
-			feedback: 'start'
+			feedback: 'start',
+			username: '',
+			password: ''
 		}
 	}
-	sendToServer (e){
+	updateUsername (e) {
+		this.setState({
+			username: e.target.value
+		})
+	}
+	updatePassword (e) {
+		this.setState({
+			password: e.target.value
+		})
+	}
+	sendToServer (e) {
 		e.preventDefault();
 		let that = this;
-		return axios.post(`${API_BASE_URL}register`, {username: 'tyui', password: 'tyui'})
+		let obj = {username: this.state.username, password: this.state.password}
+
+		if (this.state.username === '' || this.state.password === '') {
+			this.setState({
+				feedback: 'please fill out all fields'
+			})
+			return
+		}
+
+
+		return axios.post(`${API_BASE_URL}/api/register`, obj)
 		  .then(function(response){
 		  	console.log(response)
 		    that.setState({feedback: "done!"})
@@ -26,15 +50,23 @@ export default class Register extends React.Component {
 	}
 	render () {
 		return (
-		<form style={this.props.styleProp} onClick={(e) => this.sendToServer(e)}  >
-			<h4>Register</h4>
-			<input type="email" placeholder="email"  />
-			<input type="password" placeholder="password"  />
-			<div>
-				<button type="button" value="log in">click</button>
-			</div>
-			<div>{this.state.feedback}</div>
-		</form>
+			<form style={this.props.styleProp} onSubmit={this.sendToServer} >
+				<h4>Register</h4>
+				<input 
+					type="text" 
+					placeholder="username" 
+					value={this.state.username} 
+					onChange={ this.updateUsername } required />
+				<input 
+					type="password" 
+					placeholder="password" 
+					value={this.state.password} 
+					onChange={(e) => this.updatePassword(e) } required />
+				<div>
+					<button type="button" onClick={this.sendToServer} >click</button>
+				</div>
+				<div>{this.state.feedback}</div>
+			</form>
 
 		)
 	}
