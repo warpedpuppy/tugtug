@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import {API_BASE_URL} from '../../config';
-
-export default class LoginForm extends React.Component {
+import { addToken} from '../../actions/tokenActions.js';
+import {connect} from 'react-redux';
+class LoginForm extends React.Component {
 
 	constructor(props){
 		super(props);
@@ -40,8 +41,9 @@ export default class LoginForm extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
-		  	console.log(response)
+		  	console.log(response.data.authToken)
 		    that.setState({feedback: "done!"})
+		    that.props.dispatch(addToken(response.data.authToken));
 		  })
 		  .catch((err) => {
 		  	console.error(err)
@@ -72,3 +74,9 @@ export default class LoginForm extends React.Component {
 	}
 	
 }
+
+export const mapStateToProps = state => ({
+    token: state.tokenReducer.token
+});
+
+export default connect(mapStateToProps)(LoginForm);

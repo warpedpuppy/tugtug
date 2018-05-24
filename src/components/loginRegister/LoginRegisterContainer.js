@@ -4,6 +4,8 @@ import "./LoginRegisterContainer.css";
 import CloseButton from '../../svgs/closeButton.svg'
 import LoginForm from './LoginForm'
 import Register from './Register'
+import { deleteToken } from '../../actions/tokenActions.js';
+import {connect} from 'react-redux';
 export default class LoginRegisterContainer extends React.Component {
 
 	constructor(props){
@@ -14,11 +16,14 @@ export default class LoginRegisterContainer extends React.Component {
 			register:false
 		}
 	}
+	logOut (e) {
+		e.preventDefault();
+	}
 	toggleForms (e){
 		e.preventDefault();
 		this.setState({
 			login: !this.state.login,
-			register:!this.state.register
+			register: !this.state.register
 		})
 	}
 
@@ -29,6 +34,11 @@ export default class LoginRegisterContainer extends React.Component {
 			return (
 				<div className="LoginRegisterContainerDiv">
 				<div className="LoginRegisterContainer">
+					<button
+					onClick={(e) => this.logOut(e)}
+					>
+					LOG OUT
+					</button>
 					<button 
 					className="closeButton" 
 					onClick={(e) => this.props.toggleLogin(e)} 
