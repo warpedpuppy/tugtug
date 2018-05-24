@@ -44,6 +44,7 @@ class LoginForm extends React.Component {
 		  	console.log(response.data.authToken)
 		    that.setState({feedback: "done!"})
 		    that.props.dispatch(addToken(response.data.authToken));
+		    that.props.closeWindow();
 		  })
 		  .catch((err) => {
 		  	console.error(err)

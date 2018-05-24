@@ -1,3 +1,6 @@
 main {
 	margin-top: 50px;
 }
+.hide {
+	display: none !important;
+}

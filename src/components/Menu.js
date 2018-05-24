@@ -4,18 +4,22 @@ import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
-
-export default class Menu extends Component {
+import { deleteToken } from '../actions/tokenActions.js';
+import {connect} from 'react-redux';
+class Menu extends Component {
 	  constructor(props) {
 		super(props);
 		this.toggleLogin = this.toggleLogin.bind(this);
+		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
 			showLogin: false
 		}
 	  }
 	  toggleLogin (e) {
-	  	e.preventDefault();
+	  	if(e){
+	  		e.preventDefault();
+	  	}
 	    this.setState({
 	      showLogin: !this.state.showLogin,
 	      showDropDown: false
@@ -25,6 +29,10 @@ export default class Menu extends Component {
 	  	this.setState({
 	  		showDropDown: !this.state.showDropDown
 	  	})
+	  }
+  	  logOut (e) {
+		e.preventDefault();
+		this.props.dispatch(deleteToken());
 	  }
 	  hideDropDown(e){
 	  	this.setState({
@@ -36,6 +44,9 @@ export default class Menu extends Component {
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
 	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
 	  	let classes = `logoGraphic ${raiseGraphic}`;
+	  	let showLogin = (this.props.token === 'blank')?'':'hide';
+	  	let showLogOut = (this.props.token === 'blank')?'hide':'';
+	  	console.log(this.props.token)
 	    return (
 			<div>
 				<nav>
@@ -60,6 +71,8 @@ export default class Menu extends Component {
 						<Link to="/about" onClick={() => this.hideDropDown()}>
 						<span>about</span>
 						</Link>
+						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
+						<a className={showLogOut} onClick={this.logOut}>log out</a>
 					</div>
 					
 				</nav>
@@ -68,3 +81,9 @@ export default class Menu extends Component {
 	    );
 	  }
 }
+
+export const mapStateToProps = state => ({
+    token: state.tokenReducer.token
+});
+
+export default connect(mapStateToProps)(Menu);

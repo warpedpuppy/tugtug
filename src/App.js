@@ -30,7 +30,7 @@ class App extends React.Component {
         )
       .then(function(response){
         console.log(response)
-        if(response.data === 'valid') {
+        if(response.data.valid) {
           //set store token
           that.props.dispatch(addToken(lsToken));
         } else {
@@ -53,7 +53,7 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <header>
-            <Menu />
+            <Menu token={this.props.token} />
           </header>
           <main>
             <Route exact path="/" component={Home} />

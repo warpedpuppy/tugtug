@@ -48,7 +48,15 @@
 	margin:10px;
 	width:100%;
 }
+form button {
+	padding:5px 10px;
+	font-size:20px;
+	border-radius: 10px;
+	border:1px solid grey;
+	cursor: pointer;
+	outline:none;
 
+}
 @media (min-width: 1024px) {
 
 	.LoginRegisterContainer {
