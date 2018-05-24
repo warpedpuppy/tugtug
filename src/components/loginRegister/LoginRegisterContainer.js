@@ -6,11 +6,12 @@ import LoginForm from './LoginForm'
 import Register from './Register'
 import { deleteToken } from '../../actions/tokenActions.js';
 import {connect} from 'react-redux';
-export default class LoginRegisterContainer extends React.Component {
+class LoginRegisterContainer extends React.Component {
 
 	constructor(props){
 		super(props);
 		this.toggleForms = this.toggleForms.bind(this);
+		this.logOut = this.logOut.bind(this);
 		this.state = {
 			login: true,
 			register:false
@@ -18,6 +19,7 @@ export default class LoginRegisterContainer extends React.Component {
 	}
 	logOut (e) {
 		e.preventDefault();
+		this.props.dispatch(deleteToken());
 	}
 	toggleForms (e){
 		e.preventDefault();
@@ -30,10 +32,11 @@ export default class LoginRegisterContainer extends React.Component {
 	render(){
 		let loginClass = (!this.state.login)?{display: 'none'}:{};
 		let registerClass = (!this.state.register)?{display: 'none'}:{};
-		//if(this.props.showLogin) {
+		if(this.props.showLogin) {
 			return (
 				<div className="LoginRegisterContainerDiv">
 				<div className="LoginRegisterContainer">
+				<div>token: {this.props.token.substr(0,5)}</div>
 					<button
 					onClick={(e) => this.logOut(e)}
 					>
@@ -54,10 +57,16 @@ export default class LoginRegisterContainer extends React.Component {
 				</div>
 				</div>
 			)
-		//} else {
-			// return (
-			// 	<div></div>
-			// )
-		//}
+		} else {
+			return (
+				<div></div>
+			)
+		}
 	}
 }
+
+export const mapStateToProps = state => ({
+    token: state.tokenReducer.token
+});
+
+export default connect(mapStateToProps)(LoginRegisterContainer);

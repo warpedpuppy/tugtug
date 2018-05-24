@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Menu from './components/Menu.js';
 import Home from './pages/Home.js';
@@ -9,8 +9,46 @@ import Spiral from './pages/Spiral.js';
 import Contact from './pages/Contact.js';
 import Game from './pages/Game.js';
 import Footer from './components/Footer.js';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import { API_BASE_URL } from './config';
+import { addToken } from './actions/tokenActions.js';
+
 require('../node_modules/normalize.css/normalize.css');
-export default function App () {
+class App extends React.Component {
+
+  tokenHandler () {
+    let lsToken = localStorage.getItem('token')
+    console.log('store = ', this.props.token)
+    console.log('localstorage = ', lsToken)
+    let that = this;
+    if (this.props.token === 'blank' && lsToken) {
+      //check if token still valid & if so, add it to the store
+      axios
+      .get(`${API_BASE_URL}/api/auth/validate`, 
+        { headers: {"Authorization" : `Bearer ${lsToken}`} }
+        )
+      .then(function(response){
+        console.log(response)
+        if(response.data === 'valid') {
+          //set store token
+          that.props.dispatch(addToken(lsToken));
+        } else {
+          localStorage.removeItem('token')
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      });  
+    }
+  }
+  componentDidUpdate () {
+    this.tokenHandler();
+  }
+  componentDidMount () {
+    this.tokenHandler();
+  }
+  render () {
     return (
       <Router>
         <div className="App">
@@ -29,4 +67,11 @@ export default function App () {
         </div>
       </Router>
     );
+  }
 }
+
+export const mapStateToProps = state => ({
+    token: state.tokenReducer.token
+});
+
+export default connect(mapStateToProps)(App);

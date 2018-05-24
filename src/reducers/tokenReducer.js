@@ -6,6 +6,7 @@ const initialState = {
 
 function tokenReducer (state=initialState, action) {
     if (action.type === ADD_TOKEN) {
+        localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             token: action.token
         });
@@ -18,9 +19,9 @@ function tokenReducer (state=initialState, action) {
         });
     }
     else if (action.type === DELETE_TOKEN) {
-        console.log(action.item+"  "+action.item.id)
+        localStorage.removeItem('token');
         let obj = Object.assign({}, state, {
-            items: state.items.filter(item => item !== action.item)
+            token: 'blank'
         });
         return obj
     }
