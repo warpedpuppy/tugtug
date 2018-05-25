@@ -28,7 +28,7 @@ export default class Register extends React.Component {
 	}
 	sendToServer (e) {
 		e.preventDefault();
-		this.props.processing(true);
+		
 		let that = this;
 		let obj = {username: this.state.username.trim(), password: this.state.password.trim()}
 
@@ -38,7 +38,8 @@ export default class Register extends React.Component {
 			})
 			return
 		}
-
+		
+		this.props.processing(true);
 
 		return axios.post(`${API_BASE_URL}/api/register`, obj)
 		  .then(response => {

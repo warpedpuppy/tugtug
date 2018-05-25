@@ -6,10 +6,16 @@
  	
 }
 .clockwise {
-animation: rotating 5s linear infinite;
+	animation: rotating 5s linear infinite;
 }
 .counterClockwise {
 	animation: rotatingReverse 7s linear infinite;
+}
+.clockwise_fast {
+	animation: rotating 6s linear infinite;
+}
+.counterClockwise_fast {
+	animation: rotatingReverse 6s linear infinite;
 }
 .svgDiv {
 	position: absolute;

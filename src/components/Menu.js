@@ -6,6 +6,8 @@ import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken } from '../actions/tokenActions.js';
 import {connect} from 'react-redux';
+import Welcome from './loginRegister/Welcome';
+
 class Menu extends Component {
 	  constructor(props) {
 		super(props);
@@ -13,7 +15,8 @@ class Menu extends Component {
 		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
-			showLogin: false
+			showLogin: false,
+			showWelcome: false
 		}
 	  }
 	  toggleLogin (e) {
@@ -38,6 +41,9 @@ class Menu extends Component {
 	  	this.setState({
 	  		showDropDown: false
 	  	})
+	  }
+	  welcomeAnimation () {
+
 	  }
 	  render() {
 
@@ -76,6 +82,7 @@ class Menu extends Component {
 					</div>
 					
 				</nav>
+				<Welcome welcomeAnimation={this.welcomeAnimation} />
 				<LoginRegisterContainer 
 				toggleLogin={this.toggleLogin} 
 				showLogin={this.state.showLogin} 

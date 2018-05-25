@@ -28,7 +28,7 @@ class LoginForm extends React.Component {
 	}
 	sendToServer (e){
 		e.preventDefault();
-		this.props.processing(true);
+		
 		let that = this;
 		let obj = {username: this.state.username, password: this.state.password}
 
@@ -38,7 +38,7 @@ class LoginForm extends React.Component {
 			})
 			return
 		}
-
+		this.props.processing(true);
 
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){

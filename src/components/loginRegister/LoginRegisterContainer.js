@@ -14,7 +14,7 @@ export default class LoginRegisterContainer extends React.Component {
 		this.state = {
 			login: true,
 			register:false,
-			processing:true
+			processing:false
 		}
 	}
 	processing (bool) {
@@ -34,12 +34,11 @@ export default class LoginRegisterContainer extends React.Component {
 	render(){
 		let loginClass = (!this.state.login)?{display: 'none'}:{};
 		let registerClass = (!this.state.register)?{display: 'none'}:{};
-		let processClass = (!this.state.processing)?'hide':'';
 		if(this.props.showLogin) {
 			return (
 				<div className="centerShell">
 				<div className="LoginRegisterContainerDiv">
-				<Processing className={`processingDiv  ${processClass}`} />
+				<Processing processing={this.state.processing} />
 				<div className="LoginRegisterContainer">
 					<button 
 					className="closeButton" 

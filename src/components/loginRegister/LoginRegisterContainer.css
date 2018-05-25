@@ -4,6 +4,11 @@
 	width:100%;
 	z-index: 9;
 }
+.formFeedback {
+	color: red;
+	font-style:italic;
+	font-weight: bold;
+}
 .LoginRegisterContainerDiv {
 	text-align: center;
 	position:relative;
@@ -19,15 +24,6 @@
 	position: absolute;
 	top:0;
 	z-index: 10;
-}
-.processingDiv {
-	background-color: white;
-	height:100%;
-	border:1px solid black;
-	top:0;
-	position: absolute;
-	width:100%;
-	z-index: 11;
 }
 .LoginRegisterContainer a {
 	display: block;
