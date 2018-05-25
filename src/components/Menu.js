@@ -46,7 +46,7 @@ class Menu extends Component {
 	  	let classes = `logoGraphic ${raiseGraphic}`;
 	  	let showLogin = (this.props.token === 'blank')?'':'hide';
 	  	let showLogOut = (this.props.token === 'blank')?'hide':'';
-	  	console.log(this.props.token)
+
 	    return (
 			<div>
 				<nav>
@@ -65,7 +65,7 @@ class Menu extends Component {
 						<Link to="/" onClick={() => this.hideDropDown()}>
 						<span>home</span>
 						</Link>
-						<Link to="/game" onClick={() => this.hideDropDown()}>
+						<Link className={showLogOut} to="/game" onClick={() => this.hideDropDown()}>
 						<span>game</span>
 						</Link>
 						<Link to="/about" onClick={() => this.hideDropDown()}>
@@ -76,7 +76,10 @@ class Menu extends Component {
 					</div>
 					
 				</nav>
-				<LoginRegisterContainer toggleLogin={this.toggleLogin} showLogin={this.state.showLogin} />
+				<LoginRegisterContainer 
+				toggleLogin={this.toggleLogin} 
+				showLogin={this.state.showLogin} 
+				/>
 			</div>
 	    );
 	  }

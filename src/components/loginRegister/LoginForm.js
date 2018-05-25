@@ -11,7 +11,7 @@ class LoginForm extends React.Component {
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
 		this.state = {
-			feedback: 'start',
+			feedback: '',
 			username: '',
 			password: ''
 		}
@@ -28,6 +28,7 @@ class LoginForm extends React.Component {
 	}
 	sendToServer (e){
 		e.preventDefault();
+		this.props.processing(true);
 		let that = this;
 		let obj = {username: this.state.username, password: this.state.password}
 
@@ -41,13 +42,18 @@ class LoginForm extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
-		  	console.log(response.data.authToken)
+		  	console.log(response.data.authToken);
+		  	that.props.processing(false);
 		    that.setState({feedback: "done!"})
 		    that.props.dispatch(addToken(response.data.authToken));
 		    that.props.closeWindow();
 		  })
 		  .catch((err) => {
-		  	console.error(err)
+		  	console.error(err);
+		  	that.props.processing(false);
+		  	that.setState({
+				feedback: err.response.data.message
+			})
 		  });  
 
 	}
@@ -66,9 +72,9 @@ class LoginForm extends React.Component {
 			value={this.state.password} 
 			onChange={ this.updatePassword } />
 			<div>
-				<button type="button" value="log in" onClick={(e) => this.sendToServer(e)}>click</button>
+				<button type="button" value="log in" onClick={(e) => this.sendToServer(e)}>log in</button>
 			</div>
-			<div>{this.state.feedback}</div>
+			<div className='formFeedback'>{this.state.feedback}</div>
 		</form>
 
 		)

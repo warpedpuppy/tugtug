@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './Register.css';
 import {API_BASE_URL} from '../../config';
 
 export default class Register extends React.Component {
@@ -10,7 +11,7 @@ export default class Register extends React.Component {
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
 		this.state = {
-			feedback: 'start',
+			feedback: '',
 			username: '',
 			password: ''
 		}
@@ -27,8 +28,9 @@ export default class Register extends React.Component {
 	}
 	sendToServer (e) {
 		e.preventDefault();
+		this.props.processing(true);
 		let that = this;
-		let obj = {username: this.state.username, password: this.state.password}
+		let obj = {username: this.state.username.trim(), password: this.state.password.trim()}
 
 		if (this.state.username === '' || this.state.password === '') {
 			this.setState({
@@ -39,12 +41,17 @@ export default class Register extends React.Component {
 
 
 		return axios.post(`${API_BASE_URL}/api/register`, obj)
-		  .then(function(response){
-		  	console.log(response)
+		  .then(response => {
+		  	console.log(response);
+		  	this.props.processing(false);
 		    that.setState({feedback: "done!"})
 		  })
-		  .catch((err) => {
+		  .catch(err => {
+		  	this.props.processing(false);
 		  	console.error(err)
+		  	this.setState({
+				feedback: err.response.data.message
+			})
 		  });  
 
 	}
@@ -63,9 +70,9 @@ export default class Register extends React.Component {
 					value={this.state.password} 
 					onChange={(e) => this.updatePassword(e) } required />
 				<div>
-					<button type="button" onClick={this.sendToServer} >click</button>
+					<button type="button" onClick={this.sendToServer} >register</button>
 				</div>
-				<div>{this.state.feedback}</div>
+				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
 
 		)
