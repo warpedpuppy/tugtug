@@ -42,7 +42,8 @@ class LoginForm extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
-		  	console.log(response.data.authToken);
+		  	console.log(response.data);
+		  	that.props.welcomeAnimation(response.data.user);
 		  	that.props.processing(false);
 		    that.setState({feedback: "done!"})
 		    that.props.dispatch(addToken(response.data.authToken));

@@ -5,13 +5,14 @@ import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken } from '../actions/tokenActions.js';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Welcome from './loginRegister/Welcome';
 
 class Menu extends Component {
 	  constructor(props) {
 		super(props);
 		this.toggleLogin = this.toggleLogin.bind(this);
+		this.welcomeAnimation = this.welcomeAnimation.bind(this);
 		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
@@ -42,8 +43,10 @@ class Menu extends Component {
 	  		showDropDown: false
 	  	})
 	  }
-	  welcomeAnimation () {
-
+	  welcomeAnimation (user_object) {
+	  	 this.setState({
+	      showWelcome: true
+	    })
 	  }
 	  render() {
 
@@ -82,10 +85,11 @@ class Menu extends Component {
 					</div>
 					
 				</nav>
-				<Welcome welcomeAnimation={this.welcomeAnimation} />
+				<Welcome showWelcome={this.state.showWelcome} />
 				<LoginRegisterContainer 
-				toggleLogin={this.toggleLogin} 
-				showLogin={this.state.showLogin} 
+					toggleLogin={this.toggleLogin} 
+					showLogin={this.state.showLogin} 
+					welcomeAnimation={this.welcomeAnimation}
 				/>
 			</div>
 	    );

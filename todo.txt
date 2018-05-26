@@ -1,0 +1,4 @@
+1) auto login after reg
+2) welcome screen
+3) backend admin
+4) frontend admin
