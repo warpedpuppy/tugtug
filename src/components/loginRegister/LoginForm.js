@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {API_BASE_URL} from '../../config';
-import { addToken } from '../../actions/tokenActions.js';
+import { addToken, addUsername } from '../../actions/tokenActions.js';
 import {connect} from 'react-redux';
 class LoginForm extends React.Component {
 
@@ -38,14 +38,15 @@ class LoginForm extends React.Component {
 			})
 			return
 		}
+
 		this.props.processing(true);
 
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
 		  	console.log(response.data);
-		  	that.props.welcomeAnimation(response.data.user);
 		  	that.props.processing(false);
 		    that.setState({feedback: "done!"})
+		    that.props.dispatch(addUsername(response.data.user.username));
 		    that.props.dispatch(addToken(response.data.authToken));
 		    that.props.closeWindow();
 		  })

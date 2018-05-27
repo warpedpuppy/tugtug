@@ -12,15 +12,15 @@ import Footer from './components/Footer.js';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
-import { addToken } from './actions/tokenActions.js';
+import { addToken, addUsername } from './actions/tokenActions.js';
 
 require('../node_modules/normalize.css/normalize.css');
 class App extends React.Component {
 
   tokenHandler () {
     let lsToken = localStorage.getItem('token')
-    console.log('store = ', this.props.token)
-    console.log('localstorage = ', lsToken)
+    // console.log('store = ', this.props.token)
+    // console.log('localstorage = ', lsToken)
     let that = this;
     if (this.props.token === 'blank' && lsToken) {
       //check if token still valid & if so, add it to the store
@@ -30,8 +30,10 @@ class App extends React.Component {
         )
       .then(function(response){
         console.log(response)
+
         if(response.data.valid) {
           //set store token
+          that.props.dispatch(addUsername(response.data.user.username));
           that.props.dispatch(addToken(lsToken));
         } else {
           localStorage.removeItem('token')

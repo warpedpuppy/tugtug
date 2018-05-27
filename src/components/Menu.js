@@ -12,12 +12,10 @@ class Menu extends Component {
 	  constructor(props) {
 		super(props);
 		this.toggleLogin = this.toggleLogin.bind(this);
-		this.welcomeAnimation = this.welcomeAnimation.bind(this);
 		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
-			showLogin: false,
-			showWelcome: false
+			showLogin: false
 		}
 	  }
 	  toggleLogin (e) {
@@ -43,11 +41,7 @@ class Menu extends Component {
 	  		showDropDown: false
 	  	})
 	  }
-	  welcomeAnimation (user_object) {
-	  	 this.setState({
-	      showWelcome: true
-	    })
-	  }
+	  
 	  render() {
 
 	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
@@ -85,11 +79,10 @@ class Menu extends Component {
 					</div>
 					
 				</nav>
-				<Welcome showWelcome={this.state.showWelcome} />
+				<Welcome />
 				<LoginRegisterContainer 
 					toggleLogin={this.toggleLogin} 
-					showLogin={this.state.showLogin} 
-					welcomeAnimation={this.welcomeAnimation}
+					showLogin={this.state.showLogin}
 				/>
 			</div>
 	    );

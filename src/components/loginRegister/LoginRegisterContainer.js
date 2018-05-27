@@ -49,7 +49,6 @@ export default class LoginRegisterContainer extends React.Component {
 					alt="close button" 
 					/></button>
 					<LoginForm
-					welcomeAnimation={this.props.welcomeAnimation} 
 					styleProp={loginClass} 
 					closeWindow={(e) => this.props.toggleLogin(e)} 
 					processing={(bool) => this.processing(bool)}
