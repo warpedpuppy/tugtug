@@ -6,7 +6,7 @@ import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken } from '../actions/tokenActions.js';
 import { connect } from 'react-redux';
-import Welcome from './loginRegister/Welcome';
+
 
 class Menu extends Component {
 	  constructor(props) {
@@ -79,7 +79,7 @@ class Menu extends Component {
 					</div>
 					
 				</nav>
-				<Welcome />
+				
 				<LoginRegisterContainer 
 					toggleLogin={this.toggleLogin} 
 					showLogin={this.state.showLogin}
