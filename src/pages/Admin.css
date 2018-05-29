@@ -1,0 +1,25 @@
+.adminPage {
+	text-align: center;
+}
+#userAdmin .formData {
+	margin:10px 0;
+}
+#userAdmin  {
+	display: inline-block;
+	margin: 100px auto;
+	padding: 20px;
+	border:1px solid black;
+	border-radius: 10px;
+}
+#userAdmin .formData label {
+	width:30%;
+	text-align: left;
+	display: inline-block;
+}
+#userAdmin .formData input {
+	font-size:30px;
+	border:1px solid black;
+	border-radius: 3px;
+	display: inline-block;
+	width:70%;
+}

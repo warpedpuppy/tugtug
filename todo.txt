@@ -1,3 +1,6 @@
 1) backend admin
 2) frontend admin
-3) welcome only on home screen
+3) game item
+4) store
+5) forgot password
+6) update password

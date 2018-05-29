@@ -1,7 +1,7 @@
-export const ADD_USERNAME = 'ADD_USERNAME';
-export const addUsername = item => ({
-    type: ADD_USERNAME,
-    username: item
+export const ADD_USERDATA = 'ADD_USERDATA';
+export const addUserdata = item => ({
+    type: ADD_USERDATA,
+    user: item
 });
 
 export const ADD_TOKEN = 'ADD_TOKEN';
