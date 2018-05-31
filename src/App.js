@@ -10,6 +10,7 @@ import Contact from './pages/Contact.js';
 import Admin from './pages/Admin.js';
 import Game from './pages/Game.js';
 import Footer from './components/Footer.js';
+import Store from './pages/Store.js';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
@@ -66,6 +67,7 @@ class App extends React.Component {
             <Route exact path="/Spiral" component={Spiral} />
             <Route exact path="/Game" component={Game} />
             <Route exact path="/Admin" component={Admin} />
+            <Route exact path="/Store" component={Store} />
           </main>
           <Footer />
         </div>

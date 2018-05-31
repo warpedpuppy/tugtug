@@ -1,6 +1,4 @@
-1) backend admin
-2) frontend admin
-3) game item
-4) store
-5) forgot password
-6) update password
+1) game item
+2) store
+3) forgot password
+4) update password
