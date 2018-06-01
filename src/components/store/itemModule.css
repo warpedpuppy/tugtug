@@ -1,0 +1,25 @@
+.itemModule {
+	width: 100%;
+	display:block;
+	border:1px solid black;
+	border-radius: 20px;
+	margin:20px;
+
+}
+.itemModule button {
+	padding:5px 10px;
+	border-radius: 5px;
+	margin:10px;
+}
+
+@media (min-width: 1024px) {
+
+
+	.itemModule {
+		display:inline-block;
+		width:45%;
+		margin:20px;
+	}
+
+
+}

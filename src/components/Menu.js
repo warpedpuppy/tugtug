@@ -65,14 +65,12 @@ class Menu extends Component {
 						</div>
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
-						<Link to="/" onClick={() => this.hideDropDown()}>
-						<span>home</span>
-						</Link>
+						
 						<Link className={showLogOut} to="/game" onClick={() => this.hideDropDown()}>
 						<span>game</span>
 						</Link>
-						<Link to="/about" onClick={() => this.hideDropDown()}>
-						<span>about</span>
+						<Link className={showLogOut} to="/store" onClick={() => this.hideDropDown()}>
+						<span>store</span>
 						</Link>
 						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
 						<a className={showLogOut} onClick={this.logOut}>log out</a>

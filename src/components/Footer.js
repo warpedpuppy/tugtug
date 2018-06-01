@@ -20,6 +20,9 @@ function Footer (props) {
 			<Link to="/admin">
 				<span>admin</span>
 			</Link>
+			<Link to="/about">
+				<span>about</span>
+			</Link>
 			<a href="https://twitter.com/tedwalther" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
