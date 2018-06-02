@@ -3,11 +3,14 @@ import ItemModule from '../components/store/itemModule.js';
 import './Store.css';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
+import { addItem } from '../actions/avatarActions.js'
+import { connect } from 'react-redux';
 
-export default class Store extends React.Component {
+class Store extends React.Component {
 
 	constructor (props) {
-		super(props)
+		super(props);
+		this.onPurchase = this.onPurchase.bind(this);
 		this.state = {
 			products: []
 		}
@@ -18,19 +21,25 @@ export default class Store extends React.Component {
 		axios
 		.get(`${API_BASE_URL}/store`)
 		.then(function(response){
-			// console.log(response.data);
-
 			that.setState({
 				products: response.data.products
 			})
 		})
 		.catch((err) => {
-		console.error(err);
-
+			console.error(err);
 		});  
 	}
 	onPurchase (price, name){
-		alert(price, name)
+		this.props.dispatch(addItem(name));
+
+		axios
+		.post(`${API_BASE_URL}/store/avatar_item`, { name, username: this.props.username })
+		.then(function(response){
+			console.log(response)
+		})
+		.catch((err) => {
+			console.error(err);
+		});  
 	}
 
 	render () {
@@ -45,3 +54,10 @@ export default class Store extends React.Component {
 	}
 	
 }
+
+export const mapStateToProps = state => ({
+    items: state.avatarReducer.items,
+    username: state.tokenReducer.username
+});
+
+export default connect(mapStateToProps)(Store);

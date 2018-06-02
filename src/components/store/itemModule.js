@@ -8,7 +8,7 @@ export default function ItemModule (props) {
 		<h1>{props.name}</h1>
 		<img src={props.image} alt={props.name}/>
 		<div>price: {props.price}</div>
-		<button onClick={() => props.purchase(props.name, props.price)}>buy product</button>
+		<button onClick={() => props.purchase(props.price, props.name)}>buy product</button>
 		</div>
 		)
 }
