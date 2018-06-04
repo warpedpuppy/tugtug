@@ -37,7 +37,10 @@ class App extends React.Component {
           //set store token
           that.props.dispatch(addUserdata(response.data.user));
           that.props.dispatch(addToken(lsToken));
-          that.props.dispatch(addItems(response.data.user.avatar.items));
+          if(response.data.user.avatars){
+            //console.log('items array = ', response.data.user.avatars)
+            that.props.dispatch(addItems(response.data.user.avatars));
+          }
         } else {
           localStorage.removeItem('token')
         }

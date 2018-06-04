@@ -20,3 +20,16 @@ export const deleteItem = item => ({
     type: DELETE_ITEM,
     item
 });
+
+export const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
+export const toggleActive = (name, active) => ({
+    type: TOGGLE_ACTIVE,
+    name,
+    active
+});
+
+export const MAKE_ITEM_INACTIVE = 'MAKE_ITEM_INACTIVE';
+export const makeItemInactive = item => ({
+    type: MAKE_ITEM_INACTIVE,
+    item
+});

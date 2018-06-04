@@ -34,6 +34,17 @@ export default function Game (PIXI, Utils){
             this.build();
 
         },
+        update: function (items) {
+            
+            items.forEach(item => {
+                if(item.active){
+                    console.log("put this item in there", item.url)
+                    let sprite = new PIXI.Sprite.fromImage(item.url);
+                    this.ball.addChild(sprite)
+                }
+                
+            })
+        },
         build: function () { 
             this.ball = this.Ball();
             this.ball.x = this.halfWidth;
@@ -42,7 +53,8 @@ export default function Game (PIXI, Utils){
             this.gamePlay = true;
         },
         Ball: function () {
-            if(!this.ball){
+            if(!this.cont){
+                const cont = new PIXI.Container();
                 const ball = new PIXI.Graphics();
                 ball
                 .beginFill(0x000000)
@@ -50,9 +62,10 @@ export default function Game (PIXI, Utils){
                 .endFill();
                 ball.radius = 20;
                 ball.vx = ball.vy = 10;
-                return ball;
+                cont.addChild(ball);
+                return cont;
             } else {
-                return this.ball;
+                return this.cont;
             }
           
         },

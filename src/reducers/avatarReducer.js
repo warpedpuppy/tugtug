@@ -1,7 +1,8 @@
-import {ADD_ITEM, ADD_ITEMS, UPDATE_ITEM, DELETE_ITEM} from '../actions/avatarActions';
+import {ADD_ITEM, ADD_ITEMS, UPDATE_ITEM, DELETE_ITEM, TOGGLE_ACTIVE} from '../actions/avatarActions';
 
 const initialState = {
-    items: []
+    items: [],
+    activeItems: []
 };
 
 function tokenReducer (state=initialState, action) {
@@ -16,19 +17,28 @@ function tokenReducer (state=initialState, action) {
         return Object.assign({}, state, {
             items: [...state.items, ...action.items]
         });
-    }
-    else if (action.type === UPDATE_ITEM) {
+    } else if (action.type === UPDATE_ITEM) {
         return Object.assign({}, state, {
             items: state.items.map(item =>
                 item.id === action.item.id ? action.item : item
             )
         });
-    }
-    else if (action.type === DELETE_ITEM) {
+    } else if (action.type === DELETE_ITEM) {
         return Object.assign({}, state, {
             items: state.items.filter(item => item.id !== action.item.id)
         });
-    }
+    } else if (action.type === TOGGLE_ACTIVE) {
+       return Object.assign({}, state, {
+            items: state.items.map(item => {
+                if(item.name === action.name) {
+                    return {...item, active: action.active}
+                } else {
+                    return item;
+                }
+            }
+            )
+        });
+    } 
     return state;
 };
 

@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import './Admin.css';
 import {API_BASE_URL} from '../config';
+import { toggleActive } from '../actions/avatarActions';
+import AdminItemModule from '../components/admin/AdminItemModule';
 class Admin extends React.Component {
 
 	constructor(props){
@@ -12,6 +14,7 @@ class Admin extends React.Component {
 		this.updateFirstname = this.updateFirstname.bind(this);
 		this.updateLastname = this.updateLastname.bind(this);
 		this.updateEmail = this.updateEmail.bind(this);
+		this.toggleActive = this.toggleActive.bind(this);
 		this.state = {
 			username: this.props.username,
 			firstName: this.props.firstName,
@@ -34,7 +37,7 @@ class Admin extends React.Component {
 			headers: { "Authorization": `Bearer ${this.props.token}`}
 		})
 		.then(function(response){
-		  console.log(response.data);
+		  console.log('return value = ', response.data);
 		})
 		.catch((err) => {
 		  console.error(err);
@@ -61,12 +64,38 @@ class Admin extends React.Component {
 			email: e.target.value
 		})
 	}
+	toggleActive (index, name, active) {
+		let newActive = (active.toString() === 'true')?false:true;
+		let obj = {
+			name,
+			active: newActive
+		}
+
+		this.props.dispatch(toggleActive(name, newActive));
+
+		axios.put(`${API_BASE_URL}/store/make_item_active`, obj, {
+			headers: { "Authorization": `Bearer ${this.props.token}`}
+		})
+		.then(function(response){
+		  console.log('toggle active response = ', response.data);
+
+		})
+		.catch((err) => {
+		  console.error(err);
+		});  
+
+	}
 
 	render () {
 		let username = this.state.username || this.props.username;
 		let firstName = this.state.firstName || this.props.firstName;
 		let lastName = this.state.lastName || this.props.lastName;
 		let email = this.state.email || this.props.email;
+		let itemsDivs = this.props.items.map((item, index) => {
+			console.log("ITEMS + ", item)
+			return <AdminItemModule key={index} index={index} image={item.url} name={item.name} active={item.active.toString()} toggleActive={this.toggleActive} />
+			//return <div key={key}><h3>{item[0]}</h3><img src={item[1]}/><button>make active</button></div>
+		})
 
 		return (
 			<div className="adminPage">
@@ -108,6 +137,7 @@ class Admin extends React.Component {
 				<button type="submit" onClick={this.onSubmit}>edit data</button>
 
 			</form>
+			{itemsDivs}
 			</div>
 			)
 	}
@@ -118,7 +148,8 @@ export const mapStateToProps = state => ({
     username: state.tokenReducer.username,
     firstName: state.tokenReducer.firstName,
     lastName: state.tokenReducer.lastName,
-    email: state.tokenReducer.email
+    email: state.tokenReducer.email,
+    items: state.avatarReducer.items
 });
 
 export default connect(mapStateToProps)(Admin);
