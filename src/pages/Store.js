@@ -31,9 +31,9 @@ class Store extends React.Component {
 	}
 	onPurchase (price, name){
 		this.props.dispatch(addItem(name));
-
+		let lsToken = localStorage.getItem('token')
 		axios
-		.post(`${API_BASE_URL}/store/avatar_item`, { name, username: this.props.username })
+		.post(`${API_BASE_URL}/store/avatar_item`, { name, username: this.props.username },{ headers: {"Authorization" : `Bearer ${lsToken}`} })
 		.then(function(response){
 			console.log(response)
 		})

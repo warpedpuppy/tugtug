@@ -15,28 +15,29 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 import { addToken, addUserdata } from './actions/tokenActions.js';
-
+import { addItems } from './actions/avatarActions.js';
 require('../node_modules/normalize.css/normalize.css');
 class App extends React.Component {
 
   tokenHandler () {
     let lsToken = localStorage.getItem('token')
-    // console.log('store = ', this.props.token)
-    // console.log('localstorage = ', lsToken)
+    console.log('store = ', this.props.token)
+    console.log('localstorage = ', lsToken)
     let that = this;
     if (this.props.token === 'blank' && lsToken) {
       //check if token still valid & if so, add it to the store
       axios
       .get(`${API_BASE_URL}/api/auth/validate`, 
         { headers: {"Authorization" : `Bearer ${lsToken}`} }
-        )
+      )
       .then(function(response){
-        console.log(response)
+        console.log('app.js ', response)
 
         if(response.data.valid) {
           //set store token
           that.props.dispatch(addUserdata(response.data.user));
           that.props.dispatch(addToken(lsToken));
+          that.props.dispatch(addItems(response.data.user.avatar.items));
         } else {
           localStorage.removeItem('token')
         }

@@ -58,7 +58,7 @@ class LoginRegisterContainer extends React.Component {
 		  	console.log(response.data);
 		  	that.processing(false);
 		    that.setState({ username: '', password: ''})
-		    that.props.addUsername(response.data.user);
+		    that.props.addUserdata(response.data.user);
 		    that.props.addToken(response.data.authToken);
 		    that.props.toggleLogin();
 		  })

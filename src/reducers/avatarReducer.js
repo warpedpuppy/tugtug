@@ -1,4 +1,4 @@
-import {ADD_ITEM, UPDATE_ITEM, DELETE_ITEM} from '../actions/avatarActions';
+import {ADD_ITEM, ADD_ITEMS, UPDATE_ITEM, DELETE_ITEM} from '../actions/avatarActions';
 
 const initialState = {
     items: []
@@ -9,6 +9,12 @@ function tokenReducer (state=initialState, action) {
         console.log('item = ', action.item)
         return Object.assign({}, state, {
             items: [...state.items, action.item]
+        });
+    }
+    else if (action.type === ADD_ITEMS) {
+        console.log('item = ', action.items)
+        return Object.assign({}, state, {
+            items: [...state.items, ...action.items]
         });
     }
     else if (action.type === UPDATE_ITEM) {

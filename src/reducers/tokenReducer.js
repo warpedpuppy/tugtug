@@ -21,6 +21,7 @@ function tokenReducer (state=initialState, action) {
         });
     }
     else if (action.type === ADD_TOKEN) {
+        console.log('add token')
         localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             token: action.token
