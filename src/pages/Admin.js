@@ -5,6 +5,8 @@ import './Admin.css';
 import {API_BASE_URL} from '../config';
 import { toggleActive } from '../actions/avatarActions';
 import AdminItemModule from '../components/admin/AdminItemModule';
+import CheckForToken from '../components/utils/CheckForToken.js';
+
 class Admin extends React.Component {
 
 	constructor(props){
@@ -15,11 +17,13 @@ class Admin extends React.Component {
 		this.updateLastname = this.updateLastname.bind(this);
 		this.updateEmail = this.updateEmail.bind(this);
 		this.toggleActive = this.toggleActive.bind(this);
+		this.changeTab = this.changeTab.bind(this);
 		this.state = {
 			username: this.props.username,
 			firstName: this.props.firstName,
 			lastName: this.props.lastName,
-			email: this.props.email
+			email: this.props.email,
+			activeTab: 'products'
 		}
 	}
 
@@ -85,6 +89,9 @@ class Admin extends React.Component {
 		});  
 
 	}
+	changeTab(e){
+		this.setState({activeTab: e.target.innerHTML})
+	}
 
 	render () {
 		let username = this.state.username || this.props.username;
@@ -92,52 +99,66 @@ class Admin extends React.Component {
 		let lastName = this.state.lastName || this.props.lastName;
 		let email = this.state.email || this.props.email;
 		let itemsDivs = this.props.items.map((item, index) => {
-			console.log("ITEMS + ", item)
+			//console.log("ITEM = ", item)
 			return <AdminItemModule key={index} index={index} image={item.url} name={item.name} active={item.active.toString()} toggleActive={this.toggleActive} />
 			//return <div key={key}><h3>{item[0]}</h3><img src={item[1]}/><button>make active</button></div>
 		})
+		let productsClass = (this.state.activeTab === 'products')?'productsDiv':'productsDiv hide';
+		let accountsClass = (this.state.activeTab === 'account')?'accountForm':'accountForm hide';
 
 		return (
 			<div className="adminPage">
-			<h1>admin</h1>
+			<CheckForToken />
 
-			<form id='userAdmin'>
-				<div className="formData">
-					<label>username: </label>
-					<input 
-					type="text" 
-					value={username} 
-					onChange={ this.updateUsername }/>
+			<div className="tabContainer">
+			<div className="tab productsTab" onClick={this.changeTab} >products</div>
+				<div className="tab accountTab" onClick={this.changeTab} >account</div>
+				
+			</div>
+
+			<div className="adminContainer">
+			<div className={accountsClass}>
+				<form id='userAdmin'>
+					<div className="formData">
+						<label>username: </label>
+						<input 
+						type="text" 
+						value={username} 
+						onChange={ this.updateUsername }/>
+					</div>
+
+					<div className="formData">
+						<label>first name: </label>
+						<input 
+						type="text" 
+						value={firstName} 
+						onChange={ this.updateFirstname }/>
+					</div>
+
+					<div className="formData">
+						<label>last name: </label>
+						<input 
+						type="text" 
+						placeholder={lastName} 
+						onChange={ this.updateLastname }/>
+					</div>
+
+					<div className="formData">
+						<label>email: </label>
+						<input 
+						type="email" 
+						placeholder={email} 
+						onChange={ this.updateEmail }/>
+					</div>
+
+					<button type="submit" onClick={this.onSubmit}>edit data</button>
+
+				</form>
 				</div>
-
-				<div className="formData">
-					<label>first name: </label>
-					<input 
-					type="text" 
-					value={firstName} 
-					onChange={ this.updateFirstname }/>
+				<div className={productsClass}>
+					{itemsDivs}
 				</div>
-
-				<div className="formData">
-					<label>last name: </label>
-					<input 
-					type="text" 
-					placeholder={lastName} 
-					onChange={ this.updateLastname }/>
 				</div>
-
-				<div className="formData">
-					<label>email: </label>
-					<input 
-					type="email" 
-					placeholder={email} 
-					onChange={ this.updateEmail }/>
-				</div>
-
-				<button type="submit" onClick={this.onSubmit}>edit data</button>
-
-			</form>
-			{itemsDivs}
 			</div>
 			)
 	}

@@ -35,6 +35,7 @@ class App extends React.Component {
 
         if(response.data.valid) {
           //set store token
+
           that.props.dispatch(addUserdata(response.data.user));
           that.props.dispatch(addToken(lsToken));
           if(response.data.user.avatars){
@@ -54,6 +55,7 @@ class App extends React.Component {
     this.tokenHandler();
   }
   componentDidMount () {
+    //localStorage.clear();
     this.tokenHandler();
   }
   render () {

@@ -10,6 +10,8 @@ import axios from 'axios';
 import { addToken, addUserdata } from '../../actions/tokenActions.js';
 import {API_BASE_URL} from '../../config';
 import {connect} from 'react-redux';
+import { addItems } from '../../actions/avatarActions.js';
+
 class LoginRegisterContainer extends React.Component {
 
 	constructor(props){
@@ -55,15 +57,17 @@ class LoginRegisterContainer extends React.Component {
 		let that = this;
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
-		  	console.log(response.data);
+		  	that.props.toggleLogin();
 		  	that.processing(false);
 		    that.setState({ username: '', password: ''})
 		    that.props.addUserdata(response.data.user);
 		    that.props.addToken(response.data.authToken);
-		    that.props.toggleLogin();
+		    if(response.data.user.avatars){
+	            that.props.addItems(response.data.user.avatars);
+	          }
+		    
 		  })
 		  .catch((err) => {
-		  	console.error(err);
 		  	that.processing(false);
 		  	that.setState({
 		  		password: ''
@@ -120,6 +124,6 @@ export const mapStateToProps = state => ({
 });
 function mapDispatchToProps(dispatch){
     return bindActionCreators({
-        addToken, addUserdata}, dispatch);
+        addToken, addUserdata, addItems}, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginRegisterContainer);

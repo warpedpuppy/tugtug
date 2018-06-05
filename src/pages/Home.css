@@ -1,5 +1,5 @@
 div.homePage {
-	min-height: 100vw;
+	min-height: calc(100vh - 100px);
 	background-color: #FF00FF;
 }
 div.homePage h1 {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
@@ -15,7 +15,8 @@ class Menu extends Component {
 		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
-			showLogin: false
+			showLogin: false,
+			redirect: false
 		}
 	  }
 	  toggleLogin (e) {
@@ -35,6 +36,7 @@ class Menu extends Component {
   	  logOut (e) {
 		e.preventDefault();
 		this.props.dispatch(deleteToken());
+		this.setState({redirect: true})
 	  }
 	  hideDropDown(e){
 	  	this.setState({
@@ -49,9 +51,11 @@ class Menu extends Component {
 	  	let classes = `logoGraphic ${raiseGraphic}`;
 	  	let showLogin = (this.props.token === 'blank')?'':'hide';
 	  	let showLogOut = (this.props.token === 'blank')?'hide':'';
+	  	let redirect = (this.state.redirect)?<Redirect to='/' />:''; 
 
 	    return (
 			<div>
+				{redirect}
 				<nav>
 					<div className="not-links">
 						<Link className="homeLink" to="/">
@@ -84,6 +88,7 @@ class Menu extends Component {
 				/>
 			</div>
 	    );
+		
 	  }
 }
 

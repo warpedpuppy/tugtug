@@ -3,8 +3,10 @@ import ItemModule from '../components/store/itemModule.js';
 import './Store.css';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
-import { addItem } from '../actions/avatarActions.js'
+import CheckForToken from '../components/utils/CheckForToken.js';
+import { addItem } from '../actions/avatarActions.js';
 import { connect } from 'react-redux';
+import { addItems } from '../actions/avatarActions.js';
 
 class Store extends React.Component {
 
@@ -30,16 +32,21 @@ class Store extends React.Component {
 		});  
 	}
 	onPurchase (price, name, url){
-		this.props.dispatch(addItem(name));
+		//this.props.dispatch(addItem(name));
 		let lsToken = localStorage.getItem('token');
 		let obj = { name, url, username: this.props.username };
 		console.log('obj = ', obj)
+		let that = this;
 		axios
 		.post(`${API_BASE_URL}/store/avatar_item`, 
 			obj,
 			{ headers: {"Authorization" : `Bearer ${lsToken}`} })
 		.then(function(response){
-			console.log(response)
+			console.log("on purchase = ", response);
+			if(response.data.avatars){
+	            //console.log('items array = ', response.data.user.avatars)
+	            that.props.dispatch(addItems(response.data.avatars));
+	          }
 		})
 		.catch((err) => {
 			console.error(err);
@@ -58,6 +65,7 @@ class Store extends React.Component {
 		})
 		return (
 			<div className="storeCont">
+				<CheckForToken />
 				<h1>store</h1>
 				{products}
 			</div>

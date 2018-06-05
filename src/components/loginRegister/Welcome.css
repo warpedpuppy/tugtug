@@ -1,19 +1,19 @@
 .welcomeDivTemp {
-	position: absolute;
-	margin-top: 150px;
-	display: inline-block;
+	text-align: center;
+	position:relative;
+	top:200px;
 }
 
 .welcomeDiv {
-	position: absolute;
-	margin-top: 150px;
-	display: inline-block;
-	 animation: 1s ease-out 0s 1 slideInFromLeft;
+	text-align: center;
+	position:relative;
+	top:200px;
+	animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
 @keyframes slideInFromLeft {
   0% {
-    transform: translateX(-100%);
+    transform: translateY(-300px);
   }
   100% {
     transform: translateX(0);
