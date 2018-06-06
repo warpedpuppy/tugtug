@@ -16,7 +16,6 @@ class GameCanvas extends React.Component {
 		this.game.update(this.props.items);
 	}
 	componentWillUnmount(){
-
 		this.game.stop();
 	}
 	componentDidUpdate(){

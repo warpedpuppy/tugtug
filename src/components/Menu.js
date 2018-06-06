@@ -5,6 +5,7 @@ import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken } from '../actions/tokenActions.js';
+import { deleteAll } from '../actions/avatarActions.js';
 import { connect } from 'react-redux';
 
 
@@ -37,6 +38,10 @@ class Menu extends Component {
 		e.preventDefault();
 		this.props.dispatch(deleteToken());
 		this.setState({redirect: true})
+		this.props.dispatch(deleteAll());
+		// delete all content in avatar reducer
+
+		// delete all 
 	  }
 	  hideDropDown(e){
 	  	this.setState({

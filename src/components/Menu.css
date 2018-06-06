@@ -5,7 +5,8 @@ nav {
 	width:100%;
 	font-size: 20px;
 	height:50px;
-	z-index: 20;
+
+	z-index: 5000;
 	border-bottom:5px solid black;
 	
 }
@@ -47,14 +48,14 @@ nav .logoGraphic.raised {
 	margin:0;
 	padding:0;
 	transition: top 0.5s;
-	z-index: 3;
+	z-index: 4993;
 }
 .homeLink:visited {
 	color:#333;
 }
 .not-links {
 	position:relative;
-	z-index: 4;
+	z-index: 4999;
 	background-color: white;
 	height:50px;
 }

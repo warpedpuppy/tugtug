@@ -1,11 +1,11 @@
-import {ADD_ITEM, ADD_ITEMS, UPDATE_ITEM, DELETE_ITEM, TOGGLE_ACTIVE} from '../actions/avatarActions';
+import {ADD_ITEM, ADD_ITEMS, UPDATE_ITEM, DELETE_ITEM, DELETE_ALL, TOGGLE_ACTIVE} from '../actions/avatarActions';
 
 const initialState = {
     items: [],
     activeItems: []
 };
 
-function tokenReducer (state=initialState, action) {
+function avatarReducer (state=initialState, action) {
     if (action.type === ADD_ITEM) {
         //console.log('item = ', action.item)
         return Object.assign({}, state, {
@@ -28,6 +28,10 @@ function tokenReducer (state=initialState, action) {
         return Object.assign({}, state, {
             items: state.items.filter(item => item.id !== action.item.id)
         });
+    } else if (action.type === DELETE_ALL) {
+        return Object.assign({}, state, {
+            items: []
+        });
     } else if (action.type === TOGGLE_ACTIVE) {
        return Object.assign({}, state, {
             items: state.items.map(item => {
@@ -43,4 +47,4 @@ function tokenReducer (state=initialState, action) {
     return state;
 };
 
-export default tokenReducer;
+export default avatarReducer;

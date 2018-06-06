@@ -26,8 +26,12 @@ export default function Game (PIXI, Utils){
 
         },
         stop: function () {
+            console.log(this.renderer)
             this.app.ticker.destroy();
             this.renderer.destroy();
+            window.onresize = undefined;
+            console.log(this.renderer)
+           
         },
         reset: function () {
             this.BricksReset();
@@ -38,7 +42,6 @@ export default function Game (PIXI, Utils){
             
             items.forEach(item => {
                 if(item.active){
-                    console.log("put this item in there", item.url)
                     let sprite = new PIXI.Sprite.fromImage(item.url);
                     this.ball.addChild(sprite)
                 }

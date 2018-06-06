@@ -99,24 +99,34 @@ class Admin extends React.Component {
 		let lastName = this.state.lastName || this.props.lastName;
 		let email = this.state.email || this.props.email;
 		let itemsDivs = this.props.items.map((item, index) => {
-			//console.log("ITEM = ", item)
-			return <AdminItemModule key={index} index={index} image={item.url} name={item.name} active={item.active.toString()} toggleActive={this.toggleActive} />
-			//return <div key={key}><h3>{item[0]}</h3><img src={item[1]}/><button>make active</button></div>
+			console.log('item = ', item);
+			console.log('index = ', index)
+			return <AdminItemModule 
+				key={index} 
+				index={index} 
+				image={item.url} 
+				name={item.name} 
+				active={item.active.toString()} 
+				toggleActive={this.toggleActive} 
+			/>
 		})
 		let productsClass = (this.state.activeTab === 'products')?'productsDiv':'productsDiv hide';
 		let accountsClass = (this.state.activeTab === 'account')?'accountForm':'accountForm hide';
-
+		let productsTabClass = (this.state.activeTab === 'products')?'tab productsTab active':'tab productsTab';
+		let accountsTabClass = (this.state.activeTab === 'account')?'tab accountTab active':'tab accountTab';
 		return (
 			<div className="adminPage">
 			<CheckForToken />
 
+			<div className="adminContainer">
+
 			<div className="tabContainer">
-			<div className="tab productsTab" onClick={this.changeTab} >products</div>
-				<div className="tab accountTab" onClick={this.changeTab} >account</div>
+			<div className={productsTabClass} onClick={this.changeTab} >products</div>
+				<div className={accountsTabClass} onClick={this.changeTab} >account</div>
 				
 			</div>
 
-			<div className="adminContainer">
+			<div className="tabBody">
 			<div className={accountsClass}>
 				<form id='userAdmin'>
 					<div className="formData">
@@ -159,6 +169,7 @@ class Admin extends React.Component {
 					{itemsDivs}
 				</div>
 				</div>
+			</div>
 			</div>
 			)
 	}

@@ -21,6 +21,11 @@ export const deleteItem = item => ({
     item
 });
 
+export const DELETE_ALL = 'DELETE_ALL';
+export const deleteAll = () => ({
+    type: DELETE_ALL
+});
+
 export const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
 export const toggleActive = (name, active) => ({
     type: TOGGLE_ACTIVE,
@@ -33,3 +38,4 @@ export const makeItemInactive = item => ({
     type: MAKE_ITEM_INACTIVE,
     item
 });
+

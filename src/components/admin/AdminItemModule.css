@@ -2,4 +2,10 @@
 	border:1px solid black;
 	border-radius: 10px;
 	display: inline-block;
+	padding:20px;
+	margin:20px;
+}
+.adminItemModule button{
+	padding:10px;
+	border-radius: 5px;
 }
