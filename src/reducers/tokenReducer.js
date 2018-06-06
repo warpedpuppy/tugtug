@@ -10,7 +10,7 @@ const initialState = {
 
 function tokenReducer (state=initialState, action) {
     if (action.type === ADD_USERDATA) {
-        console.log("add userdata = ", action)
+        // console.log("add userdata = ", action)
         //localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             username: action.user.username,
@@ -21,7 +21,7 @@ function tokenReducer (state=initialState, action) {
         });
     }
     else if (action.type === ADD_TOKEN) {
-        console.log('add token')
+        // console.log('add token')
         localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             token: action.token

@@ -4,7 +4,6 @@ import './Store.css';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import CheckForToken from '../components/utils/CheckForToken.js';
-import { addItem } from '../actions/avatarActions.js';
 import { connect } from 'react-redux';
 import { addItems } from '../actions/avatarActions.js';
 

@@ -51,7 +51,7 @@ class Menu extends Component {
 	  	let classes = `logoGraphic ${raiseGraphic}`;
 	  	let showLogin = (this.props.token === 'blank')?'':'hide';
 	  	let showLogOut = (this.props.token === 'blank')?'hide':'';
-	  	let redirect = (this.state.redirect)?<Redirect to='/' />:''; 
+	  	let redirect = (this.state.redirect && window.location.pathname !== '/')?<Redirect to='/' />:''; 
 
 	    return (
 			<div>

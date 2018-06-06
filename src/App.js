@@ -21,8 +21,8 @@ class App extends React.Component {
 
   tokenHandler () {
     let lsToken = localStorage.getItem('token')
-    console.log('store = ', this.props.token)
-    console.log('localstorage = ', lsToken)
+    // console.log('store = ', this.props.token)
+    // console.log('localstorage = ', lsToken)
     let that = this;
     if (this.props.token === 'blank' && lsToken) {
       //check if token still valid & if so, add it to the store
@@ -31,7 +31,7 @@ class App extends React.Component {
         { headers: {"Authorization" : `Bearer ${lsToken}`} }
       )
       .then(function(response){
-        console.log('app.js ', response)
+        //console.log('app.js ', response)
 
         if(response.data.valid) {
           //set store token
@@ -47,7 +47,7 @@ class App extends React.Component {
         }
       })
       .catch((err) => {
-        console.error(err)
+        //console.error(err)
       });  
     }
   }

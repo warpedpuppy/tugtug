@@ -4,5 +4,5 @@ import reducers from './reducers';
 
 const initialState = window.INITIAL_STATE;
 const middleware = applyMiddleware(logger);
- 
-export default createStore(reducers,initialState, middleware);
+
+export default createStore(reducers, initialState, middleware);

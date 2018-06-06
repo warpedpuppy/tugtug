@@ -6,19 +6,17 @@ const initialState = {
 };
 
 function tokenReducer (state=initialState, action) {
-    // if (action.type === ADD_ITEM) {
-    //     console.log('item = ', action.item)
-    //     return Object.assign({}, state, {
-    //         items: [...state.items, action.item]
-    //     });
-    // }
-    // else 
-        if (action.type === ADD_ITEMS) {
-        console.log('pre add items = ', state.items)
+    if (action.type === ADD_ITEM) {
+        //console.log('item = ', action.item)
+        return Object.assign({}, state, {
+            items: [...state.items, action.item]
+        });
+    } else  if (action.type === ADD_ITEMS) {
+        //console.log('pre add items = ', state.items)
         let obj = Object.assign({}, state, {
             items: [...state.items, ...action.items]
         });
-        console.log('post add items = ', obj)
+        //console.log('post add items = ', obj)
         return obj;
     } else if (action.type === UPDATE_ITEM) {
         return Object.assign({}, state, {

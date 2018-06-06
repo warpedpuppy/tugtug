@@ -14,7 +14,7 @@ export default class CheckForToken extends React.Component {
 		}
 	}
 	render () {
-		let redirect = (this.state.redirect)?<Redirect to="/" />:'';
+		let redirect = (this.state.redirect && window.location.pathname !== '/')?<Redirect to="/" />:'';
 		return (<span>{redirect}</span>)
 	}
 

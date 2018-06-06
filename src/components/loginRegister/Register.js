@@ -43,14 +43,14 @@ export default class Register extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/register`, obj)
 		  .then(response => {
-		  	console.log(response);
+		  	// console.log(response);
 		  	this.props.processing(false);
 		    that.setState({feedback: "done!"});
 		    this.props.loginFunction(obj);
 		  })
 		  .catch(err => {
 		  	this.props.processing(false);
-		  	console.error(err)
+		  	// console.error(err)
 		  	this.setState({
 				feedback: err.response.data.message
 			})
