@@ -77,13 +77,14 @@ export default function Game (PIXI, Utils){
           
         },
         resize: function () {
-            this.stage.removeChildren();
+            
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
             this.renderer.resize(this.canvasWidth,this.canvasHeight);
-            this.build();
+            this.ball.x = this.halfWidth;
+            this.ball.y = this.halfHeight;
         },
         handleKeyDown: function (event) {
             event.preventDefault();

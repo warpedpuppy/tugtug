@@ -89,9 +89,11 @@ class Admin extends React.Component {
 		});  
 
 	}
+	
 	changeTab(e){
 		this.setState({activeTab: e.target.innerHTML})
 	}
+	
 
 	render () {
 		let username = this.state.username || this.props.username;
@@ -99,8 +101,8 @@ class Admin extends React.Component {
 		let lastName = this.state.lastName || this.props.lastName;
 		let email = this.state.email || this.props.email;
 		let itemsDivs = this.props.items.map((item, index) => {
-			console.log('item = ', item);
-			console.log('index = ', index)
+			// console.log('item = ', item);
+			// console.log('index = ', index)
 			return <AdminItemModule 
 				key={index} 
 				index={index} 
@@ -166,6 +168,7 @@ class Admin extends React.Component {
 				</form>
 				</div>
 				<div className={productsClass}>
+					<div>{this.props.items.length} items</div>
 					{itemsDivs}
 				</div>
 				</div>
