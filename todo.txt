@@ -5,3 +5,4 @@
 5) inventory the serializes and make only ones without ids go to front end
 6) manage close server calls
 7) can't see store or admin if not logged in
+8) persistive aniat

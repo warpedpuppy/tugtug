@@ -43,6 +43,8 @@ export default function Game (PIXI, Utils){
             items.forEach(item => {
                 if(item.active){
                     let sprite = new PIXI.Sprite.fromImage(item.url);
+                    sprite.anchor.x = sprite.anchor.y = 0.5;
+                    sprite.y = -110;
                     this.ball.addChild(sprite)
                 }
                 
@@ -57,15 +59,17 @@ export default function Game (PIXI, Utils){
         },
         Ball: function () {
             if(!this.cont){
+                let sprite = new PIXI.Sprite.fromImage('/bmps/character.png');
+                sprite.anchor.x = sprite.anchor.y =0.5;
                 const cont = new PIXI.Container();
-                const ball = new PIXI.Graphics();
-                ball
-                .beginFill(0x000000)
-                .drawCircle(0,0,40)
-                .endFill();
-                ball.radius = 20;
-                ball.vx = ball.vy = 10;
-                cont.addChild(ball);
+                // const ball = new PIXI.Graphics();
+                // ball
+                // .beginFill(0x000000)
+                // .drawCircle(0,0,40)
+                // .endFill();
+                // ball.radius = 20;
+                // ball.vx = ball.vy = 10;
+                cont.addChild(sprite);
                 return cont;
             } else {
                 return this.cont;
