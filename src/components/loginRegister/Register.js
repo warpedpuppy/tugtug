@@ -10,11 +10,18 @@ export default class Register extends React.Component {
 		this.sendToServer = this.sendToServer.bind(this);
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
+		this.updateEmail = this.updateEmail.bind(this);
 		this.state = {
 			feedback: '',
 			username: '',
-			password: ''
+			password: '',
+			email: ''
 		}
+	}
+	updateEmail (e) {
+		this.setState({
+			email: e.target.value
+		})
 	}
 	updateUsername (e) {
 		this.setState({
@@ -30,9 +37,9 @@ export default class Register extends React.Component {
 		e.preventDefault();
 		
 		let that = this;
-		let obj = {username: this.state.username.trim(), password: this.state.password.trim()}
+		let obj = {username: this.state.username.trim(), email: this.state.email.trim(), password: this.state.password.trim()}
 
-		if (this.state.username === '' || this.state.password === '') {
+		if (this.state.username === '' || this.state.password === '' || this.props.email === '') {
 			this.setState({
 				feedback: 'please fill out all fields'
 			})
@@ -67,12 +74,17 @@ export default class Register extends React.Component {
 					value={this.state.username} 
 					onChange={ this.updateUsername } required />
 				<input 
+					type="email" 
+					placeholder="email" 
+					value={this.state.email} 
+					onChange={ this.updateEmail } required />
+				<input 
 					type="password" 
 					placeholder="password" 
 					value={this.state.password} 
 					onChange={(e) => this.updatePassword(e) } required />
 				<div>
-					<button type="button" onClick={this.sendToServer} >register</button>
+					<button type="submit" >register</button>
 				</div>
 				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>

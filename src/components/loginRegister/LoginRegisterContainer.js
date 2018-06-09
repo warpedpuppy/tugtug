@@ -20,12 +20,14 @@ class LoginRegisterContainer extends React.Component {
 		this.loginFunction = this.loginFunction.bind(this);
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
+		this.updateEmail = this.updateEmail.bind(this);
 		this.state = {
 			login: true,
 			register:false,
 			processing:false,
 			username: '',
-			password: ''
+			password: '',
+			email: ''
 		}
 	}
 	updateUsername (e) {
@@ -36,6 +38,11 @@ class LoginRegisterContainer extends React.Component {
 	updatePassword (e) {
 		this.setState({
 			password: e.target.value
+		})
+	}
+	updateEmail (e) {
+		this.setState({
+			email: e.target.value
 		})
 	}
 	processing (bool) {
@@ -55,6 +62,7 @@ class LoginRegisterContainer extends React.Component {
 	loginFunction(obj){
 		this.processing(true);
 		let that = this;
+		console.log(obj)
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
 		  	that.props.toggleLogin();
@@ -95,7 +103,9 @@ class LoginRegisterContainer extends React.Component {
 					<LoginForm
 						updateUsername={this.updateUsername}
 						updatePassword={this.updatePassword}
+						updateEmail={this.updateEmail}
 						username={this.state.username}
+						email={this.state.email}
 						password={this.state.password}
 						styleProp={loginClass} 
 						loginFunction={this.loginFunction}

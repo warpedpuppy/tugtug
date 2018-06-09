@@ -14,8 +14,9 @@ export default class LoginForm extends React.Component {
 	
 	sendToServer (e){
 		e.preventDefault();
-		let obj = {username: this.props.username, password: this.props.password}
-		if (this.props.username === '' || this.props.password === '') {
+		//this has to be username because of passport-local
+		let obj = {username: this.props.email, password: this.props.password}
+		if (this.props.email === '' || this.props.password === '') {
 			this.setState({
 				feedback: 'please fill out all fields'
 			})
@@ -27,20 +28,20 @@ export default class LoginForm extends React.Component {
 
 	render () {
 		return (
-			<form style={this.props.styleProp}>
+			<form style={ this.props.styleProp} onSubmit={ this.sendToServer }>
 				<h4>Log In</h4>
 				<input 
 					type="text" 
-					placeholder="username" 
-					value={this.props.username} 
-					onChange={ this.props.updateUsername } />
+					placeholder="email" 
+					value={this.props.email} 
+					onChange={ this.props.updateEmail } required/>
 				<input 
 					type="password" 
 					placeholder="password"
 					value={this.props.password} 
-					onChange={ this.props.updatePassword } />
+					onChange={ this.props.updatePassword } required/>
 				<div>
-					<button type="button" value="log in" onClick={(e) => this.sendToServer(e)}>log in</button>
+					<button type="submit" value="log in" >log in</button>
 				</div>
 				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
