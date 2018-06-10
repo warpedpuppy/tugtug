@@ -1,6 +1,6 @@
 div.homePage {
 	min-height: calc(100vh - 100px);
-	background-color: #FF00FF;
+/*	background-color: #FF00FF;*/
 }
 div.homePage h1 {
 	margin:0;

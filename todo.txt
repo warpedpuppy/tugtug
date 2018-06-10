@@ -1,6 +1,7 @@
 1) clean code
 2) clean design
 3) forgot password
-4) update password
+4) update password & other info
 5) inventory the serializes and make only ones without ids go to front end
 6) manage close server calls
+7) home page

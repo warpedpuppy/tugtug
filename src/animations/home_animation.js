@@ -21,15 +21,12 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		horizBoxesQ: 5,
 		vertBoxesQ: 5,
 		totalBoxes: undefined,
-		blockContainers: [],
+		shapes: [],
 		blockForegrounds: [],
 		blockBackgrounds: [],
 		Init: function(){
 			window.onresize = this.resizeHandler.bind(this);
-			this.totalBoxes =  this.horizBoxesQ * this.vertBoxesQ;
-			this.addBeadsHandler = this.addBeadsHandler.bind(this)
 	        this.canvasWidth = this.utils.returnCanvasWidth();
-	        this.canvasHeight = this.utils.returnCanvasHeight();
 	        this.stage = new PIXI.Container(); 
 	        this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
 	        this.renderer.backgroundColor = 0x333333;
@@ -37,41 +34,62 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 	        this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 			this.stage.addChild(this.backgroundContainer);
 			this.stage.addChild(this.foregroundContainer);
-			this.rainbowShake = this.rainbowShake.bind(this);
-			this.shakeAllow = true;
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.utils.returnCanvasHeight();
+			this.halfWidth = this.width/2;
+			this.halfHeight = this.height/2;
+
+			this.build = this.build.bind(this);
 
 			if (!this.webGL) {
 				console.log('this webgl = ', this.webGL)
-				this.smallerQs();
+				console.log('not webgl')
 			}
 			
-			//make object pools
-			for(let j = 0; j < this.beadQ; j++){
-				let b = this.Bead();
-				this.beads.push(b)
-			}
-			for(let j = 0; j < this.totalBoxes; j ++){
-				this.blockContainers.push(new PIXI.Graphics());
-				this.blockForegrounds.push(new PIXI.Graphics());
-				this.blockBackgrounds.push(new PIXI.Graphics());
-			}
-
+			this.build();
+			
 	        this.app.ticker.add(this.animate.bind(this));
-	        this.resizeHandler();
-	        this.rainbowShake();
+	       
 
-	    },
-	    smallerQs: function () {
-			this.beadQ = 60;
-			this.beadsAtATime = 20;
-			this.beadRadius = 20;
 	    },
 	    Stop: function () {
+	    	window.onresize = undefined;
 	        this.app.ticker.destroy();
 	    },
-		Bead: function () {
+	    build: function () {
+
+
+	    	var size = 100,
+	    		innerSize,
+		        x = 100,
+		        y = 100,
+		        points = [],
+		        innerPoints = [];
+		        innerSize = size * 0.75;
+
+			points.push(x + size * Math.cos(0), y + size * Math.sin(0));
+			innerPoints.push(x + innerSize * Math.cos(0), y + innerSize * Math.sin(0));
+			
+			for (let side = 0; side < 7; side++) {
+				points.push(x + size * Math.cos(side * 2 * Math.PI / 6), y + size * Math.sin(side * 2 * Math.PI / 6));
+				innerPoints.push(x + innerSize * Math.cos(side * 2 * Math.PI / 6), y + innerSize * Math.sin(side * 2 * Math.PI / 6));
+			}
+			console.log('points = ', points)
+			console.log('innerPoints = ', innerPoints)
+
+			let test = new PIXI.Graphics();
+			test.beginFill(0xFF00FF);
+			test.drawPolygon(points)
+			test.drawPolygon(innerPoints)
+			test.addHole();
+			test.x = this.halfWidth;
+			test.y = this.halfHeight;
+			test.pivot.x = test.pivot.y = test.width/2;
+			this.stage.addChild(test)
+
+
+	    },
+		Ring: function () {
 			let bead = new PIXI.Graphics();
 			bead.radius = this.beadRadius;
 			bead
@@ -85,14 +103,14 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			this.height = this.canvasHeight = this.utils.returnCanvasHeight();
 			this.renderer.resize(this.width, this.height);
 			this.clear();
-			this.buildBoard(this.backgroundContainer);
+			
 		},
 		clear: function (){
-			this.backgroundContainer.removeChildren();
-			for(let j = 0; j < this.totalBoxes; j ++){
-				this.blockContainers[j].removeChildren();
-				this.blockBackgrounds[j].removeChildren();
-			}
+			// this.backgroundContainer.removeChildren();
+			// for(let j = 0; j < this.totalBoxes; j ++){
+			// 	this.blockContainers[j].removeChildren();
+			// 	this.blockBackgrounds[j].removeChildren();
+			// }
 		},
 		buildBoard: function(){
 			let horizBoxesWidth = this.horizBoxesWidth = this.width/this.horizBoxesQ,
@@ -181,9 +199,9 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			this.beadLoopingQ = this.beadsOnStage.length;
 		},
 		displayFPS: function (fps) {
-			document
-			.getElementById('fpsChecker')
-			.innerHTML = `current fps = ${Math.round(fps)}`;
+			// document
+			// .getElementById('fpsChecker')
+			// .innerHTML = `current fps = ${Math.round(fps)}`;
 
 			// if (Number(fps) < 10) {
 			// 	this.smallerQs();
