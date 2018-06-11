@@ -16,10 +16,14 @@ export default class HomeCanvas extends React.Component {
 	}
 	componentWillUnmount(){
 		this.home_page.Stop();
+		// <!--<div className="fpsCheckerShell">
+		// 		<div id='fpsChecker'></div>
+		// 		</div>-->
 	}
 	render () {
 		return (
 			<div id='homeCanvas' ref={item => this.canvas = item} >
+				
 			</div>
 		)
 	}

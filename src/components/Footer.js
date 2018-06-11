@@ -9,7 +9,13 @@ function Footer (props) {
 	if(props.token === 'blank') {
 		return (
 			<footer>
-			<a href="https://twitter.com/tedwalther" rel="noopener noreferrer" target="_blank">
+			<Link to="/about">
+				<span>about</span>
+			</Link> | 
+			<Link to="/about">
+				<span>contact</span>
+			</Link>
+			<a href="#" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
 		</footer>
@@ -26,7 +32,7 @@ function Footer (props) {
 			<Link to="/about">
 				<span>contact</span>
 			</Link>
-			<a href="https://twitter.com/tedwalther" rel="noopener noreferrer" target="_blank">
+			<a href="#" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
 		</footer>
