@@ -19,6 +19,7 @@ import { addItems } from './actions/avatarActions.js';
 require('../node_modules/normalize.css/normalize.css');
 class App extends React.Component {
 
+  
   tokenHandler () {
     let lsToken = localStorage.getItem('token')
     // console.log('store = ', this.props.token)

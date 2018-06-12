@@ -43,6 +43,7 @@ export default class LoginForm extends React.Component {
 				<div>
 					<button type="submit" value="log in" >log in</button>
 				</div>
+				<div className='formFeedback'>{this.props.feedback}</div>
 				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
 		)

@@ -15,7 +15,7 @@ function Footer (props) {
 			<Link to="/about">
 				<span>contact</span>
 			</Link>
-			<a href="#" rel="noopener noreferrer" target="_blank">
+			<a href="https://twitter.com/" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
 		</footer>
@@ -32,7 +32,7 @@ function Footer (props) {
 			<Link to="/about">
 				<span>contact</span>
 			</Link>
-			<a href="#" rel="noopener noreferrer" target="_blank">
+			<a href="https://twitter.com/" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
 		</footer>

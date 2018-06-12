@@ -53,6 +53,7 @@ export default class Register extends React.Component {
 		  	// console.log(response);
 		  	this.props.processing(false);
 		    that.setState({feedback: "done!"});
+		   	obj = {username: this.state.email.trim(), password: this.state.password.trim()}
 		    this.props.loginFunction(obj);
 		  })
 		  .catch(err => {

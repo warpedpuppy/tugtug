@@ -63,7 +63,6 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 
 	    	for(let i = 0; i < 7; i ++){
 	    		let size = 100 + (i*120);
-	    		let c = this.colors[counter];
 	    		let shape = this.Ring(size, this.colors[counter]);
 
 	    		this.kingCont.addChildAt(shape, 0);
@@ -78,13 +77,16 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 
 	    },
 		Ring: function (sizeParam, color) {
+
+			const cont = new PIXI.Container();
+
 			var size = sizeParam,
 	    		innerSize,
 		        x = sizeParam,
 		        y = sizeParam,
 		        points = [],
 		        innerPoints = [];
-		        innerSize = size * 0.75;
+		        innerSize = size * 0.95;
 
 			points.push(x + size * Math.cos(0), y + size * Math.sin(0));
 			innerPoints.push(x + innerSize * Math.cos(0), y + innerSize * Math.sin(0));
@@ -94,24 +96,33 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 				innerPoints.push(x + innerSize * Math.cos(side * 2 * Math.PI / 6), y + innerSize * Math.sin(side * 2 * Math.PI / 6));
 			}
 
-			let test = new PIXI.Graphics();
-			test.beginFill(color);
-			test.drawPolygon(points)
-			test.drawPolygon(innerPoints)
-			test.addHole();
-			test.pivot.x = test.pivot.y = test.width/2;
-			test.rotation = test.rot = this.utils.randomNumberBetween(0.0001, 0.005);
+			let colorPent = new PIXI.Graphics();
+			colorPent.beginFill(color);
+			colorPent.drawPolygon(points)
+
+			let bwPent = new PIXI.Graphics();
+			bwPent.beginFill(0x333333);
+			bwPent.drawPolygon(innerPoints)
+
+			cont.addChild(colorPent);
+			cont.addChild(bwPent);
+
+
+			cont.pivot.x = cont.pivot.y = cont.width/2;
+			cont.rotation = cont.rot = this.utils.randomNumberBetween(0.0001, 0.005);
 			if(Math.floor(Math.random()*2) > 0){
-				test.rotation *=-1;
-				test.rot *=-1;
+				cont.rotation *=-1;
+				cont.rot *=-1;
 			}
-			return test;
+			return cont;
 		},
 		resizeHandler: function (){
+			this.stage.removeChildren();
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.canvasHeight = this.utils.returnCanvasHeight();
 			this.renderer.resize(this.width, this.height);
-			this.clear();
+
+			this.stage.addChild(this.kingCont);
 
 			
 		},

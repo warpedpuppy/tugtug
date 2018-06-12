@@ -6,6 +6,7 @@ import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken } from '../actions/tokenActions.js';
 import { deleteAll } from '../actions/avatarActions.js';
+import { openMenu, toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
 
 
@@ -24,12 +25,14 @@ class Menu extends Component {
 	  	if(e){
 	  		e.preventDefault();
 	  	}
+	  	this.props.dispatch(toggleMenu());
 	    this.setState({
-	      showLogin: !this.state.showLogin,
-	      showDropDown: false
+	      showDropDown: false,
+	      showLogin: true
 	    })
 	  }
 	  showDropDown(e){
+	  	this.props.dispatch(toggleMenu());
 	  	this.setState({
 	  		showDropDown: !this.state.showDropDown
 	  	})
@@ -44,14 +47,13 @@ class Menu extends Component {
 		// delete all 
 	  }
 	  hideDropDown(e){
-	  	this.setState({
-	  		showDropDown: false
-	  	})
+	  	this.props.dispatch(closeMenu());
 	  }
+	  
 	  
 	  render() {
 
-	  	let showDropDownClass = (this.state.showDropDown)?'open':'';
+	  	let showDropDownClass = (this.props.menuOpen)?'open':'';
 	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
 	  	let classes = `logoGraphic ${raiseGraphic}`;
 	  	let showLogin = (this.props.token === 'blank')?'':'hide';
@@ -75,10 +77,10 @@ class Menu extends Component {
 					</div>
 					<div className={`links  ${showDropDownClass}`}>
 						
-						<Link className={showLogOut} to="/game" onClick={() => this.hideDropDown()}>
+						<Link className={showLogOut} to="/game">
 						<span>game</span>
 						</Link>
-						<Link className={showLogOut} to="/store" onClick={() => this.hideDropDown()}>
+						<Link className={showLogOut} to="/store">
 						<span>store</span>
 						</Link>
 						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
@@ -98,7 +100,8 @@ class Menu extends Component {
 }
 
 export const mapStateToProps = state => ({
-    token: state.tokenReducer.token
+    token: state.tokenReducer.token,
+    menuOpen: state.themeReducer.menuOpen
 });
 
 export default connect(mapStateToProps)(Menu);

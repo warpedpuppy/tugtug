@@ -27,7 +27,8 @@ class LoginRegisterContainer extends React.Component {
 			processing:false,
 			username: '',
 			password: '',
-			email: ''
+			email: '',
+			feedback: ''
 		}
 	}
 	updateUsername (e) {
@@ -60,8 +61,12 @@ class LoginRegisterContainer extends React.Component {
 	}
 	//this is here so that register can 
 	loginFunction(obj){
-		this.processing(true);
 		let that = this;
+		that.setState({
+			feedback: ''
+		});
+		this.processing(true);
+		
 		console.log(obj)
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
@@ -78,7 +83,8 @@ class LoginRegisterContainer extends React.Component {
 		  .catch((err) => {
 		  	that.processing(false);
 		  	that.setState({
-		  		password: ''
+		  		password: '',
+		  		feedback: 'Incorrect username or password'
 			})
 		  });  
 	}
@@ -106,6 +112,7 @@ class LoginRegisterContainer extends React.Component {
 						updateEmail={this.updateEmail}
 						username={this.state.username}
 						email={this.state.email}
+						feedback={this.state.feedback}
 						password={this.state.password}
 						styleProp={loginClass} 
 						loginFunction={this.loginFunction}
