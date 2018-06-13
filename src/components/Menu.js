@@ -8,12 +8,13 @@ import { deleteToken } from '../actions/tokenActions.js';
 import { deleteAll } from '../actions/avatarActions.js';
 import { openMenu, toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
-
+import { bindActionCreators } from 'redux';
 
 class Menu extends Component {
 	  constructor(props) {
 		super(props);
 		this.toggleLogin = this.toggleLogin.bind(this);
+		this.hideDropDownAndLogin = this.hideDropDownAndLogin.bind(this);
 		this.logOut = this.logOut.bind(this);
 		this.state = {
 			showDropDown:false, 
@@ -25,29 +26,34 @@ class Menu extends Component {
 	  	if(e){
 	  		e.preventDefault();
 	  	}
-	  	this.props.dispatch(toggleMenu());
+	  	this.props.toggleMenu();
 	    this.setState({
 	      showDropDown: false,
 	      showLogin: true
 	    })
 	  }
 	  showDropDown(e){
-	  	this.props.dispatch(toggleMenu());
+	  	this.props.toggleMenu();
 	  	this.setState({
 	  		showDropDown: !this.state.showDropDown
 	  	})
 	  }
   	  logOut (e) {
 		e.preventDefault();
-		this.props.dispatch(deleteToken());
+		this.props.deleteToken();
 		this.setState({redirect: true})
-		this.props.dispatch(deleteAll());
+		this.props.deleteAll();
+		this.props.closeMenu();
 		// delete all content in avatar reducer
 
 		// delete all 
 	  }
-	  hideDropDown(e){
-	  	this.props.dispatch(closeMenu());
+	  hideDropDownAndLogin(e){
+	  	if(e){
+	  		e.preventDefault();
+	  	}
+	  	this.props.closeMenu();
+	  	this.setState({ showLogin: false })
 	  }
 	  
 	  
@@ -90,7 +96,7 @@ class Menu extends Component {
 				</nav>
 				
 				<LoginRegisterContainer 
-					toggleLogin={this.toggleLogin} 
+					hideDropDownAndLogin={this.hideDropDownAndLogin} 
 					showLogin={this.state.showLogin}
 				/>
 			</div>
@@ -103,5 +109,8 @@ export const mapStateToProps = state => ({
     token: state.tokenReducer.token,
     menuOpen: state.themeReducer.menuOpen
 });
-
-export default connect(mapStateToProps)(Menu);
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        openMenu, toggleMenu, closeMenu, deleteToken, deleteAll}, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

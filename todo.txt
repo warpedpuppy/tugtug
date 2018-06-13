@@ -6,5 +6,11 @@
 6) manage close server calls
 7) home page -- make animation webgl proof
 8) if you log out it goes right to home page 
-a) steps - login, click game -- doesn't go anywhere, click store, click logout -- STAYS ON STORE
-b) manage menu down status from store
+
+
+---
+
+game:
+
+1) grid of dots
+2) cloud of specials

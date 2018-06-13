@@ -1,7 +1,7 @@
 import React from 'react';
 import GameCanvas from '../components/GameCanvas';
 import { connect } from 'react-redux';
-import { openMenu, toggleMenu, closeMenu } from '../actions/themeActions.js';
+import { closeMenu } from '../actions/themeActions.js';
 
 class Game extends React.Component {
 

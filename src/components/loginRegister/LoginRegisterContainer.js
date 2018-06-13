@@ -66,14 +66,14 @@ class LoginRegisterContainer extends React.Component {
 			feedback: ''
 		});
 		this.processing(true);
-		
-		console.log(obj)
+
 		return axios.post(`${API_BASE_URL}/api/auth/login`, obj)
 		  .then(function(response){
-		  	that.props.toggleLogin();
+		  	that.props.hideDropDownAndLogin();
 		  	that.processing(false);
 		    that.setState({ username: '', password: ''})
 		    that.props.addUserdata(response.data.user);
+
 		    that.props.addToken(response.data.authToken);
 		    if(response.data.user.avatars){
 	            that.props.addItems(response.data.user.avatars);
@@ -100,7 +100,7 @@ class LoginRegisterContainer extends React.Component {
 				<div className="LoginRegisterContainer">
 					<button 
 					className="closeButton" 
-					onClick={(e) => this.props.toggleLogin(e)} 
+					onClick={(e) => this.props.hideDropDownAndLogin(e)} 
 					>
 					<img 
 					src={CloseButton} 
