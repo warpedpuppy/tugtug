@@ -13,7 +13,9 @@ export default function Game (PIXI, Utils){
         panels: [],
         velX: 0,
         velY: 0,
-        speed: 0.5,
+        speed: 2,
+        cols: 4,
+        rows: 4,
         init: function () {
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
@@ -30,13 +32,15 @@ export default function Game (PIXI, Utils){
             this.animate = this.animate.bind(this);
             this.build();
             this.addPegPanels();
-            //this.handleKeyDown = this.handleKeyDown.bind(this);
-            //document.addEventListener('keydown', this.handleKeyDown);
+            
             this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.foregroundCont);
             this.app.ticker.add(this.animate.bind(this));
             this.keyPress = this.keyPress.bind(this);
             this.velX = this.velY = this.speed;
+            this.total = this.cols * this.rows;
+            this.placeBehindCols = this.cols - 1;
+            this.placeBehindRows = this.rows - 1;
             window.addEventListener('keydown', this.keyPress);
 
         },
@@ -66,45 +70,17 @@ export default function Game (PIXI, Utils){
         addPegPanels: function () {
             let panel,
                 panelCounter = 0;
-            for(let i = 0; i < 3; i++){
-                for (let j = 0; j < 3; j ++) {
+            this.panels = [];
+            this.backgroundCont.removeChildren();
+            for(let i = 0; i < this.rows; i++){
+                for (let j = 0; j < this.cols; j ++) {
+                
+                let w = this.panelWidth = this.canvasWidth;//panel.width;
+                let h = this.panelHeight = this.canvasHeight;
                 panel = this.PegPanel(panelCounter);
-                console.log(panel.width);
-                let w = this.panelWidth = panel.width;
-                let h = this.panelHeight = panel.height;
-                if(panelCounter === 0){
-                    panel.y = -h;
-                    panel.x = -w;
-                } else if (panelCounter === 1){
-                    panel.y = -h;
-                    panel.x = 0;
-                } 
-                else if (panelCounter === 2){
-                    panel.y = -h;
-                    panel.x = w;
-                } else if (panelCounter === 3){
-                    panel.y = 0;
-                    panel.x = -w;
-                } else if (panelCounter === 4){
-                    panel.y = 0;
-                    panel.x = 0;
-                } else if (panelCounter === 5){
-                    panel.y = 0;
-                    panel.x = w;
-                } else if (panelCounter === 6){
-                    panel.y = h;
-                    panel.x = -w;
-                } else if (panelCounter === 7){
-                    panel.y = h;
-                    panel.x = 0;
-                } else if (panelCounter === 8){
-                    panel.y = h;
-                    panel.x = w;
-                }
+                panel.x = w * j;
+                panel.y = h * i;
                 this.panels.push(panel)
-                //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.15;
-                this.backgroundCont.x = 400
-                this.backgroundCont.y = 300;
                 this.backgroundCont.addChild(panel);
 
                 let frame = new PIXI.Graphics();
@@ -122,16 +98,19 @@ export default function Game (PIXI, Utils){
             let horizQ = 2;//(this.canvasWidth / this.spacer) + 1;
             let vertQ = 2;//this.canvasHeight / this.spacer;
 
+            this.horizSpacer = 100;
+            this.vertSpacer = 50;
+
             let dot = new PIXI.Graphics();
-            dot.beginFill(0x000000).drawCircle(0,0,20).endFill();
-            dot.x = this.spacer/2;
-            dot.y = this.spacer/2;
+            dot.beginFill(0x000000).drawCircle(0,0,100).endFill();
+            dot.x = this.panelWidth/2;
+            dot.y = this.panelHeight/2;
             dot.pivot.x = dot.pivot.y = 0.5;
             pegPanel.addChild(dot);
 
-             let text = new PIXI.Text(num,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
-             text.x = this.spacer/2;
-            text.y = this.spacer/2;
+             let text = new PIXI.Text(num,{fontFamily : 'Arial', fontSize: 48, fill : 0xffffff, align : 'center'});
+            text.x = this.panelWidth/2;
+            text.y = this.panelHeight/2;
             text.anchor.x = text.anchor.y = 0.5;
              pegPanel.addChild(text)
 
@@ -139,16 +118,25 @@ export default function Game (PIXI, Utils){
             for (let i = 0; i < vertQ; i ++) {
                 for (let j = 0; j < horizQ; j ++) {
                     peg = this.Peg();
-                    peg.x = j*this.spacer;
-                    peg.y = i*this.spacer;
+                    peg.x = j*this.panelWidth;
+                    peg.y = i*this.panelHeight;
                     pegPanel.addChild(peg);
                 }
             }
+
+             let frame = new PIXI.Graphics();
+                frame.lineStyle(3, 0xFF00FF)
+                .moveTo(0,0)
+                .lineTo(this.panelWidth, 0)
+                .lineTo(this.panelWidth,this.panelHeight)
+                .lineTo(0,this.panelHeight).lineTo(0,0)
+                pegPanel.addChild(frame);
+
             return pegPanel;
         },
         Peg: function () {
             let dot = new PIXI.Graphics();
-            dot.beginFill(0x333333).drawCircle(0,0,2).endFill();
+            dot.beginFill(0x333333).drawCircle(0,0,50).endFill();
             return dot;
         },
         stop: function () {
@@ -179,7 +167,7 @@ export default function Game (PIXI, Utils){
             this.ball = this.Ball();
             this.ball.x = this.halfWidth;
             this.ball.y = this.halfHeight;
-            //this.foregroundCont.addChild(this.ball);
+            this.foregroundCont.addChild(this.ball);
             this.gamePlay = true;
         },
         Ball: function () {
@@ -187,13 +175,13 @@ export default function Game (PIXI, Utils){
                 let sprite = new PIXI.Sprite.fromImage('/bmps/character.png');
                 sprite.anchor.x = sprite.anchor.y =0.5;
                 const cont = new PIXI.Container();
-                // const ball = new PIXI.Graphics();
-                // ball
-                // .beginFill(0x000000)
-                // .drawCircle(0,0,40)
-                // .endFill();
-                // ball.radius = 20;
-                // ball.vx = ball.vy = 10;
+                const ball = new PIXI.Graphics();
+                ball
+                .beginFill(0x000000)
+                .drawCircle(0,0,40)
+                .endFill();
+                ball.radius = 20;
+                ball.vx = ball.vy = 10;
                 cont.addChild(sprite);
                 return cont;
             } else {
@@ -260,19 +248,19 @@ export default function Game (PIXI, Utils){
             }
         },
         animate: function () {
-            for(let i = 0; i < 9; i++){
+            for(let i = 0; i < this.total; i++){
                 this.panels[i].y += this.velY;
                 this.panels[i].x += this.velX;
-                if(this.panels[i].y > this.panelHeight*2){
+                if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
                     this.panels[i].y = -this.panelHeight;
                 }
-                if(this.panels[i].x > this.panelWidth*2){
+                if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
                     this.panels[i].x = -this.panelWidth;
                 }
-                 if(this.panels[i].y < -this.panelHeight*2){
+                 if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
                     this.panels[i].y = this.panelHeight;
                 }
-                if(this.panels[i].x < -this.panelWidth*2){
+                if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
                     this.panels[i].x = this.panelWidth;
                 }
             }
