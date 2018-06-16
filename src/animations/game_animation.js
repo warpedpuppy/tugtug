@@ -198,6 +198,7 @@ export default function Game (PIXI, Utils){
             this.renderer.resize(this.canvasWidth,this.canvasHeight);
             this.ball.x = this.halfWidth;
             this.ball.y = this.halfHeight;
+            this.addPegPanels();
         },
         handleKeyDown: function (event) {
             event.preventDefault();
