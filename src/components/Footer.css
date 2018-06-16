@@ -1,11 +1,33 @@
 footer {
-	position:absolute;
-	bottom:0;
-	text-align: right;
+	text-align: center;
 	display: block;
 	width:100%;
+	position: fixed;
+	bottom:0;
+	background: grey;
+	height:50px;
+	z-index: 1000;
+}
+footer a {
+	display: inline-block;
+	margin:12px 10px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #333;
+
+}
+footer a:hover {
+	color: #FFF;
 }
 
 .twitter {
 	width:50px;
+	position: absolute;
+	right:0;
+	top:-2px;
+}
+@media (min-width: 1024px) {
+
+
+
 }

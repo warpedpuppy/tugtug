@@ -1,25 +1,25 @@
+import {OPEN_MENU, CLOSE_MENU, TOGGLE_MENU} from '../actions/themeActions';
+
 const initialState = {
-    pageTitle: 'site name'
+    menuOpen: false
 };
 
 function themeReducer (state=initialState, action) {
-    // if (action.type === ADD_ITEM) {
-    //     return Object.assign({}, state, {
-    //         items: [...state.items, action.item]
-    //     });
-    // }
-    // else if (action.type === UPDATE_ITEM) {
-    //     return Object.assign({}, state, {
-    //         items: state.items.map(item =>
-    //             item.id === action.item.id ? action.item : item
-    //         )
-    //     });
-    // }
-    // else if (action.type === DELETE_ITEM) {
-    //     return Object.assign({}, state, {
-    //         items: state.items.filter(item => item.id !== action.item.id)
-    //     });
-    // }
+    if (action.type === OPEN_MENU) {
+        return Object.assign({}, state, {
+            menuOpen: true
+        });
+    }
+    else if (action.type === CLOSE_MENU) {
+        return Object.assign({}, state, {
+            menuOpen: false
+        });
+    }
+    else if (action.type === TOGGLE_MENU) {
+        return Object.assign({}, state, {
+            menuOpen: !state.menuOpen
+        });
+    }
     return state;
 };
 

@@ -1,22 +1,21 @@
 export default function Game (PIXI, Utils){
     return {
         utils: new Utils(),
-        canvasHeight: 400,
+        backgroundCont: new PIXI.Container(),
+        foregroundCont: new PIXI.Container(),
         stage: new PIXI.Container(),
         app: new PIXI.Application(),
         loader: PIXI.loader,
         PIXI: PIXI,
-        brickHeight: 10,
-        brickColQ:4,
-        rows: 15,
-        bricks: [],
-        bricksQ:0,
-        particles: [],
-        particleQ: 200,
-        particleAtATime: 50,
-        partcileCounter: 0,
-        gamePlay: false,
-        storeBricks: [],
+        spacer: 50,
+        panelWidth: 0,
+        panelHeight: 0,
+        panels: [],
+        velX: 0,
+        velY: 0,
+        speed: 2,
+        cols: 4,
+        rows: 4,
         init: function () {
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
@@ -27,121 +26,155 @@ export default function Game (PIXI, Utils){
             this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
             this.renderer.backgroundColor = 0xFFFFFF;
             this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
-            if(this.webGL) {
-                this.particleQ = 2000;
-                this.particleAtATime = 500;
-            }
+            // if(this.webGL) {
+            // }
             document.getElementById("game_canvas").appendChild(this.renderer.view);
-            this.bricksCont = this.Bricks();
-            for(let j = 0; j < this.particleQ; j++){
-                let brick = new PIXI.Graphics();
-                brick
-                .beginFill(0xFF00FF)
-                .drawRect(0,0,5, 5)
-                .endFill()
-                this.particles.push(brick);
-            }
+            this.animate = this.animate.bind(this);
             this.build();
-
-            //this.handleKeyDown = this.handleKeyDown.bind(this);
-            //document.addEventListener('keydown', this.handleKeyDown);
+            this.addPegPanels();
+            
+            this.stage.addChild(this.backgroundCont);
+            this.stage.addChild(this.foregroundCont);
             this.app.ticker.add(this.animate.bind(this));
+            this.keyPress = this.keyPress.bind(this);
+            this.velX = this.velY = this.speed;
+            this.total = this.cols * this.rows;
+            this.placeBehindCols = this.cols - 1;
+            this.placeBehindRows = this.rows - 1;
+            window.addEventListener('keydown', this.keyPress);
 
+        },
+        keyPress: function(e){
+            e.preventDefault();
+             switch (e.keyCode) {
+                case 37:
+                    //alert('left');
+                    this.velX = -this.speed;
+                    break;
+                case 38:
+                    //alert('up');
+                    this.velY = -this.speed;
+                    break;
+                case 39:
+                    //alert('right');
+                    this.velX = this.speed;
+                    break;
+                case 40:
+                    //alert('down');
+                    this.velY = this.speed;
+                    break;
+                default:
+                    console.log('')
+            }
+        },
+        addPegPanels: function () {
+            let panel,
+                panelCounter = 0;
+            this.panels = [];
+            this.backgroundCont.removeChildren();
+            for(let i = 0; i < this.rows; i++){
+                for (let j = 0; j < this.cols; j ++) {
+                
+                let w = this.panelWidth = this.canvasWidth;//panel.width;
+                let h = this.panelHeight = this.canvasHeight;
+                panel = this.PegPanel(panelCounter);
+                panel.x = w * j;
+                panel.y = h * i;
+                this.panels.push(panel)
+                this.backgroundCont.addChild(panel);
+
+                let frame = new PIXI.Graphics();
+                frame.lineStyle(3, 0xFF0000).moveTo(0,0).lineTo(w, 0).lineTo(w,h).lineTo(0,h).lineTo(0,0)
+                this.backgroundCont.addChild(frame);
+                panelCounter ++;
+            }
+            }
+
+        },
+        PegPanel: function (num) {
+            let peg,
+                pegPanel = new PIXI.Container();
+
+            let horizQ = 2;//(this.canvasWidth / this.spacer) + 1;
+            let vertQ = 2;//this.canvasHeight / this.spacer;
+
+            this.horizSpacer = 100;
+            this.vertSpacer = 50;
+
+            let dot = new PIXI.Graphics();
+            dot.beginFill(0x000000).drawCircle(0,0,100).endFill();
+            dot.x = this.panelWidth/2;
+            dot.y = this.panelHeight/2;
+            dot.pivot.x = dot.pivot.y = 0.5;
+            pegPanel.addChild(dot);
+
+             let text = new PIXI.Text(num,{fontFamily : 'Arial', fontSize: 48, fill : 0xffffff, align : 'center'});
+            text.x = this.panelWidth/2;
+            text.y = this.panelHeight/2;
+            text.anchor.x = text.anchor.y = 0.5;
+             pegPanel.addChild(text)
+
+
+            for (let i = 0; i < vertQ; i ++) {
+                for (let j = 0; j < horizQ; j ++) {
+                    peg = this.Peg();
+                    peg.x = j*this.panelWidth;
+                    peg.y = i*this.panelHeight;
+                    pegPanel.addChild(peg);
+                }
+            }
+
+             let frame = new PIXI.Graphics();
+                frame.lineStyle(3, 0xFF00FF)
+                .moveTo(0,0)
+                .lineTo(this.panelWidth, 0)
+                .lineTo(this.panelWidth,this.panelHeight)
+                .lineTo(0,this.panelHeight).lineTo(0,0)
+                pegPanel.addChild(frame);
+
+            return pegPanel;
+        },
+        Peg: function () {
+            let dot = new PIXI.Graphics();
+            dot.beginFill(0x333333).drawCircle(0,0,50).endFill();
+            return dot;
         },
         stop: function () {
             this.app.ticker.destroy();
             this.renderer.destroy();
+            window.onresize = undefined;
+            console.log(this.renderer)
+           
         },
         reset: function () {
             this.BricksReset();
             this.build();
 
         },
-        build: function () {
-            this.stage.addChild(this.bricksCont);
-            const paddle = this.Paddle();
-            paddle.x = (this.canvasWidth - paddle.width)/2;
-            paddle.y = this.canvasHeight  - paddle.height;
-            this.stage.addChild(paddle);
-            this.paddle = paddle;
-
+        update: function (items) {
+            
+            items.forEach(item => {
+                if(item.active){
+                    let sprite = new PIXI.Sprite.fromImage(item.url);
+                    sprite.anchor.x = sprite.anchor.y = 0.5;
+                    sprite.y = -110;
+                    this.ball.addChild(sprite)
+                }
+                
+            })
+        },
+        build: function () { 
             this.ball = this.Ball();
             this.ball.x = this.halfWidth;
             this.ball.y = this.halfHeight;
-            this.stage.addChild(this.ball);
+            this.foregroundCont.addChild(this.ball);
             this.gamePlay = true;
         },
-        addParticles: function (brick) {
-             for(let j = 0; j < this.particleAtATime; j++){
-
-                if (this.partcileCounter > this.particleQ - 1) {
-                    this.partcileCounter = 0;
-                }
-                let particle = this.particles[this.partcileCounter];
-                particle.vy = Math.random()*5+1;
-                particle.vx = Math.random()*5+0.1;
-                particle.rotQ = Math.random()*5+0.1;
-                if (Math.floor(Math.random()*2) > 0) {
-                    particle.vx *= -1;
-                }
-                particle.x = (Math.random()*brick.width)+brick.x;
-                particle.y = brick.y;
-                this.stage.addChild(particle);
-                this.partcileCounter ++;
-            }
-        },
-        Bricks: function () {
-            this.bricks = [];
-            this.bricksQ = 0;
-            const cont = new PIXI.Container();
-            let brickWidth = Math.ceil(this.canvasWidth /this.brickColQ);
-            for(let i = 0; i < this.rows; i++){
-                for(let j = 0; j < this.brickColQ; j++){
-                    let brick= new PIXI.Graphics();
-                    brick
-                    .beginFill(0xFF00FF)
-                    .drawRect(0,0,brickWidth, this.brickHeight)
-                    .endFill()
-                    brick.x = j * brickWidth;
-                    brick.y = i * this.brickHeight;
-                    brick.alpha = (Math.random()*1)+0.2;
-                    this.storeBricks.push(brick);
-                   
-                    this.bricks.push(brick);
-                    cont.addChild(brick);
-                    this.bricksQ ++;
-                }
-            }
-            return cont;
-        },
-        BricksReset: function () {
-            this.bricks = [];
-            this.bricksQ = 0;
-            for(let i = 0; i < this.storeBricks.length ; i++){
-                    let brick= this.storeBricks[i];
-                    this.bricks.push(brick);
-                    this.bricksCont.addChild(brick);
-                    this.bricksQ ++;
-            }
-            return this.bricksCont;
-        },
-        Paddle: function () {
-            if(!this.paddle){
-                const paddle = new PIXI.Graphics();
-                paddle
-                .beginFill(0x000000)
-                .drawRect(0,0,200, 20)
-                .endFill();
-                paddle.vx = 10;
-                paddle.moveRight = false;
-                paddle.moveLeft = false;
-                return paddle;
-            } else {
-                return this.paddle;
-            }
-        },
         Ball: function () {
-            if(!this.ball){
+            if(!this.cont){
+                let sprite = new PIXI.Sprite.fromImage('/bmps/character.png');
+                sprite.anchor.x = sprite.anchor.y =0.5;
+                const cont = new PIXI.Container();
                 const ball = new PIXI.Graphics();
                 ball
                 .beginFill(0x000000)
@@ -149,21 +182,22 @@ export default function Game (PIXI, Utils){
                 .endFill();
                 ball.radius = 20;
                 ball.vx = ball.vy = 10;
-                return ball;
+                cont.addChild(sprite);
+                return cont;
             } else {
-                return this.ball;
+                return this.cont;
             }
           
         },
         resize: function () {
-            this.stage.removeChildren();
+            
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
             this.renderer.resize(this.canvasWidth,this.canvasHeight);
-            this.bricksCont = this.Bricks();
-            this.build();
+            this.ball.x = this.halfWidth;
+            this.ball.y = this.halfHeight;
         },
         handleKeyDown: function (event) {
             event.preventDefault();
@@ -214,62 +248,26 @@ export default function Game (PIXI, Utils){
             }
         },
         animate: function () {
-            if(this.gamePlay) {
-                this.ball.x += this.ball.vx;
-                this.ball.y += this.ball.vy;
-                this.paddle.x = this.ball.x - this.paddle.width/2;
-
-                if(this.ball.y < 0 || this.ball.y  > this.canvasHeight - this.paddle.height) {
-                    this.ball.vy *= -1;
-                } else if(this.ball.x  > this.canvasWidth - this.ball.radius || this.ball.x < this.ball.radius) {
-                    this.ball.vx *= -1;
+            for(let i = 0; i < this.total; i++){
+                this.panels[i].y += this.velY;
+                this.panels[i].x += this.velX;
+                if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
+                    this.panels[i].y = -this.panelHeight;
                 }
-
-                for(let i = 0; i < this.bricksQ; i++) {
-                    let brick = this.bricks[i];
-                    let rect = new PIXI.Rectangle(brick.x, brick.y, brick.width, brick.height);
-                    if (this.utils.circleRectangleCollision(this.ball, rect)) {
-                        this.bricks.splice(i, 1);
-                        brick.parent.removeChild(brick);
-                        this.bricksQ --;
-                        this.ball.vy *= -1;
-                        this.addParticles(brick);
-                        if(this.bricksQ === 0) {
-                            this.gamePlay = false;
-                            this.reset();
-                        }
-                    }
-                    
+                if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
+                    this.panels[i].x = -this.panelWidth;
                 }
-
-                for(let j = 0; j < this.particleQ; j++){
-                    let part = this.particles[j];
-                    if(part.parent === this.stage){
-                        part.y += part.vy;
-                        part.x += part.vx;
-                        part.rotation += this.utils.deg2rad(part.rotQ);
-                        if(part.y > this.canvasHeight){
-                            this.stage.removeChild(part);
-                        }
-                    }
-
+                 if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
+                    this.panels[i].y = this.panelHeight;
                 }
-                
-                // if(this.paddle.moveRight){
-                //     this.paddle.vx = -Math.abs(this.paddle.vx);
-                // }
-                // else if(this.paddle.moveLeft){
-                //     this.paddle.vx = Math.abs(this.paddle.vx);
-                // }
-
-                
-                // if(this.paddle.x > this.canvasWidth){
-                //     this.paddle.x = this.canvasWidth;
-                // } else if(this.paddle.x < 0 ) {
-                //     this.paddle.x = 0;
-                // }
-
+                if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
+                    this.panels[i].x = this.panelWidth;
+                }
             }
+            // let globalPoint = this.panels[4].toGlobal(new PIXI.Point(this.panels[4].x,this.panels[4].y ));
+            // if(this.panels[4].y > this.panelHeight*2){
+            //     this.panels[4].y = -this.panelHeight;
+            // }
             this.renderer.render(this.stage);
         }
     }

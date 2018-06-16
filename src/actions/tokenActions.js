@@ -1,3 +1,9 @@
+export const ADD_USERDATA = 'ADD_USERDATA';
+export const addUserdata = item => ({
+    type: ADD_USERDATA,
+    user: item
+});
+
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const addToken = item => ({
     type: ADD_TOKEN,

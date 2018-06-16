@@ -1,0 +1,16 @@
+1) clean code
+2) clean design
+3) forgot password
+4) update password & other info
+5) inventory the serializes and make only ones without ids go to front end
+6) manage close server calls
+7) home page -- make animation webgl proof
+8) if you log out it goes right to home page 
+
+
+---
+
+game:
+
+1) grid of dots
+2) cloud of specials

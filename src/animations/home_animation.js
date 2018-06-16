@@ -21,208 +21,126 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		horizBoxesQ: 5,
 		vertBoxesQ: 5,
 		totalBoxes: undefined,
-		blockContainers: [],
+		shapes: [],
 		blockForegrounds: [],
 		blockBackgrounds: [],
+		colors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000],
 		Init: function(){
 			window.onresize = this.resizeHandler.bind(this);
-			this.totalBoxes =  this.horizBoxesQ * this.vertBoxesQ;
-			this.addBeadsHandler = this.addBeadsHandler.bind(this)
 	        this.canvasWidth = this.utils.returnCanvasWidth();
-	        this.canvasHeight = this.utils.returnCanvasHeight();
 	        this.stage = new PIXI.Container(); 
+	        this.kingCont = new PIXI.Container(); 
 	        this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
 	        this.renderer.backgroundColor = 0x333333;
 	        canvas.appendChild(this.renderer.view);
 	        this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 			this.stage.addChild(this.backgroundContainer);
 			this.stage.addChild(this.foregroundContainer);
-			this.rainbowShake = this.rainbowShake.bind(this);
-			this.shakeAllow = true;
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.utils.returnCanvasHeight();
+			this.halfWidth = this.width/2;
+			this.halfHeight = this.height/2;
+
+			this.build = this.build.bind(this);
 
 			if (!this.webGL) {
 				console.log('this webgl = ', this.webGL)
-				this.smallerQs();
+				console.log('not webgl')
 			}
 			
-			//make object pools
-			for(let j = 0; j < this.beadQ; j++){
-				let b = this.Bead();
-				this.beads.push(b)
-			}
-			for(let j = 0; j < this.totalBoxes; j ++){
-				this.blockContainers.push(new PIXI.Graphics());
-				this.blockForegrounds.push(new PIXI.Graphics());
-				this.blockBackgrounds.push(new PIXI.Graphics());
-			}
-
+			this.build();
+			this.stage.addChild(this.kingCont);
 	        this.app.ticker.add(this.animate.bind(this));
-	        this.resizeHandler();
-	        this.rainbowShake();
+	       
 
-	    },
-	    smallerQs: function () {
-			this.beadQ = 60;
-			this.beadsAtATime = 20;
-			this.beadRadius = 20;
 	    },
 	    Stop: function () {
+	    	window.onresize = undefined;
 	        this.app.ticker.destroy();
 	    },
-		Bead: function () {
-			let bead = new PIXI.Graphics();
-			bead.radius = this.beadRadius;
-			bead
-			.beginFill('0x'+Math.floor(Math.random()*16777215).toString(16))
-			.drawCircle(0, 0, bead.radius)
-			.endFill();
-			return bead;
+	    build: function () {
+	    	let counter = 0;
+
+	    	for(let i = 0; i < 7; i ++){
+	    		let size = 100 + (i*120);
+	    		let shape = this.Ring(size, this.colors[counter]);
+
+	    		this.kingCont.addChildAt(shape, 0);
+	    		counter ++;
+	    		this.shapes.push(shape);
+	    		if(counter >= this.colors.length){
+	    			counter = 0;
+	    		}
+	    	}
+
+
+
+	    },
+		Ring: function (sizeParam, color) {
+
+			const cont = new PIXI.Container();
+
+			var size = sizeParam,
+	    		innerSize,
+		        x = sizeParam,
+		        y = sizeParam,
+		        points = [],
+		        innerPoints = [];
+		        innerSize = size * 0.95;
+
+			points.push(x + size * Math.cos(0), y + size * Math.sin(0));
+			innerPoints.push(x + innerSize * Math.cos(0), y + innerSize * Math.sin(0));
+			
+			for (let side = 0; side < 7; side++) {
+				points.push(x + size * Math.cos(side * 2 * Math.PI / 6), y + size * Math.sin(side * 2 * Math.PI / 6));
+				innerPoints.push(x + innerSize * Math.cos(side * 2 * Math.PI / 6), y + innerSize * Math.sin(side * 2 * Math.PI / 6));
+			}
+
+			let colorPent = new PIXI.Graphics();
+			colorPent.beginFill(color);
+			colorPent.drawPolygon(points)
+
+			let bwPent = new PIXI.Graphics();
+			bwPent.beginFill(0x333333);
+			bwPent.drawPolygon(innerPoints)
+
+			cont.addChild(colorPent);
+			cont.addChild(bwPent);
+
+
+			cont.pivot.x = cont.pivot.y = cont.width/2;
+			cont.rotation = cont.rot = this.utils.randomNumberBetween(0.0001, 0.005);
+			if(Math.floor(Math.random()*2) > 0){
+				cont.rotation *=-1;
+				cont.rot *=-1;
+			}
+			return cont;
 		},
 		resizeHandler: function (){
+			this.stage.removeChildren();
 			this.width =  this.utils.returnCanvasWidth();
 			this.height = this.canvasHeight = this.utils.returnCanvasHeight();
 			this.renderer.resize(this.width, this.height);
-			this.clear();
-			this.buildBoard(this.backgroundContainer);
+
+			this.stage.addChild(this.kingCont);
+
+			
 		},
 		clear: function (){
-			this.backgroundContainer.removeChildren();
-			for(let j = 0; j < this.totalBoxes; j ++){
-				this.blockContainers[j].removeChildren();
-				this.blockBackgrounds[j].removeChildren();
-			}
-		},
-		buildBoard: function(){
-			let horizBoxesWidth = this.horizBoxesWidth = this.width/this.horizBoxesQ,
-		    vertBoxesHeight = this.height/this.vertBoxesQ,
-			blockcontainer,
-			blockBackground,
-			blockForeground;
-			this.backgroundContainer.removeChildren();
-			this.pegQ = 0;
-			this.pegs = [];
-			for(let i = 0; i < this.horizBoxesQ; i++){
-				for(let j = 0; j < this.vertBoxesQ; j++){
-					blockcontainer = this.blockContainers[this.pegQ];
-					blockBackground = this.blockBackgrounds[this.pegQ];
-					blockcontainer.cont= blockBackground;
-					blockcontainer.addChild(blockBackground)
-					blockForeground = this.blockForegrounds[this.pegQ];
-					blockForeground.clear();
-					blockForeground
-					.beginFill(0xFF00FF)
-					.lineStyle(2, 0xFFFFFF, 1)
-					.moveTo(0,0)
-					.lineTo(horizBoxesWidth, 0)
-					.lineTo(horizBoxesWidth, vertBoxesHeight)
-					.lineTo(0, vertBoxesHeight)
-					.lineTo(0, 0).endFill();
-					blockcontainer.x = i*horizBoxesWidth + horizBoxesWidth/2;
-					blockcontainer.y = j*vertBoxesHeight + vertBoxesHeight/2;
-					blockcontainer.graphic = blockForeground;
-					blockForeground.pivot = new PIXI.Point(horizBoxesWidth/2, vertBoxesHeight/2);
-					this.pegs.push(blockcontainer)
-					blockcontainer.addChild(blockForeground)
-					this.backgroundContainer.addChild(blockcontainer);
-					this.pegQ ++;
-				}
-			}
-		},
-		destroy: function () {
-			this.shakeAllow = false;
-			this.tl.stop();
-			this.tl = null;
-		},
-		rainbowShake: function () {
-			if(this.shakeAllow) {
-				this.shakeAllow = false;
-			} else {
-				return;
-			}
-			//console.log('start rainbow shake!!!!!')
-			let newIndex = Math.floor(Math.random()*this.pegs.length);
-			let element = this.pegs[newIndex];
-			let parent = element.parent;
-			parent.removeChild(element);
-			parent.addChild(element);
-			let rotateQ = this.utils.deg2rad(20);
-			this.tl = new TimelineMax({onComplete: done });
-			this.tl.to(element.graphic, 1, {scaleX:1.2, scaleY:1.2, onComplete:this.addBeadsHandler, onCompleteParams: [element]});
-			this.tl.to(element.graphic, 0.1, {rotation:rotateQ});
-			this.tl.to(element.graphic, 0.1, {rotation:-rotateQ});
-			this.tl.to(element.graphic, 0.1, {rotation:rotateQ});
-			this.tl.to(element.graphic, 0.1, {rotation:-rotateQ});
-			this.tl.to(element.graphic, 0.1, {rotation:0});
-			this.tl.to(element.graphic, 1, {scaleX:1, scaleY:1});
-			let that = this;
-			function done(){
-				that.shakeAllow = true;
-				that.rainbowShake();
-			}
-		},
-		addBeadsHandler: function(element){
-			for(let i = 0; i < this.beadsAtATime; i++){
-				let bead = this.beads[this.beadCounter]
-				bead.x = Math.random()*this.horizBoxesWidth - (this.horizBoxesWidth/2);
-				bead.y = 0;
-				bead.blockCont = true;
-				bead.vy = (Math.random()*3)+3;
-				bead.vx = (Math.random()*1)+1;
-				if(bead.x < 0){	bead.vx *=-1;}
-				element.cont.addChild(bead);
-				this.beadCounter ++;
-				this.beadsOnStage.push(bead);
-				if(this.beadCounter >= this.beadQ){
-					this.beadCounter = 0;
-				}
-			}
-			this.beadLoopingQ = this.beadsOnStage.length;
 		},
 		displayFPS: function (fps) {
 			document
 			.getElementById('fpsChecker')
 			.innerHTML = `current fps = ${Math.round(fps)}`;
-
-			// if (Number(fps) < 10) {
-			// 	this.smallerQs();
-			// }
 		},
 		animate: function () {
 			this.renderer.render(this.stage);
-			let gravity = 0.03;
-			let bead;
-			this.displayFPS(this.app.ticker.FPS)
+			
+			//this.displayFPS(this.app.ticker.FPS)
 			
 
-			for(let i = 0; i < this.beadLoopingQ; i++){
-
-					bead = this.beadsOnStage[i];
-					if(bead && bead.parent){
-						//if(bead.vy > 2)bead.vy -=2;
-						bead.y += bead.vy;
-						bead.x += bead.vx;
-						bead.vy += gravity;
-
-						let globalPoint = bead.toGlobal(bead.parent, new PIXI.Point(bead.x, bead.y), false);
-						if(globalPoint.y > this.canvasHeight - bead.radius){
-							bead.vy =-(Math.random()*3)-1;
-							//switch bead to front plane if not
-							if (bead.blockCont) {
-								bead.blockCont = false;
-								bead.y = globalPoint.y;
-								bead.x = globalPoint.x;
-								this.stage.addChild(bead);
-							}
-						}
-
-						if(globalPoint.x < 0 || globalPoint.x > this.width) {
-								bead.parent.removeChild(bead);
-								this.beadsOnStage.splice(i, 1);
-						}
-					}
-					
+			for(let shape of this.shapes){
+				shape.rotation += shape.rot;
 			}
 			
 				

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './Register.css';
 import {API_BASE_URL} from '../../config';
 
 export default class Register extends React.Component {
@@ -9,11 +10,18 @@ export default class Register extends React.Component {
 		this.sendToServer = this.sendToServer.bind(this);
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
+		this.updateEmail = this.updateEmail.bind(this);
 		this.state = {
-			feedback: 'start',
+			feedback: '',
 			username: '',
-			password: ''
+			password: '',
+			email: ''
 		}
+	}
+	updateEmail (e) {
+		this.setState({
+			email: e.target.value
+		})
 	}
 	updateUsername (e) {
 		this.setState({
@@ -27,24 +35,33 @@ export default class Register extends React.Component {
 	}
 	sendToServer (e) {
 		e.preventDefault();
+		
 		let that = this;
-		let obj = {username: this.state.username, password: this.state.password}
+		let obj = {username: this.state.username.trim(), email: this.state.email.trim(), password: this.state.password.trim()}
 
-		if (this.state.username === '' || this.state.password === '') {
+		if (this.state.username === '' || this.state.password === '' || this.props.email === '') {
 			this.setState({
 				feedback: 'please fill out all fields'
 			})
 			return
 		}
-
+		
+		this.props.processing(true);
 
 		return axios.post(`${API_BASE_URL}/api/register`, obj)
-		  .then(function(response){
-		  	console.log(response)
-		    that.setState({feedback: "done!"})
+		  .then(response => {
+		  	// console.log(response);
+		  	this.props.processing(false);
+		    that.setState({feedback: "done!"});
+		   	obj = {username: this.state.email.trim(), password: this.state.password.trim()}
+		    this.props.loginFunction(obj);
 		  })
-		  .catch((err) => {
-		  	console.error(err)
+		  .catch(err => {
+		  	this.props.processing(false);
+		  	// console.error(err)
+		  	this.setState({
+				feedback: err.response.data.message
+			})
 		  });  
 
 	}
@@ -58,14 +75,19 @@ export default class Register extends React.Component {
 					value={this.state.username} 
 					onChange={ this.updateUsername } required />
 				<input 
+					type="email" 
+					placeholder="email" 
+					value={this.state.email} 
+					onChange={ this.updateEmail } required />
+				<input 
 					type="password" 
 					placeholder="password" 
 					value={this.state.password} 
 					onChange={(e) => this.updatePassword(e) } required />
 				<div>
-					<button type="button" onClick={this.sendToServer} >click</button>
+					<button type="submit" >register</button>
 				</div>
-				<div>{this.state.feedback}</div>
+				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
 
 		)

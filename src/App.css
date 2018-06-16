@@ -1,3 +1,14 @@
+* {
+	outline: none;
+}
 main {
-	margin-top: 50px;
+	padding-top: 50px;
+}
+.hide {
+	opacity: 0;
+	display: none !important;
+}
+.show {
+	opacity: 1;
+	display: inline-block !important;
 }
