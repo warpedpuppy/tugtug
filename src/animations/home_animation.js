@@ -25,7 +25,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 		blockForegrounds: [],
 		blockBackgrounds: [],
 		colors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000],
-		Init: function(){
+		init: function(){
 			window.onresize = this.resizeHandler.bind(this);
 	        this.canvasWidth = this.utils.returnCanvasWidth();
 	        this.stage = new PIXI.Container(); 
@@ -54,7 +54,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 	       
 
 	    },
-	    Stop: function () {
+	    stop: function () {
 	    	window.onresize = undefined;
 	        this.app.ticker.destroy();
 	    },

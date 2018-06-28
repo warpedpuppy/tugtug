@@ -6,6 +6,8 @@
 6) manage close server calls
 7) home page -- make animation webgl proof
 8) if you log out it goes right to home page 
+9) recaptcha
+10) figure out AWS billing situation
 
 
 ---

@@ -12,20 +12,17 @@ export default class HomeCanvas extends React.Component {
 	}
 	componentDidMount(){
 		this.home_page = home_page(Utils, PIXI, this.canvas, TimelineMax);
-		this.home_page.Init();
+		this.home_page.init();
 	}
 	componentWillUnmount(){
-		this.home_page.Stop();
+		this.home_page.stop();
 		// <!--<div className="fpsCheckerShell">
 		// 		<div id='fpsChecker'></div>
 		// 		</div>-->
 	}
 	render () {
 		return (
-			<div id='homeCanvas' ref={item => this.canvas = item} >
-				
-			</div>
+			<div id='homeCanvas' ref={item => this.canvas = item} ></div>
 		)
 	}
-	
 }

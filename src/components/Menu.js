@@ -44,9 +44,6 @@ class Menu extends Component {
 		this.setState({redirect: true})
 		this.props.deleteAll();
 		this.props.closeMenu();
-		// delete all content in avatar reducer
-
-		// delete all 
 	  }
 	  hideDropDownAndLogin(e){
 	  	if(e){
