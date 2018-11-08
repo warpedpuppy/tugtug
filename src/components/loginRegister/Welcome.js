@@ -11,9 +11,7 @@ class Welcome extends React.Component {
 				</div>
 			)
 		} else {
-			return (
-				<div className='welcomeDivTemp'>please log in!</div>
-			)
+			return ( <h1></h1>/*<div className='welcomeDivTemp'>please log in!</div>*/)
 		}
 	}
 }

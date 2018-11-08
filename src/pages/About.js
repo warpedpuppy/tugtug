@@ -22,9 +22,16 @@ export default function About () {
 			</div>
 			<div className="aboutPageText">
 				<h2>About</h2>
-				 <p>We web devs spend a lot of time materializing other people's vistions. </p>
-
-	            <p>This site is going to be my site to do with as I please.</p>
+				 <p>My goal here is to create an art based interactive experience that makes people feel peaceful and refreshed.</p>
+				 <p>Several goals I have: 
+				 <ul>
+				 <li>user must make account</li>
+				 <li>each users world will be a customizable work of art</li>
+				 <li>users can visit each other&apos;s world and add art to their background</li>
+				 <li>I would like the user to have to return at least once a week.  Not with an incentive that involves punishment, but reward.</li>
+				 <li>I would like there to be a way for to know generally where the users are</li>
+				 </ul>
+				 </p>
 			</div>
 		</section>
     );

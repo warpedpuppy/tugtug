@@ -56,7 +56,7 @@ export default function(gv,createjs) {
         var y = (6 - x.length);
         var z = '000000';
         var z1 = z.substring(0, y);
-        var color = '#' + z1 + x;
+        var color = '0x' + z1 + x;
         return color;
     },
     cosWave: function (startPoint, differential, speed) {

@@ -48,10 +48,10 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 				console.log('not webgl')
 			}
 			
-			this.build();
+			
 			this.stage.addChild(this.kingCont);
 	        this.app.ticker.add(this.animate.bind(this));
-	       
+	          this.resizeHandler();
 
 	    },
 	    stop: function () {
@@ -59,22 +59,55 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 	        this.app.ticker.destroy();
 	    },
 	    build: function () {
-	    	let counter = 0;
+	    	// let counter = 0;
 
-	    	for(let i = 0; i < 7; i ++){
-	    		let size = 100 + (i*120);
-	    		let shape = this.Ring(size, this.colors[counter]);
+	    	// for(let i = 0; i < 7; i ++){
+	    	// 	let size = 100 + (i*120);
+	    	// 	let shape = this.Ring(size, this.colors[counter]);
 
-	    		this.kingCont.addChildAt(shape, 0);
-	    		counter ++;
-	    		this.shapes.push(shape);
-	    		if(counter >= this.colors.length){
-	    			counter = 0;
-	    		}
+	    	// 	this.kingCont.addChildAt(shape, 0);
+	    	// 	counter ++;
+	    	// 	this.shapes.push(shape);
+	    	// 	if(counter >= this.colors.length){
+	    	// 		counter = 0;
+	    	// 	}
+	    	// }
+	    	let horizBoxQ = 10;
+	    	let vertBoxQ = 10;
+	    	let boxWidth = this.width/horizBoxQ;
+			let boxHeight = this.height/vertBoxQ;
+	    	let width = 100;
+    		for(let i = 0; i < vertBoxQ; i ++){
+    		 	 for(let j = 0; j < horizBoxQ; j ++){
+		    		let item = this.Item(10, width, boxWidth, boxHeight);
+		    		item.x = i * boxWidth;
+		    		item.y = j * boxHeight;
+		    		this.stage.addChild(item)
+		    	}
+		    }
+
+	    	// 
+	    },
+	    Item: function (q, start, width, height) {
+	    	const cont = new PIXI.Container();
+	    	let w = width;
+	    	let h = height;
+	    	for(let i = 0; i < q; i ++) {
+	    		let dot = this.Box(w, h, 0x000000);
+				dot.alpha = this.utils.randomNumberBetween(0.01, 0.9);
+	    		w *= 0.8;
+	    		h *= 0.8;
+	    		cont.addChild(dot);
 	    	}
 
+	    	return cont
 
 
+	    },
+	    Box: function(width, height, color) {
+	    	let dot = new PIXI.Graphics();
+	    	dot.beginFill(color).drawRect(0,0,width, height).endFill();
+	    	return dot;
 	    },
 		Ring: function (sizeParam, color) {
 
@@ -123,7 +156,7 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			this.renderer.resize(this.width, this.height);
 
 			this.stage.addChild(this.kingCont);
-
+			this.build();
 			
 		},
 		clear: function (){

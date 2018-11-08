@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class Menu extends Component {
+	
 	  constructor(props) {
 		super(props);
 		this.toggleLogin = this.toggleLogin.bind(this);
@@ -26,30 +27,30 @@ class Menu extends Component {
 	  	if(e){
 	  		e.preventDefault();
 	  	}
-	  	this.props.toggleMenu();
+	  	this.props.dispatch(toggleMenu());
 	    this.setState({
 	      showDropDown: false,
 	      showLogin: true
 	    })
 	  }
 	  showDropDown(e){
-	  	this.props.toggleMenu();
+	  	this.props.dispatch(toggleMenu());
 	  	this.setState({
 	  		showDropDown: !this.state.showDropDown
 	  	})
 	  }
   	  logOut (e) {
 		e.preventDefault();
-		this.props.deleteToken();
+		this.props.dispatch(deleteToken());
 		this.setState({redirect: true})
-		this.props.deleteAll();
-		this.props.closeMenu();
+		this.props.dispatch(deleteAll());
+		this.props.dispatch(closeMenu());
 	  }
 	  hideDropDownAndLogin(e){
 	  	if(e){
 	  		e.preventDefault();
 	  	}
-	  	this.props.closeMenu();
+	  	this.props.dispatch(closeMenu());
 	  	this.setState({ showLogin: false })
 	  }
 	  
@@ -86,7 +87,9 @@ class Menu extends Component {
 						<Link className={showLogOut} to="/store">
 						<span>store</span>
 						</Link>
+						{/*
 						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
+						*/}
 						<a className={showLogOut} onClick={this.logOut}>log out</a>
 					</div>
 					
@@ -106,8 +109,24 @@ export const mapStateToProps = state => ({
     token: state.tokenReducer.token,
     menuOpen: state.themeReducer.menuOpen
 });
-function mapDispatchToProps(dispatch){
-    return bindActionCreators({
-        openMenu, toggleMenu, closeMenu, deleteToken, deleteAll}, dispatch);
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+
+
+
+// function mapDispatchToProps(dispatch){
+//     return bindActionCreators({
+//         openMenu, toggleMenu, closeMenu, deleteToken, deleteAll}, dispatch);
+// }
+
+
+
+
+
+
+export default connect(mapStateToProps)(Menu);
+
+
+
+
+
+
+
