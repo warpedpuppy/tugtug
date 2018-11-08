@@ -23,6 +23,7 @@ export default function About () {
 			<div className="aboutPageText">
 				<h2>About</h2>
 				 <p>My goal here is to create an art based interactive experience that makes people feel peaceful and refreshed.</p>
+				{/*
 				 <p>Several goals I have: 
 				 <ul>
 				 <li>user must make account</li>
@@ -32,6 +33,7 @@ export default function About () {
 				 <li>I would like there to be a way for to know generally where the users are</li>
 				 </ul>
 				 </p>
+				 */}
 			</div>
 		</section>
     );
