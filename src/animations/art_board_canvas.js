@@ -4,7 +4,8 @@ export default function(Utils, PIXI) {
     	app: new PIXI.Application(),
     	width: 1000,
     	height:300,
-		colors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000],
+    	drag: false,
+		chosenColor: 0x000000,
 		init: function () {
 			window.onresize = this.resizeHandler.bind(this);
 	        this.canvasWidth = this.width;//this.utils.returnCanvasWidth();
@@ -32,6 +33,8 @@ export default function(Utils, PIXI) {
 			this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
 			this.mouseOutHandler = this.mouseOutHandler.bind(this);
 			this.mouseDownHandler = this.mouseDownHandler.bind(this);
+			this.mouseUpHandler = this.mouseUpHandler.bind(this);
+
 
 			s.interactive = true;
 			s.buttonMode = true;
@@ -51,25 +54,38 @@ export default function(Utils, PIXI) {
 	        this.resizeHandler();
 
 		},
+		changeColor: function (color) {
+			console.log('change to '+color.hex);
+				console.log(color.hex)
+		 	let convert = '0x' + color.hex.substr(1);
+		 	console.log(convert)
+			this.chosenColor = convert;
+		},
 		mouseOverHandler: function () {
 			this.s.mousemove = this.mouseMoveHandler;
 			this.s.pointerdown = this.mouseDownHandler;
 			document.getElementById('results2').innerHTML = `over`;
 		},
 		mouseDownHandler: function () {
-
-			let n = new PIXI.Graphics();
-			n.beginFill(0x000000).drawRect(0,0,10,10).endFill();
-			n.x = Math.floor(this.x / 10) * 10;
-			n.y = Math.floor(this.y / 10) * 10;
-			this.stage.addChild(n);
-			console.log(this.stage.numChildren)
-			
+			this.drag = true;
+			this.s.pointerup = this.mouseUpHandler;
+		},
+		mouseUpHandler: function () {
+			this.drag = false;
+			this.s.pointerup = null;
 		},
 		mouseMoveHandler: function (e) {
-			let x = this.x = Math.floor(e.data.global.x);
-			let y =  this.y = Math.floor(e.data.global.y);
-			document.getElementById('results2').innerHTML = `${x} by ${y}`;
+			if (this.drag) {
+				let x = this.x = Math.floor(e.data.global.x);
+				let y =  this.y = Math.floor(e.data.global.y);
+				let n = new PIXI.Graphics();
+				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
+				n.x = Math.floor(this.x / 10) * 10;
+				n.y = Math.floor(this.y / 10) * 10;
+				this.stage.addChild(n);
+				document.getElementById('results2').innerHTML = `${x} by ${y}`;
+			}
+			
 		},
 		mouseOutHandler: function () {
 			this.s.mousemove = this.s.pointerdown = undefined;
