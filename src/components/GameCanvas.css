@@ -4,3 +4,15 @@
 	height: calc(100vh - 100px);
 	z-index: -1;
 }
+.colorPickerButton {
+	position: fixed;
+	top:5px;
+	right:5px;
+	z-index: 5002;
+}
+.colorPickerPanel {
+	position: fixed;
+	top:5px;
+	right:5px;
+	z-index: 5001;
+}

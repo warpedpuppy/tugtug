@@ -1,4 +1,4 @@
-export default function Game (PIXI, Utils){
+export default function Game (PIXI, Utils, art_board){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -16,7 +16,13 @@ export default function Game (PIXI, Utils){
         speed: 2,
         cols: 4,
         rows: 4,
+        move: false,
+        panelForArtBoard: 0,
         init: function () {
+
+            this.art_board = art_board(this.utils, PIXI);
+            this.art_board.init();
+
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -43,6 +49,10 @@ export default function Game (PIXI, Utils){
             this.placeBehindRows = this.rows - 1;
             window.addEventListener('keydown', this.keyPress);
 
+        },
+        changeColor: function (color) {
+            console.log("change color");
+            this.art_board.changeColor(color);
         },
         keyPress: function(e){
             e.preventDefault();
@@ -86,9 +96,19 @@ export default function Game (PIXI, Utils){
                 let frame = new PIXI.Graphics();
                 frame.lineStyle(3, 0xFF0000).moveTo(0,0).lineTo(w, 0).lineTo(w,h).lineTo(0,h).lineTo(0,0)
                 this.backgroundCont.addChild(frame);
+
+                if (panelCounter === this.panelForArtBoard) {
+                    let board = this.art_board.returnArtBoard();
+
+                    board.x = (this.panelWidth - board.width)/2;
+                    board.y = (this.panelHeight - board.height)/2;
+                    this.art_board.setOffsets(board.x, board.y);
+                    panel.addChild(board);
+                }
                 panelCounter ++;
             }
             }
+           // this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
         PegPanel: function (num) {
@@ -170,6 +190,13 @@ export default function Game (PIXI, Utils){
             this.foregroundCont.addChild(this.ball);
             this.gamePlay = true;
         },
+        toggleAvi: function () {
+            if(!this.ball.parent){
+                this.foregroundCont.addChild(this.ball);
+            } else {
+                this.foregroundCont.removeChild(this.ball);
+            }
+        },
         Ball: function () {
             if(!this.cont){
                 let sprite = new PIXI.Sprite.fromImage('/bmps/character.png');
@@ -249,20 +276,22 @@ export default function Game (PIXI, Utils){
             }
         },
         animate: function () {
-            for(let i = 0; i < this.total; i++){
-                this.panels[i].y += this.velY;
-                this.panels[i].x += this.velX;
-                if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
-                    this.panels[i].y = -this.panelHeight;
-                }
-                if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
-                    this.panels[i].x = -this.panelWidth;
-                }
-                 if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
-                    this.panels[i].y = this.panelHeight;
-                }
-                if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
-                    this.panels[i].x = this.panelWidth;
+            if (this.move) {
+                for(let i = 0; i < this.total; i++){
+                    this.panels[i].y += this.velY;
+                    this.panels[i].x += this.velX;
+                    if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
+                        this.panels[i].y = -this.panelHeight;
+                    }
+                    if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
+                        this.panels[i].x = -this.panelWidth;
+                    }
+                     if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
+                        this.panels[i].y = this.panelHeight;
+                    }
+                    if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
+                        this.panels[i].x = this.panelWidth;
+                    }
                 }
             }
             // let globalPoint = this.panels[4].toGlobal(new PIXI.Point(this.panels[4].x,this.panels[4].y ));

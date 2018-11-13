@@ -12,32 +12,31 @@ class ArtBoardCanvas extends React.Component {
 		this.art_board = {};
 		this.state = {
 		    background: '#fff',
+		    panelVisible: false,
+		    panelButtonText: "see panel"
 		  };
 	}
-	componentDidMount(){
+	componentDidMount () {
 		this.art_board = art_board_js(Utils, PIXI);
 		this.art_board.init();
 	}
-	componentWillUnmount(){
+	componentWillUnmount () {
 		this.art_board.stop();
 	}
-	 handleChangeComplete = (color) => {
-	 
-	 	this.art_board.changeColor(color);
-	    this.setState({ background: color.hex });
-	  };
+	
 	render () {
+		let panelClass = (this.state.panelVisible)?"show":"hide";
 		return (	
 			<div className="cont">
-			
-			<h1>canvas</h1>
 			<div 
 			id="art_board_canvas" 
 			></div>
 			<SketchPicker 
-        color={ this.state.background }
-        onChangeComplete={ this.handleChangeComplete }/>
-			<div id="results2"></div>
+				className={panelClass}
+        		color={ this.state.background }
+        		onChangeComplete={ this.handleChangeComplete }
+        		/>
+        		<button className="button" onClick={ e => this.seePanel() }>{this.state.panelButtonText}</button>
 			</div>
 		)
 	}

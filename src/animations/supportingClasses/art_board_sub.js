@@ -1,29 +1,25 @@
-export default function(Utils, PIXI) {
+export default function(utils, PIXI) {
 	return {
-		utils: new Utils(),
-    	app: new PIXI.Application(),
+		utils: utils,
     	width: 1000,
     	height:300,
     	drag: false,
 		chosenColor: 0x000000,
+		offsetX: 0,
+		offsetY: 0,
 		init: function () {
-			window.onresize = this.resizeHandler.bind(this);
 	        this.canvasWidth = this.width;//this.utils.returnCanvasWidth();
-	        this.stage = new PIXI.Container();
+	        this.artBoard = new PIXI.Container();
 	        this.pixelCont = new PIXI.Container(); 
 	        this.mouseListen = new PIXI.Container(); 
-	        this.renderer = PIXI.autoDetectRenderer(1000, 300);
-	        this.renderer.backgroundColor = 0xFF0000;
-	        document.getElementById('art_board_canvas').appendChild(this.renderer.view);
-	        this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
-			this.width =  this.utils.returnCanvasWidth();
+	      
 			this.height = this.utils.returnCanvasHeight();
 			this.halfWidth = this.width/2;
 			this.halfHeight = this.height/2;
 
 
-			this.stage.addChild(this.mouseListen);
-			this.stage.addChild(this.pixelCont);
+			this.artBoard.addChild(this.mouseListen);
+			this.artBoard.addChild(this.pixelCont);
 			let s = new PIXI.Graphics();
 			s.beginFill(0x00FF00).drawRect(0,0,1000,300).endFill();
 			s.alpha = 0.5;
@@ -42,18 +38,15 @@ export default function(Utils, PIXI) {
 			s.mouseout = this.mouseOutHandler;
 			this.s = s;
 
-			if (!this.webGL) {
-				console.log('this webgl = ', this.webGL)
-				console.log('not webgl')
-			} else {
-				console.log('this webgl = ', this.webGL)
-				console.log('webgl')
-			}
-			
-	        this.app.ticker.add(this.animate.bind(this));
-	        this.resizeHandler();
 
 		},
+		returnArtBoard: function () {
+			return this.artBoard;
+		},
+		setOffsets: function (x,y) {
+			this.offsetX = x;
+			this.offsetY = y;
+		},	
 		changeColor: function (color) {
 			console.log('change to '+color.hex);
 				console.log(color.hex)
@@ -76,36 +69,22 @@ export default function(Utils, PIXI) {
 		},
 		mouseMoveHandler: function (e) {
 			if (this.drag) {
+
 				let x = this.x = Math.floor(e.data.global.x);
 				let y =  this.y = Math.floor(e.data.global.y);
 				let n = new PIXI.Graphics();
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
-				n.x = Math.floor(this.x / 10) * 10;
-				n.y = Math.floor(this.y / 10) * 10;
-				this.stage.addChild(n);
+				n.x = (Math.floor(this.x / 10) * 10) - this.offsetX;
+				n.y = Math.floor(this.y / 10) * 10 - this.offsetY;
+				this.artBoard.addChild(n);
 				// document.getElementById('results2').innerHTML = `${x} by ${y}`;
+				//console.log(`${x} by ${y}`)
 			}
 			
 		},
 		mouseOutHandler: function () {
 			this.s.mousemove = this.s.pointerdown = undefined;
 			// document.getElementById('results2').innerHTML = `out`;
-		},
-		stop: function () {
-			window.onresize = undefined;
-	        this.app.ticker.destroy();
-		},
-		animate: function () {
-			this.renderer.render(this.stage);
-		},
-		resizeHandler: function (){
-			this.stage.removeChildren();
-			this.width =  1000;//this.utils.returnCanvasWidth();
-			this.height = 300;//this.canvasHeight = this.utils.returnCanvasHeight();
-			this.renderer.resize(this.width, this.height);
-
-			this.stage.addChild(this.mouseListen);
-			
 		}
 
 

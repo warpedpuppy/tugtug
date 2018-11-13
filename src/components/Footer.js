@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import twitter from '../svgs/Twitter.svg';
 import './Footer.css';
 import {connect} from 'react-redux';
-
 function Footer (props) {
 
 	if(props.token === 'blank') {

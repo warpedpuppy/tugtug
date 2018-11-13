@@ -12,3 +12,8 @@ main {
 	opacity: 1;
 	display: inline-block !important;
 }
+.button {
+	padding:10px 20px;
+	border-radius: 3px;
+	cursor: pointer;
+}
