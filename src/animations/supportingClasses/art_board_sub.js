@@ -71,8 +71,8 @@ export default function(utils, PIXI) {
 		mouseMoveHandler: function (e) {
 			if (this.drag) {
 
-				// let x = this.x = Math.floor(e.data.global.x);
-				// let y =  this.y = Math.floor(e.data.global.y);
+				this.x = Math.floor(e.data.global.x);
+				this.y = Math.floor(e.data.global.y);
 				let n = new PIXI.Graphics();
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
 				n.x = (Math.floor(this.x / 10) * 10) - this.offsetX;

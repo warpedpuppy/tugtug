@@ -4,6 +4,10 @@
 	height: calc(100vh - 100px);
 	z-index: -1;
 }
+#game_canvas canvas {
+	position: relative;
+	z-index: 4999;
+}
 .colorPickerButton {
 	position: fixed;
 	top:50px;
@@ -12,7 +16,7 @@
 }
 .colorPickerPanel {
 	position: fixed;
-	top:5px;
-	right:5px;
+	top:-25px;
+	right:-55px;
 	z-index: 5001;
 }

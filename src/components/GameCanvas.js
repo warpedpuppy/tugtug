@@ -20,15 +20,21 @@ class GameCanvas extends React.Component {
 		this.game = game_code(PIXI, Utils, art_board_code);
 		this.game.init();
 		this.game.update(this.props.items);
+		this.editMode = this.props.editMode;
 	}
 	componentWillUnmount(){
 		this.game.stop();
 	}
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);
-		console.log('this is the color'+this.props.color);
+		// console.log('this is the color'+this.props.color);
 		console.log('edit mode = '+this.props.editMode.toString())
-		this.game.toggleAvi(this.props.editMode);
+
+		if(this.editMode !== this.props.editMode){
+			this.game.toggleAvi(this.props.editMode);
+			this.editMode = this.props.editMode;
+		}
+		
 	}
 
 	render () {

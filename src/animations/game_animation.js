@@ -192,10 +192,8 @@ export default function Game (PIXI, Utils, art_board){
             this.foregroundCont.addChild(this.ball);
             this.gamePlay = true;
         },
-        toggleAvi: function () {
-
-            console.log(this.homePanel.x)
-            if(!this.ball.parent){
+        toggleAvi: function (stopAction) {
+            if(!stopAction){
                 this.foregroundCont.addChild(this.ball);
                 this.homePanel.x = this.storeX;
                 this.homePanel.y = this.storeY;

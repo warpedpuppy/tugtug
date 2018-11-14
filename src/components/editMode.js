@@ -15,7 +15,7 @@ class EditMode extends React.Component {
 	}
 	editModeHandler (e) {
 		e.preventDefault();
-		this.props.dispatch(toggleEditMode());
+		this.props.dispatch(toggleEditMode(!this.props.editMode));
 	}
 	handleChangeComplete = (color) => {
 		this.props.dispatch(changeColor(color.hex))
