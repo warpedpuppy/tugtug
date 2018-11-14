@@ -5,7 +5,6 @@ import Utils from '../animations/utils'
 import game_code from '../animations/game_animation'
 import art_board_code from '../animations/supportingClasses/art_board_sub'
 import {connect} from 'react-redux';
-import { SketchPicker } from 'react-color';
 class GameCanvas extends React.Component {
 	constructor(props){
 		super(props);
@@ -26,42 +25,26 @@ class GameCanvas extends React.Component {
 		this.game.stop();
 	}
 	componentDidUpdate(){
-		this.game.update(this.props.items);
+		this.game.changeColor(this.props.color);
+		console.log('this is the color'+this.props.color);
+		console.log('edit mode = '+this.props.editMode.toString())
+		this.game.toggleAvi(this.props.editMode);
 	}
-	handleChangeComplete = (color) => {
-		this.game.changeColor(color);
-	 	// this.art_board.changeColor(color);
-	     this.setState({ background: color.hex });
 
-	 }
-	seePanel () {
-		let newText = (this.state.panelButtonText === "see panel")?"hide panel":"see panel";
-		 this.setState({ 
-		 	panelVisible: !this.state.panelVisible,
-		 	panelButtonText: newText
-		 });
-		 this.game.toggleAvi();
-	}
 	render () {
-		let panelClass = (this.state.panelVisible)?"show":"hide";
-		let classString = `${panelClass} colorPickerPanel`;
 		return (
 			<div>
 			<div id="game_canvas"></div>
-			<SketchPicker 	
-			className={classString}
-			color={ this.state.background }
-			onChangeComplete={ this.handleChangeComplete }
-			/>
-    		<button className="button colorPickerButton" onClick={ e => this.seePanel() }>{this.state.panelButtonText}</button>
-    		</div>
+			</div>
 		)
 	}
 	
 }
 
 export const mapStateToProps = state => ({
-    items: state.avatarReducer.items
+    items: state.avatarReducer.items,
+    color: state.themeReducer.color,
+    editMode: state.themeReducer.editMode
 });
 
 export default connect(mapStateToProps)(GameCanvas);

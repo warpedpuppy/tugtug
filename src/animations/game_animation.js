@@ -16,8 +16,9 @@ export default function Game (PIXI, Utils, art_board){
         speed: 2,
         cols: 4,
         rows: 4,
-        move: false,
+        move: true,
         panelForArtBoard: 0,
+        homePanel: undefined,
         init: function () {
 
             this.art_board = art_board(this.utils, PIXI);
@@ -104,6 +105,7 @@ export default function Game (PIXI, Utils, art_board){
                     board.y = (this.panelHeight - board.height)/2;
                     this.art_board.setOffsets(board.x, board.y);
                     panel.addChild(board);
+                    this.homePanel = panel;
                 }
                 panelCounter ++;
             }
@@ -191,11 +193,29 @@ export default function Game (PIXI, Utils, art_board){
             this.gamePlay = true;
         },
         toggleAvi: function () {
+
+            console.log(this.homePanel.x)
             if(!this.ball.parent){
                 this.foregroundCont.addChild(this.ball);
+                this.homePanel.x = this.storeX;
+                this.homePanel.y = this.storeY;
+                this.move = true;
+                this.hidePanels(false);
             } else {
                 this.foregroundCont.removeChild(this.ball);
+                this.move = false;
+                this.hidePanels(true);
+                this.storeX = this.homePanel.x;
+                this.storeY = this.homePanel.y;
+                this.homePanel.x = this.homePanel.y = 0;
             }
+        },
+        hidePanels: function (hide) {
+             for(let i = 0; i < this.total; i++){
+                if (this.panels[i] !== this.homePanel) {
+                    this.panels[i].visible = !hide;
+                }
+             }
         },
         Ball: function () {
             if(!this.cont){

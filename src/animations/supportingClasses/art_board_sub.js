@@ -48,11 +48,12 @@ export default function(utils, PIXI) {
 			this.offsetY = y;
 		},	
 		changeColor: function (color) {
-			console.log('change to '+color.hex);
-				console.log(color.hex)
-		 	let convert = '0x' + color.hex.substr(1);
-		 	console.log(convert)
-			this.chosenColor = convert;
+			console.log('change to '+color);
+			if(color){
+				let convert = '0x' + color.substr(1);
+				this.chosenColor = convert;
+			}
+		
 		},
 		mouseOverHandler: function () {
 			this.s.mousemove = this.mouseMoveHandler;
@@ -70,8 +71,8 @@ export default function(utils, PIXI) {
 		mouseMoveHandler: function (e) {
 			if (this.drag) {
 
-				let x = this.x = Math.floor(e.data.global.x);
-				let y =  this.y = Math.floor(e.data.global.y);
+				// let x = this.x = Math.floor(e.data.global.x);
+				// let y =  this.y = Math.floor(e.data.global.y);
 				let n = new PIXI.Graphics();
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
 				n.x = (Math.floor(this.x / 10) * 10) - this.offsetX;

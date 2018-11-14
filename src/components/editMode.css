@@ -1,0 +1,9 @@
+.editModeButton {
+display: block;
+}
+.editModeShell {
+	border:10px solid black;
+	display:inline-block;
+	position: absolute;
+	right:0;
+}

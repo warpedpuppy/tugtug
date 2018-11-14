@@ -9,6 +9,7 @@ import { deleteAll } from '../actions/avatarActions.js';
 import { openMenu, toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import EditMode from './editMode';
 
 class Menu extends Component {
 	
@@ -68,6 +69,7 @@ class Menu extends Component {
 			<div>
 				{redirect}
 				<nav>
+				
 					<div className="not-links">
 						<Link className="homeLink" to="/">
 							<LogoGraphic passedClasses={classes}/>
@@ -78,7 +80,9 @@ class Menu extends Component {
 							<span></span>
 							<span></span>
 						</div>
+						
 					</div>
+
 					<div className={`links  ${showDropDownClass}`}>
 						
 						<Link className={showLogOut} to="/game">
@@ -92,7 +96,7 @@ class Menu extends Component {
 						*/}
 						<a className={showLogOut} onClick={this.logOut}>log out</a>
 					</div>
-					
+					<EditMode />
 				</nav>
 				
 				<LoginRegisterContainer 
