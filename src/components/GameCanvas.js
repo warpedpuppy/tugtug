@@ -5,6 +5,9 @@ import Utils from '../animations/utils'
 import game_code from '../animations/game_animation'
 import art_board_code from '../animations/supportingClasses/art_board_sub'
 import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_BASE_URL} from '../config';
+
 class GameCanvas extends React.Component {
 	constructor(props){
 		super(props);
@@ -15,12 +18,22 @@ class GameCanvas extends React.Component {
 		    panelButtonText: "see panel"
 		  };
 	}
+	getUserData () {
+		return axios.get(`${API_BASE_URL}/api/users`)
+		  .then(function(response){
+		  	console.log(response)
+		  })
+		  .catch((err) => {
+		  	console.log(err)
+		  });  
+	}
 	componentDidMount(){
 
 		this.game = game_code(PIXI, Utils, art_board_code);
 		this.game.init();
 		this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
+		this.getUserData();
 	}
 	componentWillUnmount(){
 		this.game.stop();
