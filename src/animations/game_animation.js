@@ -1,4 +1,4 @@
-export default function Game (PIXI, Utils, art_board){
+export default function Game (PIXI, Utils, art_board, userObject, getUserName){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -16,10 +16,14 @@ export default function Game (PIXI, Utils, art_board){
         speed: 2,
         cols: 4,
         rows: 4,
-        move: true,
+        move: false,
         panelForArtBoard: 0,
         homePanel: undefined,
         init: function () {
+
+
+
+            this.userObject = userObject;
 
             this.art_board = art_board(this.utils, PIXI);
             this.art_board.init();
@@ -88,7 +92,8 @@ export default function Game (PIXI, Utils, art_board){
                 
                 let w = this.panelWidth = this.canvasWidth;//panel.width;
                 let h = this.panelHeight = this.canvasHeight;
-                panel = this.PegPanel(panelCounter);
+                let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: getUserName()};
+                panel = this.PegPanel(panelCounter, userObject);
                 panel.x = w * j;
                 panel.y = h * i;
                 this.panels.push(panel)
@@ -110,10 +115,10 @@ export default function Game (PIXI, Utils, art_board){
                 panelCounter ++;
             }
             }
-           // this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
+           //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
-        PegPanel: function (num) {
+        PegPanel: function (num, userData) {
             let peg,
                 pegPanel = new PIXI.Container();
 
@@ -130,11 +135,16 @@ export default function Game (PIXI, Utils, art_board){
             dot.pivot.x = dot.pivot.y = 0.5;
             pegPanel.addChild(dot);
 
-             let text = new PIXI.Text(num,{fontFamily : 'Arial', fontSize: 48, fill : 0xffffff, align : 'center'});
+            let text = new PIXI.Text(num,{fontFamily : 'Arial', fontSize: 48, fill : 0xffffff, align : 'center'});
             text.x = this.panelWidth/2;
             text.y = this.panelHeight/2;
             text.anchor.x = text.anchor.y = 0.5;
-             pegPanel.addChild(text)
+            pegPanel.addChild(text)
+
+            let name = new PIXI.Text(userData.username,{fontFamily : 'Arial', fontSize: 150, fill : 0x000000, align : 'center'});
+            name.x = 100;
+            name.y = 50;
+            pegPanel.addChild(name)
 
 
             for (let i = 0; i < vertQ; i ++) {

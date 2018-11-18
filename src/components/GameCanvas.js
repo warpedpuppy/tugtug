@@ -7,33 +7,42 @@ import art_board_code from '../animations/supportingClasses/art_board_sub'
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
+import faker from 'faker';
 
 class GameCanvas extends React.Component {
 	constructor(props){
 		super(props);
 		this.game = {};
+		this.getUserData = this.getUserData.bind(this);
 		this.state = {
 		    background: '#fff',
 		    panelVisible: false,
 		    panelButtonText: "see panel"
 		  };
+
+	}
+	getUserName () {
+		return faker.name.firstName();
 	}
 	getUserData () {
+		let that = this;
 		return axios.get(`${API_BASE_URL}/api/users`)
 		  .then(function(response){
-		  	console.log(response)
+		  	that.startGame(response.data);
 		  })
 		  .catch((err) => {
 		  	console.log(err)
 		  });  
 	}
-	componentDidMount(){
-
-		this.game = game_code(PIXI, Utils, art_board_code);
+	componentWillMount () {
+		this.getUserData();
+	}
+	startGame(data){
+		this.game = game_code(PIXI, Utils, art_board_code, data, this.getUserName);
 		this.game.init();
 		this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
-		this.getUserData();
+		
 	}
 	componentWillUnmount(){
 		this.game.stop();
