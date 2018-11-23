@@ -1,6 +1,9 @@
 * {
 	outline: none;
 }
+body {
+	overflow: hidden;
+}
 main {
 	padding-top: 50px;
 }

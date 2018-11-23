@@ -19,6 +19,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         move: false,
         panelForArtBoard: 0,
         homePanel: undefined,
+        characterHeight: 154,
         init: function () {
 
 
@@ -115,8 +116,26 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 panelCounter ++;
             }
             }
-           //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
+           this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
+        },
+        BouncePlatform () {
+            let cont = new PIXI.Container();
+            let platform = new PIXI.Graphics();
+            let w = (this.utils.returnCanvasWidth() * 0.1);
+            let h = (w * 0.05);
+            platform.beginFill(0x000000).drawRect(0,0,w, h).endFill();
+            platform.pivot.x = platform.pivot.y = 0.5;
+            cont.addChild(platform);
+            return cont;
+        },
+        Doorway (w,h) {
+            let cont = new PIXI.Container();
+            let platform = new PIXI.Graphics();
+            platform.beginFill(0xFF0000).drawRect(0,0,w, h).endFill();
+            //platform.pivot.x = platform.pivot.y = 0.5;
+            cont.addChild(platform);
+            return cont;
         },
         PegPanel: function (num, userData) {
             let peg,
@@ -164,6 +183,45 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 .lineTo(0,this.panelHeight).lineTo(0,0)
                 pegPanel.addChild(frame);
 
+
+            let offset = [0.33, 0.66, 1];
+            let storeX = 0;
+            for (let i = 0; i < 3; i ++) {
+                let bp = this.BouncePlatform();
+                bp.x = this.utils.randomNumberBetween(storeX, (this.canvasWidth - bp.width) * offset[i]);
+                bp.y = (this.utils.randomNumberBetween(0, this.canvasHeight)) * 0.66;
+                storeX = bp.x + bp.width;
+                pegPanel.addChild(bp)
+            }
+
+            let topDoor = this.Doorway(100, 10);
+            topDoor.x = (this.canvasWidth - 100)/2;
+            pegPanel.addChild(topDoor);
+
+            let bottomDoor = this.Doorway(100, 10);
+            bottomDoor.x = (this.canvasWidth - 100)/2;
+            bottomDoor.y = this.panelHeight - 10;
+            pegPanel.addChild(bottomDoor);
+
+            let leftDoor = this.Doorway(10, 100);
+            leftDoor.x = 0;
+            leftDoor.y = (this.canvasHeight - 100)/2;
+            pegPanel.addChild(leftDoor);
+
+            let rightDoor = this.Doorway(10, 100);
+            rightDoor.x = this.canvasWidth - 10;
+            rightDoor.y = (this.canvasHeight - 100)/2;
+            pegPanel.addChild(rightDoor);
+
+            if(num === this.panelForArtBoard){
+                this.ball = this.Ball();
+                this.ball.x = this.halfWidth;
+                this.ball.y = this.halfHeight;
+                this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
+                this.ball.panel = pegPanel;
+                pegPanel.addChild(this.ball);
+            }
+
             return pegPanel;
         },
         Peg: function () {
@@ -196,10 +254,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             })
         },
         build: function () { 
-            this.ball = this.Ball();
-            this.ball.x = this.halfWidth;
-            this.ball.y = this.halfHeight;
-            this.foregroundCont.addChild(this.ball);
+           
             this.gamePlay = true;
         },
         toggleAvi: function (stopAction) {
@@ -235,8 +290,9 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 .beginFill(0x000000)
                 .drawCircle(0,0,40)
                 .endFill();
-                ball.radius = 20;
-                ball.vx = ball.vy = 10;
+                ball.radius = cont.radius = 20;
+                ball.vx = ball.vy = cont.vy = 10;
+                cont.sprite = sprite;
                 cont.addChild(sprite);
                 return cont;
             } else {
@@ -322,6 +378,17 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                     }
                 }
             }
+
+            this.ball.y += this.ball.vy;
+
+            if (this.ball.y >= this.ball.bottom) {
+                this.ball.vy *= -1;
+            }
+
+             if (this.ball.y  <= 0) {
+                this.ball.vy *= -1;
+            }
+
             // let globalPoint = this.panels[4].toGlobal(new PIXI.Point(this.panels[4].x,this.panels[4].y ));
             // if(this.panels[4].y > this.panelHeight*2){
             //     this.panels[4].y = -this.panelHeight;
