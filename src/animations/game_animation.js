@@ -13,11 +13,11 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         panels: [],
         velX: 0,
         velY: 0,
-        speed: 2,
+        speed: 10,
         cols: 4,
         rows: 4,
         move: false,
-        panelForArtBoard: 0,
+        panelForArtBoard: 6,
         homePanel: undefined,
         characterHeight: 154,
         moveAllow: false,
@@ -51,12 +51,14 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             this.stage.addChild(this.foregroundCont);
             this.app.ticker.add(this.animate.bind(this));
             this.keyDown = this.keyDown.bind(this);
+            this.keyUp = this.keyUp.bind(this);
             this.velX = this.velY = this.speed;
             this.total = this.cols * this.rows;
             this.placeBehindCols = this.cols - 1;
             this.placeBehindRows = this.rows - 1;
             window.addEventListener('keydown', this.keyDown);
-
+            window.addEventListener('keyup', this.keyUp);
+  
         },
         changeColor: function (color) {
             console.log("change color");
@@ -64,8 +66,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         },
         keyDown: function(e){
             e.preventDefault();
-             window.addEventListener('keyup', this.keyUp);
-             switch (e.keyCode) {
+            switch (e.keyCode) {
                 case 37:
                     this.moveAllow = true;
                     this.vx = -this.speed;
@@ -85,8 +86,8 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                     break;
                 case 40:
                     //alert('down');
-                    this.vy = true;
-                    this.velY = this.speed;
+                    this.moveAllow = true;
+                    this.vy = this.speed;
                     this.vx = 0;
                     break;
                 default:
@@ -96,7 +97,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         keyUp: function (e) {
             e.preventDefault();
             this.moveAllow = false;
-            window.removeEventListener('keyup', this.keyUp);
+          //  window.removeEventListener('keyup', this.keyUp);
         },
         addPegPanels: function () {
             let panel,
@@ -278,7 +279,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             this.gamePlay = true;
         },
         toggleAvi: function (stopAction) {
-            if(!stopAction){
+            if (!stopAction) {
                 this.foregroundCont.addChild(this.ball);
                 this.homePanel.x = this.storeX;
                 this.homePanel.y = this.storeY;
@@ -332,16 +333,36 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             this.addPegPanels();
         },
         whichPanel: function (door, panel) {
-            console.log(panel.index+" "+door.loc)
-            if(door.loc === 'up') {
 
-            } else if (door.loc === 'down') {
+            let rightX = panel.x + this.panelWidth;
+            let bottomY = panel.y + this.panelHeight;
+            let topY = panel.y - this.panelHeight;
+            let leftX = panel.x - this.panelWidth;
 
-            } else if (door.loc === 'left'){
 
-            } else if (door.loc === 'right') {
+             for (let i = 0; i < this.total; i++) {
+                console.log(`${door.loc} ${rightX} versus ${this.panels[i].x}`);
+                if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.x) {
+                    console.log(i);
+                    break;
+                } else if (door.loc === 'bottom' && this.panels[i].y === bottomY && this.panels[i].x === panel.x) {
+                    console.log(i);
+                    break;
 
-            }
+                } else if (door.loc === 'left' && this.panels[i].x === leftX && this.panels[i].y === panel.y){
+                    console.log(i);
+                    break;
+
+                } else if (door.loc === 'right' && this.panels[i].x === rightX && this.panels[i].y === panel.y) {
+                    console.log(i);
+                    break;
+                }
+
+             }
+            
+
+
+            
 
         },
         animate: function () {
