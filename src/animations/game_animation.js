@@ -20,6 +20,8 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         panelForArtBoard: 0,
         homePanel: undefined,
         characterHeight: 154,
+        moveAllow: false,
+        doors: [],
         init: function () {
 
 
@@ -48,40 +50,53 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.foregroundCont);
             this.app.ticker.add(this.animate.bind(this));
-            this.keyPress = this.keyPress.bind(this);
+            this.keyDown = this.keyDown.bind(this);
             this.velX = this.velY = this.speed;
             this.total = this.cols * this.rows;
             this.placeBehindCols = this.cols - 1;
             this.placeBehindRows = this.rows - 1;
-            window.addEventListener('keydown', this.keyPress);
+            window.addEventListener('keydown', this.keyDown);
 
         },
         changeColor: function (color) {
             console.log("change color");
             this.art_board.changeColor(color);
         },
-        keyPress: function(e){
+        keyDown: function(e){
             e.preventDefault();
+             window.addEventListener('keyup', this.keyUp);
              switch (e.keyCode) {
                 case 37:
-                    //alert('left');
-                    this.velX = -this.speed;
+                    this.moveAllow = true;
+                    this.vx = -this.speed;
+                    this.vy = 0;
                     break;
                 case 38:
                     //alert('up');
-                    this.velY = -this.speed;
+                    this.moveAllow = true;
+                    this.vy = -this.speed;
+                    this.vx = 0;
                     break;
                 case 39:
                     //alert('right');
-                    this.velX = this.speed;
+                    this.moveAllow = true;
+                    this.vx = this.speed;
+                    this.vy = 0;
                     break;
                 case 40:
                     //alert('down');
+                    this.vy = true;
                     this.velY = this.speed;
+                    this.vx = 0;
                     break;
                 default:
-                    console.log('')
+                    this.velY = 0;
             }
+        },
+        keyUp: function (e) {
+            e.preventDefault();
+            this.moveAllow = false;
+            window.removeEventListener('keyup', this.keyUp);
         },
         addPegPanels: function () {
             let panel,
@@ -98,6 +113,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 panel.x = w * j;
                 panel.y = h * i;
                 this.panels.push(panel)
+                panel.index = panelCounter;
                 this.backgroundCont.addChild(panel);
 
                 let frame = new PIXI.Graphics();
@@ -194,24 +210,29 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 pegPanel.addChild(bp)
             }
 
-            let topDoor = this.Doorway(100, 10);
-            topDoor.x = (this.canvasWidth - 100)/2;
+            let topDoor = this.Doorway(this.characterHeight, 10);
+            topDoor.loc = 'top';
+            topDoor.x = (this.canvasWidth - this.characterHeight)/2;
             pegPanel.addChild(topDoor);
 
-            let bottomDoor = this.Doorway(100, 10);
-            bottomDoor.x = (this.canvasWidth - 100)/2;
+            let bottomDoor = this.Doorway(this.characterHeight, 10);
+            bottomDoor.x = (this.canvasWidth - this.characterHeight)/2;
             bottomDoor.y = this.panelHeight - 10;
+            bottomDoor.loc = 'bottom';
             pegPanel.addChild(bottomDoor);
 
-            let leftDoor = this.Doorway(10, 100);
+            let leftDoor = this.Doorway(10, this.characterHeight);
             leftDoor.x = 0;
-            leftDoor.y = (this.canvasHeight - 100)/2;
+            leftDoor.y = (this.canvasHeight - this.characterHeight)/2;
+            leftDoor.loc = 'left';
             pegPanel.addChild(leftDoor);
 
-            let rightDoor = this.Doorway(10, 100);
+            let rightDoor = this.Doorway(10, this.characterHeight);
             rightDoor.x = this.canvasWidth - 10;
-            rightDoor.y = (this.canvasHeight - 100)/2;
+            rightDoor.y = (this.canvasHeight - this.characterHeight)/2;
             pegPanel.addChild(rightDoor);
+            rightDoor.loc = 'right';
+            this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
 
             if(num === this.panelForArtBoard){
                 this.ball = this.Ball();
@@ -254,7 +275,6 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             })
         },
         build: function () { 
-           
             this.gamePlay = true;
         },
         toggleAvi: function (stopAction) {
@@ -290,7 +310,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 .beginFill(0x000000)
                 .drawCircle(0,0,40)
                 .endFill();
-                ball.radius = cont.radius = 20;
+                ball.radius = cont.radius = this.characterHeight / 2;
                 ball.vx = ball.vy = cont.vy = 10;
                 cont.sprite = sprite;
                 cont.addChild(sprite);
@@ -311,53 +331,18 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             this.ball.y = this.halfHeight;
             this.addPegPanels();
         },
-        handleKeyDown: function (event) {
-            event.preventDefault();
-            switch(event.keyCode) {
-                case 39:
-                    //right
-                    this.paddle.vx = this.paddle.speed;
-                    this.paddle.moveLeft = false;
-                    this.paddle.moveRight= true;
-                    this.paddle.peterOut = false;
+        whichPanel: function (door, panel) {
+            console.log(panel.index+" "+door.loc)
+            if(door.loc === 'up') {
 
-                    break;
-                case 37:
-                    //left
-                    this.paddle.vx = this.paddle.speed;
-                    this.paddle.moveLeft = true;
-                    this.paddle.moveRight= false;
-                    this.paddle.peterOut = false;
-                    break;
-                case 13:
-                    this.startButton.classRef.startGame();
-                    break;
-                default:
-                    this.paddle.vx = 0;
-                    break;
+            } else if (door.loc === 'down') {
+
+            } else if (door.loc === 'left'){
+
+            } else if (door.loc === 'right') {
 
             }
-        },
-        handleKeyUp: function (event) {
-            switch(event.keyCode) {
-                case 39:
-                    //right
-                    this.paddle.moveRight= false;
-                    this.paddle.peterOut = true;
-                    break;
-                case 37:
-                    //left
-                    this.paddle.peterOut = true;
-                    this.paddle.moveLeft = false;
-                    break;
-                default:
-                    this.paddle.moveRight= false;
-                    this.paddle.peterOut = false;
-                    this.paddle.peterOut = false;
-                    this.paddle.moveLeft = false;
-                    break;
 
-            }
         },
         animate: function () {
             if (this.move) {
@@ -379,15 +364,44 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 }
             }
 
-            this.ball.y += this.ball.vy;
+            if(this.moveAllow) {
 
-            if (this.ball.y >= this.ball.bottom) {
-                this.ball.vy *= -1;
-            }
+                this.ball.y += this.vy;
+                this.ball.x += this.vx;
 
-             if (this.ball.y  <= 0) {
-                this.ball.vy *= -1;
+                if(this.ball.y < (this.characterHeight / 2)) {
+                    this.vy = 0;
+                    this.ball.y = (this.characterHeight / 2)
+                }
+
+                if(this.ball.y > (this.panelHeight - (this.characterHeight / 2))) {
+                    this.vy = 0;
+                    this.ball.y = (this.panelHeight - (this.characterHeight / 2));
+                }
+
+                if(this.ball.x < (this.characterHeight / 2)) {
+                    this.vx = 0;
+                    this.ball.x = (this.characterHeight / 2);
+                }
+
+                if(this.ball.x > (this.panelWidth - (this.characterHeight / 2))) {
+                    this.vx = 0;
+                    this.ball.x = (this.panelWidth - (this.characterHeight / 2));
+                }
+
+                for (let i = 0; i < 4; i ++ ) {
+                    let circle = this.ball;
+                    let rect = new PIXI.Rectangle(this.doors[i].x, this.doors[i].y, this.doors[i].width, this.doors[i].height)
+                    if (this.utils.circleRectangleCollision(circle, rect)) {
+                        //console.log("hit");
+                        this.whichPanel(this.doors[i], this.ball.panel)
+                    }
+                }
+
+
+         
             }
+         
 
             // let globalPoint = this.panels[4].toGlobal(new PIXI.Point(this.panels[4].x,this.panels[4].y ));
             // if(this.panels[4].y > this.panelHeight*2){
