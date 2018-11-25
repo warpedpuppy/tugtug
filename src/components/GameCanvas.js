@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import faker from 'faker';
+import { TweenMax } from 'gsap';
 
 class GameCanvas extends React.Component {
 	constructor(props){
@@ -38,7 +39,7 @@ class GameCanvas extends React.Component {
 		this.getUserData();
 	}
 	startGame(data){
-		this.game = game_code(PIXI, Utils, art_board_code, data, this.getUserName);
+		this.game = game_code(PIXI, Utils, art_board_code, data, this.getUserName, TweenMax);
 		this.game.init();
 		this.game.update(this.props.items);
 		this.editMode = this.props.editMode;

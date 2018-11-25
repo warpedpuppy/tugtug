@@ -1,4 +1,4 @@
-export default function Game (PIXI, Utils, art_board, userObject, getUserName){
+export default function Game (PIXI, Utils, art_board, userObject, getUserName, TweenMax){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -17,7 +17,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
         cols: 4,
         rows: 4,
         move: false,
-        panelForArtBoard: 6,
+        panelForArtBoard: 0,
         homePanel: undefined,
         characterHeight: 154,
         moveAllow: false,
@@ -107,12 +107,17 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
                 
-                let w = this.panelWidth = this.canvasWidth;//panel.width;
-                let h = this.panelHeight = this.canvasHeight;
+                let w = this.panelWidth = this.canvasWidth;
+                let h = this.panelHeight = this.canvasHeight - 50;
+                
                 let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: getUserName()};
-                panel = this.PegPanel(panelCounter, userObject);
-                panel.x = w * j;
-                panel.y = h * i;
+                let xVal = w * j;
+                let yVal = h * i;
+                this.leftX = (this.cols - 1) * this.panelWidth;
+                this.bottomY = (this.rows - 1) * this.panelHeight;
+                panel = this.PegPanel(panelCounter, userObject, {x: xVal, y: yVal});
+                panel.x = xVal;
+                panel.y = yVal;
                 this.panels.push(panel)
                 panel.index = panelCounter;
                 this.backgroundCont.addChild(panel);
@@ -133,7 +138,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 panelCounter ++;
             }
             }
-           this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
+          // this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
         BouncePlatform () {
@@ -154,7 +159,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             cont.addChild(platform);
             return cont;
         },
-        PegPanel: function (num, userData) {
+        PegPanel: function (num, userData, point) {
             let peg,
                 pegPanel = new PIXI.Container();
 
@@ -211,27 +216,37 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
                 pegPanel.addChild(bp)
             }
 
-            let topDoor = this.Doorway(this.characterHeight, 10);
-            topDoor.loc = 'top';
-            topDoor.x = (this.canvasWidth - this.characterHeight)/2;
-            pegPanel.addChild(topDoor);
+            
+                let topDoor = this.Doorway(this.characterHeight, 10);
+                topDoor.loc = 'top';
+                topDoor.x = (this.canvasWidth - this.characterHeight)/2;
+            if (point.y !== 0) {
+                pegPanel.addChild(topDoor);
+            }
+            
 
             let bottomDoor = this.Doorway(this.characterHeight, 10);
             bottomDoor.x = (this.canvasWidth - this.characterHeight)/2;
             bottomDoor.y = this.panelHeight - 10;
             bottomDoor.loc = 'bottom';
-            pegPanel.addChild(bottomDoor);
+            if(point.y !== this.bottomY){
+                pegPanel.addChild(bottomDoor);
+            }
 
             let leftDoor = this.Doorway(10, this.characterHeight);
             leftDoor.x = 0;
             leftDoor.y = (this.canvasHeight - this.characterHeight)/2;
             leftDoor.loc = 'left';
-            pegPanel.addChild(leftDoor);
-
+            if (point.x !== 0) {
+                pegPanel.addChild(leftDoor);
+            }
             let rightDoor = this.Doorway(10, this.characterHeight);
             rightDoor.x = this.canvasWidth - 10;
             rightDoor.y = (this.canvasHeight - this.characterHeight)/2;
-            pegPanel.addChild(rightDoor);
+            if(point.x !== this.leftX){
+                pegPanel.addChild(rightDoor);
+            }
+            
             rightDoor.loc = 'right';
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
 
@@ -343,18 +358,18 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
              for (let i = 0; i < this.total; i++) {
                 console.log(`${door.loc} ${rightX} versus ${this.panels[i].x}`);
                 if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.x) {
-                    console.log(i);
+                    this.switchPanel(i);
                     break;
                 } else if (door.loc === 'bottom' && this.panels[i].y === bottomY && this.panels[i].x === panel.x) {
-                    console.log(i);
+                    this.switchPanel(i);
                     break;
 
                 } else if (door.loc === 'left' && this.panels[i].x === leftX && this.panels[i].y === panel.y){
-                    console.log(i);
+                    this.switchPanel(i);
                     break;
 
                 } else if (door.loc === 'right' && this.panels[i].x === rightX && this.panels[i].y === panel.y) {
-                    console.log(i);
+                   this.switchPanel(i);
                     break;
                 }
 
@@ -365,25 +380,36 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName){
             
 
         },
+        switchPanel: function (index) {
+            console.log(index);
+            this.ball.x = this.panelWidth/2;
+            this.ball.y = this.panelHeight/2;
+            this.ball.panel.removeChild(this.ball);
+            this.panels[index].addChild(this.ball);
+            this.ball.panel = this.panels[index];
+            this.panelForArtBoard = index;
+
+            TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
+        },
         animate: function () {
-            if (this.move) {
-                for(let i = 0; i < this.total; i++){
-                    this.panels[i].y += this.velY;
-                    this.panels[i].x += this.velX;
-                    if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
-                        this.panels[i].y = -this.panelHeight;
-                    }
-                    if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
-                        this.panels[i].x = -this.panelWidth;
-                    }
-                     if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
-                        this.panels[i].y = this.panelHeight;
-                    }
-                    if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
-                        this.panels[i].x = this.panelWidth;
-                    }
-                }
-            }
+            // if (this.move) {
+            //     for(let i = 0; i < this.total; i++){
+            //         this.panels[i].y += this.velY;
+            //         this.panels[i].x += this.velX;
+            //         if(this.panels[i].y > this.panelHeight * this.placeBehindRows){
+            //             this.panels[i].y = -this.panelHeight;
+            //         }
+            //         if(this.panels[i].x > this.panelWidth * this.placeBehindCols){
+            //             this.panels[i].x = -this.panelWidth;
+            //         }
+            //          if(this.panels[i].y < -this.panelHeight * this.placeBehindRows){
+            //             this.panels[i].y = this.panelHeight;
+            //         }
+            //         if(this.panels[i].x < -this.panelWidth * this.placeBehindCols){
+            //             this.panels[i].x = this.panelWidth;
+            //         }
+            //     }
+            // }
 
             if(this.moveAllow) {
 
