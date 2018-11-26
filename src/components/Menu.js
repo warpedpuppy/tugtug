@@ -91,12 +91,10 @@ class Menu extends Component {
 						<Link className={showLogOut} to="/store">
 						<span>store</span>
 						</Link>
-						{/*
 						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
-						*/}
 						<a className={showLogOut} onClick={this.logOut}>log out</a>
 					</div>
-					<EditMode />
+					{ /* <EditMode /> */ }
 				</nav>
 				
 				<LoginRegisterContainer 

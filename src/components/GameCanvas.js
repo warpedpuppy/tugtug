@@ -39,6 +39,18 @@ class GameCanvas extends React.Component {
 		this.getUserData();
 	}
 	startGame(data){
+		
+		if(this.props.testMode){
+			console.log("test mode", data)
+			// change data to non database
+			data = {users: [{
+				username: this.props.username,
+				firstName: this.props.firstName,
+				lastName: this.props.lastName,
+				email: this.props.email
+			}]}
+		}
+		console.log("test mode", data)
 		this.game = game_code(PIXI, Utils, art_board_code, data, this.getUserName, TweenMax);
 		this.game.init();
 		this.game.update(this.props.items);
@@ -73,7 +85,12 @@ class GameCanvas extends React.Component {
 export const mapStateToProps = state => ({
     items: state.avatarReducer.items,
     color: state.themeReducer.color,
-    editMode: state.themeReducer.editMode
+    editMode: state.themeReducer.editMode,
+    testMode: state.tokenReducer.testMode,
+    username: state.tokenReducer.username,
+    firstName: state.tokenReducer.firstName,
+    lastName: state.tokenReducer.lastName,
+    email: state.tokenReducer.email
 });
 
 export default connect(mapStateToProps)(GameCanvas);

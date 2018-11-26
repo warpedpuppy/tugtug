@@ -7,7 +7,7 @@ import LoginForm from './LoginForm';
 import Register from './Register';
 import Processing from './Processing';
 import axios from 'axios';
-import { addToken, addUserdata } from '../../actions/tokenActions.js';
+import { addToken, addUserdata, testUser } from '../../actions/tokenActions.js';
 import {API_BASE_URL} from '../../config';
 import {connect} from 'react-redux';
 import { addItems } from '../../actions/avatarActions.js';
@@ -21,6 +21,7 @@ class LoginRegisterContainer extends React.Component {
 		this.updateUsername = this.updateUsername.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
 		this.updateEmail = this.updateEmail.bind(this);
+		this.testUser = this.testUser.bind(this);
 		this.state = {
 			login: true,
 			register:false,
@@ -88,6 +89,28 @@ class LoginRegisterContainer extends React.Component {
 			})
 		  });  
 	}
+	testUser (e) {
+		let that = this;
+		e.preventDefault();
+		return axios.post(`${API_BASE_URL}/api/auth/testUser`)
+		  .then(function(response){
+		  		that.props.hideDropDownAndLogin();
+		  	that.processing(false);
+		    that.setState({ username: '', password: ''})
+		  	console.log('authToken = ', response.data.authToken)
+		  	let userData = {
+		  	    username: "Testy",
+                firstName: "Testy",
+                lastName: "McTesterson",
+                email: "testy@tugtug.com"
+            }
+		    that.props.testUser(response.data.authToken, userData, true);
+		  })
+		  .catch((err) => {
+		  	console.error('error = ', err)
+		  });  
+
+	}
 
 	render(){
 		let loginClass = (!this.state.login)?{display: 'none'}:{};
@@ -124,6 +147,7 @@ class LoginRegisterContainer extends React.Component {
 					/>
 					<a onClick={(e) => this.toggleForms(e)} style={loginClass} >need to register?</a>
 					<a onClick={(e) => this.toggleForms(e)} style={registerClass} >need to login?</a>
+					<button onClick={e => this.testUser(e)} >enter as a test user</button>
 				</div>
 				</div>
 				</div>
@@ -141,6 +165,6 @@ export const mapStateToProps = state => ({
 });
 function mapDispatchToProps(dispatch){
     return bindActionCreators({
-        addToken, addUserdata, addItems}, dispatch);
+        addToken, addUserdata, addItems, testUser}, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginRegisterContainer);
