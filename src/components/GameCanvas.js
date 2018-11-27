@@ -1,9 +1,10 @@
 import React from 'react';
 import './GameCanvas.css';
-import * as PIXI from 'pixi.js'
-import Utils from '../animations/utils'
-import game_code from '../animations/game_animation'
-import art_board_code from '../animations/supportingClasses/art_board_sub'
+import * as PIXI from 'pixi.js';
+import Utils from '../animations/utils';
+import game_code from '../animations/game_animation';
+import art_board_code from '../animations/supportingClasses/art_board_sub';
+import portal_code from '../animations/supportingClasses/portal';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -20,6 +21,10 @@ class GameCanvas extends React.Component {
 		    panelVisible: false,
 		    panelButtonText: "see panel"
 		  };
+		this.supportingClasses = {
+			art_board_code,
+			portal_code
+		}
 
 	}
 	getUserName () {
@@ -41,7 +46,6 @@ class GameCanvas extends React.Component {
 	startGame(data){
 		
 		if(this.props.testMode){
-			console.log("test mode", data)
 			// change data to non database
 			data = {users: [{
 				username: this.props.username,
@@ -50,15 +54,15 @@ class GameCanvas extends React.Component {
 				email: this.props.email
 			}]}
 		}
-		console.log("test mode", data)
-		this.game = game_code(PIXI, Utils, art_board_code, data, this.getUserName, TweenMax);
+
+		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
 		this.game.init();
 		this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
 		
 	}
 	componentWillUnmount(){
-		this.game.stop();
+		if(this.game.stop)this.game.stop();
 	}
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);

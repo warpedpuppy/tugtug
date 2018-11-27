@@ -20,13 +20,20 @@ class EditMode extends React.Component {
 	handleChangeComplete = (color) => {
 		this.props.dispatch(changeColor(color.hex))
 	}
+
 	render () {
 		let panelClass = (this.props.editMode)?"show":"hide";
+		//has to be logged in and on game page
+		let isGame = (window.location.pathname === '/game')?true:false;
+		let isLoggedIn = (this.props.token !== 'blank')?true:false;
+		let seeEdit = (isGame && isLoggedIn)?"editModeShell show":"editModeShell hide";
+		console.log(isGame +" "+ isLoggedIn)
+
 		return (
-			<div className="editModeShell">
-    		<button 
+			<div className={ seeEdit }>
+    		<a 
     		className="button editModeButton" 
-    		onClick={ e => this.editModeHandler(e) }>edit mode {this.props.editMode.toString()}</button>
+    		onClick={ e => this.editModeHandler(e) }>edit mode {this.props.editMode.toString()}</a>
     		<SketchPicker 
 				className={panelClass}
         		color={ this.state.background }
@@ -39,7 +46,9 @@ class EditMode extends React.Component {
 }
 
 export const mapStateToProps = state => ({
-    editMode: state.themeReducer.editMode
+    editMode: state.themeReducer.editMode,
+    page: state.themeReducer.page,
+    token: state.tokenReducer.token
 });
 
 export default connect(mapStateToProps)(EditMode);

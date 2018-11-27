@@ -4,12 +4,14 @@ import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
 import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
-import { deleteToken } from '../actions/tokenActions.js';
+import { deleteToken, testUser } from '../actions/tokenActions.js';
 import { deleteAll } from '../actions/avatarActions.js';
 import { openMenu, toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import EditMode from './editMode';
+import axios from 'axios';
+import {API_BASE_URL} from '../config';
 
 class Menu extends Component {
 	
@@ -54,7 +56,26 @@ class Menu extends Component {
 	  	this.props.dispatch(closeMenu());
 	  	this.setState({ showLogin: false })
 	  }
-	  
+	  testUser (e) {
+
+		let that = this;
+		e.preventDefault();
+		return axios.post(`${API_BASE_URL}/api/auth/testUser`)
+		  .then(function(response){
+		  	console.log('authToken = ', response.data.authToken)
+		  	let userData = {
+		  	    username: "Testy",
+                firstName: "Testy",
+                lastName: "McTesterson",
+                email: "testy@tugtug.com"
+            }
+		    that.props.dispatch(testUser(response.data.authToken, userData, true));
+		  })
+		  .catch((err) => {
+		  	console.error('error = ', err)
+		  });  
+
+	}
 	  
 	  render() {
 
@@ -91,10 +112,12 @@ class Menu extends Component {
 						<Link className={showLogOut} to="/store">
 						<span>store</span>
 						</Link>
+						<a className={showLogin} onClick={e => this.testUser(e)} >enter as a test user</a>
 						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
 						<a className={showLogOut} onClick={this.logOut}>log out</a>
+						<EditMode />
 					</div>
-					{ /* <EditMode /> */ }
+					 
 				</nav>
 				
 				<LoginRegisterContainer 

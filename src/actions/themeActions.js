@@ -24,3 +24,9 @@ export const changeColor = (color) => ({
 	type: CHANGE_COLOR,
     color: color
 });
+
+export const CHANGE_PAGE = 'CHANGE_PAGE';
+export const changePage = () => ({
+	type: CHANGE_PAGE,
+    color: window.location.pathname
+});

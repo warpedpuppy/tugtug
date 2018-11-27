@@ -1,4 +1,4 @@
-export default function Game (PIXI, Utils, art_board, userObject, getUserName, TweenMax){
+export default function Game (PIXI, Utils, supportingClasses, userObject, getUserName, TweenMax){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -27,9 +27,10 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName, T
 
 
             this.userObject = userObject;
-
-            this.art_board = art_board(this.utils, PIXI);
+            this.art_board = supportingClasses.art_board_code(this.utils, PIXI);
             this.art_board.init();
+
+            this.Doorway = supportingClasses.portal_code;
 
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
@@ -141,24 +142,14 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName, T
           // this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
-        BouncePlatform () {
-            let cont = new PIXI.Container();
-            let platform = new PIXI.Graphics();
-            let w = (this.utils.returnCanvasWidth() * 0.1);
-            let h = (w * 0.05);
-            platform.beginFill(0x000000).drawRect(0,0,w, h).endFill();
-            platform.pivot.x = platform.pivot.y = 0.5;
-            cont.addChild(platform);
-            return cont;
-        },
-        Doorway (w,h) {
-            let cont = new PIXI.Container();
-            let platform = new PIXI.Graphics();
-            platform.beginFill(0xFF0000).drawRect(0,0,w, h).endFill();
-            //platform.pivot.x = platform.pivot.y = 0.5;
-            cont.addChild(platform);
-            return cont;
-        },
+        // Doorway (w,h) {
+        //     let cont = new PIXI.Container();
+        //     let platform = new PIXI.Graphics();
+        //     platform.beginFill(0xFF0000).drawRect(0,0,w, h).endFill();
+        //     //platform.pivot.x = platform.pivot.y = 0.5;
+        //     cont.addChild(platform);
+        //     return cont;
+        // },
         PegPanel: function (num, userData, point) {
             let peg,
                 pegPanel = new PIXI.Container();
@@ -208,16 +199,10 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName, T
 
             let offset = [0.33, 0.66, 1];
             let storeX = 0;
-            for (let i = 0; i < 3; i ++) {
-                let bp = this.BouncePlatform();
-                bp.x = this.utils.randomNumberBetween(storeX, (this.canvasWidth - bp.width) * offset[i]);
-                bp.y = (this.utils.randomNumberBetween(0, this.canvasHeight)) * 0.66;
-                storeX = bp.x + bp.width;
-                pegPanel.addChild(bp)
-            }
+         
 
             
-                let topDoor = this.Doorway(this.characterHeight, 10);
+                let topDoor = this.Doorway(PIXI, this.characterHeight, 10);
                 topDoor.loc = 'top';
                 topDoor.x = (this.canvasWidth - this.characterHeight)/2;
             if (point.y !== 0) {
@@ -225,7 +210,7 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName, T
             }
             
 
-            let bottomDoor = this.Doorway(this.characterHeight, 10);
+            let bottomDoor = this.Doorway(PIXI, this.characterHeight, 10);
             bottomDoor.x = (this.canvasWidth - this.characterHeight)/2;
             bottomDoor.y = this.panelHeight - 10;
             bottomDoor.loc = 'bottom';
@@ -233,14 +218,14 @@ export default function Game (PIXI, Utils, art_board, userObject, getUserName, T
                 pegPanel.addChild(bottomDoor);
             }
 
-            let leftDoor = this.Doorway(10, this.characterHeight);
+            let leftDoor = this.Doorway(PIXI, 10, this.characterHeight);
             leftDoor.x = 0;
             leftDoor.y = (this.canvasHeight - this.characterHeight)/2;
             leftDoor.loc = 'left';
             if (point.x !== 0) {
                 pegPanel.addChild(leftDoor);
             }
-            let rightDoor = this.Doorway(10, this.characterHeight);
+            let rightDoor = this.Doorway(PIXI, 10, this.characterHeight);
             rightDoor.x = this.canvasWidth - 10;
             rightDoor.y = (this.canvasHeight - this.characterHeight)/2;
             if(point.x !== this.leftX){
