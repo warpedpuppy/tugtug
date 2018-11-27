@@ -5,6 +5,8 @@ import Utils from '../animations/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
 import portal_code from '../animations/supportingClasses/portal';
+import hero from '../animations/supportingClasses/protagonist';
+import keyHandler from '../animations/supportingClasses/keyHandler';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -23,7 +25,9 @@ class GameCanvas extends React.Component {
 		  };
 		this.supportingClasses = {
 			art_board_code,
-			portal_code
+			portal_code,
+			hero,
+			keyHandler
 		}
 
 	}
@@ -57,7 +61,7 @@ class GameCanvas extends React.Component {
 
 		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
 		this.game.init();
-		this.game.update(this.props.items);
+		//this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
 		
 	}
