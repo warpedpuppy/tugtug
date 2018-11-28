@@ -14,9 +14,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
         speed: 10,
         cols: 4,
         rows: 4,
-        move: false,
         panelForArtBoard: 0,
-        homePanel: undefined,
         characterHeight: 154,
         doors: [],
         init: function () {
@@ -40,8 +38,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
             this.renderer.backgroundColor = 0xFFFFFF;
             this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
-            // if(this.webGL) {
-            // }
+
             document.getElementById("game_canvas").appendChild(this.renderer.view);
             this.animate = this.animate.bind(this);
             this.build();
@@ -50,14 +47,14 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.foregroundCont);
             this.app.ticker.add(this.animate.bind(this));
-            // this.keyDown = this.keyDown.bind(this);
-            // this.keyUp = this.keyUp.bind(this);
+            
             // this.velX = this.velY = this.speed;
             this.total = this.cols * this.rows;
             this.placeBehindCols = this.cols - 1;
             this.placeBehindRows = this.rows - 1;
            
             this.keyBoard = supportingClasses.keyHandler(this.speed);
+            console.log(this.keyBoard)
             this.keyBoard.activate();
   
         },
@@ -137,7 +134,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             pegPanel.addChild(name)
 
              let frame = new PIXI.Graphics();
-                frame.lineStyle(3, 0xFF00FF)
+                frame.lineStyle(10, 0xFF00FF)
                 .moveTo(0,0)
                 .lineTo(this.panelWidth, 0)
                 .lineTo(this.panelWidth,this.panelHeight)
@@ -187,11 +184,12 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             if (num === this.panelForArtBoard) {
                 console.log(num)
                 this.ball = supportingClasses.hero(PIXI, this.characterHeight);
+                this.ball.build();
                 this.ball.x = this.halfWidth;
                 this.ball.y = this.halfHeight;
                 this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
                 this.ball.panel = pegPanel;
-                pegPanel.addChild(this.ball);
+                pegPanel.addChild(this.ball.returnChain());
             }
 
             return pegPanel;
@@ -206,13 +204,13 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
         build: function () { 
             this.gamePlay = true;
         },
-        hidePanels: function (hide) {
-             for(let i = 0; i < this.total; i++){
-                if (this.panels[i] !== this.homePanel) {
-                    this.panels[i].visible = !hide;
-                }
-             }
-        },
+        // hidePanels: function (hide) {
+        //      for(let i = 0; i < this.total; i++){
+        //         if (this.panels[i] !== this.homePanel) {
+        //             this.panels[i].visible = !hide;
+        //         }
+        //      }
+        // },
         resize: function () {
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
@@ -260,8 +258,9 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
         animate: function () {
-           
-            if(this.moveAllow) {
+            //this.ball.animate();
+
+            if(this.keyBoard.moveAllow) {
 
                 this.ball.y += this.keyBoard.vy;
                 this.ball.x += this.keyBoard.vx;

@@ -1,11 +1,57 @@
 export default function Protagonist (PIXI, diameter) {
-    let sprite = new PIXI.Sprite.fromImage('/bmps/character.png');
-    sprite.anchor.x = sprite.anchor.y =0.5;
-
-    const cont = new PIXI.Container();
-    cont.alpha = 0.5;
-    cont.radius = diameter / 2;
-    cont.sprite = sprite;
-    cont.addChild(sprite);
-    return cont;
+	return {
+		numBalls: 5,
+		balls: [],
+		gravity: 2.5,
+		friction: 0.8,
+		cont: new PIXI.Container(),
+		build: function () {
+			for (let i = 0; i < this.numBalls; i++){
+                let ball = this.Ball(5, 0xFF0000);
+                this.balls.push(ball);
+                this.cont.addChild(ball);
+            }
+		},
+		Ball: function (radius, color) {
+			let cont = new PIXI.Container();
+            cont.radius = radius;
+            cont.height = cont.radius * 4;
+            cont.vx = 0;
+            cont.vy = 0;
+            cont.xpos = 0;
+            cont.ypos = 0;
+            let b = new PIXI.Graphics();
+            b.beginFill(color).drawCircle(0,0, cont.radius * 2);
+            cont.addChild(b);
+            cont.body = b;
+            return cont;
+		},
+		animate: function (event) {
+            // this.line.clear();
+            // this.line.lineStyle(4, 0xFFFFFF, 1);
+            // this.line.moveTo(this.mousePosition.x, this.mousePosition.y);
+            this.moveBall(this.balls[0], 0, 0);
+            // this.line.lineTo(this.balls[0].x, this.balls[0].y);
+            let i, ballA, ballB;
+            for (i = 1; i < this.numBalls; i++) {
+                ballA = this.balls[i-1];
+                ballB = this.balls[i];
+                this.moveBall(ballB, ballA.x, ballA.y);
+                //this.line.lineTo(ballB.x, ballB.y);
+            };
+        },
+        moveBall: function (ball, targetX, targetY) {
+            var tempBallBody = ball;
+            ball.vx += (targetX - tempBallBody.x) * this.spring;
+            ball.vy += (targetY - tempBallBody.y) * this.spring;
+            ball.vy += this.gravity;
+            ball.vx *= this.friction;
+            ball.vy *= this.friction;
+            tempBallBody.x += ball.vx;
+            tempBallBody.y += ball.vy;
+        },
+        returnChain: function () {
+        	return this.cont;
+        }
+	}
 }

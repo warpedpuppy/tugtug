@@ -4,7 +4,8 @@ export default function keyHandler (speed) {
     	vx:0,
     	vy: 0,
     	activate: function () {
-
+            this.keyDown = this.keyDown.bind(this);
+            this.keyUp = this.keyUp.bind(this);
     		window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
     	},
@@ -13,7 +14,6 @@ export default function keyHandler (speed) {
             window.removeEventListener('keyup', this.keyUp);
     	},
     	keyDown: function (e) {
-
             e.preventDefault();
             switch (e.keyCode) {
                 case 37:
