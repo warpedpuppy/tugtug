@@ -183,13 +183,14 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
 
             if (num === this.panelForArtBoard) {
                 console.log(num)
-                this.ball = supportingClasses.hero(PIXI, this.characterHeight);
-                this.ball.build();
+                this.ballClass = supportingClasses.hero(PIXI, this.characterHeight);
+                this.ballClass.build();
+                this.ball = this.ballClass.returnChain();
                 this.ball.x = this.halfWidth;
                 this.ball.y = this.halfHeight;
                 this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
                 this.ball.panel = pegPanel;
-                pegPanel.addChild(this.ball.returnChain());
+                pegPanel.addChild(this.ball);
             }
 
             return pegPanel;
@@ -258,7 +259,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
         animate: function () {
-            //this.ball.animate();
+            this.ballClass.animate();
 
             if(this.keyBoard.moveAllow) {
 
