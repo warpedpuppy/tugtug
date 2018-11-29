@@ -1,7 +1,7 @@
 export default function keyHandler (speed) {
     return {
     	moveAllow: false,
-    	vx:0,
+    	vx: 2,
     	vy: 0,
     	activate: function () {
             this.keyDown = this.keyDown.bind(this);
