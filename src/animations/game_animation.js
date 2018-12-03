@@ -11,7 +11,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
         panelWidth: 0,
         panelHeight: 0,
         panels: [],
-        speed: 10,
+        speed: 2,
         cols: 4,
         rows: 4,
         panelForArtBoard: 0,
@@ -104,13 +104,22 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
                 this.backgroundCont.addChild(frame);
 
                 if (panelCounter === this.panelForArtBoard) {
-                    let board = this.art_board.returnArtBoard();
 
+                    let board = this.art_board.returnArtBoard();
                     board.x = (this.panelWidth - board.width)/2;
                     board.y = (this.panelHeight - board.height)/2;
                     this.art_board.setOffsets(board.x, board.y);
                     panel.addChild(board);
                     this.homePanel = panel;
+
+                    this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils);
+                    this.ballClass.build();
+                    this.ball = this.ballClass.returnChain();
+                    this.ball.x = this.halfWidth;
+                    this.ball.y = this.halfHeight;
+                    this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
+                    this.ball.panel = panel;
+                    panel.addChild(this.ball);
                 }
                 panelCounter ++;
             }
@@ -160,33 +169,29 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
          
 
             
-            let topDoor = this.Doorway(PIXI, this.characterHeight, 10);
+            let topDoor = this.Doorway(PIXI, this.characterHeight, 10, 'top');
             topDoor.x = (this.canvasWidth - this.characterHeight)/2;
-            topDoor.loc = 'top';
             if (point.y !== 0) {
                 pegPanel.addChild(topDoor);
             }
             
-            let bottomDoor = this.Doorway(PIXI, this.characterHeight, 10);
+            let bottomDoor = this.Doorway(PIXI, this.characterHeight, 10, 'bottom');
             bottomDoor.x = (this.canvasWidth - this.characterHeight)/2;
             bottomDoor.y = this.panelHeight - 10;
-            bottomDoor.loc = 'bottom';
             if(point.y !== this.bottomY){
                 pegPanel.addChild(bottomDoor);
             }
 
-            let leftDoor = this.Doorway(PIXI, 10, this.characterHeight);
+            let leftDoor = this.Doorway(PIXI, 10, this.characterHeight, 'left');
             leftDoor.x = 0;
             leftDoor.y = (this.canvasHeight - this.characterHeight)/2;
-            leftDoor.loc = 'left';
             if (point.x !== 0) {
                 pegPanel.addChild(leftDoor);
             }
 
-            let rightDoor = this.Doorway(PIXI, 10, this.characterHeight);
+            let rightDoor = this.Doorway(PIXI, 10, this.characterHeight, 'right');
             rightDoor.x = this.canvasWidth - 10;
             rightDoor.y = (this.canvasHeight - this.characterHeight)/2;
-            rightDoor.loc = 'right';
             if(point.x !== this.leftX){
                 pegPanel.addChild(rightDoor);
             }
@@ -195,16 +200,8 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
 
             if (num === this.panelForArtBoard) {
-                console.log("TESTING FOR DOT")
-                this.carrot = new PIXI.Container();
-                this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils);
-                this.ballClass.build();
-                this.ball = this.ballClass.returnChain();
-                this.ball.x = this.carrot = this.ball.startX = this.halfWidth;
-                this.ball.y = this.carrot = this.halfHeight;
-                this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
-                this.ball.panel = pegPanel;
-                pegPanel.addChild(this.ball);
+               
+               
             }
 
             return pegPanel;
@@ -262,7 +259,6 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
              }
         },
         switchPanel: function (index) {
-            console.log(index);
             this.ball.x = this.panelWidth/2;
             this.ball.y = this.panelHeight/2;
             this.ball.panel.removeChild(this.ball);
@@ -273,43 +269,45 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
         animate: function () {
-            
+          // this.ball.rotation = this.utils.deg2rad(Math.floor(this.utils.cosWave(0, 50, 0.0015)));
+          //console.log(this.ball.x+" "+this.ball.y)
+            if (this.keyBoard.moveAllow) {
 
-            //if (this.keyBoard.moveAllow) {
+                // this.ball.balls[0].y += this.keyBoard.vy;
+                // this.ball.balls[0].x += this.keyBoard.vx;
 
-                // this.ball.y += this.keyBoard.vy;
-                //this.ball.x += ;//this.keyBoard.vx;
+               // this.ball.rotation += this.utils.deg2rad(.5);
 
-                this.ballClass.animate();
+               // this.ballClass.animate();
                 
-                // if(this.ball.y < (this.characterHeight / 2)) {
-                //     this.keyBoard.vy = 0;
-                //     this.ball.y = (this.characterHeight / 2)
-                // }
+                if(this.ball.y < (this.characterHeight / 2)) {
+                    this.keyBoard.vy = 0;
+                    this.ball.y = (this.characterHeight / 2)
+                }
 
-                // if(this.ball.y > (this.panelHeight - (this.characterHeight / 2))) {
-                //     this.keyBoard.vy = 0;
-                //     this.ball.y = (this.panelHeight - (this.characterHeight / 2));
-                // }
+                if(this.ball.y > (this.panelHeight - (this.characterHeight / 2))) {
+                    this.keyBoard.vy = 0;
+                    this.ball.y = (this.panelHeight - (this.characterHeight / 2));
+                }
 
-                // if(this.ball.x < (this.characterHeight / 2)) {
-                //     this.keyBoard.vx = 0;
-                //     this.ball.x = (this.characterHeight / 2);
-                // }
+                if(this.ball.x < (this.characterHeight / 2)) {
+                    this.keyBoard.vx = 0;
+                    this.ball.x = (this.characterHeight / 2);
+                }
 
-                // if(this.ball.x > (this.panelWidth - (this.characterHeight / 2))) {
-                //     this.keyBoard.vx = 0;
-                //     this.ball.x = (this.panelWidth - (this.characterHeight / 2));
-                // }
+                if(this.ball.x > (this.panelWidth - (this.characterHeight / 2))) {
+                    this.keyBoard.vx = 0;
+                    this.ball.x = (this.panelWidth - (this.characterHeight / 2));
+                }
 
-                // for (let i = 0; i < 4; i ++ ) {
-                //     let circle = this.ball;
-                //     let rect = new PIXI.Rectangle(this.doors[i].x, this.doors[i].y, this.doors[i].width, this.doors[i].height)
-                //     if (this.utils.circleRectangleCollision(circle, rect)) {
-                //         this.whichPanel(this.doors[i], this.ball.panel)
-                //     }
-                // }
-           // }
+                for (let i = 0; i < 4; i ++ ) {
+                    let circle = this.ball;
+                    let rect = new PIXI.Rectangle(this.doors[i].x, this.doors[i].y, this.doors[i].width, this.doors[i].height)
+                    if (this.utils.circleRectangleCollision(circle, rect)) {
+                        this.whichPanel(this.doors[i], this.ball.panel)
+                    }
+                }
+           }
             this.renderer.render(this.stage);
         }
     }
