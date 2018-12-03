@@ -272,14 +272,14 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
         animate: function () {
           // this.ball.rotation = this.utils.deg2rad(Math.floor(this.utils.cosWave(0, 50, 0.0015)));
           //console.log(this.ball.x+" "+this.ball.y)
+           this.ball.rotation = this.ballClass.radius;
             if (this.keyBoard.moveAllow) {
 
                   var rate = 2;//Math.max(this.VELOCITY_LIMIT, Math.sin(this.theta));
 
                   this.ball.x += this.ballClass.vx;// * rate;
                   this.ball.y += this.ballClass.vy;// * rate;
-                  this.ball.rotation = this.ballClass.radius;
-                  console.log(this.ballClass.radius)
+                 
 
 
 
