@@ -1,4 +1,4 @@
-export default function keyHandler (speed) {
+export default function keyHandler (speed, hero) {
     return {
     	moveAllow: false,
     	vx: 2,
@@ -17,9 +17,12 @@ export default function keyHandler (speed) {
             e.preventDefault();
             switch (e.keyCode) {
                 case 37:
+                    //left
                     this.moveAllow = true;
-                    this.vx = -speed;
-                    this.vy = 0;
+                    hero.rotate('left');
+                    // this.moveAllow = true;
+                    // this.vx = -speed;
+                    // this.vy = 0;
                     break;
                 case 38:
                     //alert('up');
@@ -30,14 +33,15 @@ export default function keyHandler (speed) {
                 case 39:
                     //alert('right');
                     this.moveAllow = true;
-                    this.vx = speed;
-                    this.vy = 0;
+                    hero.rotate('right');
+                    // this.moveAllow = true;
+                    // this.vx = speed;
+                    // this.vy = 0;
                     break;
                 case 40:
                     //alert('down');
                     this.moveAllow = true;
-                    this.vy = speed;
-                    this.vx = 0;
+                     hero.rotate('down');
                     break;
                 default:
                     this.vy = 0;

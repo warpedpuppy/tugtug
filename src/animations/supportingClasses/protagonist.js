@@ -12,7 +12,17 @@ export default function Protagonist (PIXI, diameter, utils) {
 		pos: [],
 		increment: 10,
 		counter: 0,
+		VELOCITY_LIMIT : 0.3,
+		move: false,
 		build: function () {
+
+		this.velocity = this.getRandomValue(1, 2);
+		this.theta = 0;
+		this.radius = 0;
+		this.vx = this.velocity * Math.sin(this.radius);
+		this.vy = -this.velocity * Math.cos(this.radius);
+
+
 			for (let i = 0; i < this.numBalls; i++) {
                 let ball = this.Ball(this.width, this.colors[i], i*this.width);
                 this.balls.push(ball);
@@ -26,6 +36,9 @@ export default function Protagonist (PIXI, diameter, utils) {
             this.cont.balls = this.balls;
             this.utils = utils;
             this.Ball = this.Ball.bind(this);
+		},
+		getRandomValue : function(min, max){
+			return min + (max - min) * Math.random();
 		},
 		Ball: function (radius, color, yVal) {
 
@@ -65,8 +78,25 @@ export default function Protagonist (PIXI, diameter, utils) {
 
             return cont;
 		},
+		rotate: function (str) {
+			console.log(str)
+			if(str === 'left'){
+				this.radius -= (Math.PI * 2) / 90;
+				this.vx = this.velocity * Math.sin(this.radius);
+				this.vy = -this.velocity * Math.cos(this.radius);
+			} else if (str === 'right') {
+				this.radius += (Math.PI * 2) / 90;
+				this.vx = this.velocity * Math.sin(this.radius);
+				this.vy = -this.velocity * Math.cos(this.radius);
+			} else if (str === 'down') {
+				this.radius += (Math.PI * 2) / 2;
+				this.vx = this.velocity * Math.sin(this.radius);
+				this.vy = -this.velocity * Math.cos(this.radius);
+			}
+		},
 		animate: function () {
-          
+		
+        
 		  
            //this.cont.x = 300 ;
            // this.cont.y = 0;

@@ -48,6 +48,8 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.dot.y = this.halfHeight;
             this.stage.addChild(this.dot);
 
+            this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils);
+            this.keyBoard = supportingClasses.keyHandler(this.speed, this.ballClass);
 
             this.build();
             this.addPegPanels();
@@ -60,8 +62,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.total = this.cols * this.rows;
             this.placeBehindCols = this.cols - 1;
             this.placeBehindRows = this.rows - 1;
-           
-            this.keyBoard = supportingClasses.keyHandler(this.speed);
+          
             console.log(this.keyBoard)
             this.keyBoard.activate();
             
@@ -112,7 +113,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
                     panel.addChild(board);
                     this.homePanel = panel;
 
-                    this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils);
+                   
                     this.ballClass.build();
                     this.ball = this.ballClass.returnChain();
                     this.ball.x = this.halfWidth;
@@ -272,6 +273,17 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
           // this.ball.rotation = this.utils.deg2rad(Math.floor(this.utils.cosWave(0, 50, 0.0015)));
           //console.log(this.ball.x+" "+this.ball.y)
             if (this.keyBoard.moveAllow) {
+
+                  var rate = 2;//Math.max(this.VELOCITY_LIMIT, Math.sin(this.theta));
+
+                  this.ball.x += this.ballClass.vx;// * rate;
+                  this.ball.y += this.ballClass.vy;// * rate;
+                  this.ball.rotation = this.ballClass.radius;
+                  console.log(this.ballClass.radius)
+
+
+
+
 
                 // this.ball.balls[0].y += this.keyBoard.vy;
                 // this.ball.balls[0].x += this.keyBoard.vx;
