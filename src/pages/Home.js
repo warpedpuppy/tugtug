@@ -1,7 +1,8 @@
 import React from 'react';
 import './Home.css';
 import Welcome from '../components/loginRegister/Welcome';
-import HomeCanvas from '../components/HomeCanvas';
+//import HomeCanvas from '../components/HomeCanvas';
+import GameCanvas from '../components/GameCanvas';
 import { connect } from 'react-redux';
 import { changePage } from '../actions/themeActions.js';
 
@@ -19,7 +20,7 @@ class Home extends React.Component {
 	render () {
 		return (
 		  <div className='homePage'>
-		  	  <HomeCanvas />
+		  	  <GameCanvas />
 			  <Welcome />
 	      </div>
 	    );    

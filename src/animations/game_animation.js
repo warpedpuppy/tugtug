@@ -17,8 +17,12 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
         panelForArtBoard: 0,
         characterHeight: 154,
         doors: [],
+        POWER : 10000,
+        EDGE_OFFSET : 5,
         init: function () {
 
+            this.canvasWidth = this.utils.returnCanvasWidth();
+            this.canvasHeight = this.utils.returnCanvasHeight();
 
 
             this.userObject = userObject;
@@ -31,8 +35,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
 
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
-            this.canvasWidth = this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight();
+            
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
             this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
@@ -42,17 +45,22 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             document.getElementById("game_canvas").appendChild(this.renderer.view);
             this.animate = this.animate.bind(this);
 
-            this.dot = new PIXI.Graphics;
-            this.dot.beginFill(0x000000).drawCircle(0,0,10).endFill();
-            this.dot.x = this.halfWidth;
-            this.dot.y = this.halfHeight;
+             this.dot = new PIXI.Graphics;
+            // this.dot.beginFill(0x000000).drawCircle(0,0,10).endFill();
+            // this.dot.x = this.halfWidth;
+            // this.dot.y = this.halfHeight;
             this.stage.addChild(this.dot);
 
-            this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils);
+            this.ballClass = supportingClasses.hero(PIXI, this.characterHeight, this.utils, TweenMax);
             this.keyBoard = supportingClasses.keyHandler(this.speed, this.ballClass);
 
             this.build();
             this.addPegPanels();
+
+
+            this.ripplesClass = supportingClasses.ripples(PIXI, this.app, this.renderer, this.stage);
+            this.ripplesClass.init();
+            
             
             this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.foregroundCont);
@@ -65,6 +73,12 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
           
             console.log(this.keyBoard)
             this.keyBoard.activate();
+
+
+
+
+
+   
             
             // this.dot = new PIXI.Graphics;
             // this.dot.beginFill(0x000000).drawCircle(0,0,10).endFill();
@@ -121,10 +135,21 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
                     this.ball.bottom = this.panelHeight - (this.characterHeight / 2);
                     this.ball.panel = panel;
                     panel.addChild(this.ball);
+
+
+
+                    let line = new PIXI.Graphics;
+                    line.lineStyle(10, 0x000000);
+                    // 
+                    line.moveTo(100,100).arcTo(100,100, 100, 100, 25);
+                    //line.moveTo(0, 0).lineTo(100,100);
+                    line.x = line.y = 300;
+                    panel.addChild(line)
                 }
                 panelCounter ++;
             }
             }
+
           // this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
@@ -138,6 +163,10 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             this.horizSpacer = 100;
             this.vertSpacer = 50;
 
+            let background = new PIXI.Graphics();
+            background.beginFill(0x0000FF, 0.5).drawRect(0,0,this.panelWidth, this.panelHeight).endFill();
+            pegPanel.addChild(background);
+
             let dot = new PIXI.Graphics();
             dot.beginFill(0x000000).drawCircle(0,0,100).endFill();
             dot.x = this.panelWidth/2;
@@ -150,6 +179,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             text.y = this.panelHeight/2;
             text.anchor.x = text.anchor.y = 0.5;
             pegPanel.addChild(text)
+
 
             let name = new PIXI.Text(userData.username,{fontFamily : 'Arial', fontSize: 150, fill : 0x000000, align : 'center'});
             name.x = 100;
@@ -269,10 +299,38 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
 
             TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
+        rotateChain: function () {
+            this.ballClass.pos.push(this.ballClass.radius);
+            this.increment = 10;
+            let maxLength = this.increment * this.numBalls;
+            if (this.ballClass.pos.length > maxLength) {
+                this.ballClass.pos = this.ballClass.pos.slice(-maxLength);
+            }
+
+             this.ballClass.balls[0].rotation = this.ballClass.radius;
+            for (let i = 1; i < this.ballClass.numBalls; i++) {
+                let index = this.ballClass.pos.length - (i * this.increment);
+                if (this.ballClass.pos.length >= index) {
+                 this.ballClass.balls[i].rotation = this.ballClass.pos[index];
+                }
+            }
+        },
+
         animate: function () {
           // this.ball.rotation = this.utils.deg2rad(Math.floor(this.utils.cosWave(0, 50, 0.0015)));
           //console.log(this.ball.x+" "+this.ball.y)
-           this.ball.rotation = this.ballClass.radius;
+
+
+
+          this.ripplesClass.animate();
+
+
+        
+
+           if (this.keyBoard.rotateAllow) {
+            this.rotateChain();
+           }
+
             if (this.keyBoard.moveAllow) {
 
                   var rate = 2;//Math.max(this.VELOCITY_LIMIT, Math.sin(this.theta));
@@ -281,9 +339,7 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
                   this.ball.y += this.ballClass.vy;// * rate;
                  
 
-
-
-
+                 this.rotateChain();
 
                 // this.ball.balls[0].y += this.keyBoard.vy;
                 // this.ball.balls[0].x += this.keyBoard.vx;

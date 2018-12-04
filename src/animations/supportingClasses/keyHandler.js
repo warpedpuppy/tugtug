@@ -1,6 +1,7 @@
 export default function keyHandler (speed, hero) {
     return {
     	moveAllow: false,
+        rotateAllow: false,
     	vx: 2,
     	vy: 0,
     	activate: function () {
@@ -19,6 +20,7 @@ export default function keyHandler (speed, hero) {
                 case 37:
                     //left
                    // this.moveAllow = true;
+                    this.rotateAllow = true;
                     hero.rotate('left');
                     break;
                 case 38:
@@ -30,6 +32,7 @@ export default function keyHandler (speed, hero) {
                 case 39:
                     //alert('right');
                   //  this.moveAllow = true;
+                    this.rotateAllow = true;
                     hero.rotate('right');
                     break;
                 case 40:
@@ -43,6 +46,7 @@ export default function keyHandler (speed, hero) {
         },
         keyUp: function (e) {
             e.preventDefault();
+            this.rotateAllow = false;
             this.moveAllow = false;
         }
     }

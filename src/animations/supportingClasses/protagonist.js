@@ -1,6 +1,6 @@
-export default function Protagonist (PIXI, diameter, utils) {
+export default function Protagonist (PIXI, diameter, utils, TweenMax) {
 	return {
-		numBalls: 1,
+		numBalls: 4,
 		balls: [],
 		gravity: 2.5,
 		friction: 0.8,
@@ -30,9 +30,9 @@ export default function Protagonist (PIXI, diameter, utils) {
                 this.cont.addChildAt(ball, 0);
             }
 
-            for (let i = 0; i < 100; i ++){
-            	 this.pos.push([0,0]);
-            }
+            // for (let i = 0; i < 100; i ++){
+            // 	 this.pos.push([0,0]);
+            // }
             this.cont.balls = this.balls;
             this.utils = utils;
             this.Ball = this.Ball.bind(this);
@@ -53,7 +53,7 @@ export default function Protagonist (PIXI, diameter, utils) {
 
             let b = new PIXI.Graphics();
             // b.beginFill(color).drawRect(0,0, 100, 100);
-            // b.y = yVal;
+             b.y = yVal;
 
 
             let triangleWidth = 100,
@@ -80,12 +80,17 @@ export default function Protagonist (PIXI, diameter, utils) {
 		},
 		rotate: function (str) {
 			console.log(str)
+			let inc = 360;
 			if(str === 'left'){
-				this.radius -= (Math.PI * 2) / 90;
+				this.radius -= (Math.PI * 2) / inc;
 				this.vx = this.velocity * Math.sin(this.radius);
 				this.vy = -this.velocity * Math.cos(this.radius);
+
+			
+
+
 			} else if (str === 'right') {
-				this.radius += (Math.PI * 2) / 90;
+				this.radius += (Math.PI * 2) / inc;
 				this.vx = this.velocity * Math.sin(this.radius);
 				this.vy = -this.velocity * Math.cos(this.radius);
 			} else if (str === 'down') {
