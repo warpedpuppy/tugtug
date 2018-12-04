@@ -4,6 +4,7 @@ export default function Ripples (PIXI, app, renderer, stage, wh) {
 		totalSprites: 0,
 		tick: 0,
 		dudeBounds: undefined,
+		growing: [],
 		init: function () {
 
 			var sprites = new PIXI.particles.ParticleContainer(100, {
@@ -29,7 +30,7 @@ export default function Ripples (PIXI, app, renderer, stage, wh) {
                 // dude.anchor.set(0.5);
 
                 // // different maggots, different sizes
-                dude.scale.set(0.1);
+                dude.scale.set(0.01);
 
                 // // scatter them all
                 // dude.x = Math.random() * wh.width;
@@ -64,48 +65,53 @@ export default function Ripples (PIXI, app, renderer, stage, wh) {
 
             this.tick = 0;
             this.animate = this.animate.bind(this);
+            stage.interactive = true;
+            this.mouseMove = this.mouseMove.bind(this);
+            stage.on('pointermove', this.mouseMove);
+             this.counter = 0;
+             this.opc = 0;
 		},
 		grow: function (ripple) {
 			if(ripple.scale.x < 1){
 				ripple.scale.x += 0.01;
 				ripple.scale.y += 0.01;
 				
+			} else {
+				ripple.alpha = 0;
+				ripple.visible = false;
+				this.growing.splice(this.growing.indexOf(ripple), 1);
 			}
-			// if(ripple.alpha > 0){
-			// 	ripple.alpha -= 0.015;
-			// }
+
+			if(ripple.alpha > 0){
+				ripple.alpha -= 0.025;
+			} else {
+				ripple.alpha = 0;
+				ripple.visible = false;
+			}
+		},
+		mouseMove: function(e){
+			this.counter ++;
+			if(this.counter % 2 === 0){
+
+				let pos = e.data.global;
+				this.ripples[this.opc].alpha = 1;
+				this.ripples[this.opc].scale.set(0.01);
+				this.ripples[this.opc].tint = Math.random() * 0xE8D4CD;
+				this.ripples[this.opc].x = pos.x;
+				this.ripples[this.opc].y = pos.y;
+				this.growing.push(this.ripples[this.opc]);
+				this.opc ++;
+				if(this.opc > this.totalSprites -1 ){
+					this.opc = 0;
+				}
+				console.log(this.opc)
+			}
+			
 		},
 		animate: function (){
-			console.log("this = ",this.dudeBounds)
-			this.grow(this.ripples[0])
-
-            // for (var i = 0; i < this.ripples.length; i++) {
-
-            //     var dude = this.ripples[i];
-            //     dude.scale.y = 0.95 + Math.sin(this.tick + dude.offset) * 0.05;
-            //     dude.direction += dude.turningSpeed * 0.01;
-            //     dude.x += Math.sin(dude.direction) * (dude.speed * dude.scale.y);
-            //     dude.y += Math.cos(dude.direction) * (dude.speed * dude.scale.y);
-            //     dude.rotation = -dude.direction + Math.PI;
-
-            //     // wrap the maggots
-            //     if (dude.x < this.dudeBounds.x) {
-            //         dude.x += this.dudeBounds.width;
-            //     }
-            //     else if (dude.x > this.dudeBounds.x + this.dudeBounds.width) {
-            //         dude.x -= this.dudeBounds.width;
-            //     }
-
-            //     if (dude.y < this.dudeBounds.y) {
-            //         dude.y += this.dudeBounds.height;
-            //     }
-            //     else if (dude.y > this.dudeBounds.y + this.dudeBounds.height) {
-            //         dude.y -= this.dudeBounds.height;
-            //     }
-            // }
-
-            // increment the ticker
-            this.tick += 0.1;
+			for(let i = 0; i < this.growing.length; i++){
+				this.grow(this.growing[i]);
+			}
 		}
 	}
 }

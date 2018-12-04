@@ -74,23 +74,17 @@ export default function Game (PIXI, Utils, supportingClasses, userObject, getUse
             console.log(this.keyBoard)
             this.keyBoard.activate();
 
-
-
-
-
-   
-            
             // this.dot = new PIXI.Graphics;
             // this.dot.beginFill(0x000000).drawCircle(0,0,10).endFill();
             // this.dot.x = this.halfWidth;
             // this.dot.y = this.halfHeight;
             // this.stage.addChild(this.dot);
+          
         },
         changeColor: function (color) {
             console.log("change color");
             this.art_board.changeColor(color);
         },
-        
         addPegPanels: function () {
             let panel,
                 panelCounter = 0;
