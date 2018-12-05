@@ -19,39 +19,12 @@ export default function Ripples (PIXI, app, renderer, stage, wh) {
             this.totalSprites = renderer instanceof PIXI.WebGLRenderer ? 100 : 10;
 
             for (let i = 0; i < this.totalSprites; i++) {
-
-                // create a new Sprite
                 var dude = PIXI.Sprite.fromImage('/bmps/ring.png');
-
                 dude.anchor.x = dude. anchor.y = 0.5;
-                // dude.tint = Math.random() * 0xE8D4CD;
-
-                // // set the anchor point so the texture is centerd on the sprite
-                // dude.anchor.set(0.5);
-
-                // // different maggots, different sizes
-                dude.scale.set(0.01);
-
-                // // scatter them all
-                // dude.x = Math.random() * wh.width;
-                // dude.y = Math.random() * wh.height;
-
-                // dude.tint = Math.random() * 0x808080;
-
-                // // create a random direction in radians
-                // dude.direction = Math.random() * Math.PI * 2;
-
-                // // this number will be used to modify the direction of the sprite over time
-                // dude.turningSpeed = Math.random() - 0.8;
-
-                // // create a random speed between 0 - 2, and these maggots are slooww
-                // dude.speed = (2 + Math.random() * 2) * 0.2;
-
-                // dude.offset = Math.random() * 100;
-
-                // finally we push the dude into the maggots array so it it can be easily accessed later
+                dude.startScale = 0.1
+                dude.scale.set(dude.startScale);
+                dude.counter = 0;
                 this.ripples.push(dude);
-
                 sprites.addChild(dude);
             }
             // create a bounding box box for the little maggots
@@ -71,47 +44,57 @@ export default function Ripples (PIXI, app, renderer, stage, wh) {
              this.counter = 0;
              this.opc = 0;
 		},
-		grow: function (ripple) {
-			if(ripple.scale.x < 1){
-				ripple.scale.x += 0.01;
-				ripple.scale.y += 0.01;
-				
-			} else {
+		grow: function (ripple, index) {
+
+			 console.log(`${index}) ${ripple.counter} ${ripple}`)
+			// console.log(ripple)
+
+			ripple.scale.x += 0.01;
+			ripple.scale.y += 0.01;
+			ripple.counter ++;
+
+			if (ripple.counter >= 100){
+				this.reset(ripple);
 				ripple.alpha = 0;
-				ripple.visible = false;
 				this.growing.splice(this.growing.indexOf(ripple), 1);
 			}
-
-			if(ripple.alpha > 0){
-				ripple.alpha -= 0.025;
-			} else {
-				ripple.alpha = 0;
-				ripple.visible = false;
-			}
+		
+		},
+		reset: function (ripple) {
+			ripple.counter = 0;
+			ripple.alpha = 1;
+			//ripple.scale.set(0.01);
+			
 		},
 		mouseMove: function(e){
 			this.counter ++;
-			if(this.counter % 2 === 0){
+			if(this.counter % 10 === 0){
 
 				let pos = e.data.global;
-				this.ripples[this.opc].alpha = 1;
-				this.ripples[this.opc].scale.set(0.01);
+				if(this.growing.indexOf(this.ripples[this.opc]) !== -1)return;
+				this.ripples[this.opc].alpha =1;
 				this.ripples[this.opc].tint = Math.random() * 0xE8D4CD;
 				this.ripples[this.opc].x = pos.x;
 				this.ripples[this.opc].y = pos.y;
-				this.growing.push(this.ripples[this.opc]);
+				//this.growing.push(this.ripples[this.opc]);
 				this.opc ++;
 				if(this.opc > this.totalSprites -1 ){
 					this.opc = 0;
 				}
-				console.log(this.opc)
+				this.counter = 0;
 			}
 			
 		},
 		animate: function (){
-			for(let i = 0; i < this.growing.length; i++){
-				this.grow(this.growing[i]);
-			}
+			console.log("length = "+this.growing.length)
+			// for(let i = 0; i < this.growing.length; i++){
+			// 	this.grow(this.growing[i], i);
+			// }
+			for (let i = 0; i < this.totalSprites; i++) {
+				this.ripples[i].counter ++;
+				this.ripples[i].startScale += 0.001;
+                this.ripples[i].scale.set(this.ripples[i].startScale);
+            }
 		}
 	}
 }

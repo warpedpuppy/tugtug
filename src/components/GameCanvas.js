@@ -13,6 +13,7 @@ import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import faker from 'faker';
 import { TweenMax } from 'gsap';
+import PixiFps from "pixi-fps";
 
 class GameCanvas extends React.Component {
 	constructor(props){
@@ -29,7 +30,8 @@ class GameCanvas extends React.Component {
 			portal_code,
 			hero,
 			keyHandler,
-			ripples
+			ripples,
+			PixiFps
 		}
 
 	}

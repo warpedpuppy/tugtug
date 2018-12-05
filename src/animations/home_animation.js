@@ -195,14 +195,14 @@ export default function(Utils, PIXI, canvas, TimelineMax) {
 			return cont;
 		},
 		resizeHandler: function (){
-			this.stage.removeChildren();
-			this.width =  this.utils.returnCanvasWidth();
-			this.height = this.canvasHeight = this.utils.returnCanvasHeight();
-			this.renderer.resize(this.width, this.height);
+			// this.stage.removeChildren();
+			// this.width =  this.utils.returnCanvasWidth();
+			// this.height = this.canvasHeight = this.utils.returnCanvasHeight();
+			// this.renderer.resize(this.width, this.height);
 
-			this.stage.addChild(this.kingCont);
-	        this.stage.addChild(this.outerCont);
-			this.build();
+			// this.stage.addChild(this.kingCont);
+	  //       this.stage.addChild(this.outerCont);
+			// this.build();
 			
 		},
 		clear: function (){
