@@ -10,7 +10,11 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		storeRadius: 0,
 		idle: true,
 		vx: 0,
-		vy: 0,
+		vy: 5,
+		pelletsArray: [],
+		edgeBuffer: 200,
+		pelletQ: 100,
+		rotateBoolean: false,
 		init: function () {
 
 
@@ -24,6 +28,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 
 			this.backgroundCont = new PIXI.Container();
 			app.stage.addChild(this.backgroundCont);
+
+			this.bottomEdge = this.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.canvasWidth + this.edgeBuffer;
 
 
 			var sprites = new PIXI.particles.ParticleContainer(10000, {
@@ -70,12 +77,25 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 			this.gradient.anchor.set(0.5);
 			app.stage.addChild(this.gradient);
 
-			 for(let i = 0; i < 100; i ++ ){
+
+
+			var pellets = new PIXI.particles.ParticleContainer(10000, {
+			    scale: true,
+			    position: true,
+			    rotation: true,
+			    uvs: true,
+			    alpha: true
+			});
+			app.stage.addChild(pellets);
+			 for(let i = 0; i < this.pelletQ; i ++ ){
             	let s =  PIXI.Sprite.fromImage('/bmps/pellet.png');
+            	s.vx = 0;//this.utils.randomNumberBetween(1,5);
+            	s.vy = this.utils.randomNumberBetween(1,5); 
             	s.x = this.utils.randomNumberBetween(0, this.canvasWidth);
             	s.y = this.utils.randomNumberBetween(0, this.canvasHeight);
             	s.scale.set(this.utils.randomNumberBetween(0.05, 0.75));
-            	app.stage.addChild(s);
+            	pellets.addChild(s);
+            	this.pelletsArray.push(s);
             }
 
 
@@ -106,12 +126,23 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		},
 		rotate: function (str) {
 			let inc = 90;
+			console.log("TURN!!!")
 			if(str === 'right'){
 				this.idle = false;
 				this.radius += (Math.PI * 2) / inc;
+
 				this.vx = this.velocity * Math.sin(this.radius);
 				this.vy = -this.velocity * Math.cos(this.radius);
 				this.storeRadius = this.radius;
+
+
+				for(let i = 0; i < this.pelletQ; i++){
+					this.velocity = this.utils.randomNumberBetween(4, 6);
+					this.pelletsArray[i].vx = -this.velocity * Math.sin(this.radius);
+	            	this.pelletsArray[i].vy = this.velocity * Math.cos(this.radius);
+	            }
+
+
 			} else if(str === 'left') {
 				console.log('boom')
 				this.idle = false;
@@ -119,14 +150,18 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 				this.vx = this.velocity * Math.sin(this.radius);
 				this.vy = -this.velocity * Math.cos(this.radius);
 				this.storeRadius = this.radius;
+
+				for(let i = 0; i < this.pelletQ; i++){
+					this.velocity = this.utils.randomNumberBetween(4, 6);
+					this.pelletsArray[i].vx = -this.velocity * Math.sin(this.radius);
+	            	this.pelletsArray[i].vy =  this.velocity * Math.cos(this.radius);
+	            }
 			}
 
 		},
 		rotateChain: function () {
 
-			//if(this.idle)
-
-			this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
+			if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 
             this.pos.push(this.radius);
             this.increment = 5;
@@ -144,13 +179,12 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             }
         },
 		keyDown: function (e) {
-			console.log('hit')
             e.preventDefault();
             switch (e.keyCode) {
                 case 37:
                     //left
                    // this.moveAllow = true;
-                    //this.rotateAllow = true;
+                    this.rotateBoolean = true;
 
                     this.rotate('left');
                     break;
@@ -163,7 +197,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
                 case 39:
                     //alert('right');
                   //  this.moveAllow = true;
-                   // this.rotateAllow = true;
+                    this.rotateBoolean = true;
                     this.rotate('right');
                     break;
                 case 40:
@@ -177,16 +211,37 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
         },
         keyUp: function (e) {
             e.preventDefault();
+            this.rotateBoolean = false;
             this.idle = true;
         },
 		animate: function () {
+			
 			this.rotateChain();
 			for(let i = 0; i < this.growing.length; i++){
 				this.grow(this.growing[i], i);
 			}
+			
 
-			this.cont.x += this.vx;// * rate;
-            this.cont.y += this.vy;// * rate;
+			for(let i = 0; i < this.pelletQ; i++){
+				this.pelletsArray[i].x += this.pelletsArray[i].vx;// * rate;
+            	this.pelletsArray[i].y += this.pelletsArray[i].vy;// * rate;
+
+            	if(this.pelletsArray[i].y > this.bottomEdge) {
+            		this.pelletsArray[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
+            	} else if(this.pelletsArray[i].y < -this.edgeBuffer) {
+            		this.pelletsArray[i].y = this.utils.randomNumberBetween(this.canvasHeight, this.bottomEdge);
+            	}
+
+            	if(this.pelletsArray[i].x > this.rightEdge) {
+            		this.pelletsArray[i].x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
+            	} else if(this.pelletsArray[i].x < -this.edgeBuffer) {
+            		this.pelletsArray[i].x = this.utils.randomNumberBetween(this.canvasWidth, this.rightEdge);
+            	}
+
+			}
+
+			// this.cont.x += this.vx;// * rate;
+   //          this.cont.y += this.vy;// * rate;
 		},
 		grow: function (ripple, index) {
 			ripple.scale.x += 0.0075;
