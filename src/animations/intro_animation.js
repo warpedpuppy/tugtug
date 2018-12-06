@@ -9,14 +9,22 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		radius: 0,
 		storeRadius: 0,
 		idle: true,
+		vx: 0,
+		vy: 0,
 		init: function () {
+
+
 			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
 
-			var app = new PIXI.Application();
+			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
 			document.getElementById('homeCanvas').appendChild(app.view);
-			app.renderer.resize(this.canvasWidth, this.canvasHeight);
+
+
+			this.backgroundCont = new PIXI.Container();
+			app.stage.addChild(this.backgroundCont);
+
 
 			var sprites = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
@@ -57,6 +65,20 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             this.counter = 0;
             this.opc = 0;
 
+            this.gradient = PIXI.Sprite.fromImage('/bmps/gradient.png');
+            this.gradient.alpha = 0.5;
+			this.gradient.anchor.set(0.5);
+			app.stage.addChild(this.gradient);
+
+			 for(let i = 0; i < 100; i ++ ){
+            	let s =  PIXI.Sprite.fromImage('/bmps/pellet.png');
+            	s.x = this.utils.randomNumberBetween(0, this.canvasWidth);
+            	s.y = this.utils.randomNumberBetween(0, this.canvasHeight);
+            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.75));
+            	app.stage.addChild(s);
+            }
+
+
 
 
             this.cont = new PIXI.Container();
@@ -65,15 +87,21 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             app.stage.addChild(this.cont);
             this.segments = [];
             for (let i = 0; i < 5; i++) {
-                let segment = this.bodySegment(50, 0xFFFF00, i*50);
+                let segment = this.bodySegment(25, 0xFFFF00, i*25);
                 this.segments.push(segment);
                 this.cont.addChild(segment);
             }
+
+
+           
+
             this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
 			window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 			app.ticker.add(this.animate.bind(this));
+
+		
 
 		},
 		rotate: function (str) {
@@ -85,6 +113,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 				this.vy = -this.velocity * Math.cos(this.radius);
 				this.storeRadius = this.radius;
 			} else if(str === 'left') {
+				console.log('boom')
 				this.idle = false;
 				this.radius -= (Math.PI * 2) / inc;
 				this.vx = this.velocity * Math.sin(this.radius);
@@ -95,7 +124,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		},
 		rotateChain: function () {
 
-			if(this.idle)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
+			//if(this.idle)
+
+			this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 
             this.pos.push(this.radius);
             this.increment = 5;
@@ -113,12 +144,14 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             }
         },
 		keyDown: function (e) {
+			console.log('hit')
             e.preventDefault();
             switch (e.keyCode) {
                 case 37:
                     //left
                    // this.moveAllow = true;
-                    this.rotateAllow = true;
+                    //this.rotateAllow = true;
+
                     this.rotate('left');
                     break;
                 case 38:
@@ -130,7 +163,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
                 case 39:
                     //alert('right');
                   //  this.moveAllow = true;
-                    this.rotateAllow = true;
+                   // this.rotateAllow = true;
                     this.rotate('right');
                     break;
                 case 40:
@@ -151,10 +184,13 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 			for(let i = 0; i < this.growing.length; i++){
 				this.grow(this.growing[i], i);
 			}
+
+			this.cont.x += this.vx;// * rate;
+            this.cont.y += this.vy;// * rate;
 		},
 		grow: function (ripple, index) {
-			ripple.scale.x += 0.075;
-			ripple.scale.y += 0.075;
+			ripple.scale.x += 0.0075;
+			ripple.scale.y += 0.0075;
 			ripple.counter ++;
 			ripple.alpha -= 0.005;
 
@@ -177,7 +213,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 
             let b = new PIXI.Graphics();
             b.y = yVal;
-            let triangleWidth = 100,
+            let triangleWidth = 25,
 		        triangleHeight = triangleWidth,
 		        triangleHalfway = triangleWidth/2;
 
@@ -189,7 +225,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		    b.lineTo(0, 0);
 		    b.lineTo(triangleHalfway, 0);
 		    b.endFill();
-		    b.pivot.x = b.pivot.y = 50;
+		    b.pivot.x = b.pivot.y = 12.5;
 		    b.rotation = this.utils.deg2rad(180);
             cont.addChild(b);
             cont.body = b;
@@ -201,9 +237,10 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 		},
 		mouseMove: function(e){
 			this.counter ++;
+			let pos = e.data.global;
 			if(this.counter % 10 === 0){
 
-				let pos = e.data.global;
+				
 				if(this.growing.indexOf(this.ripples[this.opc]) !== -1)return;
 				
 				this.ripples[this.opc].tint = Math.random() * 0xE8D4CD;
@@ -217,6 +254,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 				}
 				this.counter = 0;
 			}
+
+			this.gradient.x = pos.x;
+			this.gradient.y = pos.y;
 			
 		},
 	}
