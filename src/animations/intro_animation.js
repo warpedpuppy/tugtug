@@ -1,4 +1,4 @@
-export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation) {
+export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation, renderTexture) {
 	return {
 		ripples: [],
 		totalSprites: 0,
@@ -15,6 +15,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation)
 		edgeBuffer: 200,
 		pelletQ: 100,
 		rotateBoolean: false,
+		renderTextureTestBoolean: false,
 		init: function () {
 
 
@@ -105,6 +106,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation)
             this.filter_animation = filter_animation(PIXI, app, this.filterContainer)
             this.filter_animation.init();
 
+            this.renderTexture = new renderTexture(PIXI, app, this.pelletsArray);
+            this.renderTexture.init();
+
             this.cont = new PIXI.Container();
             this.cont.x = this.canvasWidth / 2;
             this.cont.y = this.canvasHeight / 2;
@@ -116,7 +120,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation)
                 this.cont.addChild(segment);
             }
 
-
+            this.app = app;
           
 
 			this.keyDown = this.keyDown.bind(this);
@@ -128,6 +132,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation)
 		},
 		filterTest: function () {
 			this.filter_animation.filterToggle();
+		},
+		renderTextureTest: function () {
+			this.renderTextureTestBoolean = !this.renderTextureTestBoolean;
 		},
 		rotate: function (str) {
 			let inc = 90;
@@ -222,6 +229,12 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation)
 		animate: function () {
 			
 			this.filter_animation.animate();
+
+			if(this.renderTextureTestBoolean){
+				this.renderTexture.animate();
+			this.app.renderer.render(this.app.stage, this.renderTexture.renderTexture2, false);
+			}
+			
 
 			this.rotateChain();
 			for(let i = 0; i < this.growing.length; i++){
