@@ -17,3 +17,15 @@
 #homeCanvas #fpsChecker {
 	
 }
+
+.testPanel {
+	position: fixed;
+	right:0;
+	top:100px;
+}
+.testPanel button {
+	cursor: pointer;
+	padding: 5px 10px;
+	border:1px solid black;
+	border-radius: 10px;
+}

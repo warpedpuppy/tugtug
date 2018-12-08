@@ -1,4 +1,4 @@
-export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
+export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation) {
 	return {
 		ripples: [],
 		totalSprites: 0,
@@ -21,6 +21,8 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
 			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
+
+
 
 			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
 			document.getElementById('homeCanvas').appendChild(app.view);
@@ -93,13 +95,15 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             	s.vy = this.utils.randomNumberBetween(1,5); 
             	s.x = this.utils.randomNumberBetween(0, this.canvasWidth);
             	s.y = this.utils.randomNumberBetween(0, this.canvasHeight);
-            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.75));
+            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.25));
             	pellets.addChild(s);
             	this.pelletsArray.push(s);
             }
 
-
-
+            this.filterContainer = new PIXI.Container();
+            app.stage.addChild(this.filterContainer);
+            this.filter_animation = filter_animation(PIXI, app, this.filterContainer)
+            this.filter_animation.init();
 
             this.cont = new PIXI.Container();
             this.cont.x = this.canvasWidth / 2;
@@ -113,16 +117,17 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
             }
 
 
-           
+          
 
-            this.keyDown = this.keyDown.bind(this);
+			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
 			window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 			app.ticker.add(this.animate.bind(this));
 
-		
-
+		},
+		filterTest: function () {
+			this.filter_animation.filterToggle();
 		},
 		rotate: function (str) {
 			let inc = 90;
@@ -216,6 +221,8 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps) {
         },
 		animate: function () {
 			
+			this.filter_animation.animate();
+
 			this.rotateChain();
 			for(let i = 0; i < this.growing.length; i++){
 				this.grow(this.growing[i], i);
