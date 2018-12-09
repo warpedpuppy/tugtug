@@ -1,6 +1,9 @@
 export default function renderTexture (PIXI, app, items) {
     return {
+        base: new PIXI.Container(),
         init: function () {
+
+            
             // create two render textures... these dynamic textures will be used to draw the scene into itself
             var renderTexture = PIXI.RenderTexture.create(
                 app.screen.width,
@@ -21,7 +24,7 @@ export default function renderTexture (PIXI, app, items) {
             outputSprite.anchor.set(0.5);
 
             // add to stage
-            app.stage.addChild(outputSprite);
+            this.base.addChild(outputSprite);
 
             // create two render textures... these dynamic textures will be used to draw the scene into itself
             var renderTexture = this.renderTexture = PIXI.RenderTexture.create(
@@ -43,14 +46,14 @@ export default function renderTexture (PIXI, app, items) {
             outputSprite.anchor.set(0.5);
 
             // add to stage
-            app.stage.addChild(outputSprite);
+            this.base.addChild(outputSprite);
 
             var stuffContainer = this.stuffContainer = new PIXI.Container();
 
             stuffContainer.x = 400;
             stuffContainer.y = 300;
 
-            app.stage.addChild(stuffContainer);
+            this.base.addChild(stuffContainer);
 
             // create an array of image ids..
             var fruits = [
@@ -79,6 +82,7 @@ export default function renderTexture (PIXI, app, items) {
 
             // used for spinning!
             var count = this.count = 0;
+            app.stage.addChild(this.base);
 
         },
         animate: function () {
@@ -104,7 +108,7 @@ export default function renderTexture (PIXI, app, items) {
 
             // render the stage to the texture
             // the 'true' clears the texture before the content is rendered
-            //app.renderer.render(app.stage, this.renderTexture2, false);
+            //app.renderer.render(this.base, this.renderTexture2, false);
 
 
         }

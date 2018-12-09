@@ -48,7 +48,7 @@ export default class HomeCanvas extends React.Component {
 			<div id='homeCanvas'></div>
 			<div class="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
-			<button onClick={() => this.testRenderTexture()}>render texture test is {this.state.filterTest}</button>
+			{ /*<button onClick={() => this.testRenderTexture()}>render texture test is {this.state.filterTest}</button> */}
 			</div>
 			</div>
 		)

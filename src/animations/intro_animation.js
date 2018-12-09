@@ -49,6 +49,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation,
             app.stage.addChild(fpsCounter);
 
             this.totalSprites = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
+            this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 100;
 
             for (let i = 0; i < this.totalSprites; i++) {
                 var dude = PIXI.Sprite.fromImage('/bmps/ring.png');
@@ -92,6 +93,7 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation,
 			app.stage.addChild(pellets);
 			 for(let i = 0; i < this.pelletQ; i ++ ){
             	let s =  PIXI.Sprite.fromImage('/bmps/pellet.png');
+            	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = 0;//this.utils.randomNumberBetween(1,5);
             	s.vy = this.utils.randomNumberBetween(1,5); 
             	s.x = this.utils.randomNumberBetween(0, this.canvasWidth);
@@ -232,7 +234,9 @@ export default function(Utils, PIXI, id, TimelineMax, PixiFps, filter_animation,
 
 			if(this.renderTextureTestBoolean){
 				this.renderTexture.animate();
-			this.app.renderer.render(this.app.stage, this.renderTexture.renderTexture2, false);
+				this.app.renderer.render(this.app.stage, this.renderTexture.renderTexture2, true);
+			} else {
+				this.app.renderer.render(this.app.stage, undefined, true);
 			}
 			
 
