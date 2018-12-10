@@ -5,7 +5,9 @@ import Utils from '../animations/utils'
 import home_page from '../animations/intro_animation';
 import filter_animation from '../animations/intro_supporting/filterAnimation';
 import renderTexture from '../animations/intro_supporting/renderTexture';
-import {TimelineMax} from 'gsap';
+import ripples from '../animations/intro_supporting/ripples';
+import pellets from '../animations/intro_supporting/pellets';
+import { TimelineMax } from 'gsap';
 import PixiFps from "pixi-fps";
 export default class HomeCanvas extends React.Component {
 
@@ -19,7 +21,15 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	componentDidMount(){
-		this.home_page = home_page(Utils, PIXI, this.canvas, TimelineMax,PixiFps, filter_animation, renderTexture);
+		let obj = {
+			 TimelineMax,
+			 PixiFps, 
+			 filter_animation, 
+			 renderTexture,
+			 ripples,
+			 pellets
+		}
+		this.home_page = home_page(PIXI, Utils, obj);
 		this.home_page.init();
 	}
 	componentWillUnmount(){
