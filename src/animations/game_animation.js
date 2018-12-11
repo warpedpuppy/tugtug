@@ -19,7 +19,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         vy: 1,
         rotateBoolean: false,
         renderTextureTestBoolean: false,
-        inc: 90,
+        inc: 180,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -80,8 +80,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
                 
-                    let w = this.panelWidth = 500;// this.canvasWidth;
-                    let h = this.panelHeight = 500;//this.canvasHeight - 50;
+                    let w = this.panelWidth = 1500;// this.canvasWidth;
+                    let h = this.panelHeight = 1500;//this.canvasHeight - 50;
                     
                     let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: getUserName()};
                     let xVal = w * j;
@@ -225,6 +225,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             } else if(str === 'left') {
                 this.idle = false;
                 this.hero.radius -= (Math.PI * 2) / this.inc;
+                 this.velocity = this.utils.randomNumberBetween(4, 6);
+                console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
                 this.vx = this.velocity * Math.sin(this.hero.radius);
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
@@ -241,9 +243,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.backgroundCont.x += -this.vx;// * rate;
             this.backgroundCont.y += -this.vy;// * rate;
 
-
             let yLimit = (this.panelHeight) -  (this.canvasHeight / 2);
             let xLimit = this.panelWidth - (this.canvasWidth / 2);
+
             if(this.backgroundCont.y > (this.canvasHeight / 2)) {
                 this.vy = 0;
                 this.backgroundCont.y = (this.canvasHeight / 2);
