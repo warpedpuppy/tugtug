@@ -59,14 +59,15 @@ export default function Pellets (PIXI, app, utils, wh) {
 
             	if(this.pelletsArray[i].y > this.bottomEdge) {
             		this.pelletsArray[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
+
             	} else if(this.pelletsArray[i].y < -this.edgeBuffer) {
-            		this.pelletsArray[i].y = this.utils.randomNumberBetween(this.canvasHeight, this.bottomEdge);
+            		this.pelletsArray[i].y = this.utils.randomNumberBetween(wh.canvasHeight, this.bottomEdge);
             	}
 
             	if(this.pelletsArray[i].x > this.rightEdge) {
             		this.pelletsArray[i].x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
             	} else if(this.pelletsArray[i].x < -this.edgeBuffer) {
-            		this.pelletsArray[i].x = this.utils.randomNumberBetween(this.canvasWidth, this.rightEdge);
+            		this.pelletsArray[i].x = this.utils.randomNumberBetween(wh.canvasWidth, this.rightEdge);
             	}
 
 			}

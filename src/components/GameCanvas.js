@@ -5,9 +5,10 @@ import Utils from '../animations/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
 import portal_code from '../animations/supportingClasses/portal';
-import hero from '../animations/supportingClasses/protagonist';
+import hero from '../animations/intro_supporting/hero';
 import keyHandler from '../animations/supportingClasses/keyHandler';
-import ripples from '../animations/supportingClasses/ripples';
+//import ripples from '../animations/supportingClasses/ripples';
+import Panel from '../animations/supportingClasses/panel';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -28,10 +29,11 @@ class GameCanvas extends React.Component {
 		this.supportingClasses = {
 			art_board_code,
 			portal_code,
-			hero,
 			keyHandler,
-			ripples,
-			PixiFps
+			PixiFps,
+			Panel,
+			TweenMax,
+			hero
 		}
 
 	}

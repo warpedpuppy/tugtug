@@ -7,6 +7,8 @@ import filter_animation from '../animations/intro_supporting/filterAnimation';
 import renderTexture from '../animations/intro_supporting/renderTexture';
 import ripples from '../animations/intro_supporting/ripples';
 import pellets from '../animations/intro_supporting/pellets';
+import hero from '../animations/intro_supporting/hero';
+
 import { TimelineMax } from 'gsap';
 import PixiFps from "pixi-fps";
 export default class HomeCanvas extends React.Component {
@@ -27,7 +29,8 @@ export default class HomeCanvas extends React.Component {
 			 filter_animation, 
 			 renderTexture,
 			 ripples,
-			 pellets
+			 pellets,
+			 hero
 		}
 		this.home_page = home_page(PIXI, Utils, obj);
 		this.home_page.init();
@@ -56,7 +59,7 @@ export default class HomeCanvas extends React.Component {
 		return (
 			<div>
 			<div id='homeCanvas'></div>
-			<div class="testPanel">
+			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			{ /*<button onClick={() => this.testRenderTexture()}>render texture test is {this.state.filterTest}</button> */}
 			</div>
