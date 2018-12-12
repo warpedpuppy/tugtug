@@ -1,4 +1,4 @@
-export default function Pellets (PIXI, app, utils, wh) {
+export default function Pellets (PIXI, app, utils, wh, stage) {
 	return {
 		pelletsArray: [],
 		utils: utils,
@@ -11,9 +11,13 @@ export default function Pellets (PIXI, app, utils, wh) {
 			    uvs: true,
 			    alpha: true
 			});
-			app.stage.addChild(pellets);
+			if(!stage){
+				app.stage.addChild(pellets);
+			} else {
+				stage.addChild(pellets);
+			}
+			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 100;
-			console.log(this.pelletQ)
 			 for(let i = 0; i < this.pelletQ; i ++ ){
             	let s =  PIXI.Sprite.fromImage('/bmps/pellet.png');
             	s.tint = Math.random() * 0xFFFFFF;
@@ -21,7 +25,6 @@ export default function Pellets (PIXI, app, utils, wh) {
             	s.vy = this.utils.randomNumberBetween(1,5); 
             	s.x = this.utils.randomNumberBetween(0, wh.canvasWidth);
             	s.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
-
             	s.scale.set(this.utils.randomNumberBetween(0.05, 0.25));
             	pellets.addChild(s);
             	this.pelletsArray.push(s);

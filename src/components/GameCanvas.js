@@ -7,7 +7,7 @@ import art_board_code from '../animations/supportingClasses/art_board_sub';
 import portal_code from '../animations/supportingClasses/portal';
 import hero from '../animations/intro_supporting/hero';
 import keyHandler from '../animations/supportingClasses/keyHandler';
-//import ripples from '../animations/supportingClasses/ripples';
+import pellets from '../animations/intro_supporting/pellets';
 import Panel from '../animations/supportingClasses/panel';
 import {connect} from 'react-redux';
 import axios from 'axios';
@@ -33,7 +33,8 @@ class GameCanvas extends React.Component {
 			PixiFps,
 			Panel,
 			TweenMax,
-			hero
+			hero,
+			pellets
 		}
 
 	}

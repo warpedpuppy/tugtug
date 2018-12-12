@@ -2,6 +2,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
+        pelletCont: new PIXI.Container(),
         stage: new PIXI.Container(),
         panelWidth: 0,
         panelHeight: 0,
@@ -20,6 +21,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         rotateBoolean: false,
         renderTextureTestBoolean: false,
         inc: 180,
+        panelWidth: 500,
+        panelHeight:500,
+        characterHeight: 150,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -46,6 +50,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             document.getElementById("game_canvas").appendChild(this.renderer.view);
             this.animate = this.animate.bind(this);
 
+            this.wH = {canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, characterHeight: this.characterHeight}
+
             this.addPegPanels();
 
 
@@ -57,12 +63,19 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 
+            let size = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight}
+            this.hero = obj.hero(PIXI, this.app, this.utils, size)
+            this.hero.init();
+            this.stage.addChild(this.hero.cont);
+
+
 
             this.app.ticker.add(this.animate.bind(this));
             
             this.total = this.cols * this.rows;
-          
-        
+            this.stage.addChild(this.pelletCont);
+            this.pellets = obj.pellets(PIXI, this.app, this.utils, this.wH, this.pelletCont);
+            this.pellets.init();
 
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
@@ -80,23 +93,19 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
                 
-                    let w = this.panelWidth = 1500;// this.canvasWidth;
-                    let h = this.panelHeight = 1500;//this.canvasHeight - 50;
+                    let w = this.panelWidth;
+                    let h = this.panelHeight;
                     
                     let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: getUserName()};
                     let xVal = w * j;
                     let yVal = h * i;
                     this.leftX = (this.cols - 1) * this.panelWidth;
                     this.bottomY = (this.rows - 1) * this.panelHeight;
-                    //panel = this.PegPanel(panelCounter, userObject, {x: xVal, y: yVal});
 
-                    let panelTempObj = {canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, characterHeight: this.characterHeight}
-
-                    
-
-                    
-
-                    let panelClass = obj.Panel(PIXI, panelTempObj, obj.portal_code);
+                    let panelClass = obj.Panel(PIXI, this.wH, obj.portal_code);
+                    if(panelCounter === this.panelForArtBoard){
+                        this.activePanel = panelClass;
+                    }
                     panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal});
                     let panel = panelClass.returnPanel();
                     panel.x = xVal;
@@ -109,10 +118,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     panelCounter ++;
                 }
             }
-            let size = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight}
-            this.hero = obj.hero(PIXI, this.app, this.utils, size)
-            this.hero.init();
-            this.stage.addChild(this.hero.cont);
+         
            //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
         },
@@ -220,18 +226,18 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
                 let obj = {vx: -this.vx, vy: -this.vy}
-                //this.pellets.rotate("right", obj)
+                this.pellets.rotate("right", obj)
             
             } else if(str === 'left') {
                 this.idle = false;
                 this.hero.radius -= (Math.PI * 2) / this.inc;
-                 this.velocity = this.utils.randomNumberBetween(4, 6);
-                console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
+                this.velocity = this.utils.randomNumberBetween(4, 6);
+                // console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
                 this.vx = this.velocity * Math.sin(this.hero.radius);
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
                 let obj = {vx: -this.vx, vy: -this.vy}
-                //this.pellets.rotate("left", obj)
+                this.pellets.rotate("left", obj)
             
             }
 
@@ -239,9 +245,29 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         animate: function () {
 
             this.hero.animate();
+            this.pellets.animate();
 
             this.backgroundCont.x += -this.vx;// * rate;
             this.backgroundCont.y += -this.vy;// * rate;
+
+            let rect = new PIXI.Rectangle();
+
+            for(let i = 0; i < this.activePanel.doors.length; i++){
+                let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
+                let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
+                rect = new PIXI.Rectangle(
+                    Math.floor(globalPoint.x), 
+                    Math.floor(globalPoint.y), 
+                    this.activePanel.doors[i].width, 
+                    this.activePanel.doors[i].height);
+                this.hero.cont.radius = 50;
+                if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
+                    console.log("hit")
+                }
+
+            }
+
+       
 
             let yLimit = (this.panelHeight) -  (this.canvasHeight / 2);
             let xLimit = this.panelWidth - (this.canvasWidth / 2);
