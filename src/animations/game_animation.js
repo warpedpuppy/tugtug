@@ -10,14 +10,14 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         speed: 2,
         cols: 4,
         rows: 4,
-        panelForArtBoard: 0,
+        panelForArtBoard: 8,
         characterHeight: 154,
         doors: [],
         POWER : 10000,
         EDGE_OFFSET : 5,
         idle: true,
         vx: 0,
-        vy: 1,
+        vy: -1,
         rotateBoolean: false,
         renderTextureTestBoolean: false,
         inc: 180,
@@ -108,6 +108,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     }
                     panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal});
                     let panel = panelClass.returnPanel();
+                    panel.panelClass = panelClass;
                     panel.x = xVal;
                     panel.y = yVal;
                     this.panels.push(panel)
@@ -118,6 +119,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     panelCounter ++;
                 }
             }
+
+            this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
+            this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
          
            //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
 
@@ -141,38 +145,56 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         },
         whichPanel: function (door, panel) {
 
-            let rightX = panel.x + this.panelWidth;
-            let bottomY = panel.y + this.panelHeight;
-            let topY = panel.y - this.panelHeight;
-            let leftX = panel.x - this.panelWidth
+            let rightX = panel.cont.x + this.panelWidth;
+            let bottomY = panel.cont.y + this.panelHeight;
+            let topY = panel.cont.y - this.panelHeight;
+            let leftX = panel.cont.x - this.panelWidth
              for (let i = 0; i < this.total; i++) {
-                console.log(`${door.loc} ${rightX} versus ${this.panels[i].x}`);
-                if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.x) {
+                console.log(`${door.loc} ${panel.cont.x} ${this.panelWidth} versus ${this.panels[i].x}`);
+                if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.cont.x) {
                     this.switchPanel(i);
                     break;
-                } else if (door.loc === 'bottom' && this.panels[i].y === bottomY && this.panels[i].x === panel.x) {
-                    this.switchPanel(i);
-                    break;
-
-                } else if (door.loc === 'left' && this.panels[i].x === leftX && this.panels[i].y === panel.y){
+                } else if (door.loc === 'bottom' && this.panels[i].y === bottomY && this.panels[i].x === panel.cont.x) {
                     this.switchPanel(i);
                     break;
 
-                } else if (door.loc === 'right' && this.panels[i].x === rightX && this.panels[i].y === panel.y) {
+                } else if (door.loc === 'left' && this.panels[i].x === leftX && this.panels[i].y === panel.cont.y){
+                    this.switchPanel(i);
+                    break;
+
+                } else if (door.loc === 'right' && this.panels[i].x === rightX && this.panels[i].y === panel.cont.y) {
                    this.switchPanel(i);
                     break;
                 }
              }
         },
         switchPanel: function (index) {
-            this.ball.x = this.panelWidth/2;
-            this.ball.y = this.panelHeight/2;
-            this.ball.panel.removeChild(this.ball);
-            this.panels[index].addChild(this.ball);
-            this.ball.panel = this.panels[index];
-            this.panelForArtBoard = index;
 
-            obj.TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
+            this.activePanel = this.panels[index].panelClass;
+            this.panelForArtBoard = index;
+            this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
+            this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
+         
+           
+
+            console.log('move to ', index)
+            // this.ball.x = this.panelWidth/2;
+            // this.ball.y = this.panelHeight/2;
+            // this.ball.panel.removeChild(this.ball);
+            // this.panels[index].addChild(this.ball);
+            //this.activePanel = this.panels[index].panelClass;
+            // this.panelForArtBoard = index;
+            // obj.TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
+
+
+            // this.ball.x = this.panelWidth/2;
+            // this.ball.y = this.panelHeight/2;
+            // this.ball.panel.removeChild(this.ball);
+            // this.panels[index].addChild(this.ball);
+            // this.ball.panel = this.panels[index];
+            // this.panelForArtBoard = index;
+
+            // obj.TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
         // rotateChain: function () {
         //     this.ballClass.pos.push(this.ballClass.radius);
@@ -252,6 +274,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
             let rect = new PIXI.Rectangle();
 
+            // door checking
             for(let i = 0; i < this.activePanel.doors.length; i++){
                 let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
                 let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
@@ -262,27 +285,32 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     this.activePanel.doors[i].height);
                 this.hero.cont.radius = 50;
                 if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
-                    console.log("hit")
+                    this.whichPanel(this.activePanel.doors[i], this.activePanel);
                 }
 
             }
 
        
 
-            let yLimit = (this.panelHeight) -  (this.canvasHeight / 2);
-            let xLimit = this.panelWidth - (this.canvasWidth / 2);
+            let yLimit =  this.activePanel.cont.y + (this.panelHeight) -  (this.canvasHeight / 2);
+            let yLimit2 = this.activePanel.cont.y  -  (this.canvasHeight / 2);
 
-            if(this.backgroundCont.y > (this.canvasHeight / 2)) {
+            let xLimit = this.activePanel.cont.x + this.panelWidth - (this.canvasWidth / 2);
+            let xLimit2 = this.activePanel.cont.x - (this.canvasWidth/2) ;
+
+
+            if(this.backgroundCont.y > -yLimit2) {
                 this.vy = 0;
-                this.backgroundCont.y = (this.canvasHeight / 2);
+                this.backgroundCont.y = -yLimit2;
             } else if (this.backgroundCont.y < -yLimit) {
-                this.vy = 0;
-                this.backgroundCont.y = -yLimit;
+                 this.vy = 0;
+                 this.backgroundCont.y = -yLimit;
             }
 
-            if(this.backgroundCont.x > (this.canvasWidth / 2)) {
+            console.log(this.backgroundCont.y +" versus "+ yLimit)
+            if(this.backgroundCont.x > -xLimit2) {
                 this.vx = 0;
-                this.backgroundCont.x = (this.canvasWidth / 2);
+                this.backgroundCont.x = -xLimit2;
             } else if (this.backgroundCont.x < -xLimit) {
                 this.vx = 0;
                 this.backgroundCont.x = -xLimit;
