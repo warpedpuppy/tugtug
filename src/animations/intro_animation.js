@@ -24,8 +24,8 @@ export default function(PIXI, Utils, obj) {
 			const fpsCounter = new obj.PixiFps();
             app.stage.addChild(fpsCounter);
 
-			this.ripples = obj.ripples(PIXI, app);
-			this.ripples.init();
+			// this.ripples = obj.ripples(PIXI, app);
+			// this.ripples.init();
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
@@ -121,7 +121,7 @@ export default function(PIXI, Utils, obj) {
 			}
 			
 			this.hero.animate();
-			this.ripples.animate();
+			//this.ripples.animate();
 			this.pellets.animate();
 
 		}

@@ -10,7 +10,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         speed: 2,
         cols: 4,
         rows: 4,
-        panelForArtBoard: 8,
+        panelForArtBoard: 0,
         characterHeight: 154,
         doors: [],
         POWER : 10000,
@@ -21,14 +21,15 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         rotateBoolean: false,
         renderTextureTestBoolean: false,
         inc: 180,
-        panelWidth: 500,
-        panelHeight:500,
+        panelWidth: 1500,
+        panelHeight: 1500,
         characterHeight: 150,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
+
 
             this.userObject = userObject;
             this.art_board = obj.art_board_code(this.utils, PIXI);
@@ -48,6 +49,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 
             document.getElementById("game_canvas").appendChild(this.renderer.view);
+
+            
+            
             this.animate = this.animate.bind(this);
 
             this.wH = {canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, characterHeight: this.characterHeight}
@@ -56,7 +60,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
 
             this.stage.addChild(this.backgroundCont);
-
+            this.stage.interactive = true;
 
             this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
@@ -77,9 +81,20 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.pellets = obj.pellets(PIXI, this.app, this.utils, this.wH, this.pelletCont);
             this.pellets.init();
 
+            this.ripplesCont = new PIXI.Container();
+            this.stage.addChild(this.ripplesCont);
+            this.ripples = obj.ripples(PIXI, this.app, this.ripplesCont, this.stage);
+            this.ripples.init();
+
+            this.filterContainer = new PIXI.Container();
+            this.stage.addChild(this.filterContainer);
+            this.filter_animation = obj.filter_animation(PIXI, this.app, this.filterContainer, this.stage)
+            this.filter_animation.init();
+
+
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
-
+          
         },
         changeColor: function (color) {
             console.log("change color");
@@ -103,10 +118,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     this.bottomY = (this.rows - 1) * this.panelHeight;
 
                     let panelClass = obj.Panel(PIXI, this.wH, obj.portal_code);
+                    let artBoard = undefined;
                     if(panelCounter === this.panelForArtBoard){
                         this.activePanel = panelClass;
+                        artBoard = this.art_board.returnArtBoard();
                     }
-                    panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal});
+                    panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal}, artBoard);
                     let panel = panelClass.returnPanel();
                     panel.panelClass = panelClass;
                     panel.x = xVal;
@@ -124,14 +141,23 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
          
            //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
-
+           this.mask = new PIXI.Graphics();
+           this.mask.beginFill(0x000000).drawRect(0,0,this.backgroundCont.width, this.backgroundCont.height).endFill();
+           this.mask.x = this.backgroundCont.x;
+           this.mask.y = this.backgroundCont.y;
+           this.stage.addChild(this.mask);
+           this.pelletCont.mask = this.mask;   
+         
         },
         stop: function () {
             this.app.ticker.destroy();
             this.renderer.destroy();
             window.onresize = undefined;
             console.log(this.renderer)
-           this.keyboard.deactivate();
+           //this.keyboard.deactivate();
+        },
+        filterTest: function () {
+            this.filter_animation.filterToggle();
         },
         resize: function () {
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -150,7 +176,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             let topY = panel.cont.y - this.panelHeight;
             let leftX = panel.cont.x - this.panelWidth
              for (let i = 0; i < this.total; i++) {
-                console.log(`${door.loc} ${panel.cont.x} ${this.panelWidth} versus ${this.panels[i].x}`);
+               // console.log(`${door.loc} ${panel.cont.x} ${this.panelWidth} versus ${this.panels[i].x}`);
                 if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.cont.x) {
                     this.switchPanel(i);
                     break;
@@ -169,49 +195,11 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
              }
         },
         switchPanel: function (index) {
-
             this.activePanel = this.panels[index].panelClass;
             this.panelForArtBoard = index;
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
-         
-           
-
-            console.log('move to ', index)
-            // this.ball.x = this.panelWidth/2;
-            // this.ball.y = this.panelHeight/2;
-            // this.ball.panel.removeChild(this.ball);
-            // this.panels[index].addChild(this.ball);
-            //this.activePanel = this.panels[index].panelClass;
-            // this.panelForArtBoard = index;
-            // obj.TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
-
-
-            // this.ball.x = this.panelWidth/2;
-            // this.ball.y = this.panelHeight/2;
-            // this.ball.panel.removeChild(this.ball);
-            // this.panels[index].addChild(this.ball);
-            // this.ball.panel = this.panels[index];
-            // this.panelForArtBoard = index;
-
-            // obj.TweenMax.to(this.backgroundCont, 1, {x: -this.panels[index].x, y: -this.panels[index].y})
         },
-        // rotateChain: function () {
-        //     this.ballClass.pos.push(this.ballClass.radius);
-        //     this.increment = 10;
-        //     let maxLength = this.increment * this.numBalls;
-        //     if (this.ballClass.pos.length > maxLength) {
-        //         this.ballClass.pos = this.ballClass.pos.slice(-maxLength);
-        //     }
-
-        //      this.ballClass.balls[0].rotation = this.ballClass.radius;
-        //     for (let i = 1; i < this.ballClass.numBalls; i++) {
-        //         let index = this.ballClass.pos.length - (i * this.increment);
-        //         if (this.ballClass.pos.length >= index) {
-        //          this.ballClass.balls[i].rotation = this.ballClass.pos[index];
-        //         }
-        //     }
-        // },
         keyDown: function (e) {
             e.preventDefault();
             switch (e.keyCode) {
@@ -268,10 +256,13 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
             this.hero.animate();
             this.pellets.animate();
+            this.ripples.animate();
+            this.filter_animation.animate();
 
             this.backgroundCont.x += -this.vx;// * rate;
             this.backgroundCont.y += -this.vy;// * rate;
-
+            this.mask.x = this.backgroundCont.x;
+            this.mask.y = this.backgroundCont.y;
             let rect = new PIXI.Rectangle();
 
             // door checking
@@ -307,7 +298,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                  this.backgroundCont.y = -yLimit;
             }
 
-            console.log(this.backgroundCont.y +" versus "+ yLimit)
+            //console.log(this.backgroundCont.y +" versus "+ yLimit)
             if(this.backgroundCont.x > -xLimit2) {
                 this.vx = 0;
                 this.backgroundCont.x = -xLimit2;

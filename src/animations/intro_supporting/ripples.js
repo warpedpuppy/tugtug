@@ -1,4 +1,4 @@
-export default function Ripples (PIXI, app) {
+export default function Ripples (PIXI, app, cont, stage) {
 	return {
 		ripples: [],
 		growing: [],
@@ -10,8 +10,7 @@ export default function Ripples (PIXI, app) {
 			    uvs: true,
 			    alpha: true
 			});
-			app.stage.addChild(sprites);
-
+		
             this.totalSprites = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
 
             for (let i = 0; i < this.totalSprites; i++) {
@@ -35,14 +34,26 @@ export default function Ripples (PIXI, app) {
             this.tick = 0;
             app.stage.interactive = true;
             this.mouseMove = this.mouseMove.bind(this);
-            app.stage.on('pointermove', this.mouseMove);
+            
             this.counter = 0;
             this.opc = 0;
 
             this.gradient = PIXI.Sprite.fromImage('/bmps/gradient.png');
             this.gradient.alpha = 0.5;
 			this.gradient.anchor.set(0.5);
-			app.stage.addChild(this.gradient);
+
+			if(!cont){
+			    app.stage.addChild(sprites);
+			    app.stage.on('pointermove', this.mouseMove);
+			    app.stage.addChild(this.gradient);
+			} else {
+
+			    cont.addChild(sprites);
+			    stage.on('pointermove', this.mouseMove);
+			    cont.addChild(this.gradient);
+			}
+
+
 		},
 		grow: function (ripple, index) {
 			ripple.scale.x += 0.0075;

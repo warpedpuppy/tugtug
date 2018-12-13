@@ -1,4 +1,4 @@
-export default function filterAnim(PIXI, app, container) {
+export default function filterAnim(PIXI, app, container, stage) {
     return {
         app: app,
         count: 0,
@@ -22,10 +22,14 @@ export default function filterAnim(PIXI, app, container) {
             light1.anchor.set(0.5);
             container.addChild(light1);
 
-            app.stage.addChild(container);
-
-            app.stage.filters = [filter];
-
+            if(!stage){
+                app.stage.addChild(container);
+                app.stage.filters = [filter];
+            } else {
+                stage.addChild(container);
+                stage.filters = [filter];
+            }
+          
             
         
 

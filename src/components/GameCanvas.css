@@ -20,3 +20,17 @@
 	right:-55px;
 	z-index: 5001;
 }
+
+.testPanel {
+	position: fixed;
+	right:0;
+	top:0;
+	z-index: 20000;
+}
+.testPanel button {
+	cursor: pointer;
+	padding: 5px 10px;
+	border:1px solid black;
+	border-radius: 10px;
+	display:block;
+}

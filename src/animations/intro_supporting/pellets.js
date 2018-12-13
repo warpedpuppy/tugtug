@@ -1,4 +1,4 @@
-export default function Pellets (PIXI, app, utils, wh, stage) {
+export default function Pellets (PIXI, app, utils, wh, cont) {
 	return {
 		pelletsArray: [],
 		utils: utils,
@@ -11,10 +11,11 @@ export default function Pellets (PIXI, app, utils, wh, stage) {
 			    uvs: true,
 			    alpha: true
 			});
-			if(!stage){
+			
+			if(!cont){
 				app.stage.addChild(pellets);
 			} else {
-				stage.addChild(pellets);
+				cont.addChild(pellets);
 			}
 			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 100;

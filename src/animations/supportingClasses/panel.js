@@ -1,7 +1,7 @@
 export default function Panel(PIXI, wH, portal_code) {
 	return {
 		cont: new PIXI.Container(),
-		build: function (num, width, height, userData, point) {
+		build: function (num, width, height, userData, point, artBoard) {
 
 			this.Doorway = portal_code;
 
@@ -63,6 +63,11 @@ export default function Panel(PIXI, wH, portal_code) {
             
             
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
+
+            if(artBoard){
+            	console.log("art board = ", artBoard)
+            	this.cont.addChild(artBoard)
+            }
 
        
 		},

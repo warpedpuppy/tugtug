@@ -8,7 +8,9 @@ import portal_code from '../animations/supportingClasses/portal';
 import hero from '../animations/intro_supporting/hero';
 import keyHandler from '../animations/supportingClasses/keyHandler';
 import pellets from '../animations/intro_supporting/pellets';
+import ripples from '../animations/intro_supporting/ripples';
 import Panel from '../animations/supportingClasses/panel';
+import filter_animation from '../animations/intro_supporting/filterAnimation';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -24,7 +26,8 @@ class GameCanvas extends React.Component {
 		this.state = {
 		    background: '#fff',
 		    panelVisible: false,
-		    panelButtonText: "see panel"
+		    panelButtonText: "see panel",
+		    filterTest: "off"
 		  };
 		this.supportingClasses = {
 			art_board_code,
@@ -34,7 +37,9 @@ class GameCanvas extends React.Component {
 			Panel,
 			TweenMax,
 			hero,
-			pellets
+			pellets,
+			ripples,
+			filter_animation
 		}
 
 	}
@@ -86,11 +91,21 @@ class GameCanvas extends React.Component {
 		}
 		
 	}
-
+	testFilter () {
+		this.game.filterTest();
+		if(this.state.filterTest === "off") {
+			this.setState({filterTest: "on"})
+		} else { 
+			this.setState({filterTest: "off"})
+		}
+	}
 	render () {
 		return (
 			<div>
-			<div id="game_canvas"></div>
+			<div id='game_canvas'></div>
+			<div className="testPanel">
+			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
+			</div>
 			</div>
 		)
 	}
