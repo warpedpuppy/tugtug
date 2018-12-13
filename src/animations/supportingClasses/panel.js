@@ -65,7 +65,11 @@ export default function Panel(PIXI, wH, portal_code) {
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
 
             if(artBoard){
-            	console.log("art board = ", artBoard)
+            	//console.log("art board = ", artBoard.stage)
+                artBoard.pivot.x  = artBoard.width / 2;
+                artBoard.pivot.y = artBoard.height / 2;
+                artBoard.x = this.panelWidth / 2;
+                artBoard.y = this.panelHeight / 2;
             	this.cont.addChild(artBoard)
             }
 

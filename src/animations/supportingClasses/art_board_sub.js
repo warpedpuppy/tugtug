@@ -40,6 +40,10 @@ export default function(utils, PIXI) {
 
 
 		},
+		assignStage: function (stage) {
+			this.stage = stage;
+			console.log(stage)
+		},		
 		returnArtBoard: function () {
 			return this.artBoard;
 		},
@@ -70,16 +74,18 @@ export default function(utils, PIXI) {
 		},
 		mouseMoveHandler: function (e) {
 			if (this.drag) {
-
 				this.x = Math.floor(e.data.global.x);
 				this.y = Math.floor(e.data.global.y);
 				let n = new PIXI.Graphics();
+				
+				let fromPoint = new PIXI.Point(this.x, this.y);
+				let localPoint = this.artBoard.toLocal(fromPoint, this.stage, undefined, true)
+				console.log(localPoint);
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
-				n.x = (Math.floor(this.x / 10) * 10) - this.offsetX;
-				n.y = Math.floor(this.y / 10) * 10 - this.offsetY;
+				n.x = localPoint.x;
+				n.y = localPoint.y;
 				this.artBoard.addChild(n);
-				// document.getElementById('results2').innerHTML = `${x} by ${y}`;
-				//console.log(`${x} by ${y}`)
+			
 			}
 			
 		},

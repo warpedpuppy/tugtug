@@ -17,7 +17,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         EDGE_OFFSET : 5,
         idle: true,
         vx: 0,
-        vy: -1,
+        vy: 0,
         rotateBoolean: false,
         renderTextureTestBoolean: false,
         inc: 180,
@@ -96,6 +96,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.stage.addChild(fpsCounter)
           
         },
+        toggleAvi: function (editMode) {
+
+        },
         changeColor: function (color) {
             console.log("change color");
             this.art_board.changeColor(color);
@@ -122,6 +125,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     if(panelCounter === this.panelForArtBoard){
                         this.activePanel = panelClass;
                         artBoard = this.art_board.returnArtBoard();
+                        this.art_board.assignStage(this.stage);
                     }
                     panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal}, artBoard);
                     let panel = panelClass.returnPanel();
