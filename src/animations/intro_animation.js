@@ -124,6 +124,8 @@ export default function(PIXI, Utils, obj) {
 			//this.ripples.animate();
 			this.pellets.animate();
 
+			
+
 		}
 	}
 }

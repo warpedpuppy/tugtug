@@ -3,33 +3,25 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
         pelletCont: new PIXI.Container(),
-        stage: new PIXI.Container(),
-        panelWidth: 0,
-        panelHeight: 0,
+        ripplesCont: new PIXI.Container(),
+        filterContainer: new PIXI.Container(),
         panels: [],
         speed: 2,
         cols: 4,
         rows: 4,
         panelForArtBoard: 0,
-        characterHeight: 154,
-        doors: [],
-        POWER : 10000,
-        EDGE_OFFSET : 5,
         idle: true,
         vx: 0,
         vy: 0,
-        rotateBoolean: false,
-        renderTextureTestBoolean: false,
-        inc: 180,
         panelWidth: 1500,
         panelHeight: 1500,
-        characterHeight: 150,
+        inc: 90,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
-
+            document.getElementById("game_canvas").appendChild(this.app.renderer.view);
 
             this.userObject = userObject;
             this.art_board = obj.art_board_code(this.utils, PIXI);
@@ -44,12 +36,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
-            this.renderer = PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
+            this.renderer = this.app.renderer;//PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
             this.renderer.backgroundColor = 0x0033CC;
-            this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
+            //this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 
-            document.getElementById("game_canvas").appendChild(this.renderer.view);
-
+           
+             this.stage = this.app.stage;
             
             
             this.animate = this.animate.bind(this);
@@ -81,12 +73,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.pellets = obj.pellets(PIXI, this.app, this.utils, this.wH, this.pelletCont);
             this.pellets.init();
 
-            this.ripplesCont = new PIXI.Container();
+          
             this.stage.addChild(this.ripplesCont);
             this.ripples = obj.ripples(PIXI, this.app, this.ripplesCont, this.stage);
             this.ripples.init();
 
-            this.filterContainer = new PIXI.Container();
+          
             this.stage.addChild(this.filterContainer);
             this.filter_animation = obj.filter_animation(PIXI, this.app, this.filterContainer, this.stage)
             this.filter_animation.init();
@@ -229,21 +221,22 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         keyUp: function (e) {
             e.preventDefault();
             this.rotateBoolean = false;
-            this.idle = true;
+            // this.idle = true;
         },
         rotate: function (str) {
             if(str === 'right'){
-                this.idle = false;
+                // this.idle = false;
                 this.hero.radius += (Math.PI * 2) / this.inc;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
                 this.vx = this.velocity * Math.sin(this.hero.radius);
+                console.log(this.velocity+" "+this.hero.radius)
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
                 let obj = {vx: -this.vx, vy: -this.vy}
                 this.pellets.rotate("right", obj)
             
             } else if(str === 'left') {
-                this.idle = false;
+                // this.idle = false;
                 this.hero.radius -= (Math.PI * 2) / this.inc;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
                 // console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
@@ -267,9 +260,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.backgroundCont.y += -this.vy;// * rate;
             this.mask.x = this.backgroundCont.x;
             this.mask.y = this.backgroundCont.y;
-            let rect = new PIXI.Rectangle();
+            
 
             // door checking
+            let rect = new PIXI.Rectangle();
             for(let i = 0; i < this.activePanel.doors.length; i++){
                 let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
                 let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
@@ -283,7 +277,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                     this.whichPanel(this.activePanel.doors[i], this.activePanel);
                 }
 
+                this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
+
             }
+
 
        
 

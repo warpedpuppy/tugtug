@@ -61,8 +61,32 @@ export default function Panel(PIXI, wH, portal_code) {
                 this.cont.addChild(rightDoor);
             }
             
-            
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
+
+            let line1 = new PIXI.Graphics();
+            line1.lineStyle(25, 0xFF00FF, 0.25, 0).moveTo(0,0).lineTo(this.panelWidth, this.panelHeight);
+            this.cont.addChild(line1);
+
+            let line2 = new PIXI.Graphics();
+            line2.lineStyle(25, 0xFF00FF, 0.25, 0).moveTo(0,this.panelHeight).lineTo(this.panelWidth,0);
+            this.cont.addChild(line2);
+
+
+            let gear;
+            let corners = [[0,0],[this.panelWidth, 0], [this.panelWidth, this.panelHeight], [0, this.panelHeight]];
+            this.gears = [];
+            for(let i = 0; i < 4;i++){
+                gear = new PIXI.Sprite.fromImage('/bmps/gear.png');
+                gear.anchor.x = gear.anchor.y = 0.5;
+                gear.x = corners[i][0];
+                gear.y = corners[i][1];
+                gear.alpha = 0.25;
+                gear.rotate = (Math.random()*0.01)+0.0001;
+                this.cont.addChild(gear);
+                this.gears.push(gear);
+            }
+
+         
 
             if(artBoard){
             	//console.log("art board = ", artBoard.stage)
