@@ -32,6 +32,9 @@ export default function(PIXI, Utils, obj) {
 			this.pellets = obj.pellets(PIXI, app, this.utils, wh);
 			this.pellets.init();
 
+			this.magicPills = obj.magicPills(PIXI, app, this.utils, wh, this.filterTest.bind(this));
+			this.magicPills.init();
+
             this.filterContainer = new PIXI.Container();
             app.stage.addChild(this.filterContainer);
             this.filter_animation = obj.filter_animation(PIXI, app, this.filterContainer)
@@ -123,7 +126,7 @@ export default function(PIXI, Utils, obj) {
 			this.hero.animate();
 			//this.ripples.animate();
 			this.pellets.animate();
-
+			this.magicPills.animate();
 			
 
 		}

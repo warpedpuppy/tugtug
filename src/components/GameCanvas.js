@@ -11,6 +11,8 @@ import pellets from '../animations/intro_supporting/pellets';
 import ripples from '../animations/intro_supporting/ripples';
 import Panel from '../animations/supportingClasses/panel';
 import filter_animation from '../animations/intro_supporting/filterAnimation';
+import magicPills from '../animations/intro_supporting/magicPills';
+
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -39,7 +41,8 @@ class GameCanvas extends React.Component {
 			hero,
 			pellets,
 			ripples,
-			filter_animation
+			filter_animation,
+			magicPills
 		}
 
 	}

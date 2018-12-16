@@ -46,7 +46,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             
             this.animate = this.animate.bind(this);
 
-            this.wH = {canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, characterHeight: this.characterHeight}
+            this.wH = {
+                canvasHeight: this.canvasHeight, 
+                canvasWidth: this.canvasWidth, 
+                characterHeight: this.characterHeight }
 
             this.addPegPanels();
 
@@ -73,12 +76,13 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.pellets = obj.pellets(PIXI, this.app, this.utils, this.wH, this.pelletCont);
             this.pellets.init();
 
-          
+            this.magicPills = obj.magicPills(PIXI, this.app, this.utils, this.wH, this.filterTest.bind(this));
+            this.magicPills.init();
+
             this.stage.addChild(this.ripplesCont);
             this.ripples = obj.ripples(PIXI, this.app, this.ripplesCont, this.stage);
             this.ripples.init();
 
-          
             this.stage.addChild(this.filterContainer);
             this.filter_animation = obj.filter_animation(PIXI, this.app, this.filterContainer, this.stage)
             this.filter_animation.init();
@@ -255,6 +259,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.pellets.animate();
             this.ripples.animate();
             this.filter_animation.animate();
+            this.magicPills.animate();
 
             this.backgroundCont.x += -this.vx;// * rate;
             this.backgroundCont.y += -this.vy;// * rate;

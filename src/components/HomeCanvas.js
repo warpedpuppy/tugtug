@@ -8,7 +8,7 @@ import renderTexture from '../animations/intro_supporting/renderTexture';
 import ripples from '../animations/intro_supporting/ripples';
 import pellets from '../animations/intro_supporting/pellets';
 import hero from '../animations/intro_supporting/hero';
-
+import magicPills from '../animations/intro_supporting/magicPills';
 import { TimelineMax } from 'gsap';
 import PixiFps from "pixi-fps";
 export default class HomeCanvas extends React.Component {
@@ -30,7 +30,8 @@ export default class HomeCanvas extends React.Component {
 			 renderTexture,
 			 ripples,
 			 pellets,
-			 hero
+			 hero,
+			 magicPills
 		}
 		this.home_page = home_page(PIXI, Utils, obj);
 		this.home_page.init();
