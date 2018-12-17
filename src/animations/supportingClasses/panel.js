@@ -81,7 +81,7 @@ export default function Panel(PIXI, wH, portal_code) {
                 gear.x = corners[i][0];
                 gear.y = corners[i][1];
                 gear.alpha = 0.25;
-                gear.rotate = (Math.random()*0.01)+0.0001;
+                gear.rotate = (Math.random()*0.01)+0.01;
                 this.cont.addChild(gear);
                 this.gears.push(gear);
             }

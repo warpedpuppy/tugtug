@@ -5,13 +5,13 @@ import Utils from '../animations/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
 import portal_code from '../animations/supportingClasses/portal';
-import hero from '../animations/intro_supporting/hero';
-import keyHandler from '../animations/supportingClasses/keyHandler';
-import pellets from '../animations/intro_supporting/pellets';
-import ripples from '../animations/intro_supporting/ripples';
+import hero from '../animations/supportingClasses/hero';
+//import keyHandler from '../animations/supportingClasses/keyHandler';
+import pellets from '../animations/supportingClasses/pellets';
+import ripples from '../animations/supportingClasses/ripples';
 import Panel from '../animations/supportingClasses/panel';
-import filter_animation from '../animations/intro_supporting/filterAnimation';
-import magicPills from '../animations/intro_supporting/magicPills';
+import filter_animation from '../animations/supportingClasses/filterAnimation';
+import magicPills from '../animations/supportingClasses/magicPills';
 
 import {connect} from 'react-redux';
 import axios from 'axios';
@@ -34,7 +34,7 @@ class GameCanvas extends React.Component {
 		this.supportingClasses = {
 			art_board_code,
 			portal_code,
-			keyHandler,
+			// keyHandler,
 			PixiFps,
 			Panel,
 			TweenMax,
@@ -81,7 +81,7 @@ class GameCanvas extends React.Component {
 		
 	}
 	componentWillUnmount(){
-		if(this.game.stop)this.game.stop();
+		this.game.stop();
 	}
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);

@@ -6,9 +6,6 @@ import { closeMenu, changePage } from '../actions/themeActions.js';
 
 class Game extends React.Component {
 
-	constructor (props) {
-		super(props)
-	}
 	componentWillMount () {
 		console.log('game mounting');
 		this.props.dispatch(changePage());

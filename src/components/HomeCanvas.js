@@ -3,12 +3,11 @@ import './HomeCanvas.css';
 import * as PIXI from 'pixi.js'
 import Utils from '../animations/utils'
 import home_page from '../animations/intro_animation';
-import filter_animation from '../animations/intro_supporting/filterAnimation';
-import renderTexture from '../animations/intro_supporting/renderTexture';
-import ripples from '../animations/intro_supporting/ripples';
-import pellets from '../animations/intro_supporting/pellets';
-import hero from '../animations/intro_supporting/hero';
-import magicPills from '../animations/intro_supporting/magicPills';
+import filter_animation from '../animations/supportingClasses/filterAnimation';
+import ripples from '../animations/supportingClasses/ripples';
+import pellets from '../animations/supportingClasses/pellets';
+import hero from '../animations/supportingClasses/hero';
+import magicPills from '../animations/supportingClasses/magicPills';
 import { TimelineMax } from 'gsap';
 import PixiFps from "pixi-fps";
 export default class HomeCanvas extends React.Component {
@@ -18,8 +17,7 @@ export default class HomeCanvas extends React.Component {
 		this.home_page = {};
 		this.testFilter = this.testFilter.bind(this);
 		this.state = {
-			filterTest: "off",
-			renderTextureTest: "off"
+			filterTest: "off"
 		}
 	}
 	componentDidMount(){
@@ -27,7 +25,6 @@ export default class HomeCanvas extends React.Component {
 			 TimelineMax,
 			 PixiFps, 
 			 filter_animation, 
-			 renderTexture,
 			 ripples,
 			 pellets,
 			 hero,
@@ -37,8 +34,7 @@ export default class HomeCanvas extends React.Component {
 		this.home_page.init();
 	}
 	componentWillUnmount(){
-		//this.home_page.stop();
-
+		this.home_page.stop();
 	}
 	testFilter () {
 		this.home_page.filterTest();
@@ -48,21 +44,12 @@ export default class HomeCanvas extends React.Component {
 			this.setState({filterTest: "off"})
 		}
 	}
-	testRenderTexture () {
-		this.home_page.renderTextureTest();
-		if(this.state.renderTextureTest === "off") {
-			this.setState({renderTextureTest: "on"})
-		} else { 
-			this.setState({renderTextureTest: "off"})
-		}
-	}
 	render () {
 		return (
 			<div>
 			<div id='homeCanvas'></div>
 			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
-			{ /*<button onClick={() => this.testRenderTexture()}>render texture test is {this.state.filterTest}</button> */}
 			</div>
 			</div>
 		)

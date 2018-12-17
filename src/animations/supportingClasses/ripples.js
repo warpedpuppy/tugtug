@@ -1,4 +1,4 @@
-export default function Ripples (PIXI, app, cont, stage) {
+export default function Ripples (PIXI, app) {
 	return {
 		ripples: [],
 		growing: [],
@@ -15,7 +15,7 @@ export default function Ripples (PIXI, app, cont, stage) {
 
             for (let i = 0; i < this.totalSprites; i++) {
                 var dude = PIXI.Sprite.fromImage('/bmps/ring.png');
-                dude.anchor.x = dude. anchor.y = 0.5;
+                dude.anchor.x = dude.anchor.y = 0.5;
                 dude.startScale = 0.1
                 dude.scale.set(dude.startScale);
                 dude.counter = 0;
@@ -42,18 +42,10 @@ export default function Ripples (PIXI, app, cont, stage) {
             this.gradient.alpha = 0.5;
 			this.gradient.anchor.set(0.5);
 
-			if(!cont){
-			    app.stage.addChild(sprites);
-			    app.stage.on('pointermove', this.mouseMove);
-			    app.stage.addChild(this.gradient);
-			} else {
-
-			    cont.addChild(sprites);
-			    stage.on('pointermove', this.mouseMove);
-			    cont.addChild(this.gradient);
-			}
-
-
+		    app.stage.addChild(sprites);
+		    app.stage.on('pointermove', this.mouseMove);
+		    app.stage.addChild(this.gradient);
+			
 		},
 		grow: function (ripple, index) {
 			ripple.scale.x += 0.0075;

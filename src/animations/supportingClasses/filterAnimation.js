@@ -1,4 +1,4 @@
-export default function filterAnim(PIXI, app, container, stage) {
+export default function filterAnim(PIXI, app, container, wh) {
     return {
         app: app,
         count: 0,
@@ -6,10 +6,10 @@ export default function filterAnim(PIXI, app, container, stage) {
         init: function () {
 
             var filter = this.filter = new PIXI.filters.ColorMatrixFilter();
+            this.wh = wh;
 
-
-            container.x = app.screen.width / 2;
-            container.y = app.screen.height / 2;
+            container.x = this.wh.canvasWidth / 2;
+            container.y = this.wh.canvasHeight / 2;
 
 
             var light2 = this.light2 = PIXI.Sprite.fromImage('/bmps/LightRotate2.png');
@@ -22,17 +22,15 @@ export default function filterAnim(PIXI, app, container, stage) {
             light1.anchor.set(0.5);
             container.addChild(light1);
 
-           // if(!stage){
-                app.stage.addChild(container);
-                app.stage.filters = [filter];
-            // } else {
-            //     stage.addChild(container);
-            //     stage.filters = [filter];
-            // }
-          
-            
-        
+            app.stage.addChild(container);
+            app.stage.filters = [filter];
 
+            this.container = container;
+        },
+        resize: function (wh) {
+            this.wh = wh;
+            this.container.x = this.wh.canvasWidth / 2;
+            this.container.y = this.wh.canvasHeight / 2;
         },
         filterToggle: function () {
             this.enabled = !this.enabled;

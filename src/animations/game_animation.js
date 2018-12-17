@@ -13,8 +13,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         idle: true,
         vx: 0,
         vy: 0,
-        panelWidth: 1500,
-        panelHeight: 1500,
+        panelWidth: 3500,
+        panelHeight: 3500,
         inc: 90,
         init: function () {
 
@@ -49,7 +49,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.wH = {
                 canvasHeight: this.canvasHeight, 
                 canvasWidth: this.canvasWidth, 
-                characterHeight: this.characterHeight }
+                characterHeight: 200 }
 
             this.addPegPanels();
 
@@ -80,7 +80,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.magicPills.init();
 
             this.stage.addChild(this.ripplesCont);
-            this.ripples = obj.ripples(PIXI, this.app, this.ripplesCont, this.stage);
+            this.ripples = obj.ripples(PIXI, this.app);
             this.ripples.init();
 
             this.stage.addChild(this.filterContainer);
@@ -92,6 +92,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.stage.addChild(fpsCounter)
           
         },
+        stop: function () {
+            window.onresize = undefined;
+            this.app.destroy(true);
+            window.removeEventListener('keydown', undefined);
+            window.removeEventListener('keyup', undefined);
+        },
         toggleAvi: function (editMode) {
 
         },
@@ -100,8 +106,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.art_board.changeColor(color);
         },
         addPegPanels: function () {
-            let panel,
-                panelCounter = 0;
+            let panelCounter = 0;
             this.panels = [];
             this.backgroundCont.removeChildren();
             for(let i = 0; i < this.rows; i++){
@@ -153,7 +158,6 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.app.ticker.destroy();
             this.renderer.destroy();
             window.onresize = undefined;
-            console.log(this.renderer)
            //this.keyboard.deactivate();
         },
         filterTest: function () {
@@ -230,10 +234,9 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         rotate: function (str) {
             if(str === 'right'){
                 // this.idle = false;
-                this.hero.radius += (Math.PI * 2) / this.inc;
+                this.hero.radius += 0.5;//(Math.PI * 2) / this.inc;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
                 this.vx = this.velocity * Math.sin(this.hero.radius);
-                console.log(this.velocity+" "+this.hero.radius)
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
                 let obj = {vx: -this.vx, vy: -this.vy}
@@ -241,7 +244,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             
             } else if(str === 'left') {
                 // this.idle = false;
-                this.hero.radius -= (Math.PI * 2) / this.inc;
+                this.hero.radius -= 0.5;//(Math.PI * 2) / this.inc;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
                 // console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
                 this.vx = this.velocity * Math.sin(this.hero.radius);
@@ -270,7 +273,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             // door checking
             let rect = new PIXI.Rectangle();
             for(let i = 0; i < this.activePanel.doors.length; i++){
-                let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
+                // let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
                 let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
                 rect = new PIXI.Rectangle(
                     Math.floor(globalPoint.x), 

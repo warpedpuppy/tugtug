@@ -8,9 +8,9 @@ import { changePage } from '../actions/themeActions.js';
 
 class Home extends React.Component {
 
-	constructor (props) {
-		super(props)
-	}
+	// constructor (props) {
+	// 	super(props)
+	// }
 	componentWillMount () {
 		console.log('home mounting');
 		this.props.dispatch(changePage());

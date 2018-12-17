@@ -24,8 +24,8 @@ export default function(PIXI, Utils, obj) {
 			const fpsCounter = new obj.PixiFps();
             app.stage.addChild(fpsCounter);
 
-			// this.ripples = obj.ripples(PIXI, app);
-			// this.ripples.init();
+			this.ripples = obj.ripples(PIXI, app);
+			this.ripples.init();
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
@@ -37,12 +37,10 @@ export default function(PIXI, Utils, obj) {
 
             this.filterContainer = new PIXI.Container();
             app.stage.addChild(this.filterContainer);
-            this.filter_animation = obj.filter_animation(PIXI, app, this.filterContainer)
+            this.filter_animation = obj.filter_animation(PIXI, app, this.filterContainer, wh)
             this.filter_animation.init();
 
-            this.renderTexture = new obj.renderTexture(PIXI, app, this.pelletsArray);
-            this.renderTexture.init();
-
+          
             this.hero = new obj.hero(PIXI, app, this.utils, wh);
             this.hero.init();
 
@@ -54,7 +52,24 @@ export default function(PIXI, Utils, obj) {
 			window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 			app.ticker.add(this.animate.bind(this));
-
+			window.onresize = this.resizeHandler.bind(this);
+		},
+		stop: function () {
+			window.onresize = undefined;
+	        this.app.destroy(true);
+	        window.removeEventListener('keydown', undefined);
+            window.removeEventListener('keyup', undefined);
+		},
+		resizeHandler: function () {
+			this.canvasWidth =  this.utils.returnCanvasWidth();
+			this.canvasHeight = this.utils.returnCanvasHeight();
+			this.hero.cont.x = this.canvasWidth / 2;
+			this.hero.cont.y = this.canvasHeight / 2;
+			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
+			this.magicPills.resize(wh);
+			this.filter_animation.resize(wh);
+			this.pellets.resize(wh);
+			this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 		},
 		filterTest: function () {
 			this.filter_animation.filterToggle();
@@ -65,7 +80,7 @@ export default function(PIXI, Utils, obj) {
 		rotate: function (str) {
 			if(str === 'right'){
 				this.idle = false;
-				this.hero.radius += (Math.PI * 2) / this.inc;
+				this.hero.radius += 0.5;//(Math.PI * 2) / this.inc;
 				this.velocity = this.utils.randomNumberBetween(4, 6);
 				this.vx = this.velocity * Math.sin(this.hero.radius);
 				this.vy = -this.velocity * Math.cos(this.hero.radius);
@@ -75,15 +90,13 @@ export default function(PIXI, Utils, obj) {
 			
 			} else if(str === 'left') {
 				this.idle = false;
-				this.hero.radius -= (Math.PI * 2) / this.inc;
+				this.hero.radius -= 0.5;//(Math.PI * 2) / this.inc;
 				this.vx = this.velocity * Math.sin(this.hero.radius);
 				this.vy = -this.velocity * Math.cos(this.hero.radius);
 				this.hero.storeRadius = this.hero.radius;
 				let obj = {vx: -this.vx, vy: -this.vy}
 				this.pellets.rotate("left", obj)
-			
 			}
-
 		},
 		keyDown: function (e) {
             e.preventDefault();
@@ -113,22 +126,11 @@ export default function(PIXI, Utils, obj) {
             this.idle = true;
         },
 		animate: function () {
-			
 			this.filter_animation.animate();
-
-			if(this.renderTextureTestBoolean){
-				this.renderTexture.animate();
-				this.app.renderer.render(this.app.stage, this.renderTexture.renderTexture2, true);
-			} else {
-				this.app.renderer.render(this.app.stage, undefined, true);
-			}
-			
 			this.hero.animate();
-			//this.ripples.animate();
+			this.ripples.animate();
 			this.pellets.animate();
 			this.magicPills.animate();
-			
-
 		}
 	}
 }

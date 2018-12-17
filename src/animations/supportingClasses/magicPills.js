@@ -17,7 +17,7 @@ export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
 			});
 			
 		
-				app.stage.addChild(pills);
+			app.stage.addChild(pills);
 			
 			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1 : 1;
@@ -28,7 +28,7 @@ export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
             	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = 0;
             	s.vy = this.utils.randomNumberBetween(1,5); 
-            	s.x = wh.canvasWidth / 2;//this.utils.randomNumberBetween(0, wh.canvasWidth);
+            	s.x = wh.canvasWidth / 2;
             	s.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
             	s.scale.set(this.utils.randomNumberBetween(0.05, 0.25));
             	s.radius = s.width;
@@ -37,6 +37,7 @@ export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
             }
             this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = wh.canvasWidth + this.edgeBuffer;
+			this.wh = wh;
 		},
 		playEffect: function () {
 			if(!this.effect) {
@@ -44,25 +45,34 @@ export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
 				effectFunction();
 			}
 		},
+		resize: function (wh) {
+			this.wh = wh;
+			this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.wh.canvasWidth + this.edgeBuffer;
+			for(let i = 0; i < this.pelletQ; i ++ ){
+            	this.pills[i].x = this.wh.canvasWidth / 2;
+            	this.pills[i].y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
+            }
+		},
 		animate: function () {
 
 			for(let i = 0; i < this.pelletQ; i++){
-				this.pills[i].x += this.pills[i].vx;// * rate;
-            	this.pills[i].y += this.pills[i].vy;// * rate;
+				this.pills[i].x += this.pills[i].vx;
+            	this.pills[i].y += this.pills[i].vy;
 
             	if(this.pills[i].y > this.bottomEdge) {
             		this.pills[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
 
             	} else if(this.pills[i].y < -this.edgeBuffer) {
-            		this.pills[i].y = this.utils.randomNumberBetween(wh.canvasHeight, this.bottomEdge);
+            		this.pills[i].y = this.utils.randomNumberBetween(this.wh.canvasHeight, this.bottomEdge);
             	}
 
             	if(this.pills[i].x > this.rightEdge) {
             		this.pills[i].x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
             	} else if(this.pills[i].x < -this.edgeBuffer) {
-            		this.pills[i].x = this.utils.randomNumberBetween(wh.canvasWidth, this.rightEdge);
+            		this.pills[i].x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
             	}
-            	let c1 = {radius: 20, x: (wh.canvasWidth / 2), y: (wh.canvasHeight / 2)};
+            	let c1 = {radius: 20, x: (this.wh.canvasWidth / 2), y: (this.wh.canvasHeight / 2)};
 
             	if(!this.effect && this.utils.circleToCircleCollisionDetection(c1, this.pills[i])) {
             		this.playEffect();

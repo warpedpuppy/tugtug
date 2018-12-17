@@ -32,28 +32,22 @@ export default function Pellets (PIXI, app, utils, wh, cont) {
             }
             this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = wh.canvasWidth + this.edgeBuffer;
-
+			this.wh = wh;
+		},
+		resize: function (wh) {
+			this.wh = wh;
+			this.bottomEdge = this.wwh.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.wwh.canvasWidth + this.edgeBuffer;
+			for(let i = 0; i < this.pelletQ; i ++ ){
+            	this.pelletsArray[i].x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
+            	this.pelletsArray[i].y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
+            }
 		},
 		rotate: function (str, obj) {
-			// let inc = 90;
-			// if(str === 'right'){
-			// 	this.idle = false;
-			// 	this.radius += (Math.PI * 2) / inc;
-				for(let i = 0; i < this.pelletQ; i++){
-					//this.velocity = this.utils.randomNumberBetween(4, 6);
-					//console.log(obj)
-					this.pelletsArray[i].vx = obj.vx;
-	            	this.pelletsArray[i].vy = obj.vy;
-	            }
-			// } else if(str === 'left') {
-			// 	this.idle = false;
-			// 	this.radius -= (Math.PI * 2) / inc;
-			// 	for(let i = 0; i < this.pelletQ; i++){
-			// 		this.velocity = this.utils.randomNumberBetween(4, 6);
-			// 		this.pelletsArray[i].vx = obj.vx;
-	  //           	this.pelletsArray[i].vy = obj.vy;
-	  //           }
-			// }
+			for(let i = 0; i < this.pelletQ; i++){
+				this.pelletsArray[i].vx = obj.vx;
+            	this.pelletsArray[i].vy = obj.vy;
+            }
 		},
 		animate: function () {
 
@@ -65,13 +59,13 @@ export default function Pellets (PIXI, app, utils, wh, cont) {
             		this.pelletsArray[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
 
             	} else if(this.pelletsArray[i].y < -this.edgeBuffer) {
-            		this.pelletsArray[i].y = this.utils.randomNumberBetween(wh.canvasHeight, this.bottomEdge);
+            		this.pelletsArray[i].y = this.utils.randomNumberBetween(this.wh.canvasHeight, this.bottomEdge);
             	}
 
             	if(this.pelletsArray[i].x > this.rightEdge) {
             		this.pelletsArray[i].x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
             	} else if(this.pelletsArray[i].x < -this.edgeBuffer) {
-            		this.pelletsArray[i].x = this.utils.randomNumberBetween(wh.canvasWidth, this.rightEdge);
+            		this.pelletsArray[i].x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
             	}
 
 			}
