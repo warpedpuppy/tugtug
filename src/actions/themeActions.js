@@ -13,3 +13,20 @@ export const toggleMenu = () => ({
     type: TOGGLE_MENU
 });
 
+export const TOGGLE_EDIT_MODE = 'TOGGLE_EDIT_MODE';
+export const toggleEditMode = (editMode) => ({
+	editMode: editMode,
+    type: TOGGLE_EDIT_MODE
+});
+
+export const CHANGE_COLOR = 'CHANGE_COLOR';
+export const changeColor = (color) => ({
+	type: CHANGE_COLOR,
+    color: color
+});
+
+export const CHANGE_PAGE = 'CHANGE_PAGE';
+export const changePage = () => ({
+	type: CHANGE_PAGE,
+    color: window.location.pathname
+});

@@ -1,36 +1,129 @@
 import React from 'react';
 import './GameCanvas.css';
-import * as PIXI from 'pixi.js'
-import Utils from '../animations/utils'
-import game_code from '../animations/game_animation'
+import * as PIXI from 'pixi.js';
+import Utils from '../animations/utils';
+import game_code from '../animations/game_animation';
+import art_board_code from '../animations/supportingClasses/art_board_sub';
+import portal_code from '../animations/supportingClasses/portal';
+import hero from '../animations/supportingClasses/hero';
+//import keyHandler from '../animations/supportingClasses/keyHandler';
+import pellets from '../animations/supportingClasses/pellets';
+import ripples from '../animations/supportingClasses/ripples';
+import Panel from '../animations/supportingClasses/panel';
+import filter_animation from '../animations/supportingClasses/filterAnimation';
+import magicPills from '../animations/supportingClasses/magicPills';
+
 import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_BASE_URL} from '../config';
+import faker from 'faker';
+import { TweenMax } from 'gsap';
+import PixiFps from "pixi-fps";
+
 class GameCanvas extends React.Component {
 	constructor(props){
 		super(props);
 		this.game = {};
-	}
-	componentDidMount(){
+		this.getUserData = this.getUserData.bind(this);
+		this.state = {
+		    background: '#fff',
+		    panelVisible: false,
+		    panelButtonText: "see panel",
+		    filterTest: "off"
+		  };
+		this.supportingClasses = {
+			art_board_code,
+			portal_code,
+			// keyHandler,
+			PixiFps,
+			Panel,
+			TweenMax,
+			hero,
+			pellets,
+			ripples,
+			filter_animation,
+			magicPills
+		}
 
-		this.game = game_code(PIXI, Utils);
+	}
+	getUserName () {
+		return faker.name.firstName();
+	}
+	getUserData () {
+		let that = this;
+		return axios.get(`${API_BASE_URL}/api/users`)
+		  .then(function(response){
+		  	that.startGame(response.data);
+		  })
+		  .catch((err) => {
+		  	console.log(err)
+		  });  
+	}
+	componentWillMount () {
+		this.getUserData();
+	}
+	startGame(data){
+		
+		if(this.props.testMode){
+			// change data to non database
+			data = {users: [{
+				username: this.props.username,
+				firstName: this.props.firstName,
+				lastName: this.props.lastName,
+				email: this.props.email
+			}]}
+		}
+
+		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
 		this.game.init();
-		this.game.update(this.props.items);
+		//this.game.update(this.props.items);
+		this.editMode = this.props.editMode;
+		
 	}
 	componentWillUnmount(){
-		this.game.stop();
+		if(this.game.stop)this.game.stop();
 	}
 	componentDidUpdate(){
-		this.game.update(this.props.items);
+		this.game.changeColor(this.props.color);
+		// console.log('this is the color'+this.props.color);
+		console.log('edit mode = '+this.props.editMode.toString())
+
+		if(this.editMode !== this.props.editMode){
+			this.game.toggleAvi(this.props.editMode);
+			this.editMode = this.props.editMode;
+		}
+		
+	}
+	testFilter () {
+		this.game.filterTest();
+		if(this.state.filterTest === "off") {
+			this.setState({filterTest: "on"})
+		} else { 
+			this.setState({filterTest: "off"})
+		}
 	}
 	render () {
 		return (
-			<div id="game_canvas"></div>
+			<div>
+			<div id='game_canvas'></div>
+			<div className="testPanel">
+			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
+			</div>
+			</div>
 		)
 	}
 	
 }
 
 export const mapStateToProps = state => ({
-    items: state.avatarReducer.items
+    items: state.avatarReducer.items,
+    color: state.themeReducer.color,
+    editMode: state.themeReducer.editMode,
+    testMode: state.tokenReducer.testMode,
+    username: state.tokenReducer.username,
+    firstName: state.tokenReducer.firstName,
+    lastName: state.tokenReducer.lastName,
+    email: state.tokenReducer.email
 });
 
 export default connect(mapStateToProps)(GameCanvas);

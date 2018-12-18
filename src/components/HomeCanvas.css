@@ -1,5 +1,4 @@
 #homeCanvas canvas{
-	background-color: #333;
 	width: 100vw;
 	height: calc(100vh + 50px);
 	position:fixed;
@@ -16,4 +15,23 @@
 }
 #homeCanvas #fpsChecker {
 	
+}
+
+.testPanel {
+	position: fixed;
+	right:0;
+	top:100px;
+}
+.testPanel button {
+	cursor: pointer;
+	padding: 5px 10px;
+	border:1px solid black;
+	border-radius: 10px;
+	display:block;
+}
+.nightBackground canvas{
+	background-color: black;
+}
+.waterBackground canvas{
+	background-color: #0033CC;
 }

@@ -1,7 +1,10 @@
-import {OPEN_MENU, CLOSE_MENU, TOGGLE_MENU} from '../actions/themeActions';
+import {OPEN_MENU, CLOSE_MENU, TOGGLE_MENU, TOGGLE_EDIT_MODE, CHANGE_COLOR, CHANGE_PAGE} from '../actions/themeActions';
 
 const initialState = {
-    menuOpen: false
+    menuOpen: false, 
+    editMode: false,
+    color: 0x000000,
+    page: window.location.pathname
 };
 
 function themeReducer (state=initialState, action) {
@@ -18,6 +21,27 @@ function themeReducer (state=initialState, action) {
     else if (action.type === TOGGLE_MENU) {
         return Object.assign({}, state, {
             menuOpen: !state.menuOpen
+        });
+    } 
+    else if (action.type === TOGGLE_EDIT_MODE) {
+
+        if (!action.editMode) {
+            return Object.assign({}, state, {
+                editMode: !state.editMode
+            });
+        } else {
+             return Object.assign({}, state, {
+                editMode: action.editMode
+            });
+        }
+        
+    } else if (action.type === CHANGE_COLOR) {
+        return Object.assign({}, state, {
+            color: action.color
+        });
+    } else if (action.type === CHANGE_PAGE) {
+        return Object.assign({}, state, {
+            page: window.location.pathname
         });
     }
     return state;

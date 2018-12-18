@@ -4,3 +4,33 @@
 	height: calc(100vh - 100px);
 	z-index: -1;
 }
+#game_canvas canvas {
+	position: relative;
+	z-index: 4999;
+}
+.colorPickerButton {
+	position: fixed;
+	top:50px;
+	right:5px;
+	z-index: 5002;
+}
+.colorPickerPanel {
+	position: fixed;
+	top:-25px;
+	right:-55px;
+	z-index: 5001;
+}
+
+.testPanel {
+	position: fixed;
+	right:0;
+	top:100px;
+	z-index: 20000;
+}
+.testPanel button {
+	cursor: pointer;
+	padding: 5px 10px;
+	border:1px solid black;
+	border-radius: 10px;
+	display:block;
+}

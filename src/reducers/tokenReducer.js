@@ -1,22 +1,33 @@
-import {ADD_USERDATA, ADD_TOKEN, UPDATE_TOKEN, DELETE_TOKEN} from '../actions/tokenActions';
+import {ADD_USERDATA, ADD_TOKEN, UPDATE_TOKEN, DELETE_TOKEN, TEST_USER} from '../actions/tokenActions';
 
 const initialState = {
     token: 'blank',
     username: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    testMode: false
 };
 
 function tokenReducer (state=initialState, action) {
-    if (action.type === ADD_USERDATA) {
+    if(action.type === TEST_USER) {
+        return Object.assign({}, state, {
+            username: action.userData.username,
+            firstName: action.userData.firstName,
+            lastName: action.userData.lastName,
+            email: action.userData.email,
+            token: action.token,
+            testMode: true
+
+        });
+    } else if (action.type === ADD_USERDATA) {
         // console.log("add userdata = ", action)
         //localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             username: action.user.username,
             firstName: action.user.firstName,
             lastName: action.user.lastName,
-            email: action.user.email,
+            email: action.user.email
 
         });
     }

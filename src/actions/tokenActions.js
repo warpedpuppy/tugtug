@@ -10,6 +10,14 @@ export const addToken = item => ({
     token: item
 });
 
+export const TEST_USER = 'TEST_USER';
+export const testUser = (token, userData, testMode) => ({
+    type: TEST_USER,
+    token,
+    userData,
+    testMode
+});
+
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 export const updateToken = item => ({
     type: UPDATE_TOKEN,
