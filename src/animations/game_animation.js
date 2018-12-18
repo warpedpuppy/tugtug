@@ -13,8 +13,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         idle: true,
         vx: 0,
         vy: 0,
-        panelWidth: 3500,
-        panelHeight: 3500,
+        panelWidth: 1500,
+        panelHeight: 1500,
         inc: 90,
         init: function () {
 
@@ -90,13 +90,24 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
-          
+            window.onresize = this.resizeHandler.bind(this);
         },
         stop: function () {
             window.onresize = undefined;
             this.app.destroy(true);
             window.removeEventListener('keydown', undefined);
             window.removeEventListener('keyup', undefined);
+        },
+        resizeHandler: function () {
+            this.canvasWidth =  this.utils.returnCanvasWidth();
+            this.canvasHeight = this.utils.returnCanvasHeight();
+            this.hero.cont.x = this.canvasWidth / 2;
+            this.hero.cont.y = this.canvasHeight / 2;
+            let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
+            this.magicPills.resize(wh);
+            this.filter_animation.resize(wh);
+            this.pellets.resize(wh);
+            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         toggleAvi: function (editMode) {
 
@@ -153,12 +164,6 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
            this.stage.addChild(this.mask);
            this.pelletCont.mask = this.mask;   
          
-        },
-        stop: function () {
-            this.app.ticker.destroy();
-            this.renderer.destroy();
-            window.onresize = undefined;
-           //this.keyboard.deactivate();
         },
         filterTest: function () {
             this.filter_animation.filterToggle();
@@ -239,8 +244,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                 this.vx = this.velocity * Math.sin(this.hero.radius);
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
-                let obj = {vx: -this.vx, vy: -this.vy}
-                this.pellets.rotate("right", obj)
+                // let tempX = this.vx + this.utils.randomNumberBetween(4, 6);
+                // let tempY = this.vy - this.utils.randomNumberBetween(4, 6);
+                // let obj = {vx: -tempX, vy: -tempY}
+                // this.pellets.rotate("right", obj)
             
             } else if(str === 'left') {
                 // this.idle = false;
@@ -250,8 +257,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                 this.vx = this.velocity * Math.sin(this.hero.radius);
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
-                let obj = {vx: -this.vx, vy: -this.vy}
-                this.pellets.rotate("left", obj)
+                // let tempX = this.vx + this.utils.randomNumberBetween(4, 6);
+                // let tempY = this.vy - this.utils.randomNumberBetween(4, 6);
+                // let obj = {vx: -tempX, vy: -tempY}
+                // this.pellets.rotate("left", obj)
             
             }
 
@@ -299,13 +308,13 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             let xLimit2 = this.activePanel.cont.x - (this.canvasWidth/2) ;
 
 
-            if(this.backgroundCont.y > -yLimit2) {
+            if(this.backgroundCont.y >= -yLimit2) {
                 this.vy = 0;
                 this.backgroundCont.y = -yLimit2;
-            } else if (this.backgroundCont.y < -yLimit) {
+            } else if (this.backgroundCont.y <= -yLimit) {
                  this.vy = 0;
                  this.backgroundCont.y = -yLimit;
-            }
+            } 
 
             //console.log(this.backgroundCont.y +" versus "+ yLimit)
             if(this.backgroundCont.x > -xLimit2) {

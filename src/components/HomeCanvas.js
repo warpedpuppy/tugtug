@@ -17,7 +17,8 @@ export default class HomeCanvas extends React.Component {
 		this.home_page = {};
 		this.testFilter = this.testFilter.bind(this);
 		this.state = {
-			filterTest: "off"
+			filterTest: "off",
+			nightMode: "off"
 		}
 	}
 	componentDidMount(){
@@ -44,12 +45,22 @@ export default class HomeCanvas extends React.Component {
 			this.setState({filterTest: "off"})
 		}
 	}
+	nightMode () {
+		this.home_page.nightMode();
+		if(this.state.nightMode === "off") {
+			this.setState({nightMode: "on"})
+		} else { 
+			this.setState({nightMode: "off"})
+		}
+	}
 	render () {
+		let backgroundCSS = (this.state.nightMode === "off")?'waterBackground':'nightBackground';
 		return (
 			<div>
-			<div id='homeCanvas'></div>
+			<div id='homeCanvas' className={backgroundCSS} ></div>
 			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
+			<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
 			</div>
 			</div>
 		)

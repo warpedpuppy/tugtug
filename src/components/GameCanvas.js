@@ -81,7 +81,7 @@ class GameCanvas extends React.Component {
 		
 	}
 	componentWillUnmount(){
-		this.game.stop();
+		if(this.game.stop)this.game.stop();
 	}
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);

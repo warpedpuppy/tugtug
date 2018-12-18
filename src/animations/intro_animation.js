@@ -13,7 +13,7 @@ export default function(PIXI, Utils, obj) {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
 
-			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
+			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {transparent: true});
 			document.getElementById('homeCanvas').appendChild(app.view);
 
 
@@ -29,6 +29,21 @@ export default function(PIXI, Utils, obj) {
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
+			 let gear;
+            let corners = this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
+            this.gears = [];
+            for(let i = 0; i < 4;i++){
+                gear = new PIXI.Sprite.fromImage('/bmps/gear.png');
+                gear.anchor.x = gear.anchor.y = 0.5;
+                gear.x = corners[i][0];
+                gear.y = corners[i][1];
+                gear.alpha = 0.15;
+                gear.rotate = (Math.random()*0.01)+0.01;
+                app.stage.addChild(gear);
+                this.gears.push(gear);
+            }
+
+
 			this.pellets = obj.pellets(PIXI, app, this.utils, wh);
 			this.pellets.init();
 
@@ -43,6 +58,9 @@ export default function(PIXI, Utils, obj) {
           
             this.hero = new obj.hero(PIXI, app, this.utils, wh);
             this.hero.init();
+
+         
+
 
             this.app = app;
           
@@ -65,17 +83,27 @@ export default function(PIXI, Utils, obj) {
 			this.canvasHeight = this.utils.returnCanvasHeight();
 			this.hero.cont.x = this.canvasWidth / 2;
 			this.hero.cont.y = this.canvasHeight / 2;
+
+			this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
+			for(let i = 0; i < 4;i++){
+                this.gears[i].x = this.corners[i][0];
+                this.gears[i].y = this.corners[i][1];
+            }
+
+
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 			this.magicPills.resize(wh);
 			this.filter_animation.resize(wh);
 			this.pellets.resize(wh);
 			this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 		},
+		nightMode: function () {
+			this.pellets.change();
+			this.app._options.backgroundColor = '0x000000';
+			console.log(this.app._options.backgroundColor)
+		},
 		filterTest: function () {
 			this.filter_animation.filterToggle();
-		},
-		renderTextureTest: function () {
-			this.renderTextureTestBoolean = !this.renderTextureTestBoolean;
 		},
 		rotate: function (str) {
 			if(str === 'right'){
@@ -131,6 +159,10 @@ export default function(PIXI, Utils, obj) {
 			this.ripples.animate();
 			this.pellets.animate();
 			this.magicPills.animate();
+
+			for(let i = 0; i < 4;i++){
+              this.gears[i].rotation += this.gears[i].rotate;
+            }
 		}
 	}
 }
