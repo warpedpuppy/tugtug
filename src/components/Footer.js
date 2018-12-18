@@ -8,22 +8,21 @@ function Footer (props) {
 	if(props.token === 'blank') {
 		return (
 			<footer>
+			{/*
 			<Link to="/about">
 				<span>about</span>
 			</Link>
-			{/* | 
-			<Link to="/about">
-				<span>contact</span>
-			</Link>
-			*/}
+			
 			<a href="https://twitter.com/TugboatMcPuppy" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
+			*/}
 		</footer>
 		)
 	} else {
 		return (
 		<footer>
+	{/*
 			<Link to="/admin">
 				<span>admin</span>
 			</Link> | 
@@ -36,6 +35,7 @@ function Footer (props) {
 			<a href="https://twitter.com/" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
+			*/}
 		</footer>
 	)
 	}
