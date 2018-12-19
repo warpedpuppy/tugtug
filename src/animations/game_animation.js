@@ -13,9 +13,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         idle: true,
         vx: 0,
         vy: 0,
-        panelWidth: 1500,
-        panelHeight: 1500,
+        panelWidth: 1000,
+        panelHeight: 1000,
         inc: 90,
+        doorAllow: true,
+        arr: [],
+        action: true,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -41,7 +44,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             //this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 
            
-             this.stage = this.app.stage;
+            this.stage = this.app.stage;
             
             
             this.animate = this.animate.bind(this);
@@ -99,15 +102,43 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             window.removeEventListener('keyup', undefined);
         },
         resizeHandler: function () {
+            // this.action = false;
+            // this.doorAllow = false;
+            // let fromPoint = new PIXI.Point(this.hero.cont.x, this.hero.cont.y);
+            // let localPoint = this.activePanel.cont.toLocal(fromPoint, this.stage, undefined, true)
+            // //console.log(fromPoint);
+            // this.arr.push(localPoint)
+            // console.log('local point = ', this.arr[0]);
+
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.hero.cont.x = this.canvasWidth / 2;
             this.hero.cont.y = this.canvasHeight / 2;
+
+            // this.arr.push(this.canvasWidth);
+
+            // let amountMoved = this.arr[this.arr.length - 1] - this.arr[0];
+            // console.log(this.arr)
+            // console.log("amount moved = "+amountMoved)
+            //this.backgroundCont.x += amountMoved;
+
+
             let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
             this.magicPills.resize(wh);
             this.filter_animation.resize(wh);
             this.pellets.resize(wh);
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+
+            this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
+            this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight/2);
+            // let that = this;
+            // clearTimeout(resizeTimer);
+            //   let resizeTimer = setTimeout(function() {
+            //     that.action = true;
+            //     that.arr = [];
+            //     // Run code here, resizing has "stopped"
+            //        console.log('resizing done, this arr length = ')     
+            //   }, 1250);
         },
         toggleAvi: function (editMode) {
 
@@ -253,7 +284,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
                 // this.idle = false;
                 this.hero.radius -= 0.5;//(Math.PI * 2) / this.inc;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
-                // console.log( this.vx +" "+ this.velocity +" "+  Math.sin(this.hero.radius))
+                // console.log( this.vx +" "+ this.velfocity +" "+  Math.sin(this.hero.radius))
                 this.vx = this.velocity * Math.sin(this.hero.radius);
                 this.vy = -this.velocity * Math.cos(this.hero.radius);
                 this.hero.storeRadius = this.hero.radius;
@@ -267,6 +298,12 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
         },
         animate: function () {
 
+            if(!this.action)return
+            // let fromPoint = new PIXI.Point(this.hero.x, this.hero.y);
+            // let returnPoint = new PIXI.Point();
+            // this.localPoint = this.activePanel.cont.toLocal(fromPoint, this.stage, undefined, false)
+            //console.log(" local ", localPoint);
+            //console.log(" return point ",returnPoint);
             this.hero.animate();
             this.pellets.animate();
             this.ripples.animate();
@@ -280,24 +317,27 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             
 
             // door checking
-            let rect = new PIXI.Rectangle();
-            for(let i = 0; i < this.activePanel.doors.length; i++){
-                // let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
-                let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
-                rect = new PIXI.Rectangle(
-                    Math.floor(globalPoint.x), 
-                    Math.floor(globalPoint.y), 
-                    this.activePanel.doors[i].width, 
-                    this.activePanel.doors[i].height);
-                this.hero.cont.radius = 50;
-                if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
-                    this.whichPanel(this.activePanel.doors[i], this.activePanel);
+           // if(this.doorAllow ) {
+
+
+                let rect = new PIXI.Rectangle();
+                for(let i = 0; i < this.activePanel.doors.length; i++){
+                    // let doorPoint = new PIXI.Point(this.activePanel.doors[i].x, this.activePanel.doors[i].y);
+                    let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
+                    rect = new PIXI.Rectangle(
+                        Math.floor(globalPoint.x), 
+                        Math.floor(globalPoint.y), 
+                        this.activePanel.doors[i].width, 
+                        this.activePanel.doors[i].height);
+                    this.hero.cont.radius = 50;
+                    if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
+                        this.whichPanel(this.activePanel.doors[i], this.activePanel);
+                    }
+
+                    this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
+
                 }
-
-                this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
-
-            }
-
+             //}
 
        
 
