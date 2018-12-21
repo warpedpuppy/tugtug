@@ -1,12 +1,12 @@
 import React from 'react';
 import './GameCanvas.css';
 import * as PIXI from 'pixi.js';
-import Utils from '../animations/utils';
+import Utils from '../animations/utils/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
 import portal_code from '../animations/supportingClasses/portal';
 import hero from '../animations/supportingClasses/hero';
-//import keyHandler from '../animations/supportingClasses/keyHandler';
+import PanelsBoard from '../animations/supportingClasses/panelsBoard';
 import pellets from '../animations/supportingClasses/pellets';
 import ripples from '../animations/supportingClasses/ripples';
 import Panel from '../animations/supportingClasses/panel';
@@ -34,7 +34,7 @@ class GameCanvas extends React.Component {
 		this.supportingClasses = {
 			art_board_code,
 			portal_code,
-			// keyHandler,
+			PanelsBoard,
 			PixiFps,
 			Panel,
 			TweenMax,

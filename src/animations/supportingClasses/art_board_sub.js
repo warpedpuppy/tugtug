@@ -80,7 +80,6 @@ export default function(utils, PIXI) {
 				
 				let fromPoint = new PIXI.Point(this.x, this.y);
 				let localPoint = this.artBoard.toLocal(fromPoint, this.stage, undefined, true)
-				console.log(localPoint);
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
 				n.x = localPoint.x;
 				n.y = localPoint.y;
