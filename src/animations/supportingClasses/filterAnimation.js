@@ -45,6 +45,13 @@ export default function filterAnim(PIXI, app, container, wh) {
             this.light2.visible = !this.light2.visible;
             this.light3.visible = !this.light3.visible;
         },
+        shutOff: function () {
+            this.enabled = false;
+            app.stage.filters = null;
+            this.light1.visible = false;
+            this.light2.visible = false;
+            this.light3.visible = false;
+        },
         animate: function () {
             if(this.enabled){
                 this.light1.rotation += 0.02;

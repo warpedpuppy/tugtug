@@ -97,7 +97,10 @@ export default function PanelsBoard(PIXI, obj) {
             this.activePanel = this.panels[index].panelClass;
             this.panelForArtBoard = index;
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
-            this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
+            this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight /2);
+            console.log("SWITCH PANEL");
+            console.log(this.activePanel);
+            console.log(this.backgroundCont.y)
         },
 		animate: function () {
 		   this.mask.x = this.backgroundCont.x;

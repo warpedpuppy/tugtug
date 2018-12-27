@@ -1,13 +1,14 @@
 export default function(utils, PIXI) {
 	return {
 		utils: utils,
-    	width: 1000,
-    	height:300,
+    	boardWidth: 500,
+    	boardHeight:500,
     	drag: false,
 		chosenColor: 0x000000,
 		offsetX: 0,
 		offsetY: 0,
 		init: function () {
+
 	        this.canvasWidth = this.width;//this.utils.returnCanvasWidth();
 	        this.artBoard = new PIXI.Container();
 	        this.pixelCont = new PIXI.Container(); 
@@ -21,7 +22,7 @@ export default function(utils, PIXI) {
 			this.artBoard.addChild(this.mouseListen);
 			this.artBoard.addChild(this.pixelCont);
 			let s = new PIXI.Graphics();
-			s.beginFill(0x00FF00).drawRect(0,0,1000,300).endFill();
+			s.beginFill(0x00FF00).drawRect(0,0,this.boardWidth,this.boardHeight).endFill();
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
 
@@ -32,10 +33,7 @@ export default function(utils, PIXI) {
 			this.mouseUpHandler = this.mouseUpHandler.bind(this);
 
 
-			s.interactive = true;
-			s.buttonMode = true;
-			s.mouseover = this.mouseOverHandler;
-			s.mouseout = this.mouseOutHandler;
+			
 			this.s = s;
 
 
@@ -52,7 +50,6 @@ export default function(utils, PIXI) {
 			this.offsetY = y;
 		},	
 		changeColor: function (color) {
-			console.log('change to '+color);
 			if(color){
 				let convert = '0x' + color.substr(1);
 				this.chosenColor = convert;
@@ -89,8 +86,21 @@ export default function(utils, PIXI) {
 			
 		},
 		mouseOutHandler: function () {
-			this.s.mousemove = this.s.pointerdown = undefined;
+			
 			// document.getElementById('results2').innerHTML = `out`;
+		},
+		editMode: function (boolean){
+			this.s.interactive = boolean;
+			this.s.buttonMode = boolean;
+			if(boolean){
+				this.s.mouseover = this.mouseOverHandler;
+				this.s.mouseout = this.mouseOutHandler;
+			} else if (!boolean) {
+				this.s.mouseover = undefined;
+				this.s.mouseout = undefined;
+				this.s.mousemove = this.s.pointerdown = undefined;
+			}
+
 		}
 
 

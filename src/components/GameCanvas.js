@@ -89,7 +89,7 @@ class GameCanvas extends React.Component {
 		console.log('edit mode = '+this.props.editMode.toString())
 
 		if(this.editMode !== this.props.editMode){
-			this.game.toggleAvi(this.props.editMode);
+			this.game.editMode(this.props.editMode);
 			this.editMode = this.props.editMode;
 		}
 		

@@ -2,6 +2,7 @@ export default function Ripples (PIXI, app) {
 	return {
 		ripples: [],
 		growing: [],
+		action: true,
 		init: function () {
 				var sprites = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
@@ -47,7 +48,19 @@ export default function Ripples (PIXI, app) {
 		    app.stage.addChild(this.gradient);
 			
 		},
+		pause: function (boolean) {
+			if(boolean){
+				//PAUSE!
+				this.action = !boolean;
+
+				//remove 
+			} else {
+				this.action = !boolean;
+			}
+		},
 		grow: function (ripple, index) {
+		
+
 			ripple.scale.x += 0.0075;
 			ripple.scale.y += 0.0075;
 			ripple.counter ++;
@@ -71,6 +84,7 @@ export default function Ripples (PIXI, app) {
 			}
 		},
 		mouseMove: function(e){
+			if(!this.action) return;
 			this.counter ++;
 			let pos = e.data.global;
 			if(this.counter % 10 === 0){

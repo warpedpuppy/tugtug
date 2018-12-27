@@ -138,8 +138,16 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.pellets.resize(wh);
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 
-            this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
+            this.backgroundCont.x = -this.panelsBoardClass.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
         
+        },
+        editMode: function (boolean) {
+            this.action = !boolean;
+            this.ripples.pause(boolean);
+            this.art_board.editMode(boolean);
+            this.filter_animation.shutOff();
+            this.panelsBoardClass.switchPanel(0);
+
         },
         changeColor: function (color) {
             console.log("change color");
