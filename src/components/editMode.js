@@ -22,7 +22,7 @@ class EditMode extends React.Component {
 	}
 
 	render () {
-		let panelClass = (this.props.editMode)?"show":"hide";
+		let panelClass = (this.props.editMode)?"editPanel show":"editPanel hide";
 		//has to be logged in and on game page
 		let isGame = (window.location.pathname === '/game')?true:false;
 		let isLoggedIn = (this.props.token !== 'blank')?true:false;
@@ -34,11 +34,16 @@ class EditMode extends React.Component {
     		<a 
     		className="button editModeButton" 
     		onClick={ e => this.editModeHandler(e) }>edit mode {this.props.editMode.toString()}</a>
-    		<SketchPicker 
-				className={panelClass}
-        		color={ this.state.background }
-        		onChangeComplete={ this.handleChangeComplete }
-        		/>
+	    		<div className={panelClass}>
+	    			<select>
+		    			<option>board</option>
+		    			<option>background</option>
+	    			</select>
+		    		<SketchPicker 
+		        		color={ this.state.background }
+		        		onChangeComplete={ this.handleChangeComplete }
+		        		/>
+	        	</div>
     		</div>
 		)
 	}

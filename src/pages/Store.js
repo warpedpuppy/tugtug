@@ -5,7 +5,7 @@ import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import CheckForToken from '../components/utils/CheckForToken.js';
 import { connect } from 'react-redux';
-import { addItems } from '../actions/avatarActions.js';
+import { addItems, addItem } from '../actions/avatarActions.js';
 
 class Store extends React.Component {
 
@@ -32,9 +32,20 @@ class Store extends React.Component {
 	}
 	onPurchase (price, name, url){
 		//this.props.dispatch(addItem(name));
+		
+		if(this.props.username === "Testy") {
+			let obj = {
+				url: url,
+				name:name,
+				active: false
+			}
+			console.log(obj)
+			this.props.dispatch(addItem(obj));
+			return;
+		}
+
 		let lsToken = localStorage.getItem('token');
 		let obj = { name, url, username: this.props.username };
-		console.log('obj = ', obj)
 		let that = this;
 		axios
 		.post(`${API_BASE_URL}/store/avatar_item`, 

@@ -61,19 +61,22 @@ class GameCanvas extends React.Component {
 	}
 	componentWillMount () {
 		this.getUserData();
+		console.log("GET USER DATA")
 	}
 	startGame(data){
-		
+		console.log('data = ', data)
 		if(this.props.testMode){
 			// change data to non database
 			data = {users: [{
 				username: this.props.username,
 				firstName: this.props.firstName,
 				lastName: this.props.lastName,
-				email: this.props.email
+				email: this.props.email,
+				items: this.props.items
 			}]}
 		}
-
+		data.items = this.props.items;
+		console.log('data = ', data)
 		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
 		this.game.init();
 		//this.game.update(this.props.items);
@@ -86,12 +89,13 @@ class GameCanvas extends React.Component {
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);
 		// console.log('this is the color'+this.props.color);
-		console.log('edit mode = '+this.props.editMode.toString())
+		//console.log('edit mode = '+this.props.editMode.toString())
 
 		if(this.editMode !== this.props.editMode){
 			this.game.editMode(this.props.editMode);
 			this.editMode = this.props.editMode;
 		}
+
 		
 	}
 	testFilter () {
@@ -106,9 +110,11 @@ class GameCanvas extends React.Component {
 		return (
 			<div>
 			<div id='game_canvas'></div>
+			{/*
 			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			</div>
+		*/}
 			</div>
 		)
 	}

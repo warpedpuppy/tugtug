@@ -11,6 +11,7 @@ const initialState = {
 
 function tokenReducer (state=initialState, action) {
     if(action.type === TEST_USER) {
+        localStorage.setItem('token', action.token);
         return Object.assign({}, state, {
             username: action.userData.username,
             firstName: action.userData.firstName,

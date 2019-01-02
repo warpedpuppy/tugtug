@@ -127,7 +127,7 @@ export default function(PIXI, Utils, obj) {
 			}
 		},
 		keyDown: function (e) {
-            e.preventDefault();
+            //e.preventDefault();
             switch (e.keyCode) {
                 case 37:
                     // left

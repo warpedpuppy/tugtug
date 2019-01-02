@@ -63,7 +63,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             window.addEventListener('keyup', this.keyUp);
 
             let size = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight}
-            this.hero = obj.hero(PIXI, this.app, this.utils, size)
+
+            this.items = userObject.items;
+ 
+            this.hero = obj.hero(PIXI, this.app, this.utils, size, this.items)
             this.hero.init();
             this.stage.addChild(this.hero.cont);
 
@@ -117,6 +120,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
+           
             window.onresize = this.resizeHandler.bind(this);
         },
         stop: function () {

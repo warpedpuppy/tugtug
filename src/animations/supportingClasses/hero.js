@@ -1,4 +1,4 @@
-export default function Hero (PIXI, app, utils, wh) {
+export default function Hero (PIXI, app, utils, wh, items) {
 	return {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
@@ -18,6 +18,17 @@ export default function Hero (PIXI, app, utils, wh) {
                 this.segments.push(segment);
                 this.cont.addChild(segment);
             }
+            console.log('items from hero = ', items);
+            if(items){
+            	  for(let i = 0; i < items.length; i ++){
+            	
+	            	var item = PIXI.Sprite.fromImage(items[i].url);
+	            	if(items[i].active) {
+		            	this.cont.addChild(item);
+		            }
+	            }
+            }
+          
 		},
 		bodySegment: function (radius, color, yVal) {
 			let cont = new PIXI.Container();
