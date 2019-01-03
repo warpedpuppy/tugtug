@@ -71,7 +71,6 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
             this.stage.addChild(this.hero.cont);
 
 
-
             this.app.ticker.add(this.animate.bind(this));
             
             this.total = this.cols * this.rows;
