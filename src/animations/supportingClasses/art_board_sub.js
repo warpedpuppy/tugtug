@@ -104,20 +104,23 @@ export default function(utils, PIXI) {
 				axios.get(`${API_BASE_URL}/store/artBoard`,{ headers: {"Authorization" : `Bearer ${this.lsToken}`} })
 				.then(result => {
 					console.log(result.data.board)
+					if(result.data.board){
+						for (let key in result.data.board[0]){
+							// console.log(key+" ) "+ result.data.board[0][key])
+							let tempArray = key.split("_");
+							let x = tempArray[0];
+							let y = tempArray[1];
+							let n = new PIXI.Graphics();
+							n.beginFill(result.data.board[0][key]).drawRect(0,0,10,10).endFill();
+							n.x = tempArray[0];
+							n.y = tempArray[1];
+							this.storeColors[`${n.x}_${n.y}`] = result.data.board[0][key];
+							this.artBoard.addChild(n);
 
-					for (let key in result.data.board[0]){
-						// console.log(key+" ) "+ result.data.board[0][key])
-						let tempArray = key.split("_");
-						let x = tempArray[0];
-						let y = tempArray[1];
-						let n = new PIXI.Graphics();
-						n.beginFill(result.data.board[0][key]).drawRect(0,0,10,10).endFill();
-						n.x = tempArray[0];
-						n.y = tempArray[1];
-						this.storeColors[`${n.x}_${n.y}`] = result.data.board[0][key];
-						this.artBoard.addChild(n);
-
+						}
+						this.artBoard.cacheAsBitmap = true;
 					}
+				
 				})
 				.catch(err => {
 					console.error(err)
@@ -143,11 +146,17 @@ export default function(utils, PIXI) {
 				this.s.mouseover = this.mouseOverHandler;
 				this.s.mouseout = this.mouseOutHandler;
 				this.s.mouseout = this.mouseOutHandler;
+
+				//uncache artboard
+				this.artBoard.cacheAsBitmap = false;
 			} else if (!boolean) {
 				this.s.mouseover = undefined;
 				this.s.mouseout = undefined;
 				this.s.mousemove = this.s.pointerdown = undefined;
 				this.sendToServer();
+
+				//cache artboard
+				this.artBoard.cacheAsBitmap = true;
 			}
 
 		}

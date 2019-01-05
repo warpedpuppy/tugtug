@@ -1,4 +1,4 @@
-export default function Game (PIXI, Utils, obj, userObject, getUserName){
+export default function Game (PIXI, Utils, obj, userObject, getUserName, primaryUser){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -64,9 +64,23 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName){
 
             let size = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight}
 
-            this.items = userObject.items;
- 
-            this.hero = obj.hero(PIXI, this.app, this.utils, size, this.items)
+            //this.items = userObject.items;
+
+            // rearrange so that primary user is first and grab primary person's items
+            for(let i = 0; i < userObject.users.length; i++){
+                if(primaryUser === userObject.users[i].username){
+                    let primaryObject = userObject.users[i];
+
+                    //reorganize userObject array
+                    userObject.users.splice(i, 1);
+                    userObject.users.unshift(primaryObject);
+
+                    //create this items for hero
+                    //this.items = primaryObject.avatar[0].bitmaps;
+                }
+            }
+            console.log("items = ", userObject.items)
+            this.hero = obj.hero(PIXI, this.app, this.utils, size, userObject.items)
             this.hero.init();
             this.stage.addChild(this.hero.cont);
 

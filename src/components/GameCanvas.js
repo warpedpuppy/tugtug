@@ -65,16 +65,6 @@ class GameCanvas extends React.Component {
 	}
 	startGame(data){
 
-
-		let lsToken = localStorage.getItem('token');
-		axios.get(`${API_BASE_URL}/store/artBoard`,{ headers: {"Authorization" : `Bearer ${lsToken}`} })
-		.then(result => {
-			console.log("THE GET ENDPOINT HIT")
-			let boardArray = result.data.board;
-		})
-
-
-		console.log('data = ', data)
 		if(this.props.testMode){
 			// change data to non database
 			data = {users: [{
@@ -87,7 +77,7 @@ class GameCanvas extends React.Component {
 		}
 		data.items = this.props.items;
 		console.log('data = ', data)
-		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
+		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, this.props.username);
 		this.game.init();
 		//this.game.update(this.props.items);
 		this.editMode = this.props.editMode;

@@ -68,24 +68,26 @@ class Admin extends React.Component {
 			email: e.target.value
 		})
 	}
-	toggleActive (index, name, active) {
+	toggleActive (index, name, active, url) {
+		console.log('toggle active', index, name, active)
 		let newActive = (active.toString() === 'true')?false:true;
 		let obj = {
 			name,
-			active: newActive
+			active: newActive,
+			url:url
 		}
+		console.log('BOOM')
+		this.props.dispatch(toggleActive(name, newActive, url));
 
-		this.props.dispatch(toggleActive(name, newActive));
 
 		axios.put(`${API_BASE_URL}/store/make_item_active`, obj, {
 			headers: { "Authorization": `Bearer ${this.props.token}`}
 		})
 		.then(function(response){
 		  console.log('toggle active response = ', response.data);
-
 		})
 		.catch((err) => {
-		  console.error(err);
+		  console.error('toggle active response error= ', err);
 		});  
 
 	}

@@ -39,13 +39,7 @@ export default function Panel(PIXI, wH, portal_code) {
             if (point.y !== 0) {
                 this.cont.addChild(topDoor);
             }
-            
-            let bottomDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'bottom');
-            bottomDoor.x = (width - wH.characterHeight)/2;
-            bottomDoor.y = this.panelHeight - 10;
-            if(point.y !== this.bottomY){
-                this.cont.addChild(bottomDoor);
-            }
+         
 
             let leftDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'left');
             leftDoor.x = 0;
@@ -57,8 +51,17 @@ export default function Panel(PIXI, wH, portal_code) {
             let rightDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'right');
             rightDoor.x = width - 10;
             rightDoor.y = (height - wH.characterHeight)/2;
-            if(point.x !== this.leftX){
+            if(point.x !== wH.leftX){
                 this.cont.addChild(rightDoor);
+            } else {
+
+            }
+
+            let bottomDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'bottom');
+            bottomDoor.x = (width - wH.characterHeight)/2;
+            bottomDoor.y = this.panelHeight - 10;
+            if(point.y !== wH.bottomY){
+                this.cont.addChild(bottomDoor);
             }
             
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];

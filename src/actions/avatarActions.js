@@ -7,7 +7,7 @@ export const addItem = item => ({
 export const ADD_ITEMS = 'ADD_ITEMS';
 export const addItems = items => ({
     type: ADD_ITEMS,
-    items
+    items: items
 });
 export const UPDATE_ITEM = 'UPDATE_ITEM';
 export const updateItem = item => ({
@@ -27,10 +27,11 @@ export const deleteAll = () => ({
 });
 
 export const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
-export const toggleActive = (name, active) => ({
+export const toggleActive = (name, active, url) => ({
     type: TOGGLE_ACTIVE,
     name,
-    active
+    active,
+    url
 });
 
 export const MAKE_ITEM_INACTIVE = 'MAKE_ITEM_INACTIVE';

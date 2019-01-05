@@ -32,11 +32,10 @@ class Store extends React.Component {
 	}
 	onPurchase (price, name, url){
 		//this.props.dispatch(addItem(name));
-		
 		if(this.props.username === "Testy") {
 			let obj = {
 				url: url,
-				name:name,
+				name: name,
 				active: false
 			}
 			console.log(obj)
@@ -47,15 +46,18 @@ class Store extends React.Component {
 		let lsToken = localStorage.getItem('token');
 		let obj = { name, url, username: this.props.username };
 		let that = this;
+		console.log('here')
 		axios
-		.post(`${API_BASE_URL}/store/avatar_item`, 
+		.post(`${API_BASE_URL}/store/buy_accessory`, 
 			obj,
 			{ headers: {"Authorization" : `Bearer ${lsToken}`} })
 		.then(function(response){
-			console.log("on purchase = ", response);
-			if(response.data.avatars){
-	            //console.log('items array = ', response.data.user.avatars)
-	            that.props.dispatch(addItems(response.data.avatars));
+			console.log("on newRecord = ", response.data.newRecord);
+			//console.log("on bitmaps = ", response.data.newRecord.bitmaps);
+			//response.data.newRecord.bitmaps will be array of items
+			if(response.data.newRecord){
+	            //console.log('items array = ', response.data.newRecord.accessories)
+	            that.props.dispatch(addItem(response.data.newRecord));
 	          }
 		})
 		.catch((err) => {
@@ -64,9 +66,14 @@ class Store extends React.Component {
 	}
 
 	render () {
+		// console.log('products = ', this.state.products)
+		// if(this.props.items[0]){
+		// 	console.log('items = ', this.props.items)
+		// }
+		
 		let products = this.state.products.map( (product, index) => {
 			let test = this.props.items.find(item => {
-				return item.name === product.name
+				return item.url === product.imgURL
 			}
 			)
 			let owned =(test)?'true':'false';

@@ -29,12 +29,13 @@ export default function PanelsBoard(PIXI, obj) {
                 
                     let w = this.panelWidth;
                     let h = this.panelHeight;
+                    //console.log("user object = ", this.userObject)
                     
                     let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: this.getUserName()};
                     let xVal = w * j;
                     let yVal = h * i;
-                    this.leftX = (this.cols - 1) * this.panelWidth;
-                    this.bottomY = (this.rows - 1) * this.panelHeight;
+                    this.wH.leftX = (this.cols - 1) * this.panelWidth;
+                    this.wH.bottomY = (this.rows - 1) * this.panelHeight;
 
                     let panelClass = obj.Panel(PIXI, this.wH, this.portal_code);
                     let artBoard = undefined;

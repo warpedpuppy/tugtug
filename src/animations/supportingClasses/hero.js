@@ -21,9 +21,9 @@ export default function Hero (PIXI, app, utils, wh, items) {
             console.log('items from hero = ', items);
             if(items){
             	  for(let i = 0; i < items.length; i ++){
-            	
-	            	var item = PIXI.Sprite.fromImage(items[i].url);
-	            	if(items[i].active) {
+            	  	console.log(items[i])
+	            	var item = PIXI.Sprite.fromImage(items[i][0]);
+	            	if(items[i][1]) {
 		            	this.cont.addChild(item);
 		            }
 	            }

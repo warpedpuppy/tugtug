@@ -9,7 +9,7 @@ export default function ItemModule (props) {
 		<h1>{props.name}</h1>
 		<img src={props.image} alt={props.name}/>
 		<div>{activeText}</div>
-		<button onClick={() => props.toggleActive(props.index, props.name, props.active)}>{buttonText}</button>
+		<button onClick={() => props.toggleActive(props.index, props.name, props.active, props.image)}>{buttonText}</button>
 		<button onClick={() => props.deleteItem(props.index, props.name)}>delete this item</button>
 		</div>
 		)
