@@ -14,13 +14,15 @@ export default function() {
 		dotSize: 10,
 		primary: false,
 		init: function (primary) {
+			console.log("art board init")
 			this.utils = Utils();
 			this.primary = primary;
 
 			this.lsToken = localStorage.getItem('token');
 	        this.canvasWidth = this.width;
+
 	        this.artBoard = new PIXI.Container();
-	        this.pixelCont = new PIXI.Container(); 
+	        //this.pixelCont = new PIXI.Container(); 
 	        this.mouseListen = new PIXI.Container(); 
 	      
 			this.height = this.utils.returnCanvasHeight();
@@ -29,24 +31,12 @@ export default function() {
 
 
 			this.artBoard.addChild(this.mouseListen);
-			this.artBoard.addChild(this.pixelCont);
+			//this.artBoard.addChild(this.pixelCont);
 			let s = new PIXI.Graphics();
-			s.beginFill(0x00FF00).drawRect(0,0,this.boardWidth,this.boardHeight).endFill();
+			s.beginFill(0xFFFF00).drawRect(0,0,this.boardWidth,this.boardHeight).endFill();
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
 
-			//if(this.primary){
-
-			this.mouseOverHandler = this.mouseOverHandler.bind(this);
-		    this.mouseOutHandler = this.mouseOutHandler.bind(this);
-		    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-		    this.drawPoint = this.drawPoint.bind(this);
-		    this.mouseDownHandler = this.mouseDownHandler.bind(this);
-		    this.mouseUpHandler = this.mouseUpHandler.bind(this);
-			//}
-			
-
-			
 			this.s = s;
 			this.loadData();
 
@@ -70,31 +60,30 @@ export default function() {
 		
 		},
 		mouseOverHandler: function () {
-			console.log("over")
-			this.s.mousemove = this.mouseMoveHandler;
-			this.s.pointerdown = this.mouseDownHandler;
-			// document.getElementById('results2').innerHTML = `over`;
+			//console.log("over")
+			//console.log('pointer down = ', this.s.pointerdown)
 		},
 		mouseOutHandler: function (e) {
-			console.log("out")
+			//console.log("out")
 			this.drag = false;
 		},
 		mouseDownHandler: function (e) {
-			console.log("down")
+			//console.log("down")
 			this.drag = true;
-			this.s.pointerup = this.mouseUpHandler;
+			
 			this.drawPoint(e);
 		},
 		mouseUpHandler: function () {
-			console.log("up")
+			//console.log("up")
 			this.drag = false;
-			this.s.pointerup = null;
+			//this.s.pointerup = null;
 		},
 		mouseMoveHandler: function (e) {
-			console.log("move")
+			//console.log("move")
 			this.drawPoint(e);
 		},
 		drawPoint: function (e) {
+			//console.log("draw point")
 			if (this.drag) {
 				this.x = Math.floor(e.data.global.x);
 				this.y = Math.floor(e.data.global.y);
@@ -105,8 +94,8 @@ export default function() {
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
 				n.x = Math.floor(localPoint.x / 10) * 10;
 				n.y = Math.floor(localPoint.y / 10) * 10;
-				this.artBoard.addChild(n);
-
+				
+				this.artBoard.addChild(n);                 
 				this.storeColors[`${n.x}_${n.y}`] = this.chosenColor;
 
 				
@@ -158,19 +147,30 @@ export default function() {
 			
 				this.s.interactive = boolean;
 				this.s.buttonMode = boolean;
+				this.mouseOverHandler = this.mouseOverHandler.bind(this);
+			    this.mouseOutHandler = this.mouseOutHandler.bind(this);
+			    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+			    this.drawPoint = this.drawPoint.bind(this);
+			    this.mouseDownHandler = this.mouseDownHandler.bind(this);
+			    this.mouseUpHandler = this.mouseUpHandler.bind(this);
+
 				if(boolean){
-					//alert("EDIT MODE");
+					console.log("EDIT MODE");
 					this.s.mouseover = this.mouseOverHandler;
 					this.s.mouseout = this.mouseOutHandler;
-					this.s.mouseout = this.mouseOutHandler;
-					this.s.mousemove = this.mouseMoveHandler;
 					this.s.pointerdown = this.mouseDownHandler;
+					this.s.pointerup = this.mouseUpHandler;
+					this.s.mousemove = this.mouseMoveHandler;
+					// this.s.mousemove = this.mouseMoveHandler;
+					// this.s.pointerdown = this.mouseDownHandler;
 					//uncache artboard
 					this.artBoard.cacheAsBitmap = false;
 				} else if (!boolean) {
 					this.s.mouseover = undefined;
 					this.s.mouseout = undefined;
-					this.s.mousemove = this.s.pointerdown = undefined;
+					this.s.pointerdown = undefined;
+					this.s.pointerup = undefined;
+					this.s.mousemove = undefined;
 					this.sendToServer();
 
 					//cache artboard

@@ -96,19 +96,21 @@ export default function Panel(PIXI, wH, portal_code) {
             //if primary user load artboard to start
             if(primary){
                 this.loadArtBoard(primary);
+
             }
        
 		},
         loadArtBoard: function (primary) {
             console.log("load artboard for ", this.username);
-            this
+            if(this.artBoardLoaded)return;
+
+            this.artBoardLoaded = true;
             this.art_board.init(primary);
             let artBoard = this.art_board.returnArtBoard();
             artBoard.pivot.x  = artBoard.width / 2;
             artBoard.pivot.y = artBoard.height / 2;
             artBoard.x = this.panelWidth / 2;
             artBoard.y = this.panelHeight / 2;
-
             this.art_board.loadData({username: this.username});
             this.cont.addChild(artBoard);
             this.artBoardLoaded = true;

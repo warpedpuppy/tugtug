@@ -27,8 +27,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             document.getElementById("game_canvas").appendChild(this.app.renderer.view);
 
             this.userObject = userObject;
-            this.art_board = obj.art_board_code(this.utils, PIXI);
-            this.art_board.init();
+            // this.art_board = obj.art_board_code(this.utils, PIXI);
+            // this.art_board.init();
 
 
 
@@ -167,25 +167,15 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             // console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
         },
         editMode: function (boolean) {
-            console.log("*****************", boolean.toString())
-            console.log("*****************")
-            console.log("*****************")
-            console.log("*****************")
             this.action = !boolean;
             this.ripples.pause(boolean);
-            console.log("EDIT MODE PRIMARY PANEL = ", this.panels[this.panelForArtBoard].panelClass.art_board);
             this.panels[this.panelForArtBoard].panelClass.art_board.editMode(boolean);
             this.filter_animation.shutOff();
             this.panelsBoardClass.switchPanel(0);
-            console.log("*****************")
-            console.log("*****************")
-            console.log("*****************")
-            console.log("*****************")
-
         },
         changeColor: function (color) {
             console.log("change color");
-            this.art_board.changeColor(color);
+            this.panels[this.panelForArtBoard].panelClass.art_board.changeColor(color);
         },
         filterTest: function () {
             this.filter_animation.filterToggle();

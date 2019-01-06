@@ -108,14 +108,8 @@ export default function PanelsBoard(PIXI, obj) {
             this.panelForArtBoard = index;
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight /2);
-            // console.log("SWITCH PANEL");
-            // console.log(this.activePanel);
-            // console.log(this.backgroundCont.y);
 
-            // console.log('LOAD NEW PANEL ART BOARD!!!!!!');
-           
-            this.activePanel.loadArtBoard();
-            //this.assignPrimaryArtBoard(this.activePanel.art_board);
+            //this.activePanel.loadArtBoard();
         },
 		animate: function () {
 		   // this.mask.x = this.backgroundCont.x;
