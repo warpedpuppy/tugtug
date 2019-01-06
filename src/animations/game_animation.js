@@ -79,7 +79,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
                     //this.items = primaryObject.avatar[0].bitmaps;
                 }
             }
-            console.log("items = ", userObject.items)
+            //console.log("items = ", userObject.items)
             this.hero = obj.hero(PIXI, this.app, this.utils, size, userObject.items)
             this.hero.init();
             this.stage.addChild(this.hero.cont);
@@ -119,11 +119,11 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
                 wH: this.wH,
                 activePanel: this.activePanel,
                 panelForArtBoard: this.panelForArtBoard,
-                art_board: this.art_board,
                 stage: this.stage,
                 pelletCont: this.pelletCont,
                 hero: this.hero,
-                utils: this.utils
+                utils: this.utils,
+                assignPrimaryArtBoard: this.assignPrimaryArtBoard
             }
 
             let panelsBoardClass = this.panelsBoardClass = obj.PanelsBoard(PIXI, panelsBoardObj);
@@ -158,10 +158,16 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             this.backgroundCont.x = -this.panelsBoardClass.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
         
         },
+        assignPrimaryArtBoard: function(artBoard){
+            console.log('1 game animation assign art board', artBoard)
+            this.primaryArtBoard = artBoard.returnArtBoard();
+            console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
+        },
         editMode: function (boolean) {
             this.action = !boolean;
             this.ripples.pause(boolean);
-            this.art_board.editMode(boolean);
+            console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
+            //this.primaryArtBoard.editMode(boolean);
             this.filter_animation.shutOff();
             this.panelsBoardClass.switchPanel(0);
 

@@ -1,8 +1,9 @@
 import {API_BASE_URL} from '../../config';
 import axios from 'axios';
-export default function(utils, PIXI) {
+import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
+export default function() {
 	return {
-		utils: utils,
     	boardWidth: 500,
     	boardHeight: 500,
     	drag: false,
@@ -11,10 +12,13 @@ export default function(utils, PIXI) {
 		offsetY: 0,
 		storeColors: {},
 		dotSize: 10,
-		init: function () {
+		primary: false,
+		init: function (primary) {
+			this.utils = Utils();
+			this.primary = primary;
 
 			this.lsToken = localStorage.getItem('token');
-	        this.canvasWidth = this.width;//this.utils.returnCanvasWidth();
+	        this.canvasWidth = this.width;
 	        this.artBoard = new PIXI.Container();
 	        this.pixelCont = new PIXI.Container(); 
 	        this.mouseListen = new PIXI.Container(); 
@@ -31,12 +35,16 @@ export default function(utils, PIXI) {
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
 
-			this.mouseOverHandler = this.mouseOverHandler.bind(this);
-			this.mouseOutHandler = this.mouseOutHandler.bind(this);
-			this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-			this.drawPoint = this.drawPoint.bind(this);
-			this.mouseDownHandler = this.mouseDownHandler.bind(this);
-			this.mouseUpHandler = this.mouseUpHandler.bind(this);
+			if(this.primary){
+
+				this.mouseOverHandler = this.mouseOverHandler.bind(this);
+			    this.mouseOutHandler = this.mouseOutHandler.bind(this);
+			    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+			    this.drawPoint = this.drawPoint.bind(this);
+			    this.mouseDownHandler = this.mouseDownHandler.bind(this);
+			    this.mouseUpHandler = this.mouseUpHandler.bind(this);
+			}
+			
 
 			
 			this.s = s;
@@ -45,7 +53,7 @@ export default function(utils, PIXI) {
 		},
 		assignStage: function (stage) {
 			this.stage = stage;
-			console.log(stage)
+			console.log("art board assign stage = ",stage)
 		},		
 		returnArtBoard: function () {
 			return this.artBoard;
@@ -99,11 +107,11 @@ export default function(utils, PIXI) {
 				
 			}
 		},
-		loadData: function () {
+		loadData: function (obj) {
 
-				axios.get(`${API_BASE_URL}/store/artBoard`,{ headers: {"Authorization" : `Bearer ${this.lsToken}`} })
+				axios.post(`${API_BASE_URL}/store/artBoardData`, obj, { headers: {"Authorization" : `Bearer ${this.lsToken}`} })
 				.then(result => {
-					console.log(result.data.board)
+					//console.log("result from load artboard call ", result.data.board)
 					if(result.data.board){
 						for (let key in result.data.board[0]){
 							// console.log(key+" ) "+ result.data.board[0][key])
@@ -123,6 +131,7 @@ export default function(utils, PIXI) {
 				
 				})
 				.catch(err => {
+					console.log('error from load artboard data')
 					console.error(err)
 				})
 
@@ -140,25 +149,30 @@ export default function(utils, PIXI) {
 
 		},
 		editMode: function (boolean){
-			this.s.interactive = boolean;
-			this.s.buttonMode = boolean;
-			if(boolean){
-				this.s.mouseover = this.mouseOverHandler;
-				this.s.mouseout = this.mouseOutHandler;
-				this.s.mouseout = this.mouseOutHandler;
+			console.log("edit mode click")
+			if(this.primary) {
+				this.s.interactive = boolean;
+				this.s.buttonMode = boolean;
+				if(boolean){
+					alert("EDIT MODE");
+					this.s.mouseover = this.mouseOverHandler;
+					this.s.mouseout = this.mouseOutHandler;
+					this.s.mouseout = this.mouseOutHandler;
 
-				//uncache artboard
-				this.artBoard.cacheAsBitmap = false;
-			} else if (!boolean) {
-				this.s.mouseover = undefined;
-				this.s.mouseout = undefined;
-				this.s.mousemove = this.s.pointerdown = undefined;
-				this.sendToServer();
+					//uncache artboard
+					this.artBoard.cacheAsBitmap = false;
+				} else if (!boolean) {
+					this.s.mouseover = undefined;
+					this.s.mouseout = undefined;
+					this.s.mousemove = this.s.pointerdown = undefined;
+					this.sendToServer();
 
-				//cache artboard
-				this.artBoard.cacheAsBitmap = true;
+					//cache artboard
+					this.artBoard.cacheAsBitmap = true;
+				}
+
 			}
-
+			
 		}
 
 
