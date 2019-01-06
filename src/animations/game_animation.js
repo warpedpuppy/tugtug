@@ -123,7 +123,8 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
                 pelletCont: this.pelletCont,
                 hero: this.hero,
                 utils: this.utils,
-                assignPrimaryArtBoard: this.assignPrimaryArtBoard
+                panels: this.panels,
+                assignPrimaryPanel: this.assignPrimaryPanel
             }
 
             let panelsBoardClass = this.panelsBoardClass = obj.PanelsBoard(PIXI, panelsBoardObj);
@@ -158,18 +159,28 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             this.backgroundCont.x = -this.panelsBoardClass.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
         
         },
-        assignPrimaryArtBoard: function(artBoard){
-            console.log('1 game animation assign art board', artBoard)
-            this.primaryArtBoard = artBoard.returnArtBoard();
-            console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
+        assignPrimaryPanel: function(panel){
+            this.primaryPanel = panel;
+            console.log("PRIMARY PANEL ASSIGNED", panel)
+            // console.log('1 game animation assign art board', artBoard)
+            // this.primaryPanel = artBoard.returnArtBoard();
+            // console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
         },
         editMode: function (boolean) {
+            console.log("*****************", boolean.toString())
+            console.log("*****************")
+            console.log("*****************")
+            console.log("*****************")
             this.action = !boolean;
             this.ripples.pause(boolean);
-            console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
-            //this.primaryArtBoard.editMode(boolean);
+            console.log("EDIT MODE PRIMARY PANEL = ", this.panels[this.panelForArtBoard].panelClass.art_board);
+            this.panels[this.panelForArtBoard].panelClass.art_board.editMode(boolean);
             this.filter_animation.shutOff();
             this.panelsBoardClass.switchPanel(0);
+            console.log("*****************")
+            console.log("*****************")
+            console.log("*****************")
+            console.log("*****************")
 
         },
         changeColor: function (color) {

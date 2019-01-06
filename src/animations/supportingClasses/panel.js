@@ -3,13 +3,13 @@ export default function Panel(PIXI, wH, portal_code) {
 	return {
 		cont: new PIXI.Container(),
         artBoardLoaded: false,
-		build: function (num, width, height, userData, point, primary, stage, assignPrimaryArtBoard) {
+        art_board: ArtBoard(),
+		build: function (num, width, height, userData, point, primary, stage) {
 			this.Doorway = portal_code;
             this.primary = primary;
             this.stage = stage;
 			this.panelWidth = width;
 			this.panelHeight = height;
-            this.assignPrimaryArtBoard = assignPrimaryArtBoard;
             let dot = new PIXI.Graphics();
             dot.beginFill(0x000000).drawCircle(0,0,100).endFill();
             dot.x = this.panelWidth/2;
@@ -94,26 +94,14 @@ export default function Panel(PIXI, wH, portal_code) {
             }
 
             //if primary user load artboard to start
-            console.log("panel primary? ", primary)
             if(primary){
                 this.loadArtBoard(primary);
             }
-            // if(artBoard){
-            // 	// //console.log("art board = ", artBoard.stage)
-            //  //    artBoard.pivot.x  = artBoard.width / 2;
-            //  //    artBoard.pivot.y = artBoard.height / 2;
-            //  //    artBoard.x = this.panelWidth / 2;
-            //  //    artBoard.y = this.panelHeight / 2;
-            // 	// this.cont.addChild(artBoard);
-            //  //    this.artBoardLoaded = true;
-            // }
-
-           
-            
+       
 		},
         loadArtBoard: function (primary) {
             console.log("load artboard for ", this.username);
-            this.art_board = ArtBoard();
+            this
             this.art_board.init(primary);
             let artBoard = this.art_board.returnArtBoard();
             artBoard.pivot.x  = artBoard.width / 2;
@@ -126,8 +114,6 @@ export default function Panel(PIXI, wH, portal_code) {
             this.artBoardLoaded = true;
             if(this.primary){
                 this.art_board.assignStage(this.stage);
-                console.log("TESTING = ", this.assignPrimaryArtBoard)
-                this.assignPrimaryArtBoard(this.art_board);
             }
             
         },

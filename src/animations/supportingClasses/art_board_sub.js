@@ -35,15 +35,15 @@ export default function() {
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
 
-			if(this.primary){
+			//if(this.primary){
 
-				this.mouseOverHandler = this.mouseOverHandler.bind(this);
-			    this.mouseOutHandler = this.mouseOutHandler.bind(this);
-			    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-			    this.drawPoint = this.drawPoint.bind(this);
-			    this.mouseDownHandler = this.mouseDownHandler.bind(this);
-			    this.mouseUpHandler = this.mouseUpHandler.bind(this);
-			}
+			this.mouseOverHandler = this.mouseOverHandler.bind(this);
+		    this.mouseOutHandler = this.mouseOutHandler.bind(this);
+		    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+		    this.drawPoint = this.drawPoint.bind(this);
+		    this.mouseDownHandler = this.mouseDownHandler.bind(this);
+		    this.mouseUpHandler = this.mouseUpHandler.bind(this);
+			//}
 			
 
 			
@@ -70,23 +70,28 @@ export default function() {
 		
 		},
 		mouseOverHandler: function () {
+			console.log("over")
 			this.s.mousemove = this.mouseMoveHandler;
 			this.s.pointerdown = this.mouseDownHandler;
 			// document.getElementById('results2').innerHTML = `over`;
 		},
 		mouseOutHandler: function (e) {
+			console.log("out")
 			this.drag = false;
 		},
 		mouseDownHandler: function (e) {
+			console.log("down")
 			this.drag = true;
 			this.s.pointerup = this.mouseUpHandler;
 			this.drawPoint(e);
 		},
 		mouseUpHandler: function () {
+			console.log("up")
 			this.drag = false;
 			this.s.pointerup = null;
 		},
 		mouseMoveHandler: function (e) {
+			console.log("move")
 			this.drawPoint(e);
 		},
 		drawPoint: function (e) {
@@ -137,7 +142,7 @@ export default function() {
 
 		},
 		sendToServer: function () {
-		    console.log('send to server')
+		    //console.log('send to server')
 			
 		    return axios.post(`${API_BASE_URL}/store/artBoard`, this.storeColors,{ headers: {"Authorization" : `Bearer ${this.lsToken}`} })
 		    .then(response => {
@@ -149,16 +154,17 @@ export default function() {
 
 		},
 		editMode: function (boolean){
-			console.log("edit mode click")
-			if(this.primary) {
+			//alert("edit mode click", boolean.toString())
+			
 				this.s.interactive = boolean;
 				this.s.buttonMode = boolean;
 				if(boolean){
-					alert("EDIT MODE");
+					//alert("EDIT MODE");
 					this.s.mouseover = this.mouseOverHandler;
 					this.s.mouseout = this.mouseOutHandler;
 					this.s.mouseout = this.mouseOutHandler;
-
+					this.s.mousemove = this.mouseMoveHandler;
+					this.s.pointerdown = this.mouseDownHandler;
 					//uncache artboard
 					this.artBoard.cacheAsBitmap = false;
 				} else if (!boolean) {
@@ -171,7 +177,7 @@ export default function() {
 					this.artBoard.cacheAsBitmap = true;
 				}
 
-			}
+			
 			
 		}
 

@@ -19,10 +19,12 @@ export default function PanelsBoard(PIXI, obj) {
 		hero: obj.hero,
 		utils: obj.utils,
         assignPrimaryArtBoard: obj.assignPrimaryArtBoard,
+        assignPrimaryPanel: obj.assignPrimaryPanel,
+        panels: obj.panels,
 		init: function () {
 			this.total = this.cols * this.rows;
 			let panelCounter = 0;
-            this.panels = [];
+            //this.panels = [];
             this.backgroundCont.removeChildren();
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
@@ -43,12 +45,15 @@ export default function PanelsBoard(PIXI, obj) {
                     let primary = false;
                     if (panelCounter === this.panelForArtBoard) {
                         this.activePanel = panelClass;
+                        //alert("assign primary panel")
+                        this.assignPrimaryPanel(this.activePanel);
+                        
                         // artBoard = this.art_board.returnArtBoard();
                         // this.art_board.assignStage(this.stage);
                         primary = true;
                     }
-                    
-                    panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal}, primary, this.stage, this.assignPrimaryArtBoard);
+
+                    panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal}, primary, this.stage);
                     let panel = panelClass.returnPanel();
                     panel.panelClass = panelClass;
                     panel.x = xVal;
@@ -103,12 +108,14 @@ export default function PanelsBoard(PIXI, obj) {
             this.panelForArtBoard = index;
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight /2);
-            console.log("SWITCH PANEL");
-            console.log(this.activePanel);
-            console.log(this.backgroundCont.y);
+            // console.log("SWITCH PANEL");
+            // console.log(this.activePanel);
+            // console.log(this.backgroundCont.y);
 
-            console.log('LOAD NEW PANEL ART BOARD!!!!!!');
+            // console.log('LOAD NEW PANEL ART BOARD!!!!!!');
+           
             this.activePanel.loadArtBoard();
+            //this.assignPrimaryArtBoard(this.activePanel.art_board);
         },
 		animate: function () {
 		   // this.mask.x = this.backgroundCont.x;
