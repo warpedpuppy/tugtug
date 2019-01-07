@@ -1,4 +1,6 @@
-export default function Game (PIXI, Utils, obj, userObject, getUserName, primaryUser){
+import * as PIXI from 'pixi.js';
+import Utils from './utils/utils';
+export default function Game (obj, userObject, getUserName, primaryUser){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
@@ -27,25 +29,17 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             document.getElementById("game_canvas").appendChild(this.app.renderer.view);
 
             this.userObject = userObject;
-            // this.art_board = obj.art_board_code(this.utils, PIXI);
-            // this.art_board.init();
-
-
-
-            this.Doorway = obj.portal_code;
-
+ 
             this.resize = this.resize.bind(this);
             window.onresize = this.resize;
             
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
-            this.renderer = this.app.renderer;//PIXI.autoDetectRenderer(this.canvasWidth, this.canvasHeight);
+            this.renderer = this.app.renderer;
             this.renderer.backgroundColor = 0x0033CC;
             //this.webGL = (this.renderer instanceof PIXI.CanvasRenderer) ? false : true;
 
-           
             this.stage = this.app.stage;
-            
             
             this.animate = this.animate.bind(this);
 
@@ -64,23 +58,16 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
 
             let size = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight}
 
-            //this.items = userObject.items;
-
             // rearrange so that primary user is first and grab primary person's items
             for(let i = 0; i < userObject.users.length; i++){
                 if(primaryUser === userObject.users[i].username){
                     let primaryObject = userObject.users[i];
-
-                    //reorganize userObject array
                     userObject.users.splice(i, 1);
                     userObject.users.unshift(primaryObject);
-
-                    //create this items for hero
-                    //this.items = primaryObject.avatar[0].bitmaps;
                 }
             }
-            //console.log("items = ", userObject.items)
-            this.hero = obj.hero(PIXI, this.app, this.utils, size, userObject.items)
+
+            this.hero = obj.hero(size, userObject.items)
             this.hero.init();
             this.stage.addChild(this.hero.cont);
 
@@ -89,18 +76,18 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             
             this.total = this.cols * this.rows;
             this.stage.addChild(this.pelletCont);
-            this.pellets = obj.pellets(PIXI, this.app, this.utils, this.wH, this.pelletCont);
+            this.pellets = obj.pellets(this.app, this.wH, this.pelletCont);
             this.pellets.init();
 
-            this.magicPills = obj.magicPills(PIXI, this.app, this.utils, this.wH, this.filterTest.bind(this));
+            this.magicPills = obj.magicPills(this.app, this.wH, this.filterTest.bind(this));
             this.magicPills.init();
 
             this.stage.addChild(this.ripplesCont);
-            this.ripples = obj.ripples(PIXI, this.app);
+            this.ripples = obj.ripples(this.app);
             this.ripples.init();
 
             this.stage.addChild(this.filterContainer);
-            this.filter_animation = obj.filter_animation(PIXI, this.app, this.filterContainer, this.stage)
+            this.filter_animation = obj.filter_animation(this.app, this.filterContainer, this.stage)
             this.filter_animation.init();
 
 
@@ -114,8 +101,6 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
                 backgroundCont: this.backgroundCont,
                 getUserName: getUserName,
                 userObject: this.userObject,
-                Panel: obj.Panel,
-                portal_code: obj.portal_code,
                 wH: this.wH,
                 activePanel: this.activePanel,
                 panelForArtBoard: this.panelForArtBoard,
@@ -123,11 +108,10 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
                 pelletCont: this.pelletCont,
                 hero: this.hero,
                 utils: this.utils,
-                panels: this.panels,
-                assignPrimaryPanel: this.assignPrimaryPanel
+                panels: this.panels
             }
 
-            let panelsBoardClass = this.panelsBoardClass = obj.PanelsBoard(PIXI, panelsBoardObj);
+            let panelsBoardClass = this.panelsBoardClass = obj.PanelsBoard(panelsBoardObj);
             panelsBoardClass.init();
 
 
@@ -159,13 +143,6 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             this.backgroundCont.x = -this.panelsBoardClass.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
         
         },
-        assignPrimaryPanel: function(panel){
-            this.primaryPanel = panel;
-            console.log("PRIMARY PANEL ASSIGNED", panel)
-            // console.log('1 game animation assign art board', artBoard)
-            // this.primaryPanel = artBoard.returnArtBoard();
-            // console.log("2 edit mode this.primaryArtBoard = ", this.primaryArtBoard);
-        },
         editMode: function (boolean) {
             this.action = !boolean;
             this.ripples.pause(boolean);
@@ -174,7 +151,7 @@ export default function Game (PIXI, Utils, obj, userObject, getUserName, primary
             this.panelsBoardClass.switchPanel(0);
         },
         changeColor: function (color) {
-            console.log("change color");
+            //console.log("change color");
             this.panels[this.panelForArtBoard].panelClass.art_board.changeColor(color);
         },
         filterTest: function () {

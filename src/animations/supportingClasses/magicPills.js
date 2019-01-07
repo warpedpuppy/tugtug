@@ -1,4 +1,6 @@
-export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
+import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
+export default function MagicPills(app, wh, effectFunction) {
 	return {
 		pills: [],
 		edgeBuffer: 200,
@@ -6,7 +8,7 @@ export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
 		lifeSpan: 100,
 		counter: 0,
 		init: function () {
-			this.utils = utils;
+			this.utils = Utils();
 
 			var pills = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,

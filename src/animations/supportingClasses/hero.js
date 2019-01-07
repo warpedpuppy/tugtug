@@ -1,4 +1,6 @@
-export default function Hero (PIXI, app, utils, wh, items) {
+import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
+export default function Hero (wh, items) {
 	return {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
@@ -6,19 +8,19 @@ export default function Hero (PIXI, app, utils, wh, items) {
 		radius: 0,
 		storeRadius: 0,
 		init: function () {
-			this.utils = utils;
+			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;
             this.cont.y = this.canvasHeight / 2;
-            app.stage.addChild(this.cont);
             this.segments = [];
+
             for (let i = 0; i < this.segmentsQ; i++) {
                 let segment = this.bodySegment(25, 0xFFFF00, i*25);
                 this.segments.push(segment);
                 this.cont.addChild(segment);
             }
-            console.log('items from hero = ', items);
+            
             if(items){
             	  for(let i = 0; i < items.length; i ++){
             	  	console.log(items[i])
@@ -71,7 +73,7 @@ export default function Hero (PIXI, app, utils, wh, items) {
 	        }
 
 	        this.segments[0].rotation = this.radius;
-	        for (let i = 1; i < 5; i++) {
+	        for (let i = 1; i < this.segmentsQ; i++) {
 	            let index = this.pos.length - (i * this.increment);
 	            if (this.pos.length >= index) {
 	             this.segments[i].rotation = this.pos[index];

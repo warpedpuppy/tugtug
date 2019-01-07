@@ -1,3 +1,4 @@
+import Clock from './supportingClasses/clock';
 export default function(PIXI, Utils, obj) {
 	return {
 		idle: true,
@@ -24,7 +25,7 @@ export default function(PIXI, Utils, obj) {
 			const fpsCounter = new obj.PixiFps();
             app.stage.addChild(fpsCounter);
 
-			this.ripples = obj.ripples(PIXI, app);
+			this.ripples = obj.ripples(app);
 			this.ripples.init();
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
@@ -43,23 +44,31 @@ export default function(PIXI, Utils, obj) {
                 this.gears.push(gear);
             }
 
+            let clock = this.clock = Clock();
+         	clock.init();
+         	clock.cont.alpha = 0.25;
+         	clock.cont.scale.set(0.5);
+         	clock.cont.x = this.canvasWidth / 2;
+         	clock.cont.y = this.canvasHeight / 2;
+         	app.stage.addChild(clock.cont);
 
-			this.pellets = obj.pellets(PIXI, app, this.utils, wh);
+			this.pellets = obj.pellets(app, wh);
 			this.pellets.init();
 
-			this.magicPills = obj.magicPills(PIXI, app, this.utils, wh, this.filterTest.bind(this));
+			this.magicPills = obj.magicPills(app, wh, this.filterTest.bind(this));
 			this.magicPills.init();
 
             this.filterContainer = new PIXI.Container();
             app.stage.addChild(this.filterContainer);
-            this.filter_animation = obj.filter_animation(PIXI, app, this.filterContainer, wh)
+            this.filter_animation = obj.filter_animation(app, this.filterContainer, wh)
             this.filter_animation.init();
 
           
-            this.hero = new obj.hero(PIXI, app, this.utils, wh);
+            this.hero = new obj.hero(wh);
             this.hero.init();
+            app.stage.addChild(this.hero.cont)
 
-         
+
 
 
             this.app = app;
@@ -154,6 +163,7 @@ export default function(PIXI, Utils, obj) {
             this.idle = true;
         },
 		animate: function () {
+			this.clock.animate();
 			this.filter_animation.animate();
 			this.hero.animate();
 			this.ripples.animate();

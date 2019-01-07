@@ -4,15 +4,12 @@ import * as PIXI from 'pixi.js';
 import Utils from '../animations/utils/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
-import portal_code from '../animations/supportingClasses/portal';
 import hero from '../animations/supportingClasses/hero';
 import PanelsBoard from '../animations/supportingClasses/panelsBoard';
 import pellets from '../animations/supportingClasses/pellets';
 import ripples from '../animations/supportingClasses/ripples';
-import Panel from '../animations/supportingClasses/panel';
 import filter_animation from '../animations/supportingClasses/filterAnimation';
 import magicPills from '../animations/supportingClasses/magicPills';
-
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -33,10 +30,8 @@ class GameCanvas extends React.Component {
 		  };
 		this.supportingClasses = {
 			art_board_code,
-			portal_code,
 			PanelsBoard,
 			PixiFps,
-			Panel,
 			TweenMax,
 			hero,
 			pellets,
@@ -77,7 +72,7 @@ class GameCanvas extends React.Component {
 		}
 		data.items = this.props.items;
 		console.log('data = ', data)
-		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, this.props.username);
+		this.game = game_code(this.supportingClasses, data, this.getUserName, this.props.username);
 		this.game.init();
 		//this.game.update(this.props.items);
 		this.editMode = this.props.editMode;

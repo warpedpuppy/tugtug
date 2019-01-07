@@ -1,7 +1,9 @@
-export default function Pellets (PIXI, app, utils, wh, cont) {
+import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
+export default function Pellets (app, wh, cont) {
 	return {
 		pelletsArray: [],
-		utils: utils,
+		utils: Utils(),
 		edgeBuffer: 200,
 		init: function () {
 			var pellets = new PIXI.particles.ParticleContainer(10000, {

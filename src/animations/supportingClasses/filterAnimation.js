@@ -1,4 +1,5 @@
-export default function filterAnim(PIXI, app, container, wh) {
+import * as PIXI from 'pixi.js';
+export default function filterAnim(app, container, wh) {
     return {
         app: app,
         count: 0,

@@ -1,4 +1,5 @@
-export default function Ripples (PIXI, app) {
+import * as PIXI from 'pixi.js';
+export default function Ripples (app) {
 	return {
 		ripples: [],
 		growing: [],

@@ -1,5 +1,7 @@
 import ArtBoard from './art_board_sub';
-export default function Panel(PIXI, wH, portal_code) {
+import * as PIXI from 'pixi.js';
+import portal_code from './portal';
+export default function Panel(wH) {
 	return {
 		cont: new PIXI.Container(),
         artBoardLoaded: false,
@@ -27,7 +29,7 @@ export default function Panel(PIXI, wH, portal_code) {
             name.x = 20;
             name.y = 60;
             this.cont.addChild(name);
-
+            this.fake = userData.fake;
             this.username = userData.username;
 
              let frame = new PIXI.Graphics();
@@ -38,21 +40,21 @@ export default function Panel(PIXI, wH, portal_code) {
                 .lineTo(0,this.panelHeight).lineTo(0,0)
                 this.cont.addChild(frame);
          
-            let topDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'top');
+            let topDoor = this.Doorway(wH.characterHeight, 10, 'top');
             topDoor.x = (width - wH.characterHeight)/2;
             if (point.y !== 0) {
                 this.cont.addChild(topDoor);
             }
          
 
-            let leftDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'left');
+            let leftDoor = this.Doorway(10, wH.characterHeight, 'left');
             leftDoor.x = 0;
             leftDoor.y = (height - wH.characterHeight)/2;
             if (point.x !== 0) {
                 this.cont.addChild(leftDoor);
             }
 
-            let rightDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'right');
+            let rightDoor = this.Doorway(10, wH.characterHeight, 'right');
             rightDoor.x = width - 10;
             rightDoor.y = (height - wH.characterHeight)/2;
             if(point.x !== wH.leftX){
@@ -61,7 +63,7 @@ export default function Panel(PIXI, wH, portal_code) {
 
             }
 
-            let bottomDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'bottom');
+            let bottomDoor = this.Doorway(wH.characterHeight, 10, 'bottom');
             bottomDoor.x = (width - wH.characterHeight)/2;
             bottomDoor.y = this.panelHeight - 10;
             if(point.y !== wH.bottomY){
@@ -96,16 +98,15 @@ export default function Panel(PIXI, wH, portal_code) {
             //if primary user load artboard to start
             if(primary){
                 this.loadArtBoard(primary);
-
             }
        
 		},
-        loadArtBoard: function (primary) {
-            console.log("load artboard for ", this.username);
+        loadArtBoard: function () {
+          
             if(this.artBoardLoaded)return;
 
             this.artBoardLoaded = true;
-            this.art_board.init(primary);
+            this.art_board.init(this.fake);
             let artBoard = this.art_board.returnArtBoard();
             artBoard.pivot.x  = artBoard.width / 2;
             artBoard.pivot.y = artBoard.height / 2;

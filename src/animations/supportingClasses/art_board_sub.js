@@ -13,10 +13,9 @@ export default function() {
 		storeColors: {},
 		dotSize: 10,
 		primary: false,
-		init: function (primary) {
-			console.log("art board init")
+		edited: false,
+		init: function (fake) {
 			this.utils = Utils();
-			this.primary = primary;
 
 			this.lsToken = localStorage.getItem('token');
 	        this.canvasWidth = this.width;
@@ -37,13 +36,26 @@ export default function() {
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
 
+			if (fake) {
+				for(let i = 0; i < this.boardHeight; i += this.dotSize) {
+					for(let j = 0; j < this.boardWidth; j += this.dotSize) {
+						let n = new PIXI.Graphics();
+						n.beginFill(this.utils.randomColor()).drawRect(0,0,10,10).endFill();
+						n.x = j;
+						n.y = i;
+						
+						this.artBoard.addChild(n); 
+					}
+				}
+			}
+			this.artBoard.cacheAsBitmap = true;
+
 			this.s = s;
 			this.loadData();
 
 		},
 		assignStage: function (stage) {
 			this.stage = stage;
-			console.log("art board assign stage = ",stage)
 		},		
 		returnArtBoard: function () {
 			return this.artBoard;
@@ -57,11 +69,8 @@ export default function() {
 				let convert = '0x' + color.substr(1);
 				this.chosenColor = convert;
 			}
-		
 		},
-		mouseOverHandler: function () {
-			//console.log("over")
-			//console.log('pointer down = ', this.s.pointerdown)
+		mouseOverHandler: function (e) {
 		},
 		mouseOutHandler: function (e) {
 			//console.log("out")
@@ -83,7 +92,6 @@ export default function() {
 			this.drawPoint(e);
 		},
 		drawPoint: function (e) {
-			//console.log("draw point")
 			if (this.drag) {
 				this.x = Math.floor(e.data.global.x);
 				this.y = Math.floor(e.data.global.y);
@@ -97,8 +105,6 @@ export default function() {
 				
 				this.artBoard.addChild(n);                 
 				this.storeColors[`${n.x}_${n.y}`] = this.chosenColor;
-
-				
 			}
 		},
 		loadData: function (obj) {
@@ -125,14 +131,11 @@ export default function() {
 				
 				})
 				.catch(err => {
-					console.log('error from load artboard data')
 					console.error(err)
 				})
 
 		},
 		sendToServer: function () {
-		    //console.log('send to server')
-			
 		    return axios.post(`${API_BASE_URL}/store/artBoard`, this.storeColors,{ headers: {"Authorization" : `Bearer ${this.lsToken}`} })
 		    .then(response => {
 		     	 console.log(response);
@@ -143,27 +146,25 @@ export default function() {
 
 		},
 		editMode: function (boolean){
-			//alert("edit mode click", boolean.toString())
-			
-				this.s.interactive = boolean;
-				this.s.buttonMode = boolean;
-				this.mouseOverHandler = this.mouseOverHandler.bind(this);
-			    this.mouseOutHandler = this.mouseOutHandler.bind(this);
-			    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-			    this.drawPoint = this.drawPoint.bind(this);
-			    this.mouseDownHandler = this.mouseDownHandler.bind(this);
-			    this.mouseUpHandler = this.mouseUpHandler.bind(this);
 
+				if(!this.edited){
+					this.edited = true;
+					this.s.interactive = boolean;
+					this.s.buttonMode = boolean;
+					this.mouseOverHandler = this.mouseOverHandler.bind(this);
+				    this.mouseOutHandler = this.mouseOutHandler.bind(this);
+				    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+				    this.drawPoint = this.drawPoint.bind(this);
+				    this.mouseDownHandler = this.mouseDownHandler.bind(this);
+				    this.mouseUpHandler = this.mouseUpHandler.bind(this);
+				}
+				
 				if(boolean){
-					console.log("EDIT MODE");
 					this.s.mouseover = this.mouseOverHandler;
 					this.s.mouseout = this.mouseOutHandler;
 					this.s.pointerdown = this.mouseDownHandler;
 					this.s.pointerup = this.mouseUpHandler;
 					this.s.mousemove = this.mouseMoveHandler;
-					// this.s.mousemove = this.mouseMoveHandler;
-					// this.s.pointerdown = this.mouseDownHandler;
-					//uncache artboard
 					this.artBoard.cacheAsBitmap = false;
 				} else if (!boolean) {
 					this.s.mouseover = undefined;
@@ -172,15 +173,8 @@ export default function() {
 					this.s.pointerup = undefined;
 					this.s.mousemove = undefined;
 					this.sendToServer();
-
-					//cache artboard
 					this.artBoard.cacheAsBitmap = true;
 				}
-
-			
-			
 		}
-
-
 	}
 }

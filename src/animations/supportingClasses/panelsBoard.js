@@ -1,4 +1,6 @@
-export default function PanelsBoard(PIXI, obj) {
+import * as PIXI from 'pixi.js';
+import Panel from './panel';
+export default function PanelsBoard(obj) {
 	return {
 		rows: obj.rows,
 		cols: obj.cols,
@@ -10,7 +12,6 @@ export default function PanelsBoard(PIXI, obj) {
 		getUserName: obj.getUserName,
 		userObject: obj.userObject,
 		wH: obj.wH,
-		portal_code: obj.portal_code,
 		getUserName: obj.getUserName,
 		activePanel: obj.activePanel,
 		panelForArtBoard: obj.panelForArtBoard,
@@ -18,38 +19,31 @@ export default function PanelsBoard(PIXI, obj) {
 		pelletCont: obj.pelletCont,
 		hero: obj.hero,
 		utils: obj.utils,
-        assignPrimaryArtBoard: obj.assignPrimaryArtBoard,
-        assignPrimaryPanel: obj.assignPrimaryPanel,
         panels: obj.panels,
 		init: function () {
 			this.total = this.cols * this.rows;
 			let panelCounter = 0;
-            //this.panels = [];
             this.backgroundCont.removeChildren();
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
                 
                     let w = this.panelWidth;
                     let h = this.panelHeight;
-                    //console.log("user object = ", this.userObject)
                     
                     let userObject = (this.userObject.users[panelCounter])?this.userObject.users[panelCounter]:{username: this.getUserName(), fake: true};
+
+                    if(!userObject.fake)userObject.fake = false;
 
                     let xVal = w * j;
                     let yVal = h * i;
                     this.wH.leftX = (this.cols - 1) * this.panelWidth;
                     this.wH.bottomY = (this.rows - 1) * this.panelHeight;
 
-                    let panelClass = obj.Panel(PIXI, this.wH, this.portal_code);
+                    let panelClass = Panel(this.wH);
 
                     let primary = false;
                     if (panelCounter === this.panelForArtBoard) {
                         this.activePanel = panelClass;
-                        //alert("assign primary panel")
-                        this.assignPrimaryPanel(this.activePanel);
-                        
-                        // artBoard = this.art_board.returnArtBoard();
-                        // this.art_board.assignStage(this.stage);
                         primary = true;
                     }
 
@@ -70,7 +64,6 @@ export default function PanelsBoard(PIXI, obj) {
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
          
-           //this.backgroundCont.scale.x = this.backgroundCont.scale.y = 0.25;
            this.mask = new PIXI.Graphics();
            this.mask.beginFill(0x000000).drawRect(0,0,this.backgroundCont.width, this.backgroundCont.height).endFill();
            this.mask.x = this.backgroundCont.x;
@@ -85,7 +78,6 @@ export default function PanelsBoard(PIXI, obj) {
             let topY = panel.cont.y - this.panelHeight;
             let leftX = panel.cont.x - this.panelWidth
              for (let i = 0; i < this.total; i++) {
-                //console.log(`${door.loc} ${panel.cont.x} ${this.panelWidth} versus ${this.panels[i].x}`);
                 if (door.loc === 'top' && this.panels[i].y === topY && this.panels[i].x === panel.cont.x) {
                     this.switchPanel(i);
                     break;
@@ -109,11 +101,9 @@ export default function PanelsBoard(PIXI, obj) {
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight /2);
 
-            //this.activePanel.loadArtBoard();
+            this.activePanel.loadArtBoard();
         },
 		animate: function () {
-		   // this.mask.x = this.backgroundCont.x;
-     //       this.mask.y = this.backgroundCont.y;
 
             let rect = new PIXI.Rectangle();
             for(let i = 0; i < this.activePanel.doors.length; i++){
@@ -128,7 +118,7 @@ export default function PanelsBoard(PIXI, obj) {
                     this.whichPanel(this.activePanel.doors[i], this.activePanel);
                 }
 
-                this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
+                //this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
 
             }
              
