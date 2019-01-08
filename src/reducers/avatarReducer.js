@@ -26,7 +26,7 @@ function avatarReducer (state=initialState, action) {
         });
     } else if (action.type === DELETE_ITEM) {
         return Object.assign({}, state, {
-            items: state.items.filter(item => item.id !== action.item.id)
+            items: state.items.filter(item => item.name !== action.item.name)
         });
     } else if (action.type === DELETE_ALL) {
         return Object.assign({}, state, {

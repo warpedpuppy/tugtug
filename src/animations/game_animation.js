@@ -140,8 +140,9 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             this.pellets.resize(wh);
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 
-            this.backgroundCont.x = -this.panelsBoardClass.cont.x + (this.canvasWidth /2) - (this.panelWidth/2);
-        
+            this.backgroundCont.x = -this.panelsBoardClass.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
+            this.backgroundCont.y = -this.panelsBoardClass.activePanel.cont.y+ (this.canvasHeight /2) - (this.panelHeight /2);
+         
         },
         editMode: function (boolean) {
             this.action = !boolean;

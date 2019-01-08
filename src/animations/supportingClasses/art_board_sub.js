@@ -111,6 +111,7 @@ export default function() {
 
 				axios.post(`${API_BASE_URL}/store/artBoardData`, obj, { headers: {"Authorization" : `Bearer ${this.lsToken}`} })
 				.then(result => {
+					this.artBoard.cacheAsBitmap = false;
 					//console.log("result from load artboard call ", result.data.board)
 					if(result.data.board){
 						for (let key in result.data.board[0]){

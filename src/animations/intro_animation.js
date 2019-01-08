@@ -99,6 +99,8 @@ export default function(PIXI, Utils, obj) {
                 this.gears[i].y = this.corners[i][1];
             }
 
+            this.clock.cont.x = this.canvasWidth / 2;
+         	this.clock.cont.y = this.canvasHeight / 2;
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 			this.magicPills.resize(wh);

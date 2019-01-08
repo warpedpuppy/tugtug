@@ -36,6 +36,9 @@ export default function Clock() {
 
 			secondhand.rotation = s * this.secondsToRadians;
 
+			this.demoH = 12;
+			this.demoM = 0;
+			this.demoS = 0;
 		},
 		animate: function () {
 			if(!this.demo) {
@@ -51,14 +54,37 @@ export default function Clock() {
 					this.counter = 0;
 				}
 			} else {
-				//this.counter ++;
-				//if(this.counter === 10){
-					
-					this.hourhand.rotation += this.hourToRadians;
-					this.minutehand.rotation += this.minutesToRadians;
-					this.secondhand.rotation += this.secondsToRadians;
+				this.counter ++;
+				
+				//console.log(this.counter)
+				if(this.counter){
+					this.secondhand.alpha = 0;
+					let increment = 30;
+					this.demoS += increment;
+					console.log(this.demoH+":"+this.demoM+":"+this.demoS)
+					this.hourhand.rotation =  this.demoH * this.hourToRadians;
+					this.minutehand.rotation = this.demoM * this.minutesToRadians;
+					this.secondhand.rotation = this.demoS * this.secondsToRadians;
 					this.counter = 0;
-				//}
+					if(this.demoS === 60){
+						this.demoS = 0;
+						this.demoM ++;
+						if(this.demoM === 60){
+							this.demoM = 0;
+							if(this.demoH === 12){
+								this.demoH = 1;
+								//toggle day and night
+							} else {
+								this.demoH ++;
+							}
+							
+						}
+					}
+
+
+					
+					//if(this.demoS === 60)this.demoH = 0;
+				}
 			}
 			
 			

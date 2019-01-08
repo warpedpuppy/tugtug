@@ -104,7 +104,6 @@ export default function Panel(wH) {
         loadArtBoard: function () {
           
             if(this.artBoardLoaded)return;
-
             this.artBoardLoaded = true;
             this.art_board.init(this.fake);
             let artBoard = this.art_board.returnArtBoard();

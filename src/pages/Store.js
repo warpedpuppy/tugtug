@@ -13,7 +13,8 @@ class Store extends React.Component {
 		super(props);
 		this.onPurchase = this.onPurchase.bind(this);
 		this.state = {
-			products: []
+			products: [],
+			disableButton: false
 		}
 	}
 
@@ -31,7 +32,12 @@ class Store extends React.Component {
 		});  
 	}
 	onPurchase (price, name, url){
-		//this.props.dispatch(addItem(name));
+
+		//make button disabled until transaction is complete
+		this.setState({
+			disableButton: true
+		})
+
 		if(this.props.username === "Testy") {
 			let obj = {
 				url: url,
@@ -46,7 +52,7 @@ class Store extends React.Component {
 		let lsToken = localStorage.getItem('token');
 		let obj = { name, url, username: this.props.username };
 		let that = this;
-		console.log('here')
+		
 		axios
 		.post(`${API_BASE_URL}/store/buy_accessory`, 
 			obj,
@@ -71,6 +77,7 @@ class Store extends React.Component {
 		// 	console.log('items = ', this.props.items)
 		// }
 		
+
 		let products = this.state.products.map( (product, index) => {
 			let test = this.props.items.find(item => {
 				return item.url === product.imgURL
@@ -78,7 +85,7 @@ class Store extends React.Component {
 			)
 			let owned =(test)?'true':'false';
 			
-			return <ItemModule key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
+			return <ItemModule disabled={this.state.disableButton} key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
 		})
 		return (
 			<div className="storeCont">
