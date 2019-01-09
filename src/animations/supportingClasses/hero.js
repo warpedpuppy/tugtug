@@ -7,6 +7,12 @@ export default function Hero (wh, items) {
 		pos: [],
 		radius: 0,
 		storeRadius: 0,
+		body: undefined,
+		mode: undefined,
+		gravity: 0.3,
+		vy: 0,
+		vx: 0,
+		bounce: 0,
 		init: function () {
 			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
@@ -14,16 +20,14 @@ export default function Hero (wh, items) {
             this.cont.x = this.canvasWidth / 2;
             this.cont.y = this.canvasHeight / 2;
             this.segments = [];
+            this.dragon = [];
+            this.fish = [];
 
-            for (let i = 0; i < this.segmentsQ; i++) {
-                let segment = this.bodySegment(25, 0xFFFF00, i*25);
-                this.segments.push(segment);
-                this.cont.addChild(segment);
-            }
-            
+            this.bounce = this.utils.randomNumberBetween(-.6, -.9);
+            this.vy = this.utils.randomNumberBetween(3,5);
+
             if(items){
             	  for(let i = 0; i < items.length; i ++){
-            	  	console.log(items[i])
 	            	var item = PIXI.Sprite.fromImage(items[i].url);
 	            	if(items[i].active) {
 		            	this.cont.addChild(item);
@@ -31,6 +35,63 @@ export default function Hero (wh, items) {
 	            }
             }
           
+		},
+		personMode: function () {
+			this.cont.removeChildren();
+			if(!this.body){
+				this.body = new PIXI.Graphics();
+				this.body.beginFill(0xFF0000).drawCircle(0,0,20).endFill();
+				this.body.pivot.set(0.5);
+			} 
+			this.cont.addChild(this.body);
+
+		},
+		fishMode: function () {	
+			this.cont.removeChildren();
+			this.segmentsQ = 5;
+			if(!this.fish.length){
+				 for (let i = 0; i < this.segmentsQ; i++) {
+	                let segment = this.bodySegment(25, 0xFFFF00, i*25);
+	                this.fish.push(segment);
+	                this.cont.addChild(segment);
+	            }
+			} else {
+				 for (let i = 0; i < this.segmentsQ; i++) {
+	                this.cont.addChild(this.fish[i]);
+	            }
+			}
+
+			this.segments = this.fish;
+			
+		},
+		dragonMode: function () {
+			this.cont.removeChildren();
+			this.segmentsQ = 10;
+			if(!this.dragon.length){
+				 for (let i = 0; i < this.segmentsQ; i++) {
+	                let segment = this.bodySegment(25, 0xFFFF00, i*25);
+	                this.dragon.push(segment);
+	                this.cont.addChild(segment);
+	            }
+			} else {
+				 for (let i = 0; i < this.segmentsQ; i++) {
+	                this.cont.addChild(this.dragon[i]);
+	            }
+			}
+
+			this.segments = this.dragon;
+		},
+		switchPlayer: function (string) {
+			this.mode = string;
+			if(string === 'person') {
+				this.personMode();
+			} else if (string === 'fish') {
+				this.fishMode();
+			} else {
+				this.dragonMode();
+			}
+			this.cont.x = this.canvasWidth / 2;
+            this.cont.y = this.canvasHeight / 2;
 		},
 		bodySegment: function (radius, color, yVal) {
 			let cont = new PIXI.Container();
@@ -62,23 +123,35 @@ export default function Hero (wh, items) {
             return cont;
 		},
 		rotateChain: function () {
+			
+			if (this.mode === 'fish' || this.mode === 'dragon') {
+				if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 
-			if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
+		        this.pos.push(this.radius);
+		        this.increment = 5;
+		        let maxLength = this.increment * this.segmentsQ;
+		        if (this.pos.length > maxLength) {
+		            this.pos = this.pos.slice(-maxLength);
+		        }
 
-	        this.pos.push(this.radius);
-	        this.increment = 5;
-	        let maxLength = this.increment * 5;
-	        if (this.pos.length > maxLength) {
-	            this.pos = this.pos.slice(-maxLength);
-	        }
+		        this.segments[0].rotation = this.radius;
 
-	        this.segments[0].rotation = this.radius;
-	        for (let i = 1; i < this.segmentsQ; i++) {
-	            let index = this.pos.length - (i * this.increment);
-	            if (this.pos.length >= index) {
-	             this.segments[i].rotation = this.pos[index];
-	            }
-	        }
+		        for (let i = 1; i < this.segmentsQ; i++) {
+		            let index = this.pos.length - (i * this.increment);
+		            if (this.pos.length >= index) {
+		              //console.log(this.pos[index]);
+		              this.segments[i].rotation = this.pos[index];
+		            }
+		        }
+			} else {
+				this.vy += this.gravity;
+				this.cont.y += this.vy;
+				if(this.cont.y > this.canvasHeight) {
+					this.cont.y -= 1;
+					this.vy *= -1;
+				}
+			}
+			
         },
 		animate: function () {
 			this.rotateChain();

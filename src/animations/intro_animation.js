@@ -1,5 +1,7 @@
+import * as PIXI from 'pixi.js';
+import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
-export default function(PIXI, Utils, obj) {
+export default function(obj) {
 	return {
 		idle: true,
 		vx: 0,
@@ -7,8 +9,12 @@ export default function(PIXI, Utils, obj) {
 		rotateBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
+		mode: ['person', 'fish', 'dragon'],
+        activeModeIndex: 0,
+        activeMode: undefined,
 		init: function () {
 
+			this.activeMode = this.mode[this.activeModeIndex];
 
 			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -66,6 +72,7 @@ export default function(PIXI, Utils, obj) {
           
             this.hero = new obj.hero(wh);
             this.hero.init();
+            this.hero.switchPlayer(this.mode[this.activeModeIndex]);
             app.stage.addChild(this.hero.cont)
 
 
@@ -87,6 +94,13 @@ export default function(PIXI, Utils, obj) {
 	        window.removeEventListener('keydown', undefined);
             window.removeEventListener('keyup', undefined);
 		},
+		switchPlayer: function () {
+			this.activeModeIndex ++;
+			if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+			this.activeMode = this.mode[this.activeModeIndex];
+			console.log(this.activeMode);
+			this.hero.switchPlayer(this.activeMode);
+		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
@@ -94,7 +108,7 @@ export default function(PIXI, Utils, obj) {
 			this.hero.cont.y = this.canvasHeight / 2;
 
 			this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
-			for(let i = 0; i < 4;i++){
+			for (let i = 0; i < 4; i++) {
                 this.gears[i].x = this.corners[i][0];
                 this.gears[i].y = this.corners[i][1];
             }

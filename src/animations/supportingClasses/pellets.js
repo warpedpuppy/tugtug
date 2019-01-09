@@ -20,7 +20,7 @@ export default function Pellets (app, wh, cont) {
 				cont.addChild(pellets);
 			}
 			
-			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 100;
+			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;
 			 for(let i = 0; i < this.pelletQ; i ++ ){
 			 	this.pelletTexture =  new PIXI.Texture.fromImage('/bmps/pellet.png');
             	this.starTexture =  new PIXI.Texture.fromImage('/bmps/star.png');

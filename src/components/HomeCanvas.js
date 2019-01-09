@@ -31,7 +31,7 @@ export default class HomeCanvas extends React.Component {
 			 hero,
 			 magicPills
 		}
-		this.home_page = home_page(PIXI, Utils, obj);
+		this.home_page = home_page(obj);
 		this.home_page.init();
 	}
 	componentWillUnmount(){
@@ -53,6 +53,9 @@ export default class HomeCanvas extends React.Component {
 			this.setState({nightMode: "off"})
 		}
 	}
+	switchPlayer () {
+		this.home_page.switchPlayer();
+	}
 	render () {
 		let backgroundCSS = (this.state.nightMode === "off")?'waterBackground':'nightBackground';
 		return (
@@ -61,6 +64,7 @@ export default class HomeCanvas extends React.Component {
 			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
+			<button onClick={() => this.switchPlayer()}>switch player</button>
 			</div>
 			</div>
 		)

@@ -21,6 +21,8 @@ export default function Game (obj, userObject, getUserName, primaryUser){
         doorAllow: true,
         arr: [],
         action: true,
+        mode: ['person', 'fish', 'dragon'],
+        activeMode: 0,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
