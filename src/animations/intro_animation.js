@@ -88,7 +88,7 @@ export default function(obj) {
 			platforms.init(pos, app.stage)
 
 
-            this.hero.setPlatforms(platforms.returnPlatforms())
+            this.hero.setPlatforms(platforms.returnPlatforms('intro'))
 
 
 

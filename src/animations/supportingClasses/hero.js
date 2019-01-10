@@ -15,12 +15,13 @@ export default function Hero (wh, items) {
 		bounce: 0,
 		platforms: [],
 		radius: 20,
+		yOffset: 200,
 		init: function () {
 			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;
-            this.cont.y = (this.canvasHeight / 2) - 150;
+            this.cont.y = (this.canvasHeight / 2) - this.yOffset;
             this.segments = [];
             this.dragon = [];
             this.fish = [];
@@ -106,7 +107,7 @@ export default function Hero (wh, items) {
 			this.mode = string;
 			this.vx = 0;
 			if(string === 'person') {
-                this.cont.y = (this.canvasHeight / 2) - 50;;
+                this.cont.y = (this.canvasHeight / 2) - this.yOffset;
 				this.cont.x = this.canvasWidth / 2;
 				this.personMode();
 			} else if (string === 'fish') {
@@ -176,7 +177,11 @@ export default function Hero (wh, items) {
 				this.cont.x += this.vx;
 
 				for(let i = 0; i < this.platforms.length; i++){
-					if(this.utils.circleRectangleCollision(this.cont, this.platforms[i])){
+					let globalPoint = this.platforms[i].toGlobal(this.cont.parent, undefined, true);
+					//console.log(globalPoint)
+					let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
+
+					if(this.utils.circleRectangleCollision(this.cont, tempRect)){
 						this.cont.y -= 1;
 						this.vy *= -1;
 					}

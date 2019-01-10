@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
+import Platforms from './supportingClasses/platforms/platforms';
+
 export default function Game (obj, userObject, getUserName, primaryUser){
     return {
         utils: new Utils(),
@@ -22,7 +24,8 @@ export default function Game (obj, userObject, getUserName, primaryUser){
         arr: [],
         action: true,
         mode: ['person', 'fish', 'dragon'],
-        activeMode: 0,
+        activeModeIndex: 0,
+        activeMode: undefined,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
@@ -69,9 +72,12 @@ export default function Game (obj, userObject, getUserName, primaryUser){
                 }
             }
 
+            
+ 
             this.hero = obj.hero(size, userObject.items)
             this.hero.init();
-            this.stage.addChild(this.hero.cont);
+            this.hero.switchPlayer(this.mode[this.activeModeIndex]);
+            this.stage.addChild(this.hero.cont)
 
 
             this.app.ticker.add(this.animate.bind(this));
@@ -116,7 +122,18 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             let panelsBoardClass = this.panelsBoardClass = obj.PanelsBoard(panelsBoardObj);
             panelsBoardClass.init();
 
+            this.activePanel = this.panelsBoardClass.activePanel;
 
+            let pos = [
+            [(this.panelWidth / 2), this.panelHeight / 2],
+            [(this.panelWidth * 0.33),(this.panelHeight / 2) - 100],
+            [(this.panelWidth * 0.66), (this.panelHeight / 2) - 100]];
+
+            let platforms = this.platforms = new Platforms();
+            platforms.init(pos, this.activePanel.cont)
+
+
+            this.hero.setPlatforms(platforms.returnPlatforms('game', this.stage))
 
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
@@ -128,6 +145,15 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             this.app.destroy(true);
             window.removeEventListener('keydown', undefined);
             window.removeEventListener('keyup', undefined);
+        },
+        switchPlayer: function () {
+            this.activeModeIndex ++;
+            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+            this.activeMode = this.mode[this.activeModeIndex];
+            // console.log(this.activeMode);
+            this.hero.switchPlayer(this.activeMode);
+
+            this.platforms.toggleVisibility(this.activeMode === 'person');
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -166,7 +192,7 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
             this.renderer.resize(this.canvasWidth,this.canvasHeight);
-            this.addPegPanels();
+           // this.addPegPanels();
         },
         keyDown: function (e) {
             e.preventDefault();

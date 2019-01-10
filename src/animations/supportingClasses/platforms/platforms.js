@@ -10,6 +10,7 @@ export default function() {
 				p.x = arr[i][0] - (p.width / 2);
 				p.y = arr[i][1];
 				this.platforms.push(p);
+
 				cont.addChild(p);
 			}
 		},
@@ -25,14 +26,36 @@ export default function() {
 				this.platforms[i].visible = boolean;
 			}
 		},
-		returnPlatforms: function () {
+		returnPlatforms: function (str, stage) {
+
 			return this.platforms;
+
+
+			if(str === 'intro'){
+				return this.platforms;
+			} else {
+				// let newArray = [];
+				// console.log('contrast the locations', stage)
+				// for(let i = 0; i < this.platforms.length; i++){
+				// 	//let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
+
+				// 	console.log(this.platforms[i].x+" "+this.platforms[i].y)
+				// 	let globalPoint = this.platforms[i].toGlobal(stage, undefined, true);
+				// 	console.log(globalPoint.x+" "+globalPoint.y)
+				// 	newArray.push(new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height))
+				// }
+				// console.log('new array = ', newArray)
+				// return newArray;
+			}
+			
 		},
 		createPlatform: function () {
+			let cont = new PIXI.Container();
 			let b = new PIXI.Graphics();
 		    b.beginFill(0x000000).drawRect(0,0,200,20).endFill();
 		    b.pivot.set(0.5);
-            return b;
+		    cont.addChild(b);
+            return cont;
 		}
 
 	}
