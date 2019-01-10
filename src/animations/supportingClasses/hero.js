@@ -13,12 +13,14 @@ export default function Hero (wh, items) {
 		vy: 0,
 		vx: 0,
 		bounce: 0,
+		platforms: [],
+		radius: 20,
 		init: function () {
 			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;
-            this.cont.y = this.canvasHeight / 2;
+            this.cont.y = (this.canvasHeight / 2) - 150;
             this.segments = [];
             this.dragon = [];
             this.fish = [];
@@ -36,13 +38,32 @@ export default function Hero (wh, items) {
             }
           
 		},
+		move: function (str) {
+
+			if(str === 'left'){
+				this.vx = -3;
+			} else if (str === 'right'){
+				this.vx = 3;
+			} else {
+				this.vx = 0;
+			}
+		},
+		jump: function () {
+			if(this.mode === 'person'){
+				this.vy = this.utils.randomNumberBetween(-5,-3);
+			}
+		},
+		setPlatforms: function (arr) {
+			this.platforms = arr;
+		},
 		personMode: function () {
 			this.cont.removeChildren();
 			if(!this.body){
 				this.body = new PIXI.Graphics();
-				this.body.beginFill(0xFF0000).drawCircle(0,0,20).endFill();
+				this.body.beginFill(0xFF0000).drawCircle(0,0,this.radius).endFill();
 				this.body.pivot.set(0.5);
-			} 
+			}
+			this.cont.radius = this.radius;
 			this.cont.addChild(this.body);
 
 		},
@@ -83,15 +104,21 @@ export default function Hero (wh, items) {
 		},
 		switchPlayer: function (string) {
 			this.mode = string;
+			this.vx = 0;
 			if(string === 'person') {
+                this.cont.y = (this.canvasHeight / 2) - 50;;
+				this.cont.x = this.canvasWidth / 2;
 				this.personMode();
 			} else if (string === 'fish') {
+				this.cont.x = this.canvasWidth / 2;
+                this.cont.y = this.canvasHeight / 2;
 				this.fishMode();
 			} else {
+                this.cont.y = this.canvasHeight / 2;
+                this.cont.x = this.canvasWidth / 2;
 				this.dragonMode();
 			}
-			this.cont.x = this.canvasWidth / 2;
-            this.cont.y = this.canvasHeight / 2;
+			
 		},
 		bodySegment: function (radius, color, yVal) {
 			let cont = new PIXI.Container();
@@ -146,10 +173,27 @@ export default function Hero (wh, items) {
 			} else {
 				this.vy += this.gravity;
 				this.cont.y += this.vy;
-				if(this.cont.y > this.canvasHeight) {
+				this.cont.x += this.vx;
+
+				for(let i = 0; i < this.platforms.length; i++){
+					if(this.utils.circleRectangleCollision(this.cont, this.platforms[i])){
+						this.cont.y -= 1;
+						this.vy *= -1;
+					}
+				}
+				if(this.cont.y > (this.canvasHeight - this.cont.radius)) {
 					this.cont.y -= 1;
 					this.vy *= -1;
 				}
+				if(this.cont.x <= this.cont.radius){
+					this.cont.x +=1;
+					this.vx *=-1;
+				}
+				if(this.cont.x >= (this.canvasWidth - this.cont.radius)){
+					this.cont.x +=1;
+					this.vx *=-1;
+				}
+
 			}
 			
         },

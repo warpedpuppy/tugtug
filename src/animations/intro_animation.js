@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
+import Platforms from './supportingClasses/platforms/platforms';
+
 export default function(obj) {
 	return {
 		idle: true,
@@ -75,6 +77,19 @@ export default function(obj) {
             this.hero.switchPlayer(this.mode[this.activeModeIndex]);
             app.stage.addChild(this.hero.cont)
 
+ 
+            
+            let pos = [
+            [(this.canvasWidth / 2), this.canvasHeight / 2],
+			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
+			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
+
+			let platforms = this.platforms = new Platforms();
+			platforms.init(pos, app.stage)
+
+
+            this.hero.setPlatforms(platforms.returnPlatforms())
+
 
 
 
@@ -98,8 +113,10 @@ export default function(obj) {
 			this.activeModeIndex ++;
 			if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
 			this.activeMode = this.mode[this.activeModeIndex];
-			console.log(this.activeMode);
+			// console.log(this.activeMode);
 			this.hero.switchPlayer(this.activeMode);
+
+			this.platforms.toggleVisibility(this.activeMode === 'person');
 		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -112,6 +129,12 @@ export default function(obj) {
                 this.gears[i].x = this.corners[i][0];
                 this.gears[i].y = this.corners[i][1];
             }
+
+            let pos = [
+            [(this.canvasWidth / 2), this.canvasHeight / 2],
+			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
+			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
+			this.platforms.resize(pos);
 
             this.clock.cont.x = this.canvasWidth / 2;
          	this.clock.cont.y = this.canvasHeight / 2;
@@ -131,9 +154,15 @@ export default function(obj) {
 			this.filter_animation.filterToggle();
 		},
 		rotate: function (str) {
+
+			if (this.activeMode === 'person') {
+				this.hero.move(str);
+				return;
+			}
+
 			if(str === 'right'){
 				this.idle = false;
-				this.hero.radius += 0.5;//(Math.PI * 2) / this.inc;
+				this.hero.radius += 0.5;
 				this.velocity = this.utils.randomNumberBetween(4, 6);
 				this.vx = this.velocity * Math.sin(this.hero.radius);
 				this.vy = -this.velocity * Math.cos(this.hero.radius);
@@ -143,7 +172,7 @@ export default function(obj) {
 			
 			} else if(str === 'left') {
 				this.idle = false;
-				this.hero.radius -= 0.5;//(Math.PI * 2) / this.inc;
+				this.hero.radius -= 0.5;
 				this.vx = this.velocity * Math.sin(this.hero.radius);
 				this.vy = -this.velocity * Math.cos(this.hero.radius);
 				this.hero.storeRadius = this.hero.radius;
@@ -154,6 +183,9 @@ export default function(obj) {
 		keyDown: function (e) {
             //e.preventDefault();
             switch (e.keyCode) {
+            	case 32:
+            		this.hero.jump();
+            		break
                 case 37:
                     // left
                     this.rotateBoolean = true;
@@ -161,6 +193,7 @@ export default function(obj) {
                     break;
                 case 38:
                     // up
+                    this.rotate('up');
                     break;
                 case 39:
                     // right
