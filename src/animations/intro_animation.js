@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
-import Platforms from './supportingClasses/platforms/platforms';
-
+import BouncePlatform from './supportingClasses/bouncePlatform';
+import BounceAction from './supportingClasses/actions/bounceAction';
 export default function(obj) {
 	return {
 		idle: true,
@@ -14,6 +14,8 @@ export default function(obj) {
 		mode: ['person', 'fish', 'dragon'],
         activeModeIndex: 0,
         activeMode: undefined,
+        backgroundCont: new PIXI.Container(),
+        foregroundCont: new PIXI.Container(),
 		init: function () {
 
 			this.activeMode = this.mode[this.activeModeIndex];
@@ -25,16 +27,15 @@ export default function(obj) {
 			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {transparent: true});
 			document.getElementById('homeCanvas').appendChild(app.view);
 
-
-			this.backgroundCont = new PIXI.Container();
 			app.stage.addChild(this.backgroundCont);
-
+			
+			this.stage = app.stage;
 		
 			const fpsCounter = new obj.PixiFps();
             app.stage.addChild(fpsCounter);
 
-			this.ripples = obj.ripples(app);
-			this.ripples.init();
+			// this.ripples = obj.ripples(app);
+			// this.ripples.init();
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
@@ -60,10 +61,10 @@ export default function(obj) {
          	clock.cont.y = this.canvasHeight / 2;
          	app.stage.addChild(clock.cont);
 
-			this.pellets = obj.pellets(app, wh);
-			this.pellets.init();
+			this.pellets = obj.pellets(app, wh, app.stage);
+			this.pellets.init(this.activeMode);
 
-			this.magicPills = obj.magicPills(app, wh, this.filterTest.bind(this));
+			this.magicPills = obj.magicPills(app, wh, this.filterTest.bind(this), this.backgroundCont);
 			this.magicPills.init();
 
             this.filterContainer = new PIXI.Container();
@@ -75,37 +76,51 @@ export default function(obj) {
             this.hero = new obj.hero(wh);
             this.hero.init();
             this.hero.switchPlayer(this.mode[this.activeModeIndex]);
-            app.stage.addChild(this.hero.cont)
+            this.stage.addChild(this.hero.cont)
+
+            // let x = new PIXI.Graphics();
+            // x.beginFill(0x000000).drawRect(0,0,500,500).endFill();
+            // this.foregroundCont.addChild(x);
+            this.stage.addChild(this.foregroundCont);
+            this.bouncePlatform = BouncePlatform();
+            this.bouncePlatform.init(this.stage);
+            let halfWidth = this.canvasWidth / 2;
+            let point1 = new PIXI.Point(halfWidth - 100, this.canvasHeight);
+            let point2 = new PIXI.Point(halfWidth + 100, this.canvasHeight);
+            this.bouncePlatform.start(point1, point2);
+
+            this.bounceAction = BounceAction();
+            this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
 
  
             
-            let pos = [
-            [(this.canvasWidth / 2), this.canvasHeight / 2],
-			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
-			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
-
-			let platforms = this.platforms = new Platforms();
-			platforms.init(pos, app.stage)
-
-
-            this.hero.setPlatforms(platforms.returnPlatforms('intro'))
+   //          let pos = [
+   //          [(this.canvasWidth / 2), this.canvasHeight / 2],
+			// [(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
+			// [(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
+			// this.platformCont = new PIXI.Container();
+			// let platforms = this.platforms = new Platforms();
+			// platforms.init(pos, this.platformCont)
 
 
+            // this.hero.setPlatforms(platforms.returnPlatforms('intro'))
 
+
+            //this.foregroundCont.mousedown = this.foregroundCont.touchstart = function(e){console.log("mouse down")};
 
             this.app = app;
           
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
-			window.addEventListener('keydown', this.keyDown);
-            window.addEventListener('keyup', this.keyUp);
+			// window.addEventListener('keydown', this.keyDown);
+   //          window.addEventListener('keyup', this.keyUp);
 			app.ticker.add(this.animate.bind(this));
 			window.onresize = this.resizeHandler.bind(this);
 		},
 		stop: function () {
 			window.onresize = undefined;
-	        this.app.destroy(true);
+	        if(this.app)this.app.destroy(true);
 	        window.removeEventListener('keydown', undefined);
             window.removeEventListener('keyup', undefined);
 		},
@@ -116,7 +131,9 @@ export default function(obj) {
 			// console.log(this.activeMode);
 			this.hero.switchPlayer(this.activeMode);
 
-			this.platforms.toggleVisibility(this.activeMode === 'person');
+			//this.platforms.toggleVisibility(this.activeMode === 'person');
+
+			this.pellets.changeMode(this.activeMode);
 		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -215,9 +232,13 @@ export default function(obj) {
 			this.clock.animate();
 			this.filter_animation.animate();
 			this.hero.animate();
-			this.ripples.animate();
-			this.pellets.animate();
+			//this.ripples.animate();
+			this.pellets.animate(this.hero.vy);
 			this.magicPills.animate();
+			this.bouncePlatform.animate();
+
+			this.bounceAction.animate();
+
 
 			for(let i = 0; i < 4;i++){
               this.gears[i].rotation += this.gears[i].rotate;

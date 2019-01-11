@@ -73,8 +73,9 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             }
 
             
- 
-            this.hero = obj.hero(size, userObject.items)
+            this.stage.a1 = "testing";
+            this.hero = obj.hero(size, userObject.items);
+            this.hero.assignStage(this.stage);
             this.hero.init();
             this.hero.switchPlayer(this.mode[this.activeModeIndex]);
             this.stage.addChild(this.hero.cont)
@@ -195,8 +196,10 @@ export default function Game (obj, userObject, getUserName, primaryUser){
            // this.addPegPanels();
         },
         keyDown: function (e) {
-            e.preventDefault();
             switch (e.keyCode) {
+                case 32:
+                    this.hero.jump();
+                    break
                 case 37:
                     // left
                     this.rotateBoolean = true;
@@ -204,6 +207,7 @@ export default function Game (obj, userObject, getUserName, primaryUser){
                     break;
                 case 38:
                     // up
+                    this.rotate('up');
                     break;
                 case 39:
                     // right
@@ -214,7 +218,7 @@ export default function Game (obj, userObject, getUserName, primaryUser){
                     break;
                 default:
                     this.vy = 0;
-            }
+                }
         },
         keyUp: function (e) {
             e.preventDefault();
@@ -222,6 +226,12 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             // this.idle = true;
         },
         rotate: function (str) {
+
+            if (this.activeMode === 'person') {
+                this.hero.move(str);
+                return;
+            }
+
             if(str === 'right'){
                 // this.idle = false;
                 this.hero.radius += 0.5;//(Math.PI * 2) / this.inc;

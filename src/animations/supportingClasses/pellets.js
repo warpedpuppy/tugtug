@@ -5,7 +5,10 @@ export default function Pellets (app, wh, cont) {
 		pelletsArray: [],
 		utils: Utils(),
 		edgeBuffer: 200,
-		init: function () {
+		activeMode: undefined,
+		init: function (str) {
+			this.activeMode = str;
+
 			var pellets = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
@@ -14,11 +17,8 @@ export default function Pellets (app, wh, cont) {
 			    alpha: true
 			});
 			
-			if(!cont){
-				app.stage.addChild(pellets);
-			} else {
-				cont.addChild(pellets);
-			}
+			cont.addChild(pellets);
+			
 			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;
 			 for(let i = 0; i < this.pelletQ; i ++ ){
@@ -37,6 +37,9 @@ export default function Pellets (app, wh, cont) {
             this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = wh.canvasWidth + this.edgeBuffer;
 			this.wh = wh;
+		},
+		changeMode: function (str) {
+			this.activeMode = str;
 		},
 		change: function () {
 			if(this.pelletsArray[0].texture === this.pelletTexture){
@@ -79,11 +82,17 @@ export default function Pellets (app, wh, cont) {
 			// 	this.pelletsArray[i].vx = (stop)?0:this.utils.randomNumberBetween(1,5); 
 			// }
 		},
-		animate: function () {
-				for(let i = 0; i < this.pelletQ; i++){
+		animate: function (vy) {
 
-				this.pelletsArray[i].x += this.pelletsArray[i].vx;// * rate;
-		        this.pelletsArray[i].y += this.pelletsArray[i].vy;// * rate;
+			for(let i = 0; i < this.pelletQ; i++){
+
+				if(this.activeMode === 'person'){
+					this.pelletsArray[i].y -= vy;// * rate;
+				} else {
+					this.pelletsArray[i].x += this.pelletsArray[i].vx;// * rate;
+		       		this.pelletsArray[i].y += this.pelletsArray[i].vy;// * rate;
+				}
+			
 
             	if(this.pelletsArray[i].y > this.bottomEdge) {
             		this.pelletsArray[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
@@ -97,8 +106,6 @@ export default function Pellets (app, wh, cont) {
             	} else if(this.pelletsArray[i].x < -this.edgeBuffer) {
             		this.pelletsArray[i].x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
             	}
-
-			
 			}
 			
 		}

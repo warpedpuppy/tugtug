@@ -1,0 +1,100 @@
+import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
+export default function BouncePlatform () {
+    return {
+        line: new PIXI.Sprite.fromImage('/bmps/bouncePlatformLine.png'),
+        dot1: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
+        dot2: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
+        mouseDown:false, 
+        init: function (cont) {
+            this.cont = cont;
+            this.utils = Utils();
+            this.line.height = 2;
+            this.line.anchor.y = 0.5;
+            this.line.tint = 0x000000;
+            //this.line.visible = false;
+            cont.addChild(this.line);
+            this.dot1.anchor.x = this.dot1.anchor.y = 0.5;
+            //this.dot1.visible = false;
+            cont.addChild(this.dot1);
+            this.dot2.anchor.x = this.dot2.anchor.y = 0.5;
+            //this.dot2.visible = false;
+            cont.addChild(this.dot2);
+            this.on = this.on.bind(this);
+            this.on(true);
+
+
+            
+        },
+        start: function (point1, point2) {
+            this.dot1.x = point1.x;
+            this.dot1.y = point1.y;
+            this.dot2.x = point2.x;
+            this.dot2.y = point2.y;
+            this.line.x = this.dot1.x;
+            this.line.y = this.dot1.y;
+            let disAngle = this.utils.distanceAndAngle(new PIXI.Point(this.dot1.x, this.dot1.y), new PIXI.Point(this.dot2.x, this.dot2.y));
+                this.line.rotation = disAngle[1];
+                this.line.width = disAngle[0];
+        },
+        on: function (trueFalse) {
+            this.placeFirstDot = this.placeFirstDot.bind(this);
+            this.onMouseMove = this.onMouseMove.bind(this)
+            this.releaseMouse = this.releaseMouse.bind(this)
+
+            if (trueFalse === true) {
+            
+                this.cont.interactive = true;
+                this.cont.buttonMode = true;
+                this.cont.mousedown = this.cont.touchstart =  this.placeFirstDot;
+                this.cont.mousemove = this.cont.touchmove = this.onMouseMove;
+                this.cont.mouseup =  this.cont.touchend = this.releaseMouse;
+            } else {
+                this.cont.mousedown = this.cont.touchstart =  null;
+                this.cont.mousemove = this.cont.touchmove = null;
+                this.cont.mouseup =  this.cont.touchend = null;
+            }
+        },
+        placeFirstDot: function(touchData) {
+
+            let mouse = touchData.data.global,
+                mouseX = mouse.x,
+                mouseY = mouse.y;
+            this.line.width = 0;
+            this.line.x = mouseX;
+            this.line.y = mouseY;
+            this.line.visible = true;
+            this.dot1.x = mouseX;
+            this.dot1.y = mouseY;
+            this.dot1.visible = true;
+            this.dot2.x = mouseX;
+            this.dot2.y = mouseY;
+            this.dot2.visible = true;
+            this.mouseDown = true;
+            //cont.removeChild(gv.swipeText);
+        },
+        onMouseMove: function(touchData){
+            if (this.mouseDown === true) {
+                let mouse = touchData.data.global,
+                    mouseX = mouse.x,
+                    mouseY = mouse.y;
+                this.dot2.x = mouseX;
+                this.dot2.y = mouseY;
+                let disAngle = this.utils.distanceAndAngle(new PIXI.Point(this.dot1.x, this.dot1.y), new PIXI.Point(this.dot2.x, this.dot2.y));
+                this.line.rotation = disAngle[1];
+                this.line.width = disAngle[0];
+            }
+        },
+        releaseMouse: function(data) {
+            this.mouseDown = false;
+        },
+        animate: function() {
+            if (this.dot2.visible === true) {
+                this.dot1.rotation += 0.25;
+                this.dot2.rotation += 0.25;
+            }
+        }
+
+    }
+
+}

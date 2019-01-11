@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default function MagicPills(app, wh, effectFunction) {
+export default function MagicPills(app, wh, effectFunction, cont) {
 	return {
 		pills: [],
 		edgeBuffer: 200,
@@ -19,7 +19,7 @@ export default function MagicPills(app, wh, effectFunction) {
 			});
 			
 		
-			app.stage.addChild(pills);
+			cont.addChild(pills);
 			
 			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1 : 1;

@@ -15,8 +15,10 @@ export default function Hero (wh, items) {
 		bounce: 0,
 		platforms: [],
 		radius: 20,
-		yOffset: 200,
-		init: function () {
+		yOffset: 0,
+		parentCont: undefined,
+		init: function (parentCont) {
+			this.parentCont = parentCont;
 			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
@@ -56,6 +58,9 @@ export default function Hero (wh, items) {
 		},
 		setPlatforms: function (arr) {
 			this.platforms = arr;
+		},
+		assignStage: function (stage) {
+			this.stage = stage;
 		},
 		personMode: function () {
 			this.cont.removeChildren();
@@ -172,32 +177,36 @@ export default function Hero (wh, items) {
 		            }
 		        }
 			} else {
-				this.vy += this.gravity;
-				this.cont.y += this.vy;
-				this.cont.x += this.vx;
+				//this.vy += this.gravity;
+				// this.cont.y += this.vy;
+				// this.cont.x += this.vx;
 
-				for(let i = 0; i < this.platforms.length; i++){
-					let globalPoint = this.platforms[i].toGlobal(this.cont.parent, undefined, true);
-					//console.log(globalPoint)
-					let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
+				// this.stage.y -= this.vy;
+				// this.stage.x -= this.vx;
 
-					if(this.utils.circleRectangleCollision(this.cont, tempRect)){
-						this.cont.y -= 1;
-						this.vy *= -1;
-					}
-				}
-				if(this.cont.y > (this.canvasHeight - this.cont.radius)) {
-					this.cont.y -= 1;
-					this.vy *= -1;
-				}
-				if(this.cont.x <= this.cont.radius){
-					this.cont.x +=1;
-					this.vx *=-1;
-				}
-				if(this.cont.x >= (this.canvasWidth - this.cont.radius)){
-					this.cont.x +=1;
-					this.vx *=-1;
-				}
+
+				// for(let i = 0; i < this.platforms.length; i++){
+				// 	let globalPoint = this.platforms[i].toGlobal(this.stage, undefined, true);
+				// 	//console.log(globalPoint)
+				// 	let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
+
+				// 	if(this.utils.circleRectangleCollision(this.cont, tempRect)){
+				// 		this.stage.y += 1;
+				// 		this.vy *= -1;
+				// 	}
+				// }
+				// // if(this.cont.y > (this.canvasHeight - this.cont.radius)) {
+				// // 	this.cont.y -= 1;
+				// // 	this.vy *= -1;
+				// // }
+				// if(this.cont.x <= this.cont.radius){
+				// 	this.cont.x +=1;
+				// 	this.vx *=-1;
+				// }
+				// if(this.cont.x >= (this.canvasWidth - this.cont.radius)){
+				// 	this.cont.x +=1;
+				// 	this.vx *=-1;
+				// }
 
 			}
 			
