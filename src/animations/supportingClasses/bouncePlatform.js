@@ -41,11 +41,10 @@ export default function BouncePlatform () {
             this.placeFirstDot = this.placeFirstDot.bind(this);
             this.onMouseMove = this.onMouseMove.bind(this)
             this.releaseMouse = this.releaseMouse.bind(this)
-
-            if (trueFalse === true) {
-            
-                this.cont.interactive = true;
-                this.cont.buttonMode = true;
+             this.line.visible = this.dot1.visible = this.dot2.visible = trueFalse;
+             this.cont.interactive = trueFalse;
+                this.cont.buttonMode = trueFalse;
+            if (trueFalse) {
                 this.cont.mousedown = this.cont.touchstart =  this.placeFirstDot;
                 this.cont.mousemove = this.cont.touchmove = this.onMouseMove;
                 this.cont.mouseup =  this.cont.touchend = this.releaseMouse;

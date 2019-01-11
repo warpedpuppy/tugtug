@@ -9,13 +9,12 @@ export default function Hero (wh, items) {
 		storeRadius: 0,
 		body: undefined,
 		mode: undefined,
-		gravity: 0.3,
 		vy: 0,
 		vx: 0,
 		bounce: 0,
 		platforms: [],
 		radius: 20,
-		yOffset: 0,
+		yOffset: 80,
 		parentCont: undefined,
 		init: function (parentCont) {
 			this.parentCont = parentCont;
@@ -52,7 +51,7 @@ export default function Hero (wh, items) {
 			}
 		},
 		jump: function () {
-			if(this.mode === 'person'){
+			if(this.mode === 'jump'){
 				this.vy = this.utils.randomNumberBetween(-5,-3);
 			}
 		},
@@ -71,7 +70,8 @@ export default function Hero (wh, items) {
 			}
 			this.cont.radius = this.radius;
 			this.cont.addChild(this.body);
-
+			this.cont.y = (this.canvasHeight / 2) - this.yOffset;
+			this.cont.x = this.canvasWidth / 2;
 		},
 		fishMode: function () {	
 			this.cont.removeChildren();
@@ -111,11 +111,9 @@ export default function Hero (wh, items) {
 		switchPlayer: function (string) {
 			this.mode = string;
 			this.vx = 0;
-			if(string === 'person') {
-                this.cont.y = (this.canvasHeight / 2) - this.yOffset;
-				this.cont.x = this.canvasWidth / 2;
+			if(string === 'jump') {
 				this.personMode();
-			} else if (string === 'fish') {
+			} else if (string === 'swim') {
 				this.cont.x = this.canvasWidth / 2;
                 this.cont.y = this.canvasHeight / 2;
 				this.fishMode();
@@ -157,7 +155,7 @@ export default function Hero (wh, items) {
 		},
 		rotateChain: function () {
 			
-			if (this.mode === 'fish' || this.mode === 'dragon') {
+			if (this.mode === 'swim' || this.mode === 'fly') {
 				if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 
 		        this.pos.push(this.radius);
@@ -176,39 +174,7 @@ export default function Hero (wh, items) {
 		              this.segments[i].rotation = this.pos[index];
 		            }
 		        }
-			} else {
-				//this.vy += this.gravity;
-				// this.cont.y += this.vy;
-				// this.cont.x += this.vx;
-
-				// this.stage.y -= this.vy;
-				// this.stage.x -= this.vx;
-
-
-				// for(let i = 0; i < this.platforms.length; i++){
-				// 	let globalPoint = this.platforms[i].toGlobal(this.stage, undefined, true);
-				// 	//console.log(globalPoint)
-				// 	let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
-
-				// 	if(this.utils.circleRectangleCollision(this.cont, tempRect)){
-				// 		this.stage.y += 1;
-				// 		this.vy *= -1;
-				// 	}
-				// }
-				// // if(this.cont.y > (this.canvasHeight - this.cont.radius)) {
-				// // 	this.cont.y -= 1;
-				// // 	this.vy *= -1;
-				// // }
-				// if(this.cont.x <= this.cont.radius){
-				// 	this.cont.x +=1;
-				// 	this.vx *=-1;
-				// }
-				// if(this.cont.x >= (this.canvasWidth - this.cont.radius)){
-				// 	this.cont.x +=1;
-				// 	this.vx *=-1;
-				// }
-
-			}
+			} 
 			
         },
 		animate: function () {

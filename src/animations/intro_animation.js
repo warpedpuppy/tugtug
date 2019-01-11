@@ -3,6 +3,9 @@ import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
 import BouncePlatform from './supportingClasses/bouncePlatform';
 import BounceAction from './supportingClasses/actions/bounceAction';
+import JumpAction from './supportingClasses/actions/jumpAction';
+import Platforms from './supportingClasses/platforms/platforms';
+
 export default function(obj) {
 	return {
 		idle: true,
@@ -11,8 +14,8 @@ export default function(obj) {
 		rotateBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['person', 'fish', 'dragon'],
-        activeModeIndex: 0,
+		mode: ['bounce', 'jump', 'swim', 'fly'],
+        activeModeIndex: 1,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
         foregroundCont: new PIXI.Container(),
@@ -88,25 +91,32 @@ export default function(obj) {
             let point1 = new PIXI.Point(halfWidth - 100, this.canvasHeight);
             let point2 = new PIXI.Point(halfWidth + 100, this.canvasHeight);
             this.bouncePlatform.start(point1, point2);
-
-            this.bounceAction = BounceAction();
-            this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
+            this.bouncePlatform.on(false);
+            
 
  
             
-   //          let pos = [
-   //          [(this.canvasWidth / 2), this.canvasHeight / 2],
-			// [(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
-			// [(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
-			// this.platformCont = new PIXI.Container();
-			// let platforms = this.platforms = new Platforms();
-			// platforms.init(pos, this.platformCont)
+            let pos = [
+            [(this.canvasWidth / 2), this.canvasHeight / 2],
+			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
+			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
+			let platforms = this.platforms = new Platforms();
+			this.platformCont = new PIXI.Container();
+			this.stage.addChild(this.platformCont)
+			platforms.init(pos, this.platformCont)
 
 
-            // this.hero.setPlatforms(platforms.returnPlatforms('intro'))
+            //this.hero.setPlatforms(platforms.returnPlatforms('intro'))
 
 
             //this.foregroundCont.mousedown = this.foregroundCont.touchstart = function(e){console.log("mouse down")};
+
+			this.bounceAction = BounceAction();
+            this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
+          
+
+            this.jumpAction = JumpAction();
+            this.jumpAction.init(this.hero, platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont);
 
             this.app = app;
           
@@ -172,7 +182,7 @@ export default function(obj) {
 		},
 		rotate: function (str) {
 
-			if (this.activeMode === 'person') {
+			if (this.activeMode === 'jump') {
 				this.hero.move(str);
 				return;
 			}
@@ -235,9 +245,14 @@ export default function(obj) {
 			//this.ripples.animate();
 			this.pellets.animate(this.hero.vy);
 			this.magicPills.animate();
-			this.bouncePlatform.animate();
-
-			this.bounceAction.animate();
+			
+			if(this.activeMode === 'bounce'){
+				this.bouncePlatform.animate();
+				this.bounceAction.animate();
+			} else if (this.activeMode === 'jump') {
+				this.jumpAction.animate();
+			}
+			
 
 
 			for(let i = 0; i < 4;i++){
