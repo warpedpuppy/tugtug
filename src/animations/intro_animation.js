@@ -15,13 +15,15 @@ export default function(obj) {
 		renderTextureTestBoolean: false,
 		inc: 90,
 		mode: ['bounce', 'jump', 'swim', 'fly'],
-        activeModeIndex: 1,
+        activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
         foregroundCont: new PIXI.Container(),
 		init: function () {
 
-			this.activeMode = this.mode[this.activeModeIndex];
+			//this.activeMode = this.mode[this.activeModeIndex];
+
+			
 
 			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -79,7 +81,9 @@ export default function(obj) {
             this.hero = new obj.hero(wh);
             this.hero.init();
             this.hero.switchPlayer(this.mode[this.activeModeIndex]);
-            this.stage.addChild(this.hero.cont)
+            this.stage.addChild(this.hero.cont);
+
+           
 
             // let x = new PIXI.Graphics();
             // x.beginFill(0x000000).drawRect(0,0,500,500).endFill();
@@ -102,29 +106,24 @@ export default function(obj) {
 			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
 			let platforms = this.platforms = new Platforms();
 			this.platformCont = new PIXI.Container();
-			this.stage.addChild(this.platformCont)
+			
 			platforms.init(pos, this.platformCont)
-
-
-            //this.hero.setPlatforms(platforms.returnPlatforms('intro'))
-
-
-            //this.foregroundCont.mousedown = this.foregroundCont.touchstart = function(e){console.log("mouse down")};
 
 			this.bounceAction = BounceAction();
             this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
           
 
             this.jumpAction = JumpAction();
-            this.jumpAction.init(this.hero, platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont);
+            this.jumpAction.init(this.hero, platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 
             this.app = app;
           
+            this.switchPlayer(this.activeModeIndex);
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
-			// window.addEventListener('keydown', this.keyDown);
-   //          window.addEventListener('keyup', this.keyUp);
+			window.addEventListener('keydown', this.keyDown);
+   			window.addEventListener('keyup', this.keyUp);
 			app.ticker.add(this.animate.bind(this));
 			window.onresize = this.resizeHandler.bind(this);
 		},
@@ -134,9 +133,11 @@ export default function(obj) {
 	        window.removeEventListener('keydown', undefined);
             window.removeEventListener('keyup', undefined);
 		},
-		switchPlayer: function () {
-			this.activeModeIndex ++;
-			if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+		switchPlayer: function (index) {
+
+			this.activeMode = this.mode[index];
+
+			//if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
 			this.activeMode = this.mode[this.activeModeIndex];
 			// console.log(this.activeMode);
 			this.hero.switchPlayer(this.activeMode);
@@ -144,6 +145,18 @@ export default function(obj) {
 			//this.platforms.toggleVisibility(this.activeMode === 'person');
 
 			this.pellets.changeMode(this.activeMode);
+
+			if(this.activeMode === 'jump'){
+				this.stage.addChild(this.platformCont)
+			} else {
+				this.stage.removeChild(this.platformCont)
+			}
+
+			if(this.activeMode === 'bounce'){
+				this.bouncePlatform.on(true);
+			} else {
+				this.bouncePlatform.on(false);
+			}
 		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -183,7 +196,7 @@ export default function(obj) {
 		rotate: function (str) {
 
 			if (this.activeMode === 'jump') {
-				this.hero.move(str);
+				this.jumpAction.move(str);
 				return;
 			}
 
@@ -211,8 +224,9 @@ export default function(obj) {
             //e.preventDefault();
             switch (e.keyCode) {
             	case 32:
-            		this.hero.jump();
-            		break
+            		console.log('space bar hit')
+            		this.jumpAction.jump();
+            		break;
                 case 37:
                     // left
                     this.rotateBoolean = true;
@@ -243,14 +257,17 @@ export default function(obj) {
 			this.filter_animation.animate();
 			this.hero.animate();
 			//this.ripples.animate();
-			this.pellets.animate(this.hero.vy);
 			this.magicPills.animate();
 			
 			if(this.activeMode === 'bounce'){
 				this.bouncePlatform.animate();
 				this.bounceAction.animate();
+				this.pellets.animate(this.bounceAction.vx, this.bounceAction.vy);
 			} else if (this.activeMode === 'jump') {
 				this.jumpAction.animate();
+				this.pellets.animate();
+			} else {
+				this.pellets.animate();
 			}
 			
 

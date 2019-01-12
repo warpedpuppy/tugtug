@@ -3,6 +3,10 @@ import Utils from '../../utils/utils';
 export default function () {
 	return {
 		speedLimit: 7,
+		vx: 0,
+		vy: 0,
+		angle: 0,
+		velocity: 10,
 		init: function (hero, bouncePlatform, canvasWidth, canvasHeight) {
 			this.hero = hero;
 			this.bouncePlatform = bouncePlatform;
@@ -12,15 +16,15 @@ export default function () {
 		},
 		animate: function () {
 			//this.hero.vy += 0.25;
-				if (this.hero.vy < this.speedLimit) {
-		            this.hero.vy += 0.5;
+				if (this.vy < this.speedLimit) {
+		            this.vy += 0.5;
 		        } 
 				
 
-		        if(this.hero.vy > 0) {
+		        if(this.vy > 0) {
 		        	//console.log('up');
-		        	if (this.hero.vy > this.speedLimit) {
-		                this.hero.vy -= 0.5;
+		        	if (this.vy > this.speedLimit) {
+		                this.vy -= 0.5;
 		            }
 		        } else {
 		        	//console.log('down')
@@ -32,13 +36,13 @@ export default function () {
 				let line = this.bouncePlatform.line;
 				 if (this.bouncePlatform.mouseDown !== true) {
 
-	                dot1.y -= this.hero.vy;
-	                dot2.y -= this.hero.vy;
-	                line.y -= this.hero.vy;
+	                dot1.y -= this.vy;
+	                dot2.y -= this.vy;
+	                line.y -= this.vy;
 
-	                dot1.x -= this.hero.vx;
-	                dot2.x -= this.hero.vx;
-	                line.x -= this.hero.vx;
+	                dot1.x -= this.vx;
+	                dot2.x -= this.vx;
+	                line.x -= this.vx;
 	            }
 
 				 //BOUNCING PLATFORM COLLISION DETECTION
@@ -47,12 +51,15 @@ export default function () {
 		        let B = new PIXI.Point(this.bouncePlatform.dot2.x, this.bouncePlatform.dot2.y);
 		        let C = new PIXI.Point(this.canvasWidth / 2, this.canvasHeight / 2);
 		        if (this.bouncePlatform.mouseDown !== true && this.utils.lineIntersectCircle(A, B, C, 20)) {
-		            if ((dot1.x > dot2.x && dot1.y < dot2.y) || (dot1.y > dot2.y && dot1.x < dot2.x)) {
-		                this.hero.vx = -2;
-		            } else if ((dot1.x > dot2.x && dot1.y > dot2.y) || (dot1.y < dot2.y && dot1.x < dot2.x)) {
-		                this.hero.vx = 2;
-		            }
-		            this.hero.vy *= -1.75;
+		         
+		            let delta_x = dot1.x - dot2.x;
+					let delta_y = dot1.y - dot2.y;
+					let theta_radians = Math.atan2(delta_y, delta_x);
+
+		            this.vx = this.velocity * -Math.sin(theta_radians);
+					this.vy = (this.velocity * Math.cos(theta_radians)) * 1.75;
+
+
 		           
 		        }
 

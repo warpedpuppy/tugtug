@@ -82,12 +82,13 @@ export default function Pellets (app, wh, cont) {
 			// 	this.pelletsArray[i].vx = (stop)?0:this.utils.randomNumberBetween(1,5); 
 			// }
 		},
-		animate: function (vy) {
+		animate: function (vx, vy) {
 
 			for(let i = 0; i < this.pelletQ; i++){
 
-				if(this.activeMode === 'person'){
+				if(this.activeMode === 'bounce'){
 					this.pelletsArray[i].y -= vy;// * rate;
+					this.pelletsArray[i].x -= vx;// * rate;
 				} else {
 					this.pelletsArray[i].x += this.pelletsArray[i].vx;// * rate;
 		       		this.pelletsArray[i].y += this.pelletsArray[i].vy;// * rate;

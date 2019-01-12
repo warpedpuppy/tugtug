@@ -182,7 +182,7 @@ export default function(gv,createjs) {
         return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
     },
     circleRectangleCollision: function (circle, rect) {
-
+ 
         var distX = Math.abs(circle.x - rect.x - rect.width / 2);
         var distY = Math.abs(circle.y - rect.y - rect.height / 2);
 
@@ -195,7 +195,7 @@ export default function(gv,createjs) {
         if (distX <= (rect.width / 2)) {
             return true;
         }
-        if (distY <= (rect.height / 2)) {
+        if (distY <= (rect.height)) {
             return true;
         }
 

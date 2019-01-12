@@ -14,7 +14,7 @@ export default function Hero (wh, items) {
 		bounce: 0,
 		platforms: [],
 		radius: 20,
-		yOffset: 80,
+		yOffset: 0,
 		parentCont: undefined,
 		init: function (parentCont) {
 			this.parentCont = parentCont;
@@ -39,27 +39,6 @@ export default function Hero (wh, items) {
 	            }
             }
           
-		},
-		move: function (str) {
-
-			if(str === 'left'){
-				this.vx = -3;
-			} else if (str === 'right'){
-				this.vx = 3;
-			} else {
-				this.vx = 0;
-			}
-		},
-		jump: function () {
-			if(this.mode === 'jump'){
-				this.vy = this.utils.randomNumberBetween(-5,-3);
-			}
-		},
-		setPlatforms: function (arr) {
-			this.platforms = arr;
-		},
-		assignStage: function (stage) {
-			this.stage = stage;
 		},
 		personMode: function () {
 			this.cont.removeChildren();
@@ -109,9 +88,10 @@ export default function Hero (wh, items) {
 			this.segments = this.dragon;
 		},
 		switchPlayer: function (string) {
+
 			this.mode = string;
 			this.vx = 0;
-			if(string === 'jump') {
+			if(string === 'jump' || string === 'bounce') {
 				this.personMode();
 			} else if (string === 'swim') {
 				this.cont.x = this.canvasWidth / 2;
