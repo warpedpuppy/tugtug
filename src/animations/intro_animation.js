@@ -4,6 +4,8 @@ import Clock from './supportingClasses/clock';
 import BouncePlatform from './supportingClasses/bouncePlatform';
 import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
+import SwimAction from './supportingClasses/actions/swimAction';
+
 import Platforms from './supportingClasses/platforms/platforms';
 
 export default function(obj) {
@@ -11,7 +13,8 @@ export default function(obj) {
 		idle: true,
 		vx: 0,
 		vy: 5,
-		rotateBoolean: false,
+		rotateLeftBoolean: false,
+		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
 		mode: ['bounce', 'jump', 'swim', 'fly'],
@@ -84,19 +87,7 @@ export default function(obj) {
             this.stage.addChild(this.hero.cont);
 
            
-
-            // let x = new PIXI.Graphics();
-            // x.beginFill(0x000000).drawRect(0,0,500,500).endFill();
-            // this.foregroundCont.addChild(x);
             this.stage.addChild(this.foregroundCont);
-
-
-            
-
- 
-            
-
-
 
             this.app = app;
           
@@ -148,7 +139,7 @@ export default function(obj) {
 				if(!this.bouncePlatform){
 					this.bouncePlatform = BouncePlatform();
             		this.bouncePlatform.init(this.stage);
-            		this.bouncePlatform.on(false);
+            		this.bouncePlatform.on(false); 
 					this.bounceAction = BounceAction();
             		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
 				}  
@@ -156,7 +147,15 @@ export default function(obj) {
 				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
 				this.bouncePlatform.on(true);
 			} else {
-				this.bouncePlatform.on(false);
+				if(this.bouncePlatform)this.bouncePlatform.on(false);
+			}
+
+			if(this.activeMode === 'swim' || this.activeMode === 'fly'){
+				if (!this.swimAction) {
+					this.swimAction = new SwimAction();
+					this.swimAction.init(this.hero, this.activeMode);
+				}
+				this.swimAction.switchMode(this.activeMode);
 			}
 
 			if(this.activeMode === 'swim'){
@@ -164,6 +163,7 @@ export default function(obj) {
 					this.ripples = obj.ripples(this.app);
 					this.ripples.init();
 				}
+				
 				this.ripples.on(true);
 			} else {
 				if(this.ripples)this.ripples.on(false);
@@ -215,20 +215,20 @@ export default function(obj) {
 
 			if(str === 'right'){
 				this.idle = false;
-				this.hero.radius += 0.5;
+				this.swimAction.radius += 0.25;
 				this.velocity = this.utils.randomNumberBetween(4, 6);
-				this.vx = this.velocity * Math.sin(this.hero.radius);
-				this.vy = -this.velocity * Math.cos(this.hero.radius);
-				this.hero.storeRadius = this.hero.radius;
+				this.vx = this.velocity * Math.sin(this.swimAction.radius);
+				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
+				this.swimAction.storeRadius = this.swimAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy}
 				this.pellets.rotate("right", obj)
 			
 			} else if(str === 'left') {
 				this.idle = false;
-				this.hero.radius -= 0.5;
-				this.vx = this.velocity * Math.sin(this.hero.radius);
-				this.vy = -this.velocity * Math.cos(this.hero.radius);
-				this.hero.storeRadius = this.hero.radius;
+				this.swimAction.radius -= 0.25;
+				this.vx = this.velocity * Math.sin(this.swimAction.radius);
+				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
+				this.swimAction.storeRadius = this.swimAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy}
 				this.pellets.rotate("left", obj)
 			}
@@ -242,8 +242,9 @@ export default function(obj) {
             		break;
                 case 37:
                     // left
-                    this.rotateBoolean = true;
-                    this.rotate('left');
+                    if(this.swimAction)this.swimAction.spinning = true;
+                    this.rotateLeftBoolean = true;
+                    //this.rotate('left');
                     break;
                 case 38:
                     // up
@@ -251,8 +252,9 @@ export default function(obj) {
                     break;
                 case 39:
                     // right
-                    this.rotateBoolean = true;
-                    this.rotate('right');
+                    if(this.swimAction)this.swimAction.spinning = true;
+                    this.rotateRightBoolean = true;
+                    //this.rotate('right');
                     break;
                 case 40:
                     break;
@@ -262,15 +264,21 @@ export default function(obj) {
         },
         keyUp: function (e) {
             e.preventDefault();
-            this.rotateBoolean = false;
+            if(this.swimAction)this.swimAction.spinning = false;
+            this.rotateLeftBoolean = false;
+            this.rotateRightBoolean = false;
             this.idle = true;
         },
 		animate: function () {
+			//console.log(this.rotateBoolean)
 			this.clock.animate();
 			this.filter_animation.animate();
-			this.hero.animate();
 			this.magicPills.animate();
-			
+
+			if(this.rotateLeftBoolean)this.rotate('left');
+			if(this.rotateRightBoolean)this.rotate('right');
+
+
 			if(this.activeMode === 'bounce'){
 				this.bouncePlatform.animate();
 				this.bounceAction.animate();
@@ -281,8 +289,10 @@ export default function(obj) {
 			} else if(this.activeMode === 'swim'){
 				this.pellets.animate();
 				this.ripples.animate();
-			} else {
+				this.swimAction.animate();
+			} else if(this.activeMode === 'fly'){
 				this.pellets.animate();
+				this.swimAction.animate();
 			}
 			
 

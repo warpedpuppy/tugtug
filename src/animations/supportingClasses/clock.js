@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import Utils from '../utils/utils';
 export default function Clock() {
 	return {
 		hourToRadians: (1/12) * (2 * Math.PI),

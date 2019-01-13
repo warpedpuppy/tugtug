@@ -1,7 +1,5 @@
 import React from 'react';
 import './GameCanvas.css';
-import * as PIXI from 'pixi.js';
-import Utils from '../animations/utils/utils';
 import game_code from '../animations/game_animation';
 import art_board_code from '../animations/supportingClasses/art_board_sub';
 import hero from '../animations/supportingClasses/hero';

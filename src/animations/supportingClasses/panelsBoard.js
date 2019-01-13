@@ -12,7 +12,6 @@ export default function PanelsBoard(obj) {
 		getUserName: obj.getUserName,
 		userObject: obj.userObject,
 		wH: obj.wH,
-		getUserName: obj.getUserName,
 		activePanel: obj.activePanel,
 		panelForArtBoard: obj.panelForArtBoard,
 		stage: obj.stage,

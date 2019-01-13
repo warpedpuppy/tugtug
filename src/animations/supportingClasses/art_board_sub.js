@@ -117,8 +117,8 @@ export default function() {
 						for (let key in result.data.board[0]){
 							// console.log(key+" ) "+ result.data.board[0][key])
 							let tempArray = key.split("_");
-							let x = tempArray[0];
-							let y = tempArray[1];
+							// let x = tempArray[0];
+							// let y = tempArray[1];
 							let n = new PIXI.Graphics();
 							n.beginFill(result.data.board[0][key]).drawRect(0,0,10,10).endFill();
 							n.x = tempArray[0];

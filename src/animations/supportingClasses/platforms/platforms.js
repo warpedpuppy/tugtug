@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import Utils from '../../utils/utils';
 export default function(wh) {
 	return {
 		cont: new PIXI.Container(),
@@ -36,27 +35,7 @@ export default function(wh) {
 			}
 		},
 		returnPlatforms: function (str, stage) {
-
 			return this.platforms;
-
-
-			if(str === 'intro'){
-				return this.platforms;
-			} else {
-				// let newArray = [];
-				// console.log('contrast the locations', stage)
-				// for(let i = 0; i < this.platforms.length; i++){
-				// 	//let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
-
-				// 	console.log(this.platforms[i].x+" "+this.platforms[i].y)
-				// 	let globalPoint = this.platforms[i].toGlobal(stage, undefined, true);
-				// 	console.log(globalPoint.x+" "+globalPoint.y)
-				// 	newArray.push(new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height))
-				// }
-				// console.log('new array = ', newArray)
-				// return newArray;
-			}
-			
 		},
 		createPlatform: function () {
 			let cont = new PIXI.Container();

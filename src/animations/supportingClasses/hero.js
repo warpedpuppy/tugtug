@@ -5,7 +5,7 @@ export default function Hero (wh, items) {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
 		pos: [],
-		radius: 0,
+		radius: 20,
 		storeRadius: 0,
 		body: undefined,
 		mode: undefined,
@@ -13,7 +13,6 @@ export default function Hero (wh, items) {
 		vx: 0,
 		bounce: 0,
 		platforms: [],
-		radius: 20,
 		yOffset: 0,
 		parentCont: undefined,
 		init: function (parentCont) {
@@ -151,40 +150,6 @@ export default function Hero (wh, items) {
             cont.addChild(b);
             cont.body = b;
             return cont;
-		},
-		rotateChain: function () {
-			
-			if (this.mode === 'swim' || this.mode === 'fly') {
-				if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
-
-		        this.pos.push(this.radius);
-		        this.increment = 5;
-		        let maxLength = this.increment * this.segmentsQ;
-		        if (this.pos.length > maxLength) {
-		            this.pos = this.pos.slice(-maxLength);
-		        }
-
-		        this.segments[0].rotation = this.radius;
-
-		        for (let i = 1; i < this.segmentsQ; i++) {
-		            let index = this.pos.length - (i * this.increment);
-		            if (this.pos.length >= index) {
-		              //console.log(this.pos[index]);
-		              this.segments[i].rotation = this.pos[index];
-		            }
-		        }
-
-		        if(this.mode === 'fly'){
-		        	this.wingCont.rotation = this.storeRadius;
-		        	this.leftWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
-		        	this.rightWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
-		        }
-			} 
-
-			
-        },
-		animate: function () {
-			this.rotateChain();
 		}
 	}
 }

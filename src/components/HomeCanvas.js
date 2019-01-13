@@ -1,7 +1,5 @@
 import React from 'react';
 import './HomeCanvas.css';
-import * as PIXI from 'pixi.js'
-import Utils from '../animations/utils/utils'
 import home_page from '../animations/intro_animation';
 import filter_animation from '../animations/supportingClasses/filterAnimation';
 import ripples from '../animations/supportingClasses/ripples';
