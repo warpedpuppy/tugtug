@@ -19,6 +19,7 @@ export default function(obj) {
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
         foregroundCont: new PIXI.Container(),
+        ripples: undefined,
 		init: function () {
 
 			//this.activeMode = this.mode[this.activeModeIndex];
@@ -39,8 +40,7 @@ export default function(obj) {
 			const fpsCounter = new obj.PixiFps();
             app.stage.addChild(fpsCounter);
 
-			// this.ripples = obj.ripples(app);
-			// this.ripples.init();
+			
 
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
@@ -118,7 +118,7 @@ export default function(obj) {
 
             this.app = app;
           
-            this.switchPlayer(this.activeModeIndex);
+            this.switchPlayer(0);
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
@@ -135,15 +135,16 @@ export default function(obj) {
 		},
 		switchPlayer: function (index) {
 
-			this.activeMode = this.mode[index];
+			if(index === 0) {
+				this.activeMode = this.mode[index];
+			} else {
+				this.activeModeIndex ++;
+				if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+				this.activeMode = this.mode[this.activeModeIndex];
+			}
 
-			//if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-			this.activeMode = this.mode[this.activeModeIndex];
-			// console.log(this.activeMode);
+
 			this.hero.switchPlayer(this.activeMode);
-
-			//this.platforms.toggleVisibility(this.activeMode === 'person');
-
 			this.pellets.changeMode(this.activeMode);
 
 			if(this.activeMode === 'jump'){
@@ -156,6 +157,16 @@ export default function(obj) {
 				this.bouncePlatform.on(true);
 			} else {
 				this.bouncePlatform.on(false);
+			}
+
+			if(this.activeMode === 'swim'){
+				if(!this.ripples){
+					this.ripples = obj.ripples(this.app);
+					this.ripples.init();
+				}
+				this.ripples.on(true);
+			} else {
+				if(this.ripples)this.ripples.on(false);
 			}
 		},
 		resizeHandler: function () {
@@ -256,7 +267,6 @@ export default function(obj) {
 			this.clock.animate();
 			this.filter_animation.animate();
 			this.hero.animate();
-			//this.ripples.animate();
 			this.magicPills.animate();
 			
 			if(this.activeMode === 'bounce'){
@@ -266,6 +276,9 @@ export default function(obj) {
 			} else if (this.activeMode === 'jump') {
 				this.jumpAction.animate();
 				this.pellets.animate();
+			} else if(this.activeMode === 'swim'){
+				this.pellets.animate();
+				this.ripples.animate();
 			} else {
 				this.pellets.animate();
 			}

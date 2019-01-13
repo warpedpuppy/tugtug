@@ -5,7 +5,7 @@ export default function Ripples (app) {
 		growing: [],
 		action: true,
 		init: function () {
-				var sprites = new PIXI.particles.ParticleContainer(10000, {
+			var sprites = this.sprites = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
 			    rotation: true,
@@ -44,10 +44,23 @@ export default function Ripples (app) {
             this.gradient.alpha = 0.5;
 			this.gradient.anchor.set(0.5);
 
-		    app.stage.addChild(sprites);
-		    app.stage.on('pointermove', this.mouseMove);
-		    app.stage.addChild(this.gradient);
+		    // app.stage.addChild(sprites);
+		    // app.stage.on('pointermove', this.mouseMove);
+		    // app.stage.addChild(this.gradient);
 			
+		},
+		on: function(boolean) {
+			if(boolean){
+				//start ripples
+				app.stage.addChild(this.sprites);
+			    app.stage.on('pointermove', this.mouseMove);
+			    app.stage.addChild(this.gradient);
+			} else {
+				// end ripples
+				app.stage.removeChild(this.sprites);
+		    	app.stage.on('pointermove', undefined);
+		    	app.stage.removeChild(this.gradient);
+			}
 		},
 		pause: function (boolean) {
 			if(boolean){

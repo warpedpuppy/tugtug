@@ -85,6 +85,19 @@ export default function Hero (wh, items) {
 	            }
 			}
 
+			if(!this.leftWing){
+				 this.leftWing = new PIXI.Sprite.fromImage('/bmps/leftWing.png');
+				 this.rightWing = new PIXI.Sprite.fromImage('/bmps/rightWing.png');
+				 this.leftWing.pivot.x = 206;
+				 this.leftWing.pivot.y = 54;
+				 this.rightWing.pivot.y = 70;
+				 this.wingCont = new PIXI.Container();
+				 this.wingCont.y = 20;
+				 this.wingCont.addChild(this.leftWing);
+				 this.wingCont.addChild(this.rightWing);
+			}
+			
+			this.cont.addChildAt(this.wingCont, 0);
 			this.segments = this.dragon;
 		},
 		switchPlayer: function (string) {
@@ -154,7 +167,14 @@ export default function Hero (wh, items) {
 		              this.segments[i].rotation = this.pos[index];
 		            }
 		        }
+
+		        if(this.mode === 'fly'){
+		        	this.wingCont.rotation = this.storeRadius;
+		        	this.leftWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
+		        	this.rightWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
+		        }
 			} 
+
 			
         },
 		animate: function () {
