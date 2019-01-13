@@ -89,32 +89,14 @@ export default function(obj) {
             // x.beginFill(0x000000).drawRect(0,0,500,500).endFill();
             // this.foregroundCont.addChild(x);
             this.stage.addChild(this.foregroundCont);
-            this.bouncePlatform = BouncePlatform();
-            this.bouncePlatform.init(this.stage);
-            let halfWidth = this.canvasWidth / 2;
-            let point1 = new PIXI.Point(halfWidth - 100, this.canvasHeight);
-            let point2 = new PIXI.Point(halfWidth + 100, this.canvasHeight);
-            this.bouncePlatform.start(point1, point2);
-            this.bouncePlatform.on(false);
+
+
             
 
  
             
-            let pos = [
-            [(this.canvasWidth / 2), this.canvasHeight / 2],
-			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
-			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
-			let platforms = this.platforms = new Platforms();
-			this.platformCont = new PIXI.Container();
-			
-			platforms.init(pos, this.platformCont)
 
-			this.bounceAction = BounceAction();
-            this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
-          
 
-            this.jumpAction = JumpAction();
-            this.jumpAction.init(this.hero, platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 
             this.app = app;
           
@@ -134,7 +116,6 @@ export default function(obj) {
             window.removeEventListener('keyup', undefined);
 		},
 		switchPlayer: function (index) {
-
 			if(index === 0) {
 				this.activeMode = this.mode[index];
 			} else {
@@ -148,12 +129,31 @@ export default function(obj) {
 			this.pellets.changeMode(this.activeMode);
 
 			if(this.activeMode === 'jump'){
+
+				if(!this.platforms){
+					this.platforms = new Platforms({canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight});
+					this.platformCont = new PIXI.Container();
+					this.platforms.init(this.platformCont);
+
+					this.jumpAction = JumpAction();
+            		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
+				}
 				this.stage.addChild(this.platformCont)
 			} else {
 				this.stage.removeChild(this.platformCont)
 			}
 
 			if(this.activeMode === 'bounce'){
+
+				if(!this.bouncePlatform){
+					this.bouncePlatform = BouncePlatform();
+            		this.bouncePlatform.init(this.stage);
+            		this.bouncePlatform.on(false);
+					this.bounceAction = BounceAction();
+            		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
+				}  
+
+				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
 				this.bouncePlatform.on(true);
 			} else {
 				this.bouncePlatform.on(false);
@@ -172,8 +172,6 @@ export default function(obj) {
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
-			this.hero.cont.x = this.canvasWidth / 2;
-			this.hero.cont.y = this.canvasHeight / 2;
 
 			this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
 			for (let i = 0; i < 4; i++) {
@@ -194,6 +192,10 @@ export default function(obj) {
 			this.magicPills.resize(wh);
 			this.filter_animation.resize(wh);
 			this.pellets.resize(wh);
+			this.hero.resize(wh);
+			this.jumpAction.resize(wh);
+			this.bouncePlatform.resize(wh);
+			this.bounceAction.resize(wh);
 			this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 		},
 		nightMode: function () {
@@ -285,7 +287,7 @@ export default function(obj) {
 			
 
 
-			for(let i = 0; i < 4;i++){
+			for(let i = 0; i < 4; i++){
               this.gears[i].rotation += this.gears[i].rotate;
             }
 		}

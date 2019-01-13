@@ -1,10 +1,13 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
-export default function() {
+export default function(wh) {
 	return {
 		cont: new PIXI.Container(),
 		platforms: [],
-		init: function (arr, cont) {
+		init: function (cont) {
+
+			let arr = this.positionArray(wh);
+
 			for(let i = 0; i < arr.length; i ++){
 				let p = this.createPlatform();
 				p.x = arr[i][0] - (p.width / 2);
@@ -13,6 +16,12 @@ export default function() {
 
 				cont.addChild(p);
 			}
+		},
+		positionArray: function (wh){
+			return [
+            [(wh.canvasWidth / 2), wh.canvasHeight / 2],
+			[(wh.canvasWidth * 0.33),(wh.canvasHeight / 2) - 100],
+			[(wh.canvasWidth * 0.66), (wh.canvasHeight / 2) - 100]];
 		},
 		resize: function (arr) {
 			for(let i = 0; i < arr.length; i ++){

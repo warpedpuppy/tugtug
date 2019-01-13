@@ -22,6 +22,10 @@ export default function () {
 			this.vy = 9;
 			this.jumpTimer = 1;
 		},
+		resize: function (wh){
+			this.canvasWidth = wh.canvasWidth;
+			this.canvasHeight = wh.canvasHeight;
+		},
 		move: function (str) {
 			if(str === 'left'){
 				this.vx = 3;

@@ -43,31 +43,26 @@ export default function Ripples (app) {
             this.gradient = PIXI.Sprite.fromImage('/bmps/gradient.png');
             this.gradient.alpha = 0.5;
 			this.gradient.anchor.set(0.5);
-
-		    // app.stage.addChild(sprites);
-		    // app.stage.on('pointermove', this.mouseMove);
-		    // app.stage.addChild(this.gradient);
 			
 		},
 		on: function(boolean) {
 			if(boolean){
 				//start ripples
+				app.stage.interactive = true;
 				app.stage.addChild(this.sprites);
-			    app.stage.on('pointermove', this.mouseMove);
+			    app.stage.pointermove = this.mouseMove;
 			    app.stage.addChild(this.gradient);
 			} else {
 				// end ripples
+				app.stage.interactive = false;
 				app.stage.removeChild(this.sprites);
-		    	app.stage.on('pointermove', undefined);
+		    	app.stage.pointermove =  null;
 		    	app.stage.removeChild(this.gradient);
 			}
 		},
 		pause: function (boolean) {
 			if(boolean){
-				//PAUSE!
 				this.action = !boolean;
-
-				//remove 
 			} else {
 				this.action = !boolean;
 			}
@@ -98,6 +93,7 @@ export default function Ripples (app) {
 			}
 		},
 		mouseMove: function(e){
+
 			if(!this.action) return;
 			this.counter ++;
 			let pos = e.data.global;

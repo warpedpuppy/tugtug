@@ -100,6 +100,12 @@ export default function Hero (wh, items) {
 			this.cont.addChildAt(this.wingCont, 0);
 			this.segments = this.dragon;
 		},
+		resize: function (wh){
+			this.canvasWidth = wh.canvasWidth;
+			this.canvasHeight = wh.canvasHeight;
+			this.cont.x = this.canvasWidth / 2;
+            this.cont.y = this.canvasHeight / 2;
+		},
 		switchPlayer: function (string) {
 
 			this.mode = string;

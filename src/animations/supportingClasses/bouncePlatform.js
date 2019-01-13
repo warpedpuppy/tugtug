@@ -6,6 +6,7 @@ export default function BouncePlatform () {
         dot1: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
         dot2: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
         mouseDown:false, 
+        startMode: true,
         init: function (cont) {
             this.cont = cont;
             this.utils = Utils();
@@ -26,7 +27,17 @@ export default function BouncePlatform () {
 
             
         },
-        start: function (point1, point2) {
+        resize: function (wh) {
+            if(this.startMode){
+                this.start(wh.canvasWidth, wh.canvasHeight)
+            }
+        },
+        start: function (canvasWidth, canvasHeight) {
+
+            let halfWidth = canvasWidth / 2;
+            let point1 = new PIXI.Point(halfWidth - 100, canvasHeight);
+            let point2 = new PIXI.Point(halfWidth + 100, canvasHeight);
+
             this.dot1.x = point1.x;
             this.dot1.y = point1.y;
             this.dot2.x = point2.x;
@@ -55,7 +66,7 @@ export default function BouncePlatform () {
             }
         },
         placeFirstDot: function(touchData) {
-
+            this.startMode = false;
             let mouse = touchData.data.global,
                 mouseX = mouse.x,
                 mouseY = mouse.y;

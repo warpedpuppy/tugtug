@@ -14,6 +14,10 @@ export default function () {
 			this.canvasHeight = canvasHeight;
 			this.utils = Utils();
 		},
+		resize: function (wh) {
+			this.canvasWidth = wh.canvasWidth;
+			this.canvasHeight = wh.canvasHeight;
+		},
 		animate: function () {
 			//this.hero.vy += 0.25;
 				if (this.vy < this.speedLimit) {
