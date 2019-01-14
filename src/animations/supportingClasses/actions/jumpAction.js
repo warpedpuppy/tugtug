@@ -63,8 +63,6 @@ export default function () {
 				//console.log(globalPoint)
 				let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
 
-				
-
 				if(this.utils.circleRectangleCollision(this.hero.cont, tempRect)){
 
 					let newY = ((this.canvasHeight / 2) - this.platforms[i].y) + this.hero.cont.radius + 10;

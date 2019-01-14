@@ -1,11 +1,17 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Platforms from './supportingClasses/platforms/platforms';
+import BouncePlatform from './supportingClasses/bouncePlatform';
+import BounceAction from './supportingClasses/actions/bounceAction';
+import JumpAction from './supportingClasses/actions/jumpAction';
+import SwimAction from './supportingClasses/actions/swimAction';
+import MagicPills from './supportingClasses/magicPills';
 
 export default function Game (obj, userObject, getUserName, primaryUser){
     return {
         utils: new Utils(),
         backgroundCont: new PIXI.Container(),
+        foregroundCont: new PIXI.Container(),
         pelletCont: new PIXI.Container(),
         ripplesCont: new PIXI.Container(),
         filterContainer: new PIXI.Container(),
@@ -23,13 +29,14 @@ export default function Game (obj, userObject, getUserName, primaryUser){
         doorAllow: true,
         arr: [],
         action: true,
-        mode: ['person', 'fish', 'dragon'],
+        mode: ['bounce', 'jump', 'swim', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         init: function () {
 
             this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
+            let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
             this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
             document.getElementById("game_canvas").appendChild(this.app.renderer.view);
 
@@ -73,22 +80,17 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             }
 
             
-            this.stage.a1 = "testing";
-            this.hero = obj.hero(size, userObject.items);
-            this.hero.assignStage(this.stage);
+            this.hero = new obj.hero(wh);
             this.hero.init();
             this.hero.switchPlayer(this.mode[this.activeModeIndex]);
-            this.stage.addChild(this.hero.cont)
+            this.stage.addChild(this.hero.cont);
 
-
-            this.app.ticker.add(this.animate.bind(this));
-            
             this.total = this.cols * this.rows;
             this.stage.addChild(this.pelletCont);
             this.pellets = obj.pellets(this.app, this.wH, this.pelletCont);
             this.pellets.init();
 
-            this.magicPills = obj.magicPills(this.app, this.wH, this.filterTest.bind(this));
+            this.magicPills = MagicPills(this.app, this.wH, this.filterTest.bind(this), this.stage);
             this.magicPills.init();
 
             this.stage.addChild(this.ripplesCont);
@@ -98,7 +100,6 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             this.stage.addChild(this.filterContainer);
             this.filter_animation = obj.filter_animation(this.app, this.filterContainer, this.stage)
             this.filter_animation.init();
-
 
             let panelsBoardObj = {
                 rows: this.rows,
@@ -124,37 +125,89 @@ export default function Game (obj, userObject, getUserName, primaryUser){
             panelsBoardClass.init();
 
             this.activePanel = this.panelsBoardClass.activePanel;
-
-            let pos = [
-            [(this.panelWidth / 2), this.panelHeight / 2],
-            [(this.panelWidth * 0.33),(this.panelHeight / 2) - 100],
-            [(this.panelWidth * 0.66), (this.panelHeight / 2) - 100]];
-
-            let platforms = this.platforms = new Platforms();
-            platforms.init(pos, this.activePanel.cont)
-
-
-            this.hero.setPlatforms(platforms.returnPlatforms('game', this.stage))
+      
+            this.switchPlayer(0);
 
             const fpsCounter = new obj.PixiFps();
             this.stage.addChild(fpsCounter)
-           
+            this.app.ticker.add(this.animate.bind(this));
             window.onresize = this.resizeHandler.bind(this);
+            this.test = new PIXI.Graphics();
+            this.test.beginFill(0x000000).drawRect(0,0,this.canvasWidth,this.canvasHeight).endFill();
+            this.test.alpha = 0;
+            this.foregroundCont.addChild(this.test)
+
+            this.stage.addChild(this.foregroundCont)
         },
         stop: function () {
             window.onresize = undefined;
             this.app.destroy(true);
-            window.removeEventListener('keydown', undefined);
-            window.removeEventListener('keyup', undefined);
+            window.removeEventListener('keydown', this.keyDown);
+            window.removeEventListener('keyup', this.keyUp);
         },
-        switchPlayer: function () {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];
-            // console.log(this.activeMode);
-            this.hero.switchPlayer(this.activeMode);
+        switchPlayer: function (index) {
+            if(index === 0) {
+                this.activeMode = this.mode[index];
+            } else {
+                this.activeModeIndex ++;
+                if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+                this.activeMode = this.mode[this.activeModeIndex];
+            }
 
-            this.platforms.toggleVisibility(this.activeMode === 'person');
+            this.hero.switchPlayer(this.activeMode);
+            this.pellets.changeMode(this.activeMode);
+
+            if(this.activeMode === 'jump'){
+
+                if(!this.platforms){
+                    this.platforms = new Platforms({canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight});
+                    this.platformCont = new PIXI.Container();
+                    this.platforms.init(this.backgroundCont);
+
+                    this.jumpAction = JumpAction();
+                    this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.backgroundCont, this.stage);
+                }
+                this.platforms.addPlatforms(true);
+                this.stage.addChild(this.platformCont)
+            } else {
+                if(this.platforms)this.platforms.addPlatforms(false);
+                this.stage.removeChild(this.platformCont)
+            }
+
+            if(this.activeMode === 'bounce'){
+
+                if(!this.bouncePlatform){
+                    this.bouncePlatform = BouncePlatform();
+                    this.bouncePlatform.init(this.foregroundCont);
+                    this.bouncePlatform.on(false); 
+                    this.bounceAction = BounceAction();
+                    this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
+                }  
+
+                this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
+                this.bouncePlatform.on(true);
+            } else {
+                if(this.bouncePlatform)this.bouncePlatform.on(false);
+            }
+
+            if(this.activeMode === 'swim' || this.activeMode === 'fly'){
+                if (!this.swimAction) {
+                    this.swimAction = new SwimAction();
+                    this.swimAction.init(this.hero, this.activeMode);
+                }
+                this.swimAction.switchMode(this.activeMode);
+            }
+
+            if(this.activeMode === 'swim'){
+                if(!this.ripples){
+                    this.ripples = obj.ripples(this.app);
+                    this.ripples.init();
+                }
+                
+                this.ripples.on(true);
+            } else {
+                if(this.ripples)this.ripples.on(false);
+            }
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -196,14 +249,14 @@ export default function Game (obj, userObject, getUserName, primaryUser){
            // this.addPegPanels();
         },
         keyDown: function (e) {
-            switch (e.keyCode) {
+             switch (e.keyCode) {
                 case 32:
-                    this.hero.jump();
-                    break
+                    this.jumpAction.jump();
+                    break;
                 case 37:
                     // left
-                    this.rotateBoolean = true;
-                    this.rotate('left');
+                    if(this.swimAction)this.swimAction.spinning = true;
+                    this.rotateLeftBoolean = true;
                     break;
                 case 38:
                     // up
@@ -211,80 +264,120 @@ export default function Game (obj, userObject, getUserName, primaryUser){
                     break;
                 case 39:
                     // right
-                    this.rotateBoolean = true;
-                    this.rotate('right');
+                    if(this.swimAction)this.swimAction.spinning = true;
+                    this.rotateRightBoolean = true;
                     break;
                 case 40:
                     break;
                 default:
                     this.vy = 0;
-                }
+            }
         },
         keyUp: function (e) {
             e.preventDefault();
-            this.rotateBoolean = false;
-            // this.idle = true;
+            if(this.swimAction)this.swimAction.spinning = false;
+            this.rotateLeftBoolean = false;
+            this.rotateRightBoolean = false;
+            this.idle = true;
         },
         rotate: function (str) {
-
-            if (this.activeMode === 'person') {
-                this.hero.move(str);
+            if (this.activeMode === 'jump') {
+                this.jumpAction.move(str);
                 return;
             }
 
             if(str === 'right'){
-                // this.idle = false;
-                this.hero.radius += 0.5;//(Math.PI * 2) / this.inc;
+                this.idle = false;
+                this.swimAction.radius += 0.25;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
-                this.vx = this.velocity * Math.sin(this.hero.radius);
-                this.vy = -this.velocity * Math.cos(this.hero.radius);
-                this.hero.storeRadius = this.hero.radius;
+                this.vx = this.velocity * Math.sin(this.swimAction.radius);
+                this.vy = -this.velocity * Math.cos(this.swimAction.radius);
+                this.swimAction.storeRadius = this.swimAction.radius;
+                let obj = {vx: -this.vx, vy: -this.vy}
+                this.pellets.rotate("right", obj)
+            
             } else if(str === 'left') {
-                // this.idle = false;
-                this.hero.radius -= 0.5;//(Math.PI * 2) / this.inc;
+                this.idle = false;
+                this.swimAction.radius -= 0.25;
                 this.velocity = this.utils.randomNumberBetween(4, 6);
-               this.vx = this.velocity * Math.sin(this.hero.radius);
-                this.vy = -this.velocity * Math.cos(this.hero.radius);
-                this.hero.storeRadius = this.hero.radius;
-               
+                this.vx = this.velocity * Math.sin(this.swimAction.radius);
+                this.vy = -this.velocity * Math.cos(this.swimAction.radius);
+                this.swimAction.storeRadius = this.swimAction.radius;
+                let obj = {vx: -this.vx, vy: -this.vy}
+                this.pellets.rotate("left", obj)
             }
 
+        },
+        sidePanelCollision: function (currentAction) {
+            //sides collision
+            let xLimit = this.panelsBoardClass.xLimit - this.hero.cont.radius;
+            let xLimit2 = this.panelsBoardClass.xLimit2 + this.hero.cont.radius;
+            let yLimit = this.panelsBoardClass.yLimit - this.hero.cont.radius;
+            let yLimit2 = this.panelsBoardClass.yLimit2 - this.hero.cont.radius;
+
+
+            if (this.backgroundCont.x < -xLimit) {
+               // currentAction.vy *= -1;
+                currentAction.vx *= -1;
+                this.backgroundCont.x = -xLimit;
+            } else if(this.backgroundCont.x > -xLimit2) {
+               // currentAction.vy *= -1;
+                currentAction.vx *= -1;
+                this.backgroundCont.x = -xLimit2;
+            } 
+
+
+            if (this.backgroundCont.y <= -yLimit) {
+                 currentAction.vy *= -1;
+               // currentAction.vx *= -1;
+                 this.backgroundCont.y = -yLimit;
+            } else if(this.backgroundCont.y >= -yLimit2) {
+                currentAction.vy *= -1;
+                //currentAction.vx *= -1;
+                this.backgroundCont.y = -yLimit2;
+            } 
+
+           
         },
         animate: function () {
 
             if(!this.action)return
 
-            this.hero.animate();
-            this.pellets.animate();
-            this.ripples.animate();
+
+            if(this.rotateLeftBoolean)this.rotate('left');
+            if(this.rotateRightBoolean)this.rotate('right');
+
+            if(this.activeMode === 'bounce'){
+                this.bouncePlatform.animate();
+                this.bounceAction.animate();
+                this.backgroundCont.x += -this.bounceAction.vx;
+                this.backgroundCont.y += -this.bounceAction.vy;
+                this.pellets.animate(this.bounceAction.vx, this.bounceAction.vy);
+                this.sidePanelCollision(this.bounceAction);//move this to actions (?)
+            } else if (this.activeMode === 'jump') {
+                this.jumpAction.animate();
+                this.pellets.animate();
+                this.sidePanelCollision(this.jumpAction); //move this to actions (?)
+            } else if(this.activeMode === 'swim'){
+                this.pellets.animate();
+                this.ripples.animate();
+                this.swimAction.animate();
+                this.backgroundCont.x += -this.vx;
+                this.backgroundCont.y += -this.vy;
+                this.sidePanelCollision(this);
+            } else if(this.activeMode === 'fly'){
+                this.pellets.animate();
+                this.swimAction.animate();
+                this.backgroundCont.x += -this.vx;
+                this.backgroundCont.y += -this.vy;
+                this.sidePanelCollision(this);
+            }
+
             this.filter_animation.animate();
             this.magicPills.animate();
             this.panelsBoardClass.animate();
 
-            this.backgroundCont.x += -this.vx;// * rate;
-            this.backgroundCont.y += -this.vy;// * rate;
-
-            let xLimit = this.panelsBoardClass.xLimit;
-            let xLimit2 = this.panelsBoardClass.xLimit2;
-            let yLimit = this.panelsBoardClass.yLimit;
-            let yLimit2 = this.panelsBoardClass.yLimit2;
-
-            if(this.backgroundCont.y >= -yLimit2) {
-                this.vy = 0;
-                this.backgroundCont.y = -yLimit2;
-            } else if (this.backgroundCont.y <= -yLimit) {
-                 this.vy = 0;
-                 this.backgroundCont.y = -yLimit;
-            } 
-
-           // console.log(this.backgroundCont.y +" versus "+ yLimit)
-            if(this.backgroundCont.x > -xLimit2) {
-                this.vx = 0;
-                this.backgroundCont.x = -xLimit2;
-            } else if (this.backgroundCont.x < -xLimit) {
-                this.vx = 0;
-                this.backgroundCont.x = -xLimit;
-            }
+       
            
             this.renderer.render(this.stage);
         }

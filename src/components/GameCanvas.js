@@ -7,7 +7,6 @@ import PanelsBoard from '../animations/supportingClasses/panelsBoard';
 import pellets from '../animations/supportingClasses/pellets';
 import ripples from '../animations/supportingClasses/ripples';
 import filter_animation from '../animations/supportingClasses/filterAnimation';
-import magicPills from '../animations/supportingClasses/magicPills';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -34,8 +33,7 @@ class GameCanvas extends React.Component {
 			hero,
 			pellets,
 			ripples,
-			filter_animation,
-			magicPills
+			filter_animation
 		}
 
 	}
@@ -91,6 +89,9 @@ class GameCanvas extends React.Component {
 
 		
 	}
+	switchPlayer () {
+		this.game.switchPlayer();
+	}
 	testFilter () {
 		this.game.filterTest();
 		if(this.state.filterTest === "off") {
@@ -103,11 +104,12 @@ class GameCanvas extends React.Component {
 		return (
 			<div>
 			<div id='game_canvas'></div>
-			{/*
+			
 			<div className="testPanel">
+			<button onClick={() => this.switchPlayer()}>switch player</button>
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			</div>
-		*/}
+		
 			</div>
 		)
 	}

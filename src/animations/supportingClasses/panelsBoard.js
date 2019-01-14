@@ -25,7 +25,6 @@ export default function PanelsBoard(obj) {
             this.backgroundCont.removeChildren();
             for(let i = 0; i < this.rows; i++){
                 for (let j = 0; j < this.cols; j ++) {
-                
                     let w = this.panelWidth;
                     let h = this.panelHeight;
                     
@@ -54,7 +53,6 @@ export default function PanelsBoard(obj) {
                     this.panels.push(panel)
                     panel.index = panelCounter;
                     this.backgroundCont.addChild(panel);
-
                    
                     panelCounter ++;
                 }
@@ -69,6 +67,7 @@ export default function PanelsBoard(obj) {
            this.mask.y = this.backgroundCont.y;
            this.stage.addChild(this.mask);
            this.pelletCont.mask = this.mask;   
+           this.switchPanel(0);
 		},
 	  	whichPanel: function (door, panel) {
 
@@ -100,6 +99,11 @@ export default function PanelsBoard(obj) {
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
             this.backgroundCont.y = -this.activePanel.cont.y + (this.canvasHeight /2) - (this.panelHeight /2);
 
+            this.yLimit =  this.activePanel.cont.y + (this.panelHeight) -  (this.canvasHeight / 2);
+            this.yLimit2 = this.activePanel.cont.y  -  (this.canvasHeight / 2);
+
+            this.xLimit = this.activePanel.cont.x + this.panelWidth - (this.canvasWidth / 2);
+            this.xLimit2 = this.activePanel.cont.x - (this.canvasWidth/2);
             this.activePanel.loadArtBoard();
         },
 		animate: function () {
@@ -112,7 +116,7 @@ export default function PanelsBoard(obj) {
                     Math.floor(globalPoint.y), 
                     this.activePanel.doors[i].width, 
                     this.activePanel.doors[i].height);
-                this.hero.cont.radius = 50;
+                //this.hero.cont.radius = 50;
                 if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
                     this.whichPanel(this.activePanel.doors[i], this.activePanel);
                 }
@@ -120,12 +124,8 @@ export default function PanelsBoard(obj) {
                 //this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
 
             }
-             
-          this.yLimit =  this.activePanel.cont.y + (this.panelHeight) -  (this.canvasHeight / 2);
-          this.yLimit2 = this.activePanel.cont.y  -  (this.canvasHeight / 2);
+            
 
-          this.xLimit = this.activePanel.cont.x + this.panelWidth - (this.canvasWidth / 2);
-          this.xLimit2 = this.activePanel.cont.x - (this.canvasWidth/2) ;
 
        
 		}

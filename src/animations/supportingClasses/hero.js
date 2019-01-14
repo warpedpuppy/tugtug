@@ -65,7 +65,7 @@ export default function Hero (wh, items) {
 	                this.cont.addChild(this.fish[i]);
 	            }
 			}
-
+			this.cont.radius = 0;
 			this.segments = this.fish;
 			
 		},
@@ -95,7 +95,7 @@ export default function Hero (wh, items) {
 				 this.wingCont.addChild(this.leftWing);
 				 this.wingCont.addChild(this.rightWing);
 			}
-			
+			this.cont.radius = 0;
 			this.cont.addChildAt(this.wingCont, 0);
 			this.segments = this.dragon;
 		},

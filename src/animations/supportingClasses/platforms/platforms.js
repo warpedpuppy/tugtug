@@ -3,17 +3,24 @@ export default function(wh) {
 	return {
 		cont: new PIXI.Container(),
 		platforms: [],
+		arr: [],
 		init: function (cont) {
-
-			let arr = this.positionArray(wh);
-
+			let arr = this.arr = this.positionArray(wh);
+			this.cont = cont;
 			for(let i = 0; i < arr.length; i ++){
 				let p = this.createPlatform();
 				p.x = arr[i][0] - (p.width / 2);
 				p.y = arr[i][1];
 				this.platforms.push(p);
-
-				cont.addChild(p);
+			}
+		},
+		addPlatforms: function (boolean) {
+			for(let i = 0; i < this.platforms.length; i ++){
+				if(boolean){
+					this.cont.addChild(this.platforms[i]);
+				} else {
+					this.cont.removeChild(this.platforms[i]);
+				}
 			}
 		},
 		positionArray: function (wh){

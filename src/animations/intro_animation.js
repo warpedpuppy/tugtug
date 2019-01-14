@@ -5,7 +5,6 @@ import BouncePlatform from './supportingClasses/bouncePlatform';
 import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
-
 import Platforms from './supportingClasses/platforms/platforms';
 
 export default function(obj) {
@@ -97,14 +96,15 @@ export default function(obj) {
             this.keyUp = this.keyUp.bind(this);
 			window.addEventListener('keydown', this.keyDown);
    			window.addEventListener('keyup', this.keyUp);
+
 			app.ticker.add(this.animate.bind(this));
 			window.onresize = this.resizeHandler.bind(this);
 		},
 		stop: function () {
 			window.onresize = undefined;
 	        if(this.app)this.app.destroy(true);
-	        window.removeEventListener('keydown', undefined);
-            window.removeEventListener('keyup', undefined);
+	        window.removeEventListener('keydown', this.keyDown);
+            window.removeEventListener('keyup', this.keyUp);
 		},
 		switchPlayer: function (index) {
 			if(index === 0) {
@@ -129,8 +129,10 @@ export default function(obj) {
 					this.jumpAction = JumpAction();
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 				}
+				this.platforms.addPlatforms(true);
 				this.stage.addChild(this.platformCont)
 			} else {
+				if(this.platforms)this.platforms.addPlatforms(false);
 				this.stage.removeChild(this.platformCont)
 			}
 
@@ -226,6 +228,7 @@ export default function(obj) {
 			} else if(str === 'left') {
 				this.idle = false;
 				this.swimAction.radius -= 0.25;
+				this.velocity = this.utils.randomNumberBetween(4, 6);
 				this.vx = this.velocity * Math.sin(this.swimAction.radius);
 				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
 				this.swimAction.storeRadius = this.swimAction.radius;
@@ -234,10 +237,10 @@ export default function(obj) {
 			}
 		},
 		keyDown: function (e) {
+
             //e.preventDefault();
             switch (e.keyCode) {
             	case 32:
-            		console.log('space bar hit')
             		this.jumpAction.jump();
             		break;
                 case 37:

@@ -35,8 +35,9 @@ export default function BouncePlatform () {
         start: function (canvasWidth, canvasHeight) {
 
             let halfWidth = canvasWidth / 2;
-            let point1 = new PIXI.Point(halfWidth - 100, canvasHeight);
-            let point2 = new PIXI.Point(halfWidth + 100, canvasHeight);
+            let halfHeight = canvasHeight / 2;
+            let point1 = new PIXI.Point(halfWidth - 100, halfHeight + 100);
+            let point2 = new PIXI.Point(halfWidth + 100, halfHeight + 100);
 
             this.dot1.x = point1.x;
             this.dot1.y = point1.y;
@@ -66,6 +67,7 @@ export default function BouncePlatform () {
             }
         },
         placeFirstDot: function(touchData) {
+            console.log('place first dot')
             this.startMode = false;
             let mouse = touchData.data.global,
                 mouseX = mouse.x,
