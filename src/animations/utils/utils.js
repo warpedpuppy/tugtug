@@ -181,6 +181,25 @@ export default function(gv,createjs) {
     rgbToHex: function (r, g, b) {
         return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
     },
+    circleRectangleCollisionRegPointCenter: function (circle, rect) {
+ 
+        var distX = Math.abs(circle.x - rect.x - rect.width * 0.25);
+        var distY = Math.abs(circle.y - rect.y - rect.height * 0.25);
+
+        if (distX > (rect.width * 0.25 + circle.radius)) {
+            return false;
+        }
+        if (distY > (rect.height * 0.25 + circle.radius)) {
+            return false;
+        }
+        if (distX <= (rect.width * 0.25)) {
+            return true;
+        }
+        if (distY <= (rect.height)) {
+            return true;
+        }
+
+    },
     circleRectangleCollision: function (circle, rect) {
  
         var distX = Math.abs(circle.x - rect.x - rect.width / 2);

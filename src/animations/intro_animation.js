@@ -6,7 +6,7 @@ import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
 import Platforms from './supportingClasses/platforms/platforms';
-
+import TransitionItems from './supportingClasses/transitionItems';
 export default function(obj) {
 	return {
 		idle: true,
@@ -22,6 +22,8 @@ export default function(obj) {
         backgroundCont: new PIXI.Container(),
         foregroundCont: new PIXI.Container(),
         ripples: undefined,
+        action: true,
+        tempRect: new PIXI.Rectangle,
 		init: function () {
 
 			//this.activeMode = this.mode[this.activeModeIndex];
@@ -91,6 +93,11 @@ export default function(obj) {
             this.app = app;
           
             this.switchPlayer(0);
+
+            this.transitionItems = TransitionItems;
+            this.transitionItems.init(this.stage, wh);
+            this.transitionItems.build();
+
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
@@ -274,29 +281,42 @@ export default function(obj) {
         },
 		animate: function () {
 			//console.log(this.rotateBoolean)
-			this.clock.animate();
-			this.filter_animation.animate();
-			this.magicPills.animate();
+		
 
-			if(this.rotateLeftBoolean)this.rotate('left');
-			if(this.rotateRightBoolean)this.rotate('right');
+			let tempRect = this.transitionItems.returnItem();
 
+			
 
-			if(this.activeMode === 'bounce'){
-				this.bouncePlatform.animate();
-				this.bounceAction.animate();
-				this.pellets.animate(this.bounceAction.vx, this.bounceAction.vy);
-			} else if (this.activeMode === 'jump') {
-				this.jumpAction.animate();
-				this.pellets.animate();
-			} else if(this.activeMode === 'swim'){
-				this.pellets.animate();
-				this.ripples.animate();
-				this.swimAction.animate();
-			} else if(this.activeMode === 'fly'){
-				this.pellets.animate();
-				this.swimAction.animate();
+			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
+				console.log("hit");
+				this.action = false;
 			}
+
+			if(this.action){
+				
+				if(this.rotateLeftBoolean)this.rotate('left');
+				if(this.rotateRightBoolean)this.rotate('right');
+				this.clock.animate();
+				this.filter_animation.animate();
+				this.magicPills.animate();
+				this.transitionItems.animate();
+				if(this.activeMode === 'bounce'){
+					this.bouncePlatform.animate();
+					this.bounceAction.animate();
+					this.pellets.animate(this.bounceAction.vx, this.bounceAction.vy);
+				} else if (this.activeMode === 'jump') {
+					this.jumpAction.animate();
+					this.pellets.animate();
+				} else if(this.activeMode === 'swim'){
+					this.pellets.animate();
+					this.ripples.animate();
+					this.swimAction.animate();
+				} else if(this.activeMode === 'fly'){
+					this.pellets.animate();
+					this.swimAction.animate();
+				}
+			}
+			
 			
 
 
