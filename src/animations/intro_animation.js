@@ -7,6 +7,7 @@ import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
 import Platforms from './supportingClasses/platforms/platforms';
 import TransitionItems from './supportingClasses/transitionItems';
+import TransitionAnimation from './transitionAnimation';
 export default function(obj) {
 	return {
 		idle: true,
@@ -98,6 +99,9 @@ export default function(obj) {
             this.transitionItems.init(this.stage, wh);
             this.transitionItems.build();
 
+            this.transitionAnimation = TransitionAnimation;
+            this.transitionAnimation.init(this.app, wh);
+            this.transitionAnimation.addAnimations(this.stage);
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
@@ -287,13 +291,13 @@ export default function(obj) {
 
 			
 
-			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
-				console.log("hit");
-				this.action = false;
-			}
+			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
+			// 	console.log("hit");
+			// 	this.action = false;
+			// }
 
 			if(this.action){
-				
+				this.transitionAnimation.animate();
 				if(this.rotateLeftBoolean)this.rotate('left');
 				if(this.rotateRightBoolean)this.rotate('right');
 				this.clock.animate();
