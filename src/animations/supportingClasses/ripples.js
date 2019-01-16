@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
-export default function Ripples (app) {
-	return {
+export default {
 		ripples: [],
 		growing: [],
 		action: true,
-		init: function () {
+		init: function (app) {
+
+			this.app = app;
 			var sprites = this.sprites = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
@@ -48,16 +49,16 @@ export default function Ripples (app) {
 		on: function(boolean) {
 			if(boolean){
 				//start ripples
-				app.stage.interactive = true;
-				app.stage.addChild(this.sprites);
-			    app.stage.pointermove = this.mouseMove;
-			    app.stage.addChild(this.gradient);
+				this.app.stage.interactive = true;
+				this.app.stage.addChild(this.sprites);
+			    this.app.stage.pointermove = this.mouseMove;
+			    this.app.stage.addChild(this.gradient);
 			} else {
 				// end ripples
-				app.stage.interactive = false;
-				app.stage.removeChild(this.sprites);
-		    	app.stage.pointermove =  null;
-		    	app.stage.removeChild(this.gradient);
+				this.app.stage.interactive = false;
+				this.app.stage.removeChild(this.sprites);
+		    	this.app.stage.pointermove =  null;
+		    	this.app.stage.removeChild(this.gradient);
 			}
 		},
 		pause: function (boolean) {
@@ -118,7 +119,4 @@ export default function Ripples (app) {
 			this.gradient.y = pos.y;
 			
 		}
-
-
-	}
 }

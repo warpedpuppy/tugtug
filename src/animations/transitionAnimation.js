@@ -53,6 +53,7 @@ export default {
 			this.explosionCont.addChild(e);
 		}
 		this.doorsBuild();
+		return this;
 	},
 	doorsBuild: function () {
 		let halfWidth = this.canvasWidth / 2;

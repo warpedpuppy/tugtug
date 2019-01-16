@@ -1,30 +1,29 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default function BouncePlatform () {
-    return {
-        line: new PIXI.Sprite.fromImage('/bmps/bouncePlatformLine.png'),
-        dot1: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
-        dot2: new PIXI.Sprite.fromImage('/bmps/bouncePlatformBall.png'),
+export default {
+        line: new PIXI.Sprite(),
+        dot1: new PIXI.Sprite(),
+        dot2: new PIXI.Sprite(),
         mouseDown:false, 
         startMode: true,
-        init: function (cont) {
+        init: function (cont, spritesheet) {
             this.cont = cont;
             this.utils = Utils();
             this.line.height = 2;
             this.line.anchor.y = 0.5;
             this.line.tint = 0x000000;
-            //this.line.visible = false;
+
+            this.line.texture = spritesheet.textures['bouncePlatformLine.png'];
+            this.dot1.texture = spritesheet.textures['bouncePlatformBall.png'];
+            this.dot2.texture = spritesheet.textures['bouncePlatformBall.png'];
+
             cont.addChild(this.line);
             this.dot1.anchor.x = this.dot1.anchor.y = 0.5;
-            //this.dot1.visible = false;
             cont.addChild(this.dot1);
             this.dot2.anchor.x = this.dot2.anchor.y = 0.5;
-            //this.dot2.visible = false;
             cont.addChild(this.dot2);
             this.on = this.on.bind(this);
             this.on(true);
-
-
             
         },
         resize: function (wh) {
@@ -106,7 +105,4 @@ export default function BouncePlatform () {
                 this.dot2.rotation += 0.25;
             }
         }
-
-    }
-
 }

@@ -1,13 +1,7 @@
 import React from 'react';
 import './HomeCanvas.css';
 import home_page from '../animations/intro_animation';
-import filter_animation from '../animations/supportingClasses/filterAnimation';
-import ripples from '../animations/supportingClasses/ripples';
-import pellets from '../animations/supportingClasses/pellets';
-import hero from '../animations/supportingClasses/hero';
-import magicPills from '../animations/supportingClasses/magicPills';
-import { TimelineMax } from 'gsap';
-import PixiFps from "pixi-fps";
+
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -20,16 +14,7 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	componentDidMount(){
-		let obj = {
-			 TimelineMax,
-			 PixiFps, 
-			 filter_animation, 
-			 ripples,
-			 pellets,
-			 hero,
-			 magicPills
-		}
-		this.home_page = home_page(obj);
+		this.home_page = home_page();
 		this.home_page.init();
 	}
 	componentWillUnmount(){

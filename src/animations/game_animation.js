@@ -251,7 +251,7 @@ export default function Game (obj, userObject, getUserName, primaryUser){
         keyDown: function (e) {
              switch (e.keyCode) {
                 case 32:
-                    this.jumpAction.jump();
+                    if(this.jumpAction)this.jumpAction.jump();
                     break;
                 case 37:
                     // left

@@ -1,13 +1,12 @@
 import * as PIXI from 'pixi.js';
-export default function Clock() {
-	return {
+export default {
 		hourToRadians: (1/12) * (2 * Math.PI),
 		minutesToRadians: (1/60) * (2 * Math.PI),
 		secondsToRadians: (1/60) * (2 * Math.PI),
 		cont: new PIXI.Container(),
 		counter: 0,
 		demo: false,
-		init: function () {
+		init: function (cont, wh) {
 
 			let hourhand = this.hourhand = new PIXI.Sprite.fromImage('/bmps/hourhand.png');
 			hourhand.anchor.set(0.5);
@@ -38,6 +37,13 @@ export default function Clock() {
 			this.demoH = 12;
 			this.demoM = 0;
 			this.demoS = 0;
+
+			this.cont.alpha = 0.25;
+         	this.cont.scale.set(0.5);
+         	this.cont.x = wh.canvasWidth / 2;
+         	this.cont.y = wh.canvasHeight / 2;
+
+         	cont.addChild(this.cont);
 		},
 		animate: function () {
 			if(!this.demo) {
@@ -88,5 +94,5 @@ export default function Clock() {
 			
 			
 		}
-	}
+	
 }

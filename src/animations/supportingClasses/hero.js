@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default function Hero (wh, items) {
-	return {
+export default {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
 		pos: [],
@@ -15,7 +14,7 @@ export default function Hero (wh, items) {
 		platforms: [],
 		yOffset: 0,
 		parentCont: undefined,
-		init: function (parentCont) {
+		init: function (wh, items, parentCont, spritesheet) {
 			this.parentCont = parentCont;
 			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
@@ -25,6 +24,7 @@ export default function Hero (wh, items) {
             this.segments = [];
             this.dragon = [];
             this.fish = [];
+            this.spritesheet = spritesheet;
 
             this.bounce = this.utils.randomNumberBetween(-.6, -.9);
             this.vy = this.utils.randomNumberBetween(3,5);
@@ -37,7 +37,9 @@ export default function Hero (wh, items) {
 		            }
 	            }
             }
-          
+
+            parentCont.addChild(this.cont);
+            return this;
 		},
 		personMode: function () {
 			this.cont.removeChildren();
@@ -85,8 +87,8 @@ export default function Hero (wh, items) {
 			}
 
 			if(!this.leftWing){
-				 this.leftWing = new PIXI.Sprite.fromImage('/bmps/leftWing.png');
-				 this.rightWing = new PIXI.Sprite.fromImage('/bmps/rightWing.png');
+				 this.leftWing = new PIXI.Sprite(this.spritesheet.textures['leftWing.png']);
+				 this.rightWing = new PIXI.Sprite(this.spritesheet.textures['rightWing.png']);
 				 this.leftWing.pivot.x = 206;
 				 this.leftWing.pivot.y = 54;
 				 this.rightWing.pivot.y = 70;
@@ -151,5 +153,4 @@ export default function Hero (wh, items) {
             cont.body = b;
             return cont;
 		}
-	}
 }

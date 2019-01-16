@@ -6,8 +6,15 @@ import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
 import Platforms from './supportingClasses/platforms/platforms';
+import Pellets from './supportingClasses/pellets';
+import MagicPills from './supportingClasses/magicPills';
 import TransitionItems from './supportingClasses/transitionItems';
+import FilterAnimation from './supportingClasses/filterAnimation';
+import Gears from './supportingClasses/gears';
+import Hero from './supportingClasses/hero';
 import TransitionAnimation from './transitionAnimation';
+import Ripples from '../animations/supportingClasses/ripples';
+import PixiFps from "pixi-fps";
 export default function(obj) {
 	return {
 		idle: true,
@@ -22,94 +29,72 @@ export default function(obj) {
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
         foregroundCont: new PIXI.Container(),
+        filterContainer: new PIXI.Container(),
         ripples: undefined,
         action: true,
         tempRect: new PIXI.Rectangle,
+        spriteSheet: undefined,
+        gears: Gears,
+        clock: Clock,
+        pellets: Pellets,
+        magicPills: MagicPills,
+        filterAnimation: FilterAnimation,
+        hero: Hero,
+        transitionItems: TransitionItems,
+        transitionAnimation: TransitionAnimation,
 		init: function () {
-
-			//this.activeMode = this.mode[this.activeModeIndex];
-
-			
 
 			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
 
-			var app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {transparent: true});
+			var app = this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {transparent: true});
 			document.getElementById('homeCanvas').appendChild(app.view);
 
-			app.stage.addChild(this.backgroundCont);
-			
 			this.stage = app.stage;
 		
-			const fpsCounter = new obj.PixiFps();
+			const fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
-			
+			this.wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 
-			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
-
-			 let gear;
-            let corners = this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
-            this.gears = [];
-            for(let i = 0; i < 4;i++){
-                gear = new PIXI.Sprite.fromImage('/bmps/gear.png');
-                gear.anchor.x = gear.anchor.y = 0.5;
-                gear.x = corners[i][0];
-                gear.y = corners[i][1];
-                gear.alpha = 0.15;
-                gear.rotate = (Math.random()*0.01)+0.01;
-                app.stage.addChild(gear);
-                this.gears.push(gear);
-            }
-
-            let clock = this.clock = Clock();
-         	clock.init();
-         	clock.cont.alpha = 0.25;
-         	clock.cont.scale.set(0.5);
-         	clock.cont.x = this.canvasWidth / 2;
-         	clock.cont.y = this.canvasHeight / 2;
-         	app.stage.addChild(clock.cont);
-
-			this.pellets = obj.pellets(app, wh, app.stage);
-			this.pellets.init(this.activeMode);
-
-			this.magicPills = obj.magicPills(app, wh, this.filterTest.bind(this), this.backgroundCont);
-			this.magicPills.init();
-
-            this.filterContainer = new PIXI.Container();
-            app.stage.addChild(this.filterContainer);
-            this.filter_animation = obj.filter_animation(app, this.filterContainer, wh)
-            this.filter_animation.init();
-
-          
-            this.hero = new obj.hero(wh);
-            this.hero.init();
-            this.hero.switchPlayer(this.mode[this.activeModeIndex]);
-            this.stage.addChild(this.hero.cont);
-
-           
-            this.stage.addChild(this.foregroundCont);
-
-            this.app = app;
-          
-            this.switchPlayer(0);
-
-            this.transitionItems = TransitionItems;
-            this.transitionItems.init(this.mode, this.stage, wh);
-            this.transitionItems.build();
-
-            this.transitionAnimation = TransitionAnimation;
-            this.transitionAnimation.init(this.app, wh);
-            this.transitionAnimation.addAnimations(this.stage, this.hero.cont);
+			this.stage.addChild(this.backgroundCont);
+			this.stage.addChild(this.filterContainer);
+			this.stage.addChild(this.foregroundCont);
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
 			window.addEventListener('keydown', this.keyDown);
    			window.addEventListener('keyup', this.keyUp);
 
-			app.ticker.add(this.animate.bind(this));
 			window.onresize = this.resizeHandler.bind(this);
+
+			this.start = this.start.bind(this);
+			this.loader = PIXI.loader.add("/ss/ss.json").load(this.start);
+
+		},
+		start: function () {
+			this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
+
+			this.gears.init(this.stage, this.wh);
+
+            this.clock.init(this.stage, this.wh);
+
+			this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
+
+			this.magicPills.init(this.app, this.wh, this.filterTest.bind(this), this.backgroundCont, this.spritesheet);
+
+            this.filterAnimation.init(this.app, this.filterContainer, this.wh);
+
+            this.hero.init(this.wh, undefined, this.stage, this.spritesheet).switchPlayer(this.mode[this.activeModeIndex]);
+
+            this.transitionItems.init(this.mode, this.stage, this.wh, this.spritesheet).build();
+
+            this.transitionAnimation.init(this.app, this.wh).addAnimations(this.stage, this.hero.cont);
+
+            this.switchPlayer(this.mode[this.activeModeIndex]);
+
+            this.app.ticker.add(this.animate.bind(this));
 		},
 		stop: function () {
 			window.onresize = undefined;
@@ -117,9 +102,9 @@ export default function(obj) {
 	        window.removeEventListener('keydown', this.keyDown);
             window.removeEventListener('keyup', this.keyUp);
 		},
-		switchPlayer: function (index) {
-			if(index === 0) {
-				this.activeMode = this.mode[index];
+		switchPlayer: function (str) {
+			if(str) {
+				this.activeMode = str;
 			} else {
 				this.activeModeIndex ++;
 				if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
@@ -133,11 +118,11 @@ export default function(obj) {
 			if(this.activeMode === 'jump'){
 
 				if(!this.platforms){
-					this.platforms = new Platforms({canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight});
+					this.platforms = Platforms;
 					this.platformCont = new PIXI.Container();
-					this.platforms.init(this.platformCont);
+					this.platforms.init(this.platformCont, this.wh);
 
-					this.jumpAction = JumpAction();
+					this.jumpAction = JumpAction;
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 				}
 				this.platforms.addPlatforms(true);
@@ -147,39 +132,39 @@ export default function(obj) {
 				this.stage.removeChild(this.platformCont)
 			}
 
-			if(this.activeMode === 'bounce'){
+			if (this.activeMode === 'bounce') {
 
 				if(!this.bouncePlatform){
-					this.bouncePlatform = BouncePlatform();
-            		this.bouncePlatform.init(this.stage);
+					this.bouncePlatform = BouncePlatform;
+            		this.bouncePlatform.init(this.stage, this.spritesheet);
             		this.bouncePlatform.on(false); 
-					this.bounceAction = BounceAction();
+					this.bounceAction = BounceAction;
             		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
 				}  
-
 				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
 				this.bouncePlatform.on(true);
+
 			} else {
-				if(this.bouncePlatform)this.bouncePlatform.on(false);
+				if (this.bouncePlatform) this.bouncePlatform.on(false);
 			}
 
 			if(this.activeMode === 'swim' || this.activeMode === 'fly'){
 				if (!this.swimAction) {
-					this.swimAction = new SwimAction();
+					this.swimAction = SwimAction;
 					this.swimAction.init(this.hero, this.activeMode);
 				}
 				this.swimAction.switchMode(this.activeMode);
 			}
 
 			if(this.activeMode === 'swim'){
-				if(!this.ripples){
-					this.ripples = obj.ripples(this.app);
-					this.ripples.init();
+				if (!this.ripples) {
+					this.ripples = Ripples;
+					this.ripples.init(this.app);
 				}
 				
 				this.ripples.on(true);
 			} else {
-				if(this.ripples)this.ripples.on(false);
+				if (this.ripples) this.ripples.on(false);
 			}
 		},
 		resizeHandler: function () {
@@ -217,7 +202,7 @@ export default function(obj) {
 			console.log(this.app._options.backgroundColor)
 		},
 		filterTest: function () {
-			this.filter_animation.filterToggle();
+			this.filterAnimation.filterToggle();
 		},
 		rotate: function (str) {
 
@@ -284,8 +269,6 @@ export default function(obj) {
             this.idle = true;
         },
 		animate: function () {
-			//console.log(this.rotateBoolean)
-		
 
 			let tempRect = this.transitionItems.returnItem();
 
@@ -293,9 +276,10 @@ export default function(obj) {
 
 			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
 				this.action = false;
-				this.filter_animation.shutOff();
+				this.filterAnimation.shutOff();
 				this.transitionAnimation.animate();
 				if (this.transitionAnimation.done) {
+					this.switchPlayer(this.transitionItems.currentItem.name)
 					this.transitionItems.currentItem.y = 0;
 					this.transitionAnimation.reset();
 					this.transitionItems.changeItem();
@@ -307,8 +291,9 @@ export default function(obj) {
 				if(this.rotateLeftBoolean)this.rotate('left');
 				if(this.rotateRightBoolean)this.rotate('right');
 				this.clock.animate();
-				this.filter_animation.animate();
+				this.filterAnimation.animate();
 				this.magicPills.animate();
+				this.gears.animate();
 				this.transitionItems.animate();
 				if(this.activeMode === 'bounce'){
 					this.bouncePlatform.animate();
@@ -330,9 +315,6 @@ export default function(obj) {
 			
 
 
-			for(let i = 0; i < 4; i++){
-              this.gears[i].rotation += this.gears[i].rotate;
-            }
 		}
 	}
 }

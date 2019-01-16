@@ -1,6 +1,5 @@
 import Utils from '../../utils/utils';
-export default function () {
-	return {
+export default {
 		mode: undefined,
 		radius: 20,
 		storeRadius: 0,
@@ -49,5 +48,4 @@ export default function () {
 	        }
 
 		}
-	}
 }

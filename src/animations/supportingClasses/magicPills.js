@@ -1,15 +1,14 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default function MagicPills(app, wh, effectFunction, cont) {
-	return {
+export default {
 		pills: [],
 		edgeBuffer: 200,
 		effect: false,
 		lifeSpan: 100,
 		counter: 0,
-		init: function () {
+		init: function (app, wh, effectFunction, cont, spritesheet) {
 			this.utils = Utils();
-
+			this.effectFunction = effectFunction;
 			var pills = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
@@ -18,15 +17,15 @@ export default function MagicPills(app, wh, effectFunction, cont) {
 			    alpha: true
 			});
 			
-		
+	
 			cont.addChild(pills);
 			
 			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1 : 1;
 
 			 for(let i = 0; i < this.pelletQ; i ++ ){
-            	let s =  PIXI.Sprite.fromImage('/bmps/star.png');
-            	s.anchor.x = s.width / 2;
+            	let s = new PIXI.Sprite(spritesheet.textures['star.png']);
+            	s.anchor.set(0.5);
             	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = 0;
             	s.vy = this.utils.randomNumberBetween(1,5); 
@@ -44,7 +43,7 @@ export default function MagicPills(app, wh, effectFunction, cont) {
 		playEffect: function () {
 			if(!this.effect) {
 				this.effect = true;
-				effectFunction();
+				this.effectFunction();
 			}
 		},
 		resize: function (wh) {
@@ -82,7 +81,7 @@ export default function MagicPills(app, wh, effectFunction, cont) {
             		this.counter ++;
 
             		if (this.counter >= this.lifeSpan){
-            			effectFunction();
+            			this.effectFunction();
             			this.effect = false;
             			this.counter = 0;
             		}
@@ -91,5 +90,5 @@ export default function MagicPills(app, wh, effectFunction, cont) {
 			}
 
 		}
-	}
+	
 }

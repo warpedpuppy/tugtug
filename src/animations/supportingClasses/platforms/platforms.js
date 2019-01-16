@@ -1,10 +1,9 @@
 import * as PIXI from 'pixi.js';
-export default function(wh) {
-	return {
+export default {
 		cont: new PIXI.Container(),
 		platforms: [],
 		arr: [],
-		init: function (cont) {
+		init: function (cont, wh) {
 			let arr = this.arr = this.positionArray(wh);
 			this.cont = cont;
 			for(let i = 0; i < arr.length; i ++){
@@ -52,6 +51,4 @@ export default function(wh) {
 		    cont.addChild(b);
             return cont;
 		}
-
-	}
 }

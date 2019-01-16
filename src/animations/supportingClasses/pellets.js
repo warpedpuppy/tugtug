@@ -1,12 +1,11 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default function Pellets (app, wh, cont) {
-	return {
+export default {
 		pelletsArray: [],
 		utils: Utils(),
 		edgeBuffer: 200,
 		activeMode: undefined,
-		init: function (str) {
+		init: function (app, wh, cont, str, spritesheet) {
 			this.activeMode = str;
 
 			var pellets = new PIXI.particles.ParticleContainer(10000, {
@@ -18,12 +17,12 @@ export default function Pellets (app, wh, cont) {
 			});
 			
 			cont.addChild(pellets);
-			
-			
+				
+			console.log(spritesheet)			
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;
-			 for(let i = 0; i < this.pelletQ; i ++ ){
-			 	this.pelletTexture =  new PIXI.Texture.fromImage('/bmps/pellet.png');
-            	this.starTexture =  new PIXI.Texture.fromImage('/bmps/star.png');
+			for(let i = 0; i < this.pelletQ; i ++ ){
+			 	this.pelletTexture = spritesheet.textures['pellet.png'];
+            	this.starTexture = spritesheet.textures['star.png'];
             	let s = new PIXI.Sprite(this.pelletTexture);
             	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = this.utils.randomNumberBetween(1,5); 
@@ -112,5 +111,5 @@ export default function Pellets (app, wh, cont) {
 		}
 
 
-	}
+	
 } 

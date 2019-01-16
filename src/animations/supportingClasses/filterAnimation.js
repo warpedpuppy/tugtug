@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
-export default function filterAnim(app, container, wh) {
-    return {
-        app: app,
+export default {
+        app: undefined,
         count: 0,
         enabled: false,
-        init: function () {
-
+        init: function (app, container, wh) {
+            this.app = app;
             var filter = this.filter = new PIXI.filters.ColorMatrixFilter();
             this.wh = wh;
 
@@ -41,14 +40,14 @@ export default function filterAnim(app, container, wh) {
         },
         filterToggle: function () {
             this.enabled = !this.enabled;
-            app.stage.filters = this.enabled ? [this.filter] : null;
+            this.app.stage.filters = this.enabled ? [this.filter] : null;
             this.light1.visible = !this.light1.visible;
             this.light2.visible = !this.light2.visible;
             this.light3.visible = !this.light3.visible;
         },
         shutOff: function () {
             this.enabled = false;
-            app.stage.filters = null;
+            this.app.stage.filters = null;
             this.light1.visible = false;
             this.light2.visible = false;
             this.light3.visible = false;
@@ -73,6 +72,5 @@ export default function filterAnim(app, container, wh) {
            
 
         }
-    }
 }
 
