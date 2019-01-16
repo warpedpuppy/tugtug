@@ -56,7 +56,7 @@
 },
 "jumpTrans.png":
 {
-	"frame": {"x":2,"y":430,"w":85,"h":36},
+	"frame": {"x":114,"y":430,"w":85,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":36},
@@ -110,11 +110,29 @@
 },
 "swimTrans.png":
 {
-	"frame": {"x":2,"y":392,"w":100,"h":36},
+	"frame": {"x":114,"y":392,"w":100,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":36},
 	"sourceSize": {"w":100,"h":36},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"treasureChest.png":
+{
+	"frame": {"x":2,"y":392,"w":110,"h":99},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":99},
+	"sourceSize": {"w":110,"h":99},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"treasureRing.png":
+{
+	"frame": {"x":957,"y":144,"w":33,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":61},
+	"sourceSize": {"w":33,"h":61},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -124,6 +142,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:cf85c6220ace6a94c2ebed0d9b1a2f80:6a5aced5c8a2a455d1749b2cfd80f6cb:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:802c772254dc14aa0535948f2ba71698:1996ac808ee1ce7a087ed670bbe81a74:7a7dafe8686879c23378e53f9469620c$"
 }
 }

@@ -14,9 +14,9 @@ export default {
 		platforms: [],
 		yOffset: 0,
 		parentCont: undefined,
+		utils: Utils,
 		init: function (wh, items, parentCont, spritesheet) {
 			this.parentCont = parentCont;
-			this.utils = Utils();
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;

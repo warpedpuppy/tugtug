@@ -14,8 +14,8 @@ export default function() {
 		dotSize: 10,
 		primary: false,
 		edited: false,
+		utils: Utils,
 		init: function (fake) {
-			this.utils = Utils();
 
 			this.lsToken = localStorage.getItem('token');
 	        this.canvasWidth = this.width;

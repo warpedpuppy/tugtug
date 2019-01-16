@@ -6,12 +6,12 @@ export default {
 		vy: 0,
 		angle: 0,
 		velocity: 10,
+		utils: Utils,
 		init: function (hero, bouncePlatform, canvasWidth, canvasHeight) {
 			this.hero = hero;
 			this.bouncePlatform = bouncePlatform;
 			this.canvasWidth = canvasWidth;
 			this.canvasHeight = canvasHeight;
-			this.utils = Utils();
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;

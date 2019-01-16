@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import Utils from './utils/utils';
+import Utils from '../utils/utils';
 
 export default {
-	line: new PIXI.Texture.fromImage('/bmps/line.png'),
+	line: undefined,
 	radialQ: undefined,
 	explosionQ: undefined,
 	radials: [],
@@ -17,7 +17,7 @@ export default {
 	animationLength: 120,
 	done: false,
 	utils: Utils,
-	init: function (app, wh) {
+	init: function (app, wh, spritesheet) {
 		this.halfAnimationLength = this.animationLength / 2;
 		this.radialCont.scale.set(0);
 		this.canvasHeight = wh.canvasHeight;
@@ -28,7 +28,7 @@ export default {
 		this.explosionQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 
 		for(let i = 0; i < this.radialQ; i ++){
-			let r = new PIXI.Sprite(this.line);
+			let r = new PIXI.Sprite(spritesheet.textures['line.png']);
 			r.width = 1;
 			r.height = this.utils.randomNumberBetween(100, 500);
 			r.alpha = this.utils.randomNumberBetween(0.2, 0.8);

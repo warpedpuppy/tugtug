@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import Utils from '../utils/utils';
 export default {
 	textures: [],
 	currentItem: undefined,
@@ -36,7 +35,12 @@ export default {
 		this.cont.addChild(this.currentItem);
 	},
 	returnItem: function () {
-		return {x: this.currentItem.x, y: this.currentItem.y, height: this.currentItem.height, width: this.currentItem.width}
+		return {
+			x: this.currentItem.x, 
+			y: this.currentItem.y, 
+			height: this.currentItem.height, 
+			width: this.currentItem.width
+		}
 	},
 	animate: function () {
 		this.currentItem.y += this.speed;

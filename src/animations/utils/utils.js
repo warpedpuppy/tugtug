@@ -1,5 +1,4 @@
-export default function(gv,createjs) {
-  return {
+export default {
     distributeAroundCircle:  function (numElements, radius) {
         let arr = [];
         for (let i = 0; i < numElements; i++) {
@@ -20,11 +19,6 @@ export default function(gv,createjs) {
         ys = ys * ys;
 
         return Math.sqrt(xs + ys);
-    },
-    traceGlobal: function () {
-        for (var key in gv) {
-            console.log(key + ") " + gv[key]);
-        }
     },
     lineAngle: function(point1, point2) {
         return Math.atan2(point2.y - point1.y, point2.x - point1.x);
@@ -313,25 +307,6 @@ export default function(gv,createjs) {
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;
         mc.body.y = (canvasHeight - mc.body.getBounds().height) / 2;
-    },
-    AssetLoaderClass: function (gv, loading_text_visible) {
-
-        //load graphic assets and show loading text
-        this.gv = gv;
-
-        if (loading_text_visible === undefined) loading_text_visible = true;
-
-        var loaderProgressText = new createjs.Text(0 + " %", "bold 50px Arial", "#FFFF00");
-        loaderProgressText.visible = loading_text_visible
-        this.bounds = loaderProgressText.getBounds();
-
-
-        loaderProgressText.x = gv.halfWidth - (this.bounds.width / 2);
-        loaderProgressText.y = gv.halfHeight - (this.bounds.height / 2);
-
-        this.loaderProgressText = loaderProgressText;
-        var loader = new createjs.LoadQueue(false);
-        this.loader = loader;
     }
-   }
-};
+
+}

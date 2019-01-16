@@ -6,8 +6,8 @@ export default {
 		effect: false,
 		lifeSpan: 100,
 		counter: 0,
+		utils: Utils,
 		init: function (app, wh, effectFunction, cont, spritesheet) {
-			this.utils = Utils();
 			this.effectFunction = effectFunction;
 			var pills = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,

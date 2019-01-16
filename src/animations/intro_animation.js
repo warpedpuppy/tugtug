@@ -12,8 +12,9 @@ import TransitionItems from './supportingClasses/transitionItems';
 import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
-import TransitionAnimation from './transitionAnimation';
+import TransitionAnimation from './supportingClasses/transitionAnimation';
 import Ripples from '../animations/supportingClasses/ripples';
+import Treasure from '../animations/supportingClasses/treasure';
 import PixiFps from "pixi-fps";
 export default function(obj) {
 	return {
@@ -42,9 +43,10 @@ export default function(obj) {
         hero: Hero,
         transitionItems: TransitionItems,
         transitionAnimation: TransitionAnimation,
+        utils: Utils,
+        treasure: Treasure,
 		init: function () {
 
-			this.utils = Utils();
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
 
@@ -90,7 +92,9 @@ export default function(obj) {
 
             this.transitionItems.init(this.mode, this.stage, this.wh, this.spritesheet).build();
 
-            this.transitionAnimation.init(this.app, this.wh).addAnimations(this.stage, this.hero.cont);
+            this.transitionAnimation.init(this.app, this.wh, this.spritesheet).addAnimations(this.stage, this.hero.cont);
+
+            this.treasure.init(this.app, this.wh, this.spritesheet, this.hero.cont);
 
             this.switchPlayer(this.mode[this.activeModeIndex]);
 
@@ -273,7 +277,7 @@ export default function(obj) {
 			let tempRect = this.transitionItems.returnItem();
 
 			
-
+			//should this be in transition items?
 			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
 				this.action = false;
 				this.filterAnimation.shutOff();
@@ -287,6 +291,17 @@ export default function(obj) {
 				}
 			} 
 
+			if (this.treasure.hit) {
+				if(this.action){
+					this.filterAnimation.shutOff();
+					this.action = false;
+				}
+				
+				this.treasure.animateSpecial();
+			} else {
+				this.action = true;
+			}
+
 			if(this.action){
 				if(this.rotateLeftBoolean)this.rotate('left');
 				if(this.rotateRightBoolean)this.rotate('right');
@@ -295,6 +310,7 @@ export default function(obj) {
 				this.magicPills.animate();
 				this.gears.animate();
 				this.transitionItems.animate();
+				this.treasure.animate();
 				if(this.activeMode === 'bounce'){
 					this.bouncePlatform.animate();
 					this.bounceAction.animate();

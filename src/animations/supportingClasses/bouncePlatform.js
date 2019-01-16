@@ -6,9 +6,9 @@ export default {
         dot2: new PIXI.Sprite(),
         mouseDown:false, 
         startMode: true,
+        utils: Utils,
         init: function (cont, spritesheet) {
             this.cont = cont;
-            this.utils = Utils();
             this.line.height = 2;
             this.line.anchor.y = 0.5;
             this.line.tint = 0x000000;

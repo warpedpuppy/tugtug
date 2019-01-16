@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
 export default {
 		pelletsArray: [],
-		utils: Utils(),
+		utils: Utils,
 		edgeBuffer: 200,
 		activeMode: undefined,
 		init: function (app, wh, cont, str, spritesheet) {

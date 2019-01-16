@@ -7,12 +7,12 @@ export default {
 		vx: 0,
 		jumpTimer: 0,
 		jumpTimeLimit: 21,
+		utils: Utils,
 		init: function (hero, platforms, canvasWidth, canvasHeight, platformCont, stage) {
 			this.hero = hero;
 			this.platforms = platforms;
 			this.canvasWidth = canvasWidth;
 			this.canvasHeight = canvasHeight;
-			this.utils = Utils();
 			this.platformCont = platformCont;
 			this.stage = stage;
 

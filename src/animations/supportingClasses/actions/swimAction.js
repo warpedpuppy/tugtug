@@ -4,9 +4,9 @@ export default {
 		radius: 20,
 		storeRadius: 0,
 		spinning: false,
+		utils: Utils,
 		init: function (hero, mode) {
 			this.hero = hero;
-			this.utils = Utils();
 			this.mode = mode;
 		},
 		resize: function (wh) {
