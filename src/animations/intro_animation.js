@@ -96,12 +96,12 @@ export default function(obj) {
             this.switchPlayer(0);
 
             this.transitionItems = TransitionItems;
-            this.transitionItems.init(this.stage, wh);
+            this.transitionItems.init(this.mode, this.stage, wh);
             this.transitionItems.build();
 
             this.transitionAnimation = TransitionAnimation;
             this.transitionAnimation.init(this.app, wh);
-            this.transitionAnimation.addAnimations(this.stage);
+            this.transitionAnimation.addAnimations(this.stage, this.hero.cont);
 
 			this.keyDown = this.keyDown.bind(this);
             this.keyUp = this.keyUp.bind(this);
@@ -291,13 +291,19 @@ export default function(obj) {
 
 			
 
-			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
-			// 	console.log("hit");
-			// 	this.action = false;
-			// }
+			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero.cont, tempRect)){
+				this.action = false;
+				this.filter_animation.shutOff();
+				this.transitionAnimation.animate();
+				if (this.transitionAnimation.done) {
+					this.transitionItems.currentItem.y = 0;
+					this.transitionAnimation.reset();
+					this.transitionItems.changeItem();
+					this.action = true;
+				}
+			} 
 
 			if(this.action){
-				this.transitionAnimation.animate();
 				if(this.rotateLeftBoolean)this.rotate('left');
 				if(this.rotateRightBoolean)this.rotate('right');
 				this.clock.animate();

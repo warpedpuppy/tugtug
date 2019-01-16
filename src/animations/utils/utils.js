@@ -1,5 +1,14 @@
 export default function(gv,createjs) {
   return {
+    distributeAroundCircle:  function (numElements, radius) {
+        let arr = [];
+        for (let i = 0; i < numElements; i++) {
+            let x = 500 / 2 + radius * Math.cos( ( 2 * Math.PI) * i / numElements);
+            let y = 500 / 2 + radius * Math.sin( ( 2 * Math.PI) * i / numElements);
+            arr.push({x: x, y:y});
+        }
+        return arr;
+    },
     lineDistance: function (point1, point2) {
         var xs = 0;
         var ys = 0;

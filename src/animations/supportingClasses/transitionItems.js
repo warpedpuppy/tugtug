@@ -1,25 +1,33 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
 export default {
-	items: [],
-	itemStrings: ['flyTrans', 'jumpTrans', 'bounceTrans', 'swimTrans'],
+	textures: [],
 	currentItem: undefined,
 	wh: undefined,
-	speed: 3,
-	init: function (cont, wh) {
+	speed: 5,
+	textureCounter: 0,
+	init: function (arr, cont, wh) {
+		this.itemStrings = arr;
 		this.wh = wh;
 		this.cont = cont;
 		
 	},
+	changeItem: function () {
+		this.textureCounter ++;
+		if (this.textureCounter >= this.textures.length) {
+			this.textureCounter = 0;
+		}
+		this.currentItem.texture = this.textures[this.textureCounter];
+	},
 	build: function () {
 		for(let item of this.itemStrings){
-			let s = PIXI.Sprite.fromImage(`/bmps/${item}.png`);
-			s.anchor.set(0.5);
-			s
-			this.items.push(s);
+			let s = PIXI.Texture.fromImage(`/bmps/${item}Trans.png`);
+		
+			this.textures.push(s);
 		}
 
-		this.currentItem = this.items[0];
+		this.currentItem = new PIXI.Sprite(this.textures[this.textureCounter]);
+		this.currentItem.anchor.set(0.5);
 		this.currentItem.x = this.wh.canvasWidth / 2;
 		this.currentItem.y = 0;
 		this.cont.addChild(this.currentItem);
