@@ -21,7 +21,7 @@ export default {
 			cont.addChild(pills);
 			
 			
-			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 1;
+			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
 
 			 for(let i = 0; i < this.pelletQ; i ++ ){
             	let s = new PIXI.Sprite(spritesheet.textures['star.png']);
@@ -51,9 +51,9 @@ export default {
 			this.wh = wh;
 			this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = this.wh.canvasWidth + this.edgeBuffer;
-			for(let i = 0; i < this.pelletQ; i ++ ){
-            	this.pills[i].x = this.wh.canvasWidth / 2;
-            	this.pills[i].y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
+			for (let i = 0; i < this.pelletQ; i ++ ) {
+            	this.pills[i].x = this.utils.randomNumberBetween(0, wh.canvasWidth);
+            	this.pills[i].y = this.utils.randomNumberBetween(0, wh.canvasHeight);
             }
 		},
 		animate: function (vx, vy) {

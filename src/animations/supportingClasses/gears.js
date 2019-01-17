@@ -15,6 +15,14 @@ export default {
 		    this.gears.push(gear);
 		}
 	},
+	resize: function (wh) {
+		let corners = this.corners = [[0,0],[wh.canvasWidth, 0], [wh.canvasWidth, wh.canvasHeight], [0, wh.canvasHeight]];
+		for(let i = 0; i < 4;i++){
+		    let gear = this.gears[i];
+		    gear.x = corners[i][0];
+		    gear.y = corners[i][1];
+		}
+	},
 	animate: function () {
 		for(let i = 0; i < 4; i++){
 	      this.gears[i].rotation += this.gears[i].rotate;

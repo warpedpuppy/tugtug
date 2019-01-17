@@ -190,29 +190,21 @@ export default function(obj) {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
 			this.canvasHeight = this.utils.returnCanvasHeight();
 
-			this.corners = [[0,0],[this.canvasWidth, 0], [this.canvasWidth, this.canvasHeight], [0, this.canvasHeight]];
-			for (let i = 0; i < 4; i++) {
-                this.gears[i].x = this.corners[i][0];
-                this.gears[i].y = this.corners[i][1];
-            }
-
-            let pos = [
-            [(this.canvasWidth / 2), this.canvasHeight / 2],
-			[(this.canvasWidth * 0.33),(this.canvasHeight / 2) - 100],
-			[(this.canvasWidth * 0.66), (this.canvasHeight / 2) - 100]];
-			this.platforms.resize(pos);
-
-            this.clock.cont.x = this.canvasWidth / 2;
-         	this.clock.cont.y = this.canvasHeight / 2;
-
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
+			this.clock.resize(wh);
+			this.gears.resize(wh);
+			this.score.resize(wh);
+			if(this.platforms)this.platforms.resize(wh);
 			this.magicPills.resize(wh);
-			this.filter_animation.resize(wh);
+			this.treasure.resize(wh);
+			this.transitionItems.resize(wh);
+			this.filterAnimation.resize(wh);
 			this.pellets.resize(wh);
 			this.hero.resize(wh);
-			this.jumpAction.resize(wh);
-			this.bouncePlatform.resize(wh);
-			this.bounceAction.resize(wh);
+			if(this.jumpAction)this.jumpAction.resize(wh);
+			if(this.bouncePlatform)this.bouncePlatform.resize(wh);
+			if(this.bounceAction)this.bounceAction.resize(wh);
+
 			this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 		},
 		nightMode: function () {
@@ -292,7 +284,7 @@ export default function(obj) {
 			
 			this.score.animate();
 
-			if (this.treasure.hit || this.transitionItems.hit) {
+			if (this.treasure.hit && this.transitionItems.hit) {
 				if(this.action){
 					this.filterAnimation.shutOff();
 					this.action = false;

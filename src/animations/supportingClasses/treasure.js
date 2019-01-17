@@ -26,7 +26,7 @@ export default {
 		this.wh = wh;
 		this.hero = hero;
 		this.ringQ = app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
-		this.chestQ = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 1;
+		this.chestQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
 		this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
@@ -74,6 +74,16 @@ export default {
 			this.radialCont.addChild(r);
 		}
 
+	},
+	resize: function (wh) {
+		this.wh = wh;
+		this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
+		this.rightEdge = this.wh.canvasWidth + this.edgeBuffer;
+		for (let i = 0; i < this.chestQ; i ++ ) {
+			let c = this.chests[i];
+        	c.x = this.utils.randomNumberBetween(0, wh.canvasWidth);
+        	c.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
+        }
 	},
 	playAnimation: function () {
 		//place chest in center and rock it back and forth;

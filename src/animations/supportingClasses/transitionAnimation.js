@@ -17,11 +17,12 @@ export default {
     animationLength: 120,
     done: false,
     utils: Utils,
+    wh: {},
     init: function (app, wh, spritesheet) {
         this.halfAnimationLength = this.animationLength / 2;
         this.radialCont.scale.set(0);
-        this.canvasHeight = wh.canvasHeight;
-        this.canvasWidth = wh.canvasWidth;
+        this.wh.canvasHeight = wh.canvasHeight;
+        this.wh.canvasWidth = wh.canvasWidth;
 
         this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 
@@ -46,7 +47,7 @@ export default {
             e.width = 5;
             e.height = 5;
             e.radius = 0;
-            e.maxRadius = this.utils.randomNumberBetween(this.canvasWidth * 0.15, this.canvasWidth * 0.25);
+            e.maxRadius = this.utils.randomNumberBetween(this.wh.canvasWidth * 0.15, this.wh.canvasWidth * 0.25);
             e.increaseVariant = this.utils.randomNumberBetween(1, 10);
             e.rotate = this.utils.randomNumberBetween(2, 5);
             e.tint = this.utils.randomColor();
@@ -57,11 +58,14 @@ export default {
                     
         return this;
     },
+    resize: function (wh) {
+        this.wh = wh;
+    },
     addAnimations: function (cont, hero) {
-        this.radialCont.x = this.canvasWidth / 2;
-        this.radialCont.y = this.canvasHeight / 2;
-        this.explosionCont.x = this.canvasWidth / 2;
-        this.explosionCont.y = this.canvasHeight / 2;
+        this.radialCont.x = this.wh.canvasWidth / 2;
+        this.radialCont.y = this.wh.canvasHeight / 2;
+        this.explosionCont.x = this.wh.canvasWidth / 2;
+        this.explosionCont.y = this.wh.canvasHeight / 2;
         let contIndex = cont.getChildIndex(hero);
     
         cont.addChildAt(this.radialCont, contIndex - 2);

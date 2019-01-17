@@ -45,6 +45,10 @@ export default {
 
          	cont.addChild(this.cont);
 		},
+		resize: function (wh) {
+			this.cont.x = wh.canvasWidth / 2;
+         	this.cont.y = wh.canvasHeight / 2;
+		},
 		animate: function () {
 			if(!this.demo) {
 				this.counter ++;

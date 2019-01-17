@@ -3,6 +3,7 @@
 
 goal: collecting colors for rainbows
 
+goal:  animated backgrounds for tranistion items
 
 goal:  no anxiety
 

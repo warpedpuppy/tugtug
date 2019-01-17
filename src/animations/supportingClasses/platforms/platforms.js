@@ -28,7 +28,8 @@ export default {
 			[(wh.canvasWidth * 0.33),(wh.canvasHeight / 2) - 100],
 			[(wh.canvasWidth * 0.66), (wh.canvasHeight / 2) - 100]];
 		},
-		resize: function (arr) {
+		resize: function (wh) {
+			let arr = this.positionArray(wh);
 			for(let i = 0; i < arr.length; i ++){
 				let p = this.platforms[i];
 				p.x = arr[i][0] - (p.width / 2);

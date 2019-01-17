@@ -24,6 +24,11 @@ export default {
 		   this.increaseAllow = true;
 		}
 	},
+	resize: function (wh) {
+		this.canvasWidth = wh.canvasWidth;
+		this.canvasHeight = wh.canvasHeight;
+		this.scoreText.x = (this.canvasWidth - this.scoreText.width) / 2;
+	},
 	animate: function () {
 
 		if(this.increaseAllow){

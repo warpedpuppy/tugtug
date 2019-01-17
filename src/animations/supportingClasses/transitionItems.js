@@ -71,6 +71,11 @@ export default {
 			width: this.currentItem.width
 		}
 	},
+	resize: function (wh) {
+		this.wh = wh;
+		this.transitionAnimation.resize(wh);
+
+	},
 	animate: function (vx, vy) {
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = this.items[i];
