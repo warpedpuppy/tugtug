@@ -1,12 +1,10 @@
-<h1>tugtug</h1>
-
-<p>want this to be a combo of ee and tamagachi</p>
-
-game will have three modes:
-
-person -- jumping, platforms, tokens
 
 
-dragon -- birds eye view
 
-fist -- birds eye view and ripples
+goal: collecting colors for rainbows
+
+
+goal:  no anxiety
+
+
+only gitm thus far:  if you want to use glyph desiger for a new font and have it published in an xml format you need to close it and then reopen it
