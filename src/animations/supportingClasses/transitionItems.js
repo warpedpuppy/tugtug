@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
 import TransitionAnimation from './transitionAnimation';
-export default {
+export default function () {
+	return {
 	textures: [],
 	currentItem: undefined,
 	wh: undefined,
@@ -14,7 +15,7 @@ export default {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, wh, spritesheet, hero, app, switchPlayer) {
-		this.itemQ = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 5;
+		this.itemQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = app;
 		this.itemStrings = arr;
@@ -46,14 +47,15 @@ export default {
 			this.textures.push(s);
 		}
 
+		this.vx = this.utils.randomNumberBetween(1,5); 
+        this.vy = this.utils.randomNumberBetween(1,5);
+
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = new PIXI.Sprite(this.textures[this.textureCounter]);
 			c.name = this.itemStrings[this.textureCounter];
 			c.anchor.set(0.5);
 			c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
 			c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
-			c.vx = this.utils.randomNumberBetween(1,5); 
-        	c.vy = this.utils.randomNumberBetween(1,5);
 			this.cont.addChild(c);
 			this.items.push(c);
 			this.textureCounter ++;
@@ -62,6 +64,10 @@ export default {
 			}
 		}
 		
+	},
+	rotate: function (obj) {
+			this.vx = obj.vx;
+			this.vy = obj.vy;
 	},
 	returnItem: function () {
 		return {
@@ -77,10 +83,11 @@ export default {
 
 	},
 	animate: function (vx, vy) {
+
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = this.items[i];
-			c.x += vx;
-			c.y += vy;
+			c.x += vx || this.vx;
+			c.y += vy || this.vy;
 
 			if(c.y > this.bottomEdge) {
             	c.y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
@@ -116,4 +123,5 @@ export default {
 			this.hit = false;
 		}
 	}
+}
 }

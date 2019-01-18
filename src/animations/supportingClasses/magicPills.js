@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default {
+export default function () {
+	return {
 		pills: [],
 		edgeBuffer: 200,
 		effect: false,
@@ -20,7 +21,9 @@ export default {
 	
 			cont.addChild(pills);
 			
-			
+			this.vx = this.utils.randomNumberBetween(1,5); 
+            this.vy = this.utils.randomNumberBetween(1,5);
+
 			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
 
 			 for(let i = 0; i < this.pelletQ; i ++ ){
@@ -47,6 +50,10 @@ export default {
 				this.effectFunction();
 			}
 		},
+		rotate: function (obj) {
+				this.vx = obj.vx;
+				this.vy = obj.vy;
+		},
 		resize: function (wh) {
 			this.wh = wh;
 			this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
@@ -60,8 +67,8 @@ export default {
 
 			for(let i = 0; i < this.pelletQ; i++){
 				let p = this.pills[i];
-				p.x += vx;
-             	p.y += vy;
+				p.x += vx || this.vx;
+             	p.y += vy || this.vy;
              	p.rotation += this.utils.deg2rad(p.rotate);
 
             	if(p.y > this.bottomEdge) {
@@ -93,5 +100,6 @@ export default {
 			}
 
 		}
+	}
 	
 }

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default {
+export default function () {
+	return {
 	ringQ: 0,
 	chestQ: 0,
 	rings: [],
@@ -21,8 +22,8 @@ export default {
 	vxs: [-8, 8],
 	fallSpeeds: [2, 4],
 	edgeBuffer: 200,
-	init: function (app, wh, spritesheet, hero) {
-		this.stage = app.stage;
+	init: function (app, wh, spritesheet, hero, parent) {
+		this.parent = parent;
 		this.wh = wh;
 		this.hero = hero;
 		this.ringQ = app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
@@ -30,6 +31,16 @@ export default {
 		this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
+
+		var ringsPC = new PIXI.particles.ParticleContainer(500, {
+			    scale: true,
+			    position: true,
+			    rotation: true,
+			    uvs: true,
+			    alpha: true
+			});
+			this.ringCont.addChild(ringsPC);
+
 		for (let i = 0; i < this.ringQ; i ++) {
 			let r = new PIXI.Sprite(spritesheet.textures['treasureRing.png']);
 			r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
@@ -37,7 +48,8 @@ export default {
 			r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
 			r.rotate = this.utils.randomNumberBetween(-4, 4);
 			r.floor = this.halfHeight - r.height;
-			this.ringCont.addChild(r);
+			//THESE RINGS NEED TO BE ADDED TO A PARTICLE CONTAINER
+			ringsPC.addChild(r);
 			this.rings.push(r);
 
 			if (!(i >= this.chestQ)) {
@@ -51,7 +63,7 @@ export default {
             	c.vy = this.utils.randomNumberBetween(1,5);
             	c.variance = this.utils.randomNumberBetween(5, 20);
             	c.rotateSpeed = this.utils.randomNumberBetween(0.01, 0.05);
-				this.stage.addChild(c);
+				this.parent.addChild(c);
 				this.chests.push(c);
 			}
 			this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
@@ -96,12 +108,12 @@ export default {
 		this.activeChest.x = this.radialCont.x = this.wh.canvasWidth / 2;
 		this.activeChest.y = this.radialCont.y = this.wh.canvasHeight / 2;
 
-		this.stage.addChildAt(this.radialCont, this.activeChest._zIndex - 1)
+		this.parent.addChildAt(this.radialCont, this.activeChest._zIndex - 1)
 
 		//explode coins
 		this.ringCont.x = this.wh.canvasWidth / 2;
 		this.ringCont.y = this.wh.canvasHeight / 2;
-		this.stage.addChild(this.ringCont);
+		this.parent.addChild(this.ringCont);
 	},
 	animateSpecial: function () {
 		for (let i = 0; i < this.ringQ; i ++) {
@@ -146,7 +158,7 @@ export default {
 		}
 		this.counter = 0;
 		this.hit = false;
-		this.stage.removeChild(this.ringCont);
+		this.parent.removeChild(this.ringCont);
 		this.activeChest.scale.set(this.storeObject.scale);
 		this.activeChest.x = this.storeObject.x;
 		this.activeChest.y = this.storeObject.y;
@@ -154,19 +166,17 @@ export default {
 		this.radialCont.parent.removeChild(this.radialCont);
 	},
 	animate: function (vx, vy) {
-
 		for (let i = 0; i < this.chestQ; i ++) {
 			let c = this.chests[i];
 			c.x += vx || c.vx;
 			c.y += vy || c.vy;
 			c.rotation = this.utils.cosWave(this.utils.deg2rad(0), this.utils.deg2rad(c.variance), c.rotateSpeed);
-
 			let tempRect = {x: c.x, y: c.y, width: c.width, height: c.height};
-			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){
-			// 	this.hit = true;
-			// 	this.activeChest = c;
-			// 	this.playAnimation();
-			// } 
+			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){
+				this.hit = true;
+				this.activeChest = c;
+				this.playAnimation();
+			} 
 
 			if(c.y > this.bottomEdge) {
             	c.y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
@@ -182,5 +192,6 @@ export default {
 
 		}
 	}
+}
 
 }

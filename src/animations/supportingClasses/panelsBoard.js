@@ -11,7 +11,7 @@ export default function PanelsBoard(obj) {
 		backgroundCont: obj.backgroundCont,
 		getUserName: obj.getUserName,
 		userObject: obj.userObject,
-		wH: obj.wH,
+		wh: obj.wh,
 		activePanel: obj.activePanel,
 		panelForArtBoard: obj.panelForArtBoard,
 		stage: obj.stage,
@@ -19,6 +19,7 @@ export default function PanelsBoard(obj) {
 		hero: obj.hero,
 		utils: obj.utils,
         panels: obj.panels,
+        bounce: obj.bounce,
 		init: function () {
 			this.total = this.cols * this.rows;
 			let panelCounter = 0;
@@ -34,10 +35,10 @@ export default function PanelsBoard(obj) {
 
                     let xVal = w * j;
                     let yVal = h * i;
-                    this.wH.leftX = (this.cols - 1) * this.panelWidth;
-                    this.wH.bottomY = (this.rows - 1) * this.panelHeight;
+                    this.wh.leftX = (this.cols - 1) * this.panelWidth;
+                    this.wh.bottomY = (this.rows - 1) * this.panelHeight;
 
-                    let panelClass = Panel(this.wH);
+                    let panelClass = Panel(this.wh);
 
                     let primary = false;
                     if (panelCounter === this.panelForArtBoard) {
@@ -94,6 +95,7 @@ export default function PanelsBoard(obj) {
              }
         },
         switchPanel: function (index) {
+            this.activePanel.removeArtBoard();
             this.activePanel = this.panels[index].panelClass;
             this.panelForArtBoard = index;
             this.backgroundCont.x = -this.activePanel.cont.x + (this.canvasWidth /2) - (this.panelWidth /2);
@@ -106,9 +108,49 @@ export default function PanelsBoard(obj) {
             this.xLimit2 = this.activePanel.cont.x - (this.canvasWidth/2);
             this.activePanel.loadArtBoard();
         },
-		animate: function () {
+        sidePanelCollision: function (vx, vy) {
+            //sides collision
+            let xLimit = this.xLimit - this.hero.cont.radius;
+            let xLimit2 = this.xLimit2 + this.hero.cont.radius;
+            let yLimit = this.yLimit - this.hero.cont.radius;
+            let yLimit2 = this.yLimit2 - this.hero.cont.radius;
+
+
+            if (this.backgroundCont.x < -xLimit) {
+               // currentAction.vy *= -1;
+                //vx *= -1;
+                this.bounce('vx');
+                this.backgroundCont.x = -xLimit;
+            } else if(this.backgroundCont.x > -xLimit2) {
+               // currentAction.vy *= -1;
+                //vx *= -1;
+                this.bounce('vx');
+                this.backgroundCont.x = -xLimit2;
+            } 
+
+
+            if (this.backgroundCont.y <= -yLimit) {
+                 //vy *= -1;
+                this.bounce('vy');
+               // currentAction.vx *= -1;
+                 this.backgroundCont.y = -yLimit;
+            } else if(this.backgroundCont.y >= -yLimit2) {
+                 //vy *= -1;
+                this.bounce('vy');
+                //currentAction.vx *= -1;
+                this.backgroundCont.y = -yLimit2;
+            } 
+
+           
+        },
+		animate: function (vx, vy) {
+
+            this.backgroundCont.x += -vx;
+            this.backgroundCont.y += -vy;
+            this.sidePanelCollision(vx, vy);
 
             let rect = new PIXI.Rectangle();
+
             for(let i = 0; i < this.activePanel.doors.length; i++){
                 let globalPoint = this.activePanel.doors[i].toGlobal(this.stage, undefined, true);
                 rect = new PIXI.Rectangle(
@@ -120,13 +162,7 @@ export default function PanelsBoard(obj) {
                 if(this.utils.circleRectangleCollision(this.hero.cont, rect)){
                     this.whichPanel(this.activePanel.doors[i], this.activePanel);
                 }
-
-                //this.activePanel.gears[i].rotation += (this.activePanel.gears[i].rotate / 2);
-
             }
-            
-
-
        
 		}
 	}

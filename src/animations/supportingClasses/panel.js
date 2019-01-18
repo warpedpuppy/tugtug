@@ -1,11 +1,13 @@
 import ArtBoard from './art_board_sub';
 import * as PIXI from 'pixi.js';
 import portal_code from './portal';
+import Score from './score';
 export default function Panel(wH) {
 	return {
 		cont: new PIXI.Container(),
         artBoardLoaded: false,
         art_board: ArtBoard(),
+        score: Score(),
 		build: function (num, width, height, userData, point, primary, stage) {
 			this.Doorway = portal_code;
             this.primary = primary;
@@ -80,6 +82,8 @@ export default function Panel(wH) {
             line2.lineStyle(25, 0xFF00FF, 0.25, 0).moveTo(0,this.panelHeight).lineTo(this.panelWidth,0);
             this.cont.addChild(line2);
 
+            
+
 
             let gear;
             let corners = [[0,0],[this.panelWidth, 0], [this.panelWidth, this.panelHeight], [0, this.panelHeight]];
@@ -98,6 +102,8 @@ export default function Panel(wH) {
             //if primary user load artboard to start
             if(primary){
                 this.loadArtBoard(primary);
+            } else {
+                this.score.init(this.cont, {canvasHeight: this.panelHeight, canvasWidth: this.panelWidth})
             }
        
 		},
@@ -118,6 +124,11 @@ export default function Panel(wH) {
                 this.art_board.assignStage(this.stage);
             }
             
+        },
+        removeArtBoard: function () {
+            if(!this.artBoardLoaded)return;
+            this.cont.removeChild(this.art_board.returnArtBoard())
+            this.artBoardLoaded = false;
         },
 		returnPanel: function () {
 			return this.cont;

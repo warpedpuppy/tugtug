@@ -38,15 +38,17 @@ export default function(obj) {
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
-        pellets: Pellets,
-        magicPills: MagicPills,
+        pellets: Pellets(),
+        magicPills: MagicPills(),
         filterAnimation: FilterAnimation,
         hero: Hero,
-        transitionItems: TransitionItems,
+        transitionItems: TransitionItems(),
         transitionAnimation: TransitionAnimation,
         utils: Utils,
-        treasure: Treasure,
-        score: Score,
+        treasure: Treasure(),
+        score: Score(),
+        loader: PIXI.loader,
+        activeAction: undefined,
 		init: function () {
 
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -74,12 +76,14 @@ export default function(obj) {
 			window.onresize = this.resizeHandler.bind(this);
 
 			this.start = this.start.bind(this);
-			this.loader = PIXI.loader
-			.add("/ss/ss.json")
-			.add("Hobo", "/fonts/hobostd.xml")
-			.load(this.start);
-
-
+            if (!this.loader.resources["/ss/ss.json"]) {
+                 this.loader
+                    .add("/ss/ss.json")
+                    .add("Hobo", "/fonts/hobostd.xml")
+                    .load(this.start);
+            } else {
+                this.start();
+            }
 
 		},
 		start: function () {
@@ -107,7 +111,7 @@ export default function(obj) {
             	this.app, 
             	this.switchPlayer.bind(this)).build();
 
-            this.treasure.init(this.app, this.wh, this.spritesheet, this.hero.cont);
+            this.treasure.init(this.app, this.wh, this.spritesheet, this.hero.cont, this.stage);
             
             this.score.init(this.stage, this.wh);
 
@@ -144,6 +148,7 @@ export default function(obj) {
 					this.jumpAction = JumpAction;
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 				}
+				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);
 				this.stage.addChild(this.platformCont)
 			} else {
@@ -160,6 +165,7 @@ export default function(obj) {
 					this.bounceAction = BounceAction;
             		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
 				}  
+				this.activeAction = this.bounceAction;
 				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
 				this.bouncePlatform.on(true);
 
@@ -172,6 +178,7 @@ export default function(obj) {
 					this.swimAction = SwimAction;
 					this.swimAction.init(this.hero, this.activeMode);
 				}
+				this.activeAction = this.swimAction;
 				this.swimAction.switchMode(this.activeMode);
 			}
 
@@ -229,8 +236,10 @@ export default function(obj) {
 				this.vx = this.velocity * Math.sin(this.swimAction.radius);
 				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
 				this.swimAction.storeRadius = this.swimAction.radius;
-				let obj = {vx: -this.vx, vy: -this.vy}
-				this.pellets.rotate("right", obj)
+				let obj = {vx: -this.vx, vy: -this.vy};
+				this.pellets.rotate(obj);
+				this.transitionItems.rotate(obj);
+				this.swimAction.rotate(obj);
 			
 			} else if(str === 'left') {
 				this.idle = false;
@@ -239,8 +248,10 @@ export default function(obj) {
 				this.vx = this.velocity * Math.sin(this.swimAction.radius);
 				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
 				this.swimAction.storeRadius = this.swimAction.radius;
-				let obj = {vx: -this.vx, vy: -this.vy}
-				this.pellets.rotate("left", obj)
+				let obj = {vx: -this.vx, vy: -this.vy};
+				this.pellets.rotate(obj);
+				this.transitionItems.rotate(obj);
+				this.swimAction.rotate(obj);
 			}
 		},
 		keyDown: function (e) {
@@ -252,6 +263,7 @@ export default function(obj) {
             		break;
                 case 37:
                     // left
+                    if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateLeftBoolean = true;
                     //this.rotate('left');
@@ -262,6 +274,7 @@ export default function(obj) {
                     break;
                 case 39:
                     // right
+                    if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateRightBoolean = true;
                     //this.rotate('right');
@@ -284,7 +297,7 @@ export default function(obj) {
 			
 			this.score.animate();
 
-			if (this.treasure.hit && this.transitionItems.hit) {
+			if (this.treasure.hit || this.transitionItems.hit) {
 				if(this.action){
 					this.filterAnimation.shutOff();
 					this.action = false;
@@ -307,35 +320,18 @@ export default function(obj) {
 				this.filterAnimation.animate();
 				
 				this.gears.animate();
+				this.activeAction.animate();
+				this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
+				this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
+				this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
+				this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
 				
-				
-				if(this.activeMode === 'bounce'){
+				if (this.activeMode === 'bounce') {
 					this.bouncePlatform.animate();
-					this.bounceAction.animate();
-					this.pellets.animate(this.bounceAction.vx, this.bounceAction.vy);
-					this.treasure.animate(this.bounceAction.vx, this.bounceAction.vy);
-					this.transitionItems.animate(this.bounceAction.vx, this.bounceAction.vy);
-					this.magicPills.animate(this.bounceAction.vx, this.bounceAction.vy);
-				} else if (this.activeMode === 'jump') {
-					this.jumpAction.animate();
-					this.pellets.animate();
-					this.treasure.animate(this.jumpAction.vx, this.jumpAction.vy);
-					this.transitionItems.animate(this.jumpAction.vx, this.jumpAction.vy);
-					this.magicPills.animate(this.jumpAction.vx, this.jumpAction.vy);
-				} else if(this.activeMode === 'swim'){
-					this.pellets.animate();
+				} else if (this.activeMode === 'swim') {
 					this.ripples.animate();
-					this.swimAction.animate();
-					this.treasure.animate(this.swimAction.vx, this.swimAction.vy);
-					this.transitionItems.animate(this.swimAction.vx, this.swimAction.vy);
-					this.magicPills.animate(this.swimAction.vx, this.swimAction.vy);
-				} else if(this.activeMode === 'fly'){
-					this.pellets.animate();
-					this.swimAction.animate();
-					this.treasure.animate(this.swimAction.vx, this.swimAction.vy);
-					this.transitionItems.animate(this.swimAction.vx, this.swimAction.vy);
-					this.magicPills.animate(this.swimAction.vx, this.swimAction.vy);
-				}
+				} 
+				
 			}
 			
 			

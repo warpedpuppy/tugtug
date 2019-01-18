@@ -5,9 +5,13 @@ export default {
 		storeRadius: 0,
 		spinning: false,
 		utils: Utils,
+		vx: 0,
+		vy: 0,
 		init: function (hero, mode) {
 			this.hero = hero;
 			this.mode = mode;
+			this.vx = this.utils.randomNumberBetween(1,5); 
+            this.vy = this.utils.randomNumberBetween(1,5);
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -15,6 +19,10 @@ export default {
 		},
 		switchMode: function(mode) {
 			this.mode = mode;
+		},
+		rotate: function (obj) {
+				this.vx = -obj.vx;
+				this.vy = -obj.vy;
 		},
 		animate: function () {
 			if(!this.spinning){

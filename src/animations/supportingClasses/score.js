@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default {
+export default function () {
+	return {
 	startScore: 0,
 	score: 0,
 	scoreText: undefined,
@@ -54,6 +55,7 @@ export default {
 
 		}
 	}
+}
 }
 
 

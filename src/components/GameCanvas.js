@@ -1,12 +1,6 @@
 import React from 'react';
 import './GameCanvas.css';
 import game_code from '../animations/game_animation';
-import art_board_code from '../animations/supportingClasses/art_board_sub';
-import hero from '../animations/supportingClasses/hero';
-import PanelsBoard from '../animations/supportingClasses/panelsBoard';
-import pellets from '../animations/supportingClasses/pellets';
-import ripples from '../animations/supportingClasses/ripples';
-import filter_animation from '../animations/supportingClasses/filterAnimation';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
@@ -25,17 +19,6 @@ class GameCanvas extends React.Component {
 		    panelButtonText: "see panel",
 		    filterTest: "off"
 		  };
-		this.supportingClasses = {
-			art_board_code,
-			PanelsBoard,
-			PixiFps,
-			TweenMax,
-			hero,
-			pellets,
-			ripples,
-			filter_animation
-		}
-
 	}
 	getUserName () {
 		return faker.name.firstName();
@@ -67,8 +50,8 @@ class GameCanvas extends React.Component {
 			}]}
 		}
 		data.items = this.props.items;
-		console.log('data = ', data)
-		this.game = game_code(this.supportingClasses, data, this.getUserName, this.props.username);
+		// console.log('data = ', data)
+		this.game = game_code(data, this.getUserName, this.props.username);
 		this.game.init();
 		//this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
