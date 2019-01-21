@@ -24,9 +24,9 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5);
 
-			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
+			this.pillQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
 
-			 for(let i = 0; i < this.pelletQ; i ++ ){
+			 for(let i = 0; i < this.pillQ; i ++ ){
             	let s = new PIXI.Sprite(spritesheet.textures['star.png']);
             	s.anchor.set(0.5);
             	s.tint = Math.random() * 0xFFFFFF;
@@ -65,10 +65,10 @@ export default function () {
 		},
 		animate: function (vx, vy) {
 
-			for(let i = 0; i < this.pelletQ; i++){
+			for(let i = 0; i < this.pillQ; i++){
 				let p = this.pills[i];
-				p.x += vx || this.vx;
-             	p.y += vy || this.vy;
+				p.x -= vx || this.vx;
+             	p.y -= vy || this.vy;
              	p.rotation += this.utils.deg2rad(p.rotate);
 
             	if(p.y > this.bottomEdge) {

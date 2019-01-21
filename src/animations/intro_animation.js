@@ -16,6 +16,7 @@ import Ripples from '../animations/supportingClasses/ripples';
 import Treasure from '../animations/supportingClasses/treasure';
 import Score from '../animations/supportingClasses/score';
 import PixiFps from "pixi-fps";
+import Config from './animationsConfig';
 export default function(obj) {
 	return {
 		idle: true,
@@ -47,6 +48,7 @@ export default function(obj) {
         score: Score(),
         loader: PIXI.loader,
         activeAction: undefined,
+        config: Config,
 		init: function () {
 
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -227,28 +229,32 @@ export default function(obj) {
 				return;
 			}
 
-			if(str === 'right'){
+			if (str === 'right') {
 				this.idle = false;
 				this.swimAction.radius += 0.25;
-				this.velocity = this.utils.randomNumberBetween(4, 6);
+				this.velocity = this.utils.randomNumberBetween(
+					this.config.swimVelocities[0], 
+					this.config.swimVelocities[1]);
 				this.vx = this.velocity * Math.sin(this.swimAction.radius);
 				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
 				this.swimAction.storeRadius = this.swimAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy};
 				this.pellets.rotate(obj);
-				this.transitionItems.rotate(obj);
+				//this.transitionItems.rotate(obj);
 				this.swimAction.rotate(obj);
 			
-			} else if(str === 'left') {
+			} else if (str === 'left') {
 				this.idle = false;
 				this.swimAction.radius -= 0.25;
-				this.velocity = this.utils.randomNumberBetween(4, 6);
+				this.velocity = this.utils.randomNumberBetween(
+					this.config.swimVelocities[0], 
+					this.config.swimVelocities[1]);
 				this.vx = this.velocity * Math.sin(this.swimAction.radius);
 				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
 				this.swimAction.storeRadius = this.swimAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy};
 				this.pellets.rotate(obj);
-				this.transitionItems.rotate(obj);
+				//this.transitionItems.rotate(obj);
 				this.swimAction.rotate(obj);
 			}
 		},

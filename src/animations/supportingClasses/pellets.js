@@ -78,8 +78,8 @@ export default function () {
 					this.pelletsArray[i].y -= vy;// * rate;
 					this.pelletsArray[i].x -= vx;// * rate;
 				} else {
-					this.pelletsArray[i].x += this.vx;// * rate;
-		       		this.pelletsArray[i].y += this.vy;// * rate;
+					this.pelletsArray[i].x -= this.vx;// * rate;
+		       		this.pelletsArray[i].y -= this.vy;// * rate;
 				}
 			
             	if (this.pelletsArray[i].y > this.bottomEdge) {

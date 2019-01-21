@@ -62,7 +62,7 @@ export default function () {
 				c.vx = this.utils.randomNumberBetween(1,5); 
             	c.vy = this.utils.randomNumberBetween(1,5);
             	c.variance = this.utils.randomNumberBetween(5, 20);
-            	c.rotateSpeed = this.utils.randomNumberBetween(0.01, 0.05);
+            	c.rotateSpeed = this.utils.randomNumberBetween(0.01, 0.025);
 				this.parent.addChild(c);
 				this.chests.push(c);
 			}
@@ -168,15 +168,15 @@ export default function () {
 	animate: function (vx, vy) {
 		for (let i = 0; i < this.chestQ; i ++) {
 			let c = this.chests[i];
-			c.x += vx || c.vx;
-			c.y += vy || c.vy;
+			c.x -= vx || c.vx;
+			c.y -= vy || c.vy;
 			c.rotation = this.utils.cosWave(this.utils.deg2rad(0), this.utils.deg2rad(c.variance), c.rotateSpeed);
 			let tempRect = {x: c.x, y: c.y, width: c.width, height: c.height};
-			if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){
-				this.hit = true;
-				this.activeChest = c;
-				this.playAnimation();
-			} 
+			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){
+			// 	this.hit = true;
+			// 	this.activeChest = c;
+			// 	this.playAnimation();
+			// } 
 
 			if(c.y > this.bottomEdge) {
             	c.y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);

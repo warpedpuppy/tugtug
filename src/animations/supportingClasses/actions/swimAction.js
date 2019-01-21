@@ -2,7 +2,7 @@ import Utils from '../../utils/utils';
 export default function () {
 	return {
 		mode: undefined,
-		radius: 20,
+		radius: 0,
 		storeRadius: 0,
 		spinning: false,
 		utils: Utils,
@@ -11,8 +11,8 @@ export default function () {
 		init: function (hero, mode) {
 			this.hero = hero;
 			this.mode = mode;
-			this.vx = this.utils.randomNumberBetween(1,5); 
-            this.vy = this.utils.randomNumberBetween(1,5);
+			this.vx = this.utils.randomNumberBetween(1,2); 
+            this.vy = this.utils.randomNumberBetween(1,2);
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
