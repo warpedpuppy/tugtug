@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
-export default {
+export default function () {
+	return {
 		gravity: 0.3,
 		speedLimit: 7,
 		vy: 0,
@@ -85,4 +86,5 @@ export default {
 			}
 
 		}
+	}
 }

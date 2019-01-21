@@ -30,7 +30,7 @@ function Footer (props) {
 			<Link to="/about">
 				<span>about</span>
 			</Link> | 
-			<Link to="/about">
+			<Link to="/contact">
 				<span>contact</span>
 			</Link>
 			<a href="https://twitter.com/" rel="noopener noreferrer" target="_blank">

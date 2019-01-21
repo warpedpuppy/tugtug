@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default {
+export default function () {
+	return {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
 		pos: [],
@@ -153,4 +154,5 @@ export default {
             cont.body = b;
             return cont;
 		}
+	}
 }

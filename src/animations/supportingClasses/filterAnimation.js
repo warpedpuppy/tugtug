@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
-export default {
+export default function () {
+    return {
         app: undefined,
         count: 0,
         enabled: false,
@@ -72,5 +73,6 @@ export default {
            
 
         }
+    }
 }
 

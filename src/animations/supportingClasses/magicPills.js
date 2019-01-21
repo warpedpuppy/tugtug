@@ -83,7 +83,7 @@ export default function () {
             	} else if(p.x < -this.edgeBuffer) {
             		p.x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
             	}
-            	let c1 = {radius: 20, x: (this.wh.canvasWidth / 2), y: (this.wh.canvasHeight / 2)};
+            	// let c1 = {radius: 20, x: (this.wh.canvasWidth / 2), y: (this.wh.canvasHeight / 2)};
 
             	// if(!this.effect && this.utils.circleToCircleCollisionDetection(c1, this.pills[i])) {
             	// 	this.playEffect();

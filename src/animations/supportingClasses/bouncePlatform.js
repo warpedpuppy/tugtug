@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-export default {
+export default function () {
+    return {
         line: new PIXI.Sprite(),
         dot1: new PIXI.Sprite(),
         dot2: new PIXI.Sprite(),
@@ -105,4 +106,5 @@ export default {
                 this.dot2.rotation += 0.25;
             }
         }
+    }
 }

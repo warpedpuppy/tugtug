@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
-export default {
+export default function () {
+	return {
 		cont: new PIXI.Container(),
 		platforms: [],
 		arr: [],
@@ -52,4 +53,5 @@ export default {
 		    cont.addChild(b);
             return cont;
 		}
+	}
 }

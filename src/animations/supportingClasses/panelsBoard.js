@@ -45,7 +45,6 @@ export default function PanelsBoard(obj) {
                         this.activePanel = panelClass;
                         primary = true;
                     }
-
                     panelClass.build(panelCounter, this.panelWidth, this.panelHeight, userObject,  {x: xVal, y: yVal}, primary, this.stage);
                     let panel = panelClass.returnPanel();
                     panel.panelClass = panelClass;

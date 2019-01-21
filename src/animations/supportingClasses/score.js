@@ -8,16 +8,21 @@ export default function () {
 	increaseAllow: false,
 	targetNumber: undefined,
 	counter: 0,
-	init: function (cont, wh) {
+	utils: Utils,
+	init: function (cont, wh, optionalStartScore) {
 		this.canvasWidth = wh.canvasWidth;
 		this.canvasHeight = wh.canvasHeight;
-		this.scoreText = new PIXI.extras.BitmapText(`score: ${this.startScore}`, {font: "38px Hobo Std"});
-		this.scoreText.x = (this.canvasWidth - this.scoreText.width) / 2;
-		cont.addChild(this.scoreText);
 		this.cont = cont;
-	},
-	getScoreFromServer: function () {
 
+		if(optionalStartScore)this.startScore = optionalStartScore;
+		this.makeScore(this.startScore);
+
+	},
+	makeScore: function (score) {
+		score = this.utils.numberWithCommas(score);
+		this.scoreText = new PIXI.extras.BitmapText(`score: ${score}`, {font: "38px Hobo Std"});
+		this.scoreText.x = (this.canvasWidth - this.scoreText.width) / 2;
+		this.cont.addChild(this.scoreText);
 	},
 	increase: function (num) {
 		if (!this.increaseAllow) {
@@ -40,9 +45,9 @@ export default function () {
 				if(this.score < this.targetNumber) {
 					this.score ++;
 					this.cont.removeChild(this.scoreText)
-					this.scoreText = new PIXI.extras.BitmapText(`score: ${this.score}`, {font: "38px Hobo Std"});
-					this.scoreText.x = (this.canvasWidth - this.scoreText.width) / 2;
-					this.cont.addChild(this.scoreText);
+
+					this.makeScore(this.score);
+
 				} else {
 					this.increaseAllow = false;
 					this.counter = 0;

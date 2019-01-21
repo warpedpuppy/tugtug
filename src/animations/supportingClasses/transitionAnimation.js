@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
-
-export default {
+export default function () {
+    return {
     line: undefined,
     radialQ: undefined,
     explosionQ: undefined,
@@ -156,4 +156,5 @@ export default {
 
         }
     }
+}
 }

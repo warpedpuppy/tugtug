@@ -12,7 +12,6 @@ import TransitionItems from './supportingClasses/transitionItems';
 import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
-import TransitionAnimation from './supportingClasses/transitionAnimation';
 import Ripples from '../animations/supportingClasses/ripples';
 import Treasure from '../animations/supportingClasses/treasure';
 import Score from '../animations/supportingClasses/score';
@@ -26,7 +25,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['bounce', 'jump', 'swim', 'fly'],
+		mode: ['swim', 'jump', 'bounce', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -34,16 +33,15 @@ export default function(obj) {
         filterContainer: new PIXI.Container(),
         ripples: undefined,
         action: true,
-        tempRect: new PIXI.Rectangle,
+        tempRect: new PIXI.Rectangle(),
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
         pellets: Pellets(),
         magicPills: MagicPills(),
-        filterAnimation: FilterAnimation,
-        hero: Hero,
+        filterAnimation: FilterAnimation(),
+        hero: Hero(),
         transitionItems: TransitionItems(),
-        transitionAnimation: TransitionAnimation,
         utils: Utils,
         treasure: Treasure(),
         score: Score(),
@@ -141,11 +139,11 @@ export default function(obj) {
 			if(this.activeMode === 'jump'){
 
 				if(!this.platforms){
-					this.platforms = Platforms;
+					this.platforms = Platforms();
 					this.platformCont = new PIXI.Container();
 					this.platforms.init(this.platformCont, this.wh);
 
-					this.jumpAction = JumpAction;
+					this.jumpAction = JumpAction();
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 				}
 				this.activeAction = this.jumpAction;
@@ -159,10 +157,10 @@ export default function(obj) {
 			if (this.activeMode === 'bounce') {
 
 				if(!this.bouncePlatform){
-					this.bouncePlatform = BouncePlatform;
+					this.bouncePlatform = BouncePlatform();
             		this.bouncePlatform.init(this.stage, this.spritesheet);
             		this.bouncePlatform.on(false); 
-					this.bounceAction = BounceAction;
+					this.bounceAction = BounceAction();
             		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
 				}  
 				this.activeAction = this.bounceAction;
@@ -175,7 +173,7 @@ export default function(obj) {
 
 			if(this.activeMode === 'swim' || this.activeMode === 'fly'){
 				if (!this.swimAction) {
-					this.swimAction = SwimAction;
+					this.swimAction = SwimAction();
 					this.swimAction.init(this.hero, this.activeMode);
 				}
 				this.activeAction = this.swimAction;
@@ -184,7 +182,7 @@ export default function(obj) {
 
 			if(this.activeMode === 'swim'){
 				if (!this.ripples) {
-					this.ripples = Ripples;
+					this.ripples = Ripples();
 					this.ripples.init(this.app);
 				}
 				

@@ -6,15 +6,12 @@ import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
 import MagicPills from './supportingClasses/magicPills';
-import art_board_code from '../animations/supportingClasses/art_board_sub';
 import Hero from '../animations/supportingClasses/hero';
 import PanelsBoard from '../animations/supportingClasses/panelsBoard';
 import Pellets from '../animations/supportingClasses/pellets';
 import FilterAnimation from '../animations/supportingClasses/filterAnimation';
-import { TweenMax } from 'gsap';
 import PixiFps from "pixi-fps";
 import TransitionItems from './supportingClasses/transitionItems';
-import TransitionAnimation from './supportingClasses/transitionAnimation';
 import Ripples from '../animations/supportingClasses/ripples';
 import Treasure from '../animations/supportingClasses/treasure';
 import Score from '../animations/supportingClasses/score';
@@ -41,15 +38,14 @@ export default function Game (userObject, getUserName, primaryUser){
         doorAllow: true,
         arr: [],
         action: true,
-        mode: ['bounce', 'jump', 'swim', 'fly'],
+        mode: ['swim', 'jump', 'bounce', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         pellets: Pellets(),
         magicPills: MagicPills(),
-        filterAnimation: FilterAnimation,
-        hero: Hero,
+        filterAnimation: FilterAnimation(),
+        hero: Hero(),
         transitionItems: TransitionItems(),
-        transitionAnimation: TransitionAnimation,
         treasure: Treasure(),
         score: Score(),
         loader: PIXI.loader,
@@ -61,7 +57,7 @@ export default function Game (userObject, getUserName, primaryUser){
             this.halfHeight = this.canvasHeight / 2;
             this.halfWidth = this.canvasWidth / 2;
 
-            let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
+            //let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
             this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {backgroundColor: 0x0033CC});
             document.getElementById("game_canvas").appendChild(this.app.view);
 
@@ -196,10 +192,10 @@ export default function Game (userObject, getUserName, primaryUser){
             if (this.activeMode === 'bounce') {
 
                 if(!this.bouncePlatform){
-                    this.bouncePlatform = BouncePlatform;
+                    this.bouncePlatform = BouncePlatform();
                     this.bouncePlatform.init(this.stage, this.spritesheet);
                     this.bouncePlatform.on(false); 
-                    this.bounceAction = BounceAction;
+                    this.bounceAction = BounceAction();
                     this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
                 }  
                 this.activeAction = this.bounceAction;
@@ -214,11 +210,11 @@ export default function Game (userObject, getUserName, primaryUser){
             if(this.activeMode === 'jump'){
 
                 if(!this.platforms){
-                    this.platforms = Platforms;
+                    this.platforms = Platforms();
                     this.platformCont = new PIXI.Container();
                     this.platforms.init(this.platformCont, this.wh);
 
-                    this.jumpAction = JumpAction;
+                    this.jumpAction = JumpAction();
                     this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
                 }
                 this.activeAction = this.jumpAction;
@@ -233,7 +229,7 @@ export default function Game (userObject, getUserName, primaryUser){
 
             if(this.activeMode === 'swim' || this.activeMode === 'fly'){
                 if (!this.swimAction) {
-                    this.swimAction = SwimAction;
+                    this.swimAction = SwimAction();
                     this.swimAction.init(this.hero, this.activeMode);
                 }
                 this.activeAction = this.swimAction;
@@ -242,7 +238,7 @@ export default function Game (userObject, getUserName, primaryUser){
 
             if(this.activeMode === 'swim'){
                 if (!this.ripples) {
-                    this.ripples = Ripples;
+                    this.ripples = Ripples();
                     this.ripples.init(this.app);
                 }
                 

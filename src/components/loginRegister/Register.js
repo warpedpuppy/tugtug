@@ -58,9 +58,9 @@ export default class Register extends React.Component {
 		  })
 		  .catch(err => {
 		  	this.props.processing(false);
-		  	// console.error(err)
+		  	 console.error(err)
 		  	this.setState({
-				feedback: err.response.data.message
+				feedback: "error"//err.response.data.message
 			})
 		  });  
 

@@ -31,6 +31,7 @@ class App extends React.Component {
         { headers: {"Authorization" : `Bearer ${lsToken}`} }
       )
       .then(function(response){
+        
         if(response.data.valid) {
 
           //set store token & userdata

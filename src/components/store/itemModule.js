@@ -18,9 +18,11 @@ export default class ItemModule extends React.Component {
 	render () {
 		let purchased = (this.props.owned === 'true')?'this is owned':
 		<button disabled={this.state.disabled} onClick={(e) => this.onClickHandler(e)}>buy product</button>;
+
+
 		return (
-			<div className="itemModule">
-			<h1>{this.props.name}</h1>
+			<div className="itemModule col-3">
+			<h3>{this.props.name}</h3>
 			<img src={this.props.image} alt={this.props.name}/>
 			<div>price: {this.props.price}</div>
 			<div>owned: {this.props.owned}</div>

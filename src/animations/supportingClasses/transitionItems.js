@@ -10,7 +10,7 @@ export default function () {
 	textureCounter: 1,
 	hit: false,
 	utils: Utils,
-	transitionAnimation: TransitionAnimation,
+	transitionAnimation: TransitionAnimation(),
 	itemQ: 0,
 	items: [],
 	edgeBuffer: 200,

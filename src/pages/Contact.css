@@ -1,0 +1,36 @@
+.contactPage {
+	min-height: 100vw;
+}
+.contactPage h1 {
+	color: green;
+}
+
+.contactPage .inner {
+	border: 1px solid green;
+	display: block;
+	margin: 50px auto;
+	border-radius: 50%;
+	width: 300px;
+	height:300px;
+	padding:20px;
+}
+.contactPage textarea {
+	width: 300px;
+	height: 100px;
+}
+
+.contactPage .tester {
+	height: 0;
+	width: 0;
+	font-size:0;
+	opacity: 0;
+}
+.contactPage .results {
+	color: green;
+	font-style:italic;
+}
+
+@media (min-width: 1024px) {
+
+
+}

@@ -1,11 +1,12 @@
 import React from 'react';
 import ItemModule from '../components/store/itemModule.js';
 import './Store.css';
+import '../components/store/floatGrid.css';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import CheckForToken from '../components/utils/CheckForToken.js';
 import { connect } from 'react-redux';
-import { addItems, addItem } from '../actions/avatarActions.js';
+import { addItem } from '../actions/avatarActions.js';
 
 class Store extends React.Component {
 
@@ -13,7 +14,8 @@ class Store extends React.Component {
 		super(props);
 		this.onPurchase = this.onPurchase.bind(this);
 		this.state = {
-			products: [],
+			freeProducts: [],
+			paidProducts: [],
 			disableButton: false
 		}
 	}
@@ -23,8 +25,10 @@ class Store extends React.Component {
 		axios
 		.get(`${API_BASE_URL}/store`)
 		.then(function(response){
+			console.log(response)
 			that.setState({
-				products: response.data.products
+				freeProducts: response.data.products.free,
+				paidProducts: response.data.products.paid
 			})
 		})
 		.catch((err) => {
@@ -58,7 +62,7 @@ class Store extends React.Component {
 			obj,
 			{ headers: {"Authorization" : `Bearer ${lsToken}`} })
 		.then(function(response){
-			console.log("on newRecord = ", response.data.newRecord);
+			//console.log("on newRecord = ", response.data.newRecord);
 			//console.log("on bitmaps = ", response.data.newRecord.bitmaps);
 			//response.data.newRecord.bitmaps will be array of items
 			if(response.data.newRecord){
@@ -71,27 +75,45 @@ class Store extends React.Component {
 		});  
 	}
 
-	render () {
-		// console.log('products = ', this.state.products)
-		// if(this.props.items[0]){
-		// 	console.log('items = ', this.props.items)
-		// }
-		
-
-		let products = this.state.products.map( (product, index) => {
-			let test = this.props.items.find(item => {
-				return item.url === product.imgURL
-			}
+	createItemModules (array) {
+		let itemsPerRow = 4;
+		let products = [];
+		let temp = [];
+		for(let index = 0; index < array.length; index ++){
+			let product = array[index];
+			let testIfOwned = this.props.items.find(item => {return item.url === product.imgURL});
+			let owned =(testIfOwned)?'true':'false';
+			temp.push(<ItemModule index={index} disabled={this.state.disableButton} key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
 			)
-			let owned =(test)?'true':'false';
-			
-			return <ItemModule disabled={this.state.disableButton} key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
-		})
+			let testItemsPerRow = itemsPerRow - 1;
+			if(index  % itemsPerRow === testItemsPerRow || index === array.length - 1){
+				products.push(
+					<div className="row" key={index}>
+					{temp}
+					</div>
+				)
+				temp = [];
+			}
+		}
+		return products;
+	}
+
+	render () {
+
+		let products = this.createItemModules(this.state.freeProducts);
+		let paidProducts = this.createItemModules(this.state.paidProducts);
+	
+
 		return (
 			<div className="storeCont">
 				<CheckForToken />
 				<h1>store</h1>
+				<fieldset><legend>free products</legend>
 				{products}
+				</fieldset>
+				<fieldset><legend>paid products</legend>
+				{paidProducts}
+				</fieldset>
 			</div>
 		)
 

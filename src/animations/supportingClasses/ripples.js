@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
-export default {
+export default function () {
+	return {
 		ripples: [],
 		growing: [],
 		action: true,
@@ -119,4 +120,5 @@ export default {
 			this.gradient.y = pos.y;
 			
 		}
+	}
 }

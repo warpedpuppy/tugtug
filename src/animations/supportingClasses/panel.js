@@ -103,7 +103,7 @@ export default function Panel(wH) {
             if(primary){
                 this.loadArtBoard(primary);
             } else {
-                this.score.init(this.cont, {canvasHeight: this.panelHeight, canvasWidth: this.panelWidth})
+                this.score.init(this.cont, {canvasHeight: this.panelHeight, canvasWidth: this.panelWidth}, userData.score);
             }
        
 		},
