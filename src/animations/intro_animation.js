@@ -17,6 +17,7 @@ import Treasure from '../animations/supportingClasses/treasure';
 import Score from '../animations/supportingClasses/score';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
+import SwimBackground from './supportingClasses/swim/swimBackground';
 export default function(obj) {
 	return {
 		idle: true,
@@ -117,6 +118,22 @@ export default function(obj) {
 
             this.switchPlayer(this.mode[this.activeModeIndex]);
 
+            this.points = [];
+            this.pointsData = [];
+            this.counter = 0;
+            for (var i = 0; i < 5; i++) {
+            	let startPoint = i * 10;
+            	this.pointsData.push(startPoint)
+			    this.points.push(new PIXI.Point(i*60, 0));
+			}
+            var strip = this.strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('/bmps/koi.png'), this.points);
+            strip.x = strip.y = 100;
+            let stripCont = new PIXI.Container();
+            //stripCont.scale.set(0.25)
+            stripCont.addChild(strip)
+            this.stage.addChild(stripCont);
+            this.storePoints = [];
+
             this.app.ticker.add(this.animate.bind(this));
 		},
 		stop: function () {
@@ -177,7 +194,10 @@ export default function(obj) {
 				if (!this.swimAction) {
 					this.swimAction = SwimAction();
 					this.swimAction.init(this.hero, this.activeMode);
+
+					this.swimBackground = SwimBackground();
 				}
+				this.swimBackground.init(this.stage, this.wh);
 				this.activeAction = this.swimAction;
 				this.swimAction.switchMode(this.activeMode);
 			}
@@ -298,7 +318,16 @@ export default function(obj) {
         },
 		animate: function () {
 
-			
+	
+
+			    for (var i = 0; i < this.points.length; i ++ ) {
+			    	
+
+			        this.points[i].y = this.utils.cosWave(i, i* 10, i* 0.001)
+			       
+			    }
+
+						
 			this.score.animate();
 
 			if (this.treasure.hit || this.transitionItems.hit) {
@@ -334,6 +363,8 @@ export default function(obj) {
 					this.bouncePlatform.animate();
 				} else if (this.activeMode === 'swim') {
 					this.ripples.animate();
+
+					this.swimBackground.animate();
 				} 
 				
 			}

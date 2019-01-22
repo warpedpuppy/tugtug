@@ -57,9 +57,11 @@ export default function () {
 		fishMode: function () {	
 			this.cont.removeChildren();
 			this.segmentsQ = 5;
+			this.segmentHeight = 25;
 			if(!this.fish.length){
 				 for (let i = 0; i < this.segmentsQ; i++) {
-	                let segment = this.bodySegment(25, 0xFFFF00, i*25);
+				 	let fishNum = i+1;
+	                let segment = this.bodySegment(this.segmentHeight, 0xFFFF00, i * this.segmentHeight, `/bmps/fish${fishNum}.png`);
 	                this.fish.push(segment);
 	                this.cont.addChild(segment);
 	            }
@@ -77,7 +79,7 @@ export default function () {
 			this.segmentsQ = 10;
 			if(!this.dragon.length){
 				 for (let i = 0; i < this.segmentsQ; i++) {
-	                let segment = this.bodySegment(25, 0xFFFF00, i*25);
+	                let segment = this.bodySegment(25, 0xFFFF00, i * 25);
 	                this.dragon.push(segment);
 	                this.cont.addChild(segment);
 	            }
@@ -125,7 +127,7 @@ export default function () {
 			}
 			
 		},
-		bodySegment: function (radius, color, yVal) {
+		bodySegment: function (radius, color, yVal, str) {
 			let cont = new PIXI.Container();
             cont.radius = radius;
             cont.height = cont.radius * 4;
@@ -133,8 +135,9 @@ export default function () {
             cont.vy = 0;
             cont.xpos = 0;
             cont.ypos = 0;
-
+            //let b = new PIXI.Sprite.fromImage(str);
             let b = new PIXI.Graphics();
+
             b.y = yVal;
             let triangleWidth = 25,
 		        triangleHeight = triangleWidth,
