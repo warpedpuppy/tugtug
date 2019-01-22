@@ -121,6 +121,7 @@ export default function(obj) {
             this.points = [];
             this.pointsData = [];
             this.counter = 0;
+            this.animCounter = 0;
             for (var i = 0; i < 5; i++) {
             	let startPoint = i * 10;
             	this.pointsData.push(startPoint)
@@ -320,12 +321,11 @@ export default function(obj) {
 
 	
 
-			    for (var i = 0; i < this.points.length; i ++ ) {
-			    	
+	
+			this.points[this.counter].y = this.utils.cosWave(0, 50, 0.001);
 
-			        this.points[i].y = this.utils.cosWave(i, i* 10, i* 0.001)
-			       
-			    }
+				 
+			
 
 						
 			this.score.animate();
