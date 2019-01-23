@@ -59,27 +59,77 @@ export default function () {
 			this.cont.removeChildren();
 			this.segmentsQ = 5;
 			this.segmentHeight = 25;
+			this.finCont = new PIXI.Container();
+			this.eyeCont = new PIXI.Container();
 			if(!this.fish.length){
 				for(let i = 0; i < 4; i ++){
-					let r = PIXI.Sprite.fromImage('/bmps/gradientRing.png');
+					let r = new PIXI.Sprite(this.spritesheet.textures['gradientRing.png']);
 					r.anchor.set(0.5);
 					r.scale.set(0);
 					this.airBubbles.push(r);
 				}
 				 for (let i = 0; i < this.segmentsQ; i++) {
 				 	let fishNum = i+1;
-	                let segment = this.bodySegment(this.segmentHeight, 0xFFFF00, i * this.segmentHeight, `/bmps/fish${fishNum}.png`);
+	                let segment = this.fishBodySegment(this.segmentHeight, 0xFFFF00, i, `/bmps/fish${fishNum}.png`);
 	                this.fish.push(segment);
-	                this.cont.addChild(segment);
+	                this.cont.addChildAt(segment, 0);
 	            }
+
 			} else {
 				 for (let i = 0; i < this.segmentsQ; i++) {
-	                this.cont.addChild(this.fish[i]);
+	                this.cont.addChildAt(this.fish[i], 0);
 	            }
+	            let rightFin = this.rightFin = new PIXI.Sprite(this.spritesheet.textures['swimFin.png']);
+	            this.rightFin.x = this.fishRadius - 20;
+	            let index = this.cont.children.length - 2;
+	            this.finCont.addChild(rightFin)
+	            let leftFin = this.leftFin = new PIXI.Sprite(this.spritesheet.textures['swimFin.png']);
+	            leftFin.scale.x = -1;
+	            this.leftFin.x = -this.fishRadius + 20;
+	            this.finCont.addChild(leftFin);
+	            this.cont.addChildAt(this.finCont, index);
+
+	            let rightEye = this.rightEye = new PIXI.Sprite(this.spritesheet.textures['swimEye.png']);
+	            rightEye.anchor.set(0.5);
+	            this.rightEye.x = this.fishRadius - 20;
+	            this.eyeCont.addChild(rightEye)
+	            let leftEye = this.leftEye = new PIXI.Sprite(this.spritesheet.textures['swimEye.png']);
+	            this.leftEye.x = -this.fishRadius + 20;
+	            leftEye.anchor.set(0.5);
+	            this.eyeCont.addChild(leftEye);
+	            this.cont.addChild(this.eyeCont)
+
 			}
 			this.cont.radius = 0;
 			this.segments = this.fish;
 			
+		},
+		fishBodySegment: function (radius, color, num, str) {
+			let cont = new PIXI.Container();
+            cont.radius = radius;
+            cont.height = cont.radius * 4;
+            cont.vx = 0;
+            cont.vy = 0;
+            cont.xpos = 0;
+            cont.ypos = 0;
+
+            //let b = new PIXI.Sprite.fromImage(str);
+            let b = new PIXI.Sprite(this.spritesheet.textures['swimBodySegment.png']);
+            this.fishRadius = b.width / 2;
+            let scale = 1 - (num * 0.1);
+            b.scale.set(scale);
+            b.y = num * radius;
+		    b.anchor.set(0.5);
+            cont.addChild(b);
+            cont.body = b;
+            if (num === this.segmentsQ - 1) {
+               let tail = this.tail = new PIXI.Sprite(this.spritesheet.textures['swimTail.png']);
+               this.tail.anchor.x = 0.5;
+
+               tail.y = b.y + (b.width / 2) - 20;
+               cont.addChildAt(tail, 0);
+            }
+            return cont;
 		},
 		dragonMode: function () {
 			this.cont.removeChildren();

@@ -180,7 +180,7 @@ export default function(obj) {
 					this.swimAction = SwimAction();
 					this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
 
-					this.fishSchool = FishSchool();
+					this.fishSchool = FishSchool(this.spritesheet);
 
 					this.fishSchool.init(this.stage, this.wh);
 					this.swimBackground = SwimBackground();

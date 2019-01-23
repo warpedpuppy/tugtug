@@ -1,4 +1,5 @@
 import Utils from '../../utils/utils';
+import * as PIXI from 'pixi.js';
 export default function () {
 	return {
 		mode: undefined,
@@ -35,16 +36,19 @@ export default function () {
 				this.vy = -obj.vy;
 		},
 		setupBubbles: function () {
-			let startTimes = [0,10, 20,30]
+			let startTimes = [0,10, 20,30];
+			this.bubblesCont = new PIXI.Container();
+			this.bubblesCont.x = this.wh.canvasWidth / 2;
+			this.bubblesCont.y = this.wh.canvasHeight / 2;
 			for (let i = 0; i < this.hero.airBubbles.length; i ++) {
 				let ab = this.hero.airBubbles[i];
-				ab.x = this.wh.canvasWidth / 2;
-				ab.y = this.wh.canvasHeight / 2;
+				ab.y = -this.hero.fishRadius;
 				ab.counter = 0;
 				ab.startTime = startTimes[i];
 				this.expand.push(ab);
-				this.stage.addChild(ab);
+				this.bubblesCont.addChild(ab);
 			}
+			this.stage.addChild(this.bubblesCont);
 		},
 		fishExhale: function () {
 			for(let i = 0; i < this.expand.length; i ++){
@@ -86,12 +90,14 @@ export default function () {
 	        }
 
 	        this.hero.segments[0].rotation = this.radius;
+	        this.hero.finCont.rotation = this.radius;
+	        this.hero.eyeCont.rotation = this.radius;
+	        this.bubblesCont.rotation = this.storeRadius;
 
 
 	        for (let i = 1; i < this.hero.segmentsQ; i++) {
 	            let index = this.hero.pos.length - (i * this.increment);
 	            if (this.hero.pos.length >= index) {
-	              //console.log(this.pos[index]);
 	              this.hero.segments[i].rotation = this.hero.pos[index];
 	            }
 	        }
@@ -99,14 +105,16 @@ export default function () {
 
 	        	if (this.countAllow) {
 	        		this.airBubbleCounter ++;
-		        	if(this.airBubbleCounter === this.airBubbleStart){
+		        	if (this.airBubbleCounter === this.airBubbleStart) {
 		        	
 		        		this.countAllow = false;
 		        	}
 	        	} else {
 	        		this.fishExhale();
 	        	}
-	        	
+	        	this.hero.leftFin.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
+	        	this.hero.rightFin.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
+	        	this.hero.tail.rotation = this.utils.deg2rad(this.utils.cosWave(0, 60, 0.01));
 
 
 	        } else if(this.mode === 'fly'){

@@ -204,6 +204,12 @@
             <filename>../bmps/treasureChest.png</filename>
             <filename>../bmps/treasureRing.png</filename>
             <filename>../bmps/gradientRing.png</filename>
+            <filename>../bmps/swimBodySegment.png</filename>
+            <filename>../bmps/swimEye.png</filename>
+            <filename>../bmps/swimFin.png</filename>
+            <filename>../bmps/swimTail.png</filename>
+            <filename>../bmps/shark.png</filename>
+            <filename>../bmps/koi.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
