@@ -16,6 +16,7 @@ export default function () {
 		yOffset: 0,
 		parentCont: undefined,
 		utils: Utils,
+		airBubbles: [],
 		init: function (wh, items, parentCont, spritesheet) {
 			this.parentCont = parentCont;
 			this.canvasWidth = wh.canvasWidth;
@@ -59,6 +60,12 @@ export default function () {
 			this.segmentsQ = 5;
 			this.segmentHeight = 25;
 			if(!this.fish.length){
+				for(let i = 0; i < 4; i ++){
+					let r = PIXI.Sprite.fromImage('/bmps/gradientRing.png');
+					r.anchor.set(0.5);
+					r.scale.set(0);
+					this.airBubbles.push(r);
+				}
 				 for (let i = 0; i < this.segmentsQ; i++) {
 				 	let fishNum = i+1;
 	                let segment = this.bodySegment(this.segmentHeight, 0xFFFF00, i * this.segmentHeight, `/bmps/fish${fishNum}.png`);

@@ -203,6 +203,7 @@
             <filename>../bmps/star.png</filename>
             <filename>../bmps/treasureChest.png</filename>
             <filename>../bmps/treasureRing.png</filename>
+            <filename>../bmps/gradientRing.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

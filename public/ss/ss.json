@@ -54,9 +54,18 @@
 	"sourceSize": {"w":63,"h":36},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"gradientRing.png":
+{
+	"frame": {"x":114,"y":14,"w":221,"h":221},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":221,"h":221},
+	"sourceSize": {"w":221,"h":221},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "jumpTrans.png":
 {
-	"frame": {"x":114,"y":430,"w":85,"h":36},
+	"frame": {"x":2,"y":52,"w":85,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":36},
@@ -110,7 +119,7 @@
 },
 "swimTrans.png":
 {
-	"frame": {"x":114,"y":392,"w":100,"h":36},
+	"frame": {"x":2,"y":14,"w":100,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":36},
@@ -142,6 +151,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:802c772254dc14aa0535948f2ba71698:1996ac808ee1ce7a087ed670bbe81a74:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:bad046d6f8c4aa578ce092e29ab7348c:23b8da44f5fadf06d68dc1e5e6dd1d3d:7a7dafe8686879c23378e53f9469620c$"
 }
 }

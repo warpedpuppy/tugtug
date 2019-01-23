@@ -4,7 +4,15 @@ export default function () {
 		ripples: [],
 		growing: [],
 		action: true,
-		init: function (app) {
+		init: function (app, wh) {
+
+			this.wh = wh;
+
+			this.parent = new PIXI.Container();
+			this.parent.width = this.wh.canvasWidth;
+			this.parent.height = this.wh.canvasHeight;
+
+			let blurFilter = new PIXI.filters.BlurFilter(4);
 
 			this.app = app;
 			var sprites = this.sprites = new PIXI.particles.ParticleContainer(10000, {
@@ -14,11 +22,14 @@ export default function () {
 			    uvs: true,
 			    alpha: true
 			});
+			this.parent.addChild(sprites);
+
+			this.sprites.filters = [ blurFilter ];
 		
             this.totalSprites = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
 
             for (let i = 0; i < this.totalSprites; i++) {
-                var dude = PIXI.Sprite.fromImage('/bmps/ring.png');
+                var dude = PIXI.Sprite.fromImage('/bmps/gradientRing.png');
                 dude.anchor.x = dude.anchor.y = 0.5;
                 dude.startScale = 0.1
                 dude.scale.set(dude.startScale);
@@ -51,13 +62,13 @@ export default function () {
 			if(boolean){
 				//start ripples
 				this.app.stage.interactive = true;
-				this.app.stage.addChild(this.sprites);
+				this.app.stage.addChild(this.parent);
 			    this.app.stage.pointermove = this.mouseMove;
 			    this.app.stage.addChild(this.gradient);
 			} else {
 				// end ripples
 				this.app.stage.interactive = false;
-				this.app.stage.removeChild(this.sprites);
+				this.app.stage.removeChild(this.parent);
 		    	this.app.stage.pointermove =  null;
 		    	this.app.stage.removeChild(this.gradient);
 			}
@@ -75,7 +86,8 @@ export default function () {
 			ripple.scale.x += 0.0075;
 			ripple.scale.y += 0.0075;
 			ripple.counter ++;
-			ripple.alpha -= 0.005;
+			if(ripple.alpha > 0)ripple.alpha -= 0.01;
+
 
 			if (ripple.counter >= 100){
 				this.reset(ripple);
@@ -104,7 +116,7 @@ export default function () {
 				
 				if(this.growing.indexOf(this.ripples[this.opc]) !== -1)return;
 				
-				this.ripples[this.opc].tint = Math.random() * 0xE8D4CD;
+				// this.ripples[this.opc].tint = Math.random() * 0xE8D4CD;
 				this.ripples[this.opc].x = pos.x;
 				this.ripples[this.opc].y = pos.y;
 				this.ripples[this.opc].alpha = 0.75;
