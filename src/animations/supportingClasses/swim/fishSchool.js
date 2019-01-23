@@ -45,7 +45,7 @@ export default function (spritesheet) {
            		let num = this.utils.randomNumberBetween(0, 360)
            		f.vx = this.utils.randomNumberBetween(-3, 3);
 				f.vy = this.utils.randomNumberBetween(-3, 3);
-				f.alpha = 0.5;
+				f.alpha = 0.15;
 				f.rotation = Math.atan2(f.vy , f.vx);
 				f.scale.set(this.utils.randomNumberBetween(3, 5))
            		this.fishArray.push(f);

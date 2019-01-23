@@ -96,7 +96,7 @@ export default function(obj) {
 
             this.clock.init(this.stage, this.wh);
 
-			this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
+			//this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
 
 			this.magicPills.init(this.app, this.wh, this.filterTest.bind(this), this.backgroundCont, this.spritesheet);
 
@@ -333,7 +333,7 @@ export default function(obj) {
 				
 				this.gears.animate();
 				this.activeAction.animate();
-				this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
+				//this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
 				this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
 				this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
 				this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
