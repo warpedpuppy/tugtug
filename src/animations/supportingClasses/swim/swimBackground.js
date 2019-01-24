@@ -16,14 +16,14 @@ export default function () {
 			this.sprite1.height = this.wh.canvasHeight * this.sizeIncrement;
 			this.sprite1.vx = this.speed1;
 			this.sprite1.vy = this.speed1;
-			this.sprite1.alpha = 0.5;
+			this.sprite1.alpha = 0.15;
 
 			this.sprite2 = new PIXI.Sprite(this.texture);
 			this.sprite2.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.sprite2.height = this.wh.canvasHeight * this.sizeIncrement;
 			this.sprite2.x = -this.wh.canvasWidth / this.sizeIncrement;
 			this.sprite2.y = -this.wh.canvasHeight / this.sizeIncrement;
-			this.sprite2.alpha = 0.25;
+			this.sprite2.alpha = 0.5;
 			this.sprite2.vx = this.speed2;
 			this.sprite2.vy = this.speed2;
 
@@ -39,7 +39,7 @@ export default function () {
 			// cont.addChild(eel)
 
 			cont.addChildAt(this.sprite2, 0);
-			cont.addChildAt(this.sprite1, 0);
+			cont.addChild(this.sprite1);
 
 		},
 		animate: function () {

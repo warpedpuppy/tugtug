@@ -19,6 +19,7 @@ import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import SwimBackground from './supportingClasses/swim/swimBackground';
 import FishSchool from './supportingClasses/swim/fishSchool';
+import LilypadsLotuses from './supportingClasses/swim/lilypadsLotuses';
 export default function(obj) {
 	return {
 		idle: true,
@@ -184,8 +185,13 @@ export default function(obj) {
 
 					this.fishSchool.init(this.stage, this.wh);
 					this.swimBackground = SwimBackground();
+
+					this.lilypadLotuses = LilypadsLotuses();
+					this.lilypadLotuses.init(this.stage, this.wh);
+
 				}
 				this.fishSchool.addToStage();
+				this.lilypadLotuses.addToStage();
 				this.swimBackground.init(this.stage, this.wh);
 				this.activeAction = this.swimAction;
 				this.swimAction.switchMode(this.activeMode);
@@ -344,6 +350,7 @@ export default function(obj) {
 					this.ripples.animate();
 					this.fishSchool.animate();
 					this.swimBackground.animate();
+					this.lilypadLotuses.animate();
 				} 
 				
 			}

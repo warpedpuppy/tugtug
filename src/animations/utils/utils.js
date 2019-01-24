@@ -265,20 +265,12 @@ export default {
         }
         return returnObj;
     },
-    circleToCircleCollisionDetection: function (circle1, circle2) {
+    circleToCircleCollisionDetection: function (ballA, ballB) {
 
-        var x1 = circle1.x;
-        var y1 = circle1.y;
-        var x2 = circle2.x;
-        var y2 = circle2.y;
-        var radius1 = circle1.radius;
-        var radius2 = circle2.radius;
-
-        if (Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) < (radius1 + radius2)) {
-            return true;
-        } else {
-            return false;
-        }
+       var rSum = ballA.radius + ballB.radius;
+        var dx = ballB.x - ballA.x;
+        var dy = ballB.y - ballA.y;
+        return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];
     },
     lineIntersectCircle: function (A, B, C, r) {
         this.intersects = false;

@@ -13,6 +13,7 @@ export default function () {
 		airBubbleStart: 0,
 		countAllow: true,
 		expand: [],
+		percApply: true,
 		init: function (hero, mode, wh, stage) {
 			this.hero = hero;
 			this.mode = mode;
@@ -98,7 +99,8 @@ export default function () {
 	        for (let i = 1; i < this.hero.segmentsQ; i++) {
 	            let index = this.hero.pos.length - (i * this.increment);
 	            if (this.hero.pos.length >= index) {
-	              this.hero.segments[i].rotation = this.hero.pos[index];
+	              let perc = (this.spinning)?1:this.hero.segments[i].rotatePerc; 
+	              this.hero.segments[i].rotation = this.hero.pos[index];// * perc;
 	            }
 	        }
 	        if (this.mode === 'swim') {
