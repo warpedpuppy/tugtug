@@ -10,6 +10,7 @@ export default function () {
 		utils: Utils,
 		activeBrick: undefined,
 		brickHeight: 50,
+		fallSpeed: undefined,
 		init: function (parentCont, wh, spritesheet) {
 			this.parentCont = parentCont;
 			this.wh = wh;
@@ -18,7 +19,7 @@ export default function () {
 
 			let s = this.brick();
 			s.y = this.wh.canvasHeight - this.brickHeight;
-		
+			
 			this.bricks.push(s);
 			this.cont.addChild(s);
 			this.newBrick();
@@ -31,6 +32,7 @@ export default function () {
 		},
 		newBrick: function () {
 			let s = this.brick();
+			this.fallSpeed = this.utils.randomNumberBetween(2, 10);
 			let previousYVal = this.bricks[this.bricks.length -1].y;
 			this.bricks.push(s);
 			s.y =  -50;
@@ -50,7 +52,7 @@ export default function () {
 		},
 		animate: function () {
 			if(this.activeBrick && this.activeBrick.y < this.activeBrick.dest){
-				this.activeBrick.y += 5;
+				this.activeBrick.y += this.fallSpeed;
 			} else {
 				this.activeBrick.y = this.activeBrick.dest;
 				this.newBrick();
