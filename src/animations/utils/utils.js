@@ -58,6 +58,9 @@ export default {
             return (~~(Math.random() * 16)).toString(16);
         });
     },
+    randomItemFromArray: function (arr) {
+        return arr[Math.floor(Math.random()*arr.length)]
+    },
     randomColor: function () {
 
         var x = Math.round(0xffffff * Math.random()).toString(16);

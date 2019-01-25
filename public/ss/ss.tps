@@ -204,12 +204,18 @@
             <filename>../bmps/treasureChest.png</filename>
             <filename>../bmps/treasureRing.png</filename>
             <filename>../bmps/gradientRing.png</filename>
-            <filename>../bmps/swimBodySegment.png</filename>
             <filename>../bmps/swimEye.png</filename>
             <filename>../bmps/swimFin.png</filename>
-            <filename>../bmps/swimTail.png</filename>
             <filename>../bmps/shark.png</filename>
             <filename>../bmps/koi.png</filename>
+            <filename>../bmps/bodySegment1.png</filename>
+            <filename>../bmps/bodySegment2.png</filename>
+            <filename>../bmps/bodySegment3.png</filename>
+            <filename>../bmps/bodySegment4.png</filename>
+            <filename>../bmps/bodySegment5.png</filename>
+            <filename>../bmps/bodySegmentTail.png</filename>
+            <filename>../bmps/headSegment.png</filename>
+            <filename>../bmps/goldTile.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

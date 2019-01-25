@@ -10,26 +10,28 @@ export default function (spritesheet) {
 			this.parentCont = parentCont;
 			this.wh = wh;
 			this.strs = [
-			// '/bmps/lotus1.png',
-			// '/bmps/lotus2.png',
-			'/bmps/lilypad1.png',
-			'/bmps/lilypad1.png',
-			'/bmps/lilypad1.png',
+				['/bmps/lilyPad2.png', 178],
+				['/bmps/lilypad1.png',211]
 			];
-			this.loopingQ = 10;
+			this.loopingQ = 6;
+
 			for(let i = 0; i < this.loopingQ; i ++){
 				//let s1 = new PIXI.Sprite.fromImage(this.strs[i]);
-				let s1 = new PIXI.Graphics();
-				let ballWidth =  this.utils.randomNumberBetween(50, 100);
-				let halfWidth = ballWidth / 2;
-				s1.beginFill(0x98FB98).drawCircle(-halfWidth,-halfWidth,ballWidth).endFill();
+
+				let t = this.utils.randomItemFromArray(this.strs);
+				let s1 = new PIXI.Sprite.fromImage(t[0]);
+				// let ballWidth =  this.utils.randomNumberBetween(50, 100);
+				// let halfWidth = ballWidth / 2;
+				// s1.beginFill(0x98FB98).drawCircle(-halfWidth,-halfWidth,ballWidth).endFill();
+
+				s1.anchor.set(0.5);
 				s1.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
 				s1.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
 
 				//s1.pivot.set(0.5);
-				s1.radius = s1.r = ballWidth;
-				s1.dx = this.utils.randomNumberBetween(-1, 1);
-				s1.dy = this.utils.randomNumberBetween(-1, 1);
+				s1.radius = s1.r = t[1] / 2;
+				s1.vx = this.utils.randomNumberBetween(-1, 1);
+				s1.vy = this.utils.randomNumberBetween(-1, 1);
 				s1.rotate = this.utils.randomNumberBetween(-1, 1);
 				this.cont.addChild(s1);
 				this.array.push(s1);
@@ -38,25 +40,29 @@ export default function (spritesheet) {
 		
 		},
 		update: function (ball) {
-			ball.x += ball.dx;
-			ball.y += ball.dy;
+			ball.x += ball.vx;
+			ball.y += ball.vy;
+			ball.rotation += this.utils.deg2rad(ball.rotate);
 			if(ball.x > this.wh.canvasWidth - ball.r) {
 				ball.x = this.wh.canvasWidth - ball.r;
-				ball.dx *= -1;
+				ball.vx *= -1;
 			} else if(ball.x < ball.r) {
 				ball.x = ball.r;
-				ball.dx *= -1;
+				ball.vx *= -1;
 			}
 			if(ball.y > this.wh.canvasHeight - ball.r) {
 				ball.y = this.wh.canvasHeight - ball.r;
-				ball.dy *= -1;
+				ball.vy *= -1;
 			} else if(ball.y < ball.r) {
 				ball.y = ball.r + 1;
-				ball.dy *= -1;
+				ball.vy *= -1;
 			}
 		},
 		addToStage: function () {
 		  	this.parentCont.addChild(this.cont);
+		},
+		removeFromStage: function () {
+		  	this.parentCont.removeChild(this.cont);
 		},
 		adjustPositions: function (ballA, ballB, depth){
 			const percent = 0.2;
@@ -73,7 +79,7 @@ export default function (spritesheet) {
 			ballB.y += 1/ballB.r * correction[1];
 		},
 		resolveCollision: function (ballA, ballB){
-			var relVel = [ballB.dx - ballA.dx,ballB.dy - ballA.dy];
+			var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
 			var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
 			var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
 			norm = [norm[0]/mag,norm[1]/mag];
@@ -87,10 +93,10 @@ export default function (spritesheet) {
 			j /= 1/ballA.r + 1/ballB.r;
 			
 			var impulse = [j*norm[0],j*norm[1]];
-			ballA.dx -= 1/ballA.r * impulse[0];
-			ballA.dy -= 1/ballA.r * impulse[1];
-			ballB.dx += 1/ballB.r * impulse[0];
-			ballB.dy += 1/ballB.r * impulse[1];
+			ballA.vx -= 1/ballA.r * impulse[0];
+			ballA.vy -= 1/ballA.r * impulse[1];
+			ballB.vx += 1/ballB.r * impulse[0];
+			ballB.vy += 1/ballB.r * impulse[1];
 		},
 		animate: function () {
 

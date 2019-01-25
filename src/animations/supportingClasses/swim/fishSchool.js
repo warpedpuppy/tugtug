@@ -13,6 +13,7 @@ export default function (spritesheet) {
 		sharkArray: [],
 		utils: Utils,
 		sharkCont: new PIXI.Container(),
+		fishCont: new PIXI.Container(),
 		sharkQ: 20,
 		buffer: 10, 
 		init: function (cont, wh) {
@@ -36,6 +37,7 @@ export default function (spritesheet) {
 				f.alpha = 0.5;
 				f.rotation = Math.atan2(f.vy , f.vx);
            		this.fishArray.push(f)
+           		this.fishCont.addChild(f);
            }
             
             for(let i = 0; i < this.sharkQ; i ++) {
@@ -57,10 +59,12 @@ export default function (spritesheet) {
 
 		},
 		addToStage: function () {
-		 	for(let i = 0; i < this.fishQ; i ++) {
-		        this.cont.addChildAt(this.fishArray[i], 3);
-		  	}
+		 	this.cont.addChildAt(this.fishCont, 3);
 		  	this.cont.addChildAt(this.sharkCont, 0);
+		},
+		removeFromStage: function () {
+			this.cont.removeChild(this.fishCont);
+		  	this.cont.removeChild(this.sharkCont);
 		},
 		fish: function (texture, points, utils) {
 			let stripCont = new PIXI.Container();

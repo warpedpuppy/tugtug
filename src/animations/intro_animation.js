@@ -20,6 +20,7 @@ import Config from './animationsConfig';
 import SwimBackground from './supportingClasses/swim/swimBackground';
 import FishSchool from './supportingClasses/swim/fishSchool';
 import LilypadsLotuses from './supportingClasses/swim/lilypadsLotuses';
+import JumpBackground from './supportingClasses/jump/jumpBackground';
 export default function(obj) {
 	return {
 		idle: true,
@@ -29,7 +30,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['swim', 'jump', 'bounce', 'fly'],
+		mode: ['swim', 'jump'],//, 'bounce', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -150,11 +151,16 @@ export default function(obj) {
 
 					this.jumpAction = JumpAction();
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
+
+            		this.jumpBackground = JumpBackground();
+            		this.jumpBackground.init(this.stage, this.wh, this.spritesheet);
 				}
 				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);
 				this.stage.addChild(this.platformCont)
+				this.jumpBackground.addToStage();
 			} else {
+				if(this.jumpBackground) this.jumpBackground.removeFromStage();
 				if(this.platforms)this.platforms.addPlatforms(false);
 				this.stage.removeChild(this.platformCont)
 			}
@@ -182,9 +188,10 @@ export default function(obj) {
 					this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
 
 					this.fishSchool = FishSchool(this.spritesheet);
-
 					this.fishSchool.init(this.stage, this.wh);
+
 					this.swimBackground = SwimBackground();
+					this.swimBackground.init(this.stage, this.wh);
 
 					this.lilypadLotuses = LilypadsLotuses();
 					this.lilypadLotuses.init(this.stage, this.wh);
@@ -192,7 +199,8 @@ export default function(obj) {
 				}
 				this.fishSchool.addToStage();
 				this.lilypadLotuses.addToStage();
-				this.swimBackground.init(this.stage, this.wh);
+				this.swimBackground.addToStage();
+				
 				this.activeAction = this.swimAction;
 				this.swimAction.switchMode(this.activeMode);
 			}
@@ -206,6 +214,11 @@ export default function(obj) {
 				this.ripples.on(true);
 			} else {
 				if (this.ripples) this.ripples.on(false);
+				if (this.fishSchool) this.fishSchool.removeFromStage();
+				if (this.lilypadLotuses) this.lilypadLotuses.removeFromStage();
+				if (this.swimBackground) this.swimBackground.removeFromStage();
+				if (this.swimAction) this.swimAction.airBubbles.resetAirBubbles();
+
 			}
 		},
 		resizeHandler: function () {

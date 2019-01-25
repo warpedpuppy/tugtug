@@ -3,13 +3,13 @@ import Utils from '../../utils/utils';
 export default function () {
 	return {
 		texture: new PIXI.Texture.fromImage('/bmps/water.png'),
-		eelTexture: new PIXI.Texture.fromImage('/bmps/eel.png'),
 		sprite1: undefined,
 		sprite2: undefined,
 		speed1: 0.5,
 		speed2: 0.75,
 		sizeIncrement: 2,
 		init: function (cont, wh) {
+			this.cont = cont;
 			this.wh = wh;
 			this.sprite1 = new PIXI.Sprite(this.texture);
 			this.sprite1.width = this.wh.canvasWidth * this.sizeIncrement;
@@ -27,31 +27,16 @@ export default function () {
 			this.sprite2.vx = this.speed2;
 			this.sprite2.vy = this.speed2;
 
-			// this.count = 0;
-			// this.points = [];
-			// this.pointsQ = 5;
-
-			// for (var i = 0; i < this.pointsQ; i++) {
-			//     this.points.push(new PIXI.Point(i * 300, 0));
-			// }
-			// let eel = new PIXI.mesh.Rope(PIXI.Texture.fromImage('/bmps/koi.png'), this.points);
-			// eel.y = 100;
-			// cont.addChild(eel)
-
-			cont.addChildAt(this.sprite2, 0);
-			cont.addChild(this.sprite1);
-
+		},
+		addToStage: function () {
+			this.cont.addChildAt(this.sprite2, 0);
+			this.cont.addChild(this.sprite1);
+		},
+		removeFromStage: function () {
+			this.cont.removeChild(this.sprite2);
+			this.cont.removeChild(this.sprite1);
 		},
 		animate: function () {
-
-			// this.count += 0.1;
-
-		 //    // make the snake
-		 //    for (var i = 0; i < this.pointsQ; i++) {
-		 //        this.points[i].y = Math.sin((i * 0.5) + this.count) * 30;
-		 //        this.points[i].x = i * 300 + Math.cos((i * 0.3) + this.count) * 20;
-		 //    }
-
 
 
 			this.sprite2.x += this.sprite2.vx;
