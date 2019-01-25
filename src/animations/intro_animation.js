@@ -30,7 +30,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['swim', 'jump'],//, 'bounce', 'fly'],
+		mode: ['jump', 'swim'],//, 'bounce', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -364,7 +364,9 @@ export default function(obj) {
 					this.fishSchool.animate();
 					this.swimBackground.animate();
 					this.lilypadLotuses.animate();
-				} 
+				} else if (this.activeMode === 'jump') {
+					this.jumpBackground.animate();
+				}
 				
 			}
 			

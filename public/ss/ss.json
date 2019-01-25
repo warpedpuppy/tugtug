@@ -29,7 +29,7 @@
 },
 "bodySegment2.png":
 {
-	"frame": {"x":957,"y":165,"w":47,"h":57},
+	"frame": {"x":957,"y":221,"w":47,"h":57},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":57},
@@ -38,7 +38,7 @@
 },
 "bodySegment3.png":
 {
-	"frame": {"x":957,"y":277,"w":43,"h":62},
+	"frame": {"x":957,"y":333,"w":43,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":43,"h":62},
@@ -47,7 +47,7 @@
 },
 "bodySegment4.png":
 {
-	"frame": {"x":114,"y":446,"w":32,"h":38},
+	"frame": {"x":379,"y":179,"w":32,"h":38},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":38},
@@ -56,7 +56,7 @@
 },
 "bodySegment5.png":
 {
-	"frame": {"x":114,"y":392,"w":23,"h":47},
+	"frame": {"x":337,"y":14,"w":23,"h":47},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":47},
@@ -65,7 +65,7 @@
 },
 "bodySegmentTail.png":
 {
-	"frame": {"x":226,"y":240,"w":24,"h":66},
+	"frame": {"x":513,"y":217,"w":24,"h":66},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":0,"w":24,"h":66},
@@ -74,7 +74,7 @@
 },
 "bouncePlatformBall.png":
 {
-	"frame": {"x":957,"y":341,"w":40,"h":40},
+	"frame": {"x":337,"y":179,"w":40,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
@@ -92,7 +92,7 @@
 },
 "bounceTrans.png":
 {
-	"frame": {"x":148,"y":446,"w":113,"h":36},
+	"frame": {"x":362,"y":493,"w":113,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":36},
@@ -110,16 +110,16 @@
 },
 "goldTile.png":
 {
-	"frame": {"x":148,"y":14,"w":207,"h":224},
+	"frame": {"x":957,"y":165,"w":50,"h":54},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":207,"h":224},
-	"sourceSize": {"w":207,"h":224},
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":54},
+	"sourceSize": {"w":50,"h":54},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "gradientRing.png":
 {
-	"frame": {"x":362,"y":493,"w":221,"h":221},
+	"frame": {"x":114,"y":14,"w":221,"h":221},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":221,"h":221},
@@ -128,7 +128,7 @@
 },
 "headSegment.png":
 {
-	"frame": {"x":957,"y":224,"w":44,"h":51},
+	"frame": {"x":957,"y":280,"w":44,"h":51},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":51},
@@ -137,7 +137,7 @@
 },
 "jumpTrans.png":
 {
-	"frame": {"x":139,"y":392,"w":85,"h":36},
+	"frame": {"x":478,"y":179,"w":85,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":36},
@@ -146,7 +146,7 @@
 },
 "koi.png":
 {
-	"frame": {"x":263,"y":240,"w":300,"h":84},
+	"frame": {"x":114,"y":397,"w":300,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":84},
@@ -191,7 +191,7 @@
 },
 "shark.png":
 {
-	"frame": {"x":585,"y":392,"w":362,"h":157},
+	"frame": {"x":114,"y":237,"w":362,"h":157},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":0,"w":362,"h":157},
@@ -209,7 +209,7 @@
 },
 "swimEye.png":
 {
-	"frame": {"x":992,"y":383,"w":15,"h":15},
+	"frame": {"x":219,"y":1004,"w":15,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":15},
@@ -218,7 +218,7 @@
 },
 "swimFin.png":
 {
-	"frame": {"x":226,"y":308,"w":19,"h":23},
+	"frame": {"x":337,"y":63,"w":19,"h":23},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":19,"h":23},
@@ -227,7 +227,7 @@
 },
 "swimTrans.png":
 {
-	"frame": {"x":263,"y":446,"w":100,"h":36},
+	"frame": {"x":2,"y":14,"w":100,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":36},
@@ -245,7 +245,7 @@
 },
 "treasureRing.png":
 {
-	"frame": {"x":957,"y":383,"w":33,"h":61},
+	"frame": {"x":478,"y":217,"w":33,"h":61},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":61},
@@ -259,6 +259,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1c9a915d00105ad1135afb1099a91bb1:feaf7ff6ebcb03f17c37073f8844036c:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:7fa2e36b98c13ed96c762e09c4a7b20d:d41408f5b072aaddb2cfe89f63f6db21:7a7dafe8686879c23378e53f9469620c$"
 }
 }
