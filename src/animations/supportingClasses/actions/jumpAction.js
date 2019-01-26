@@ -36,6 +36,8 @@ export default function () {
 			}
 		},
 		animate: function () {
+			this.hero.heroJump.animate();
+			
 			this.vy -= this.gravity;
 
 			if(this.jumpTimer === 0){

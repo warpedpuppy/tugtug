@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../utils/utils';
 import HeroSwim from './swim/heroSwim';
+import HeroJump from './jump/heroJump';
 export default function () {
 	return {
 		segmentsQ: 5,
@@ -18,6 +19,7 @@ export default function () {
 		parentCont: undefined,
 		utils: Utils,
 		heroSwim: HeroSwim(),
+		heroJump: HeroJump(),
 		activeHero: undefined,
 		init: function (wh, items, parentCont, spritesheet) {
 
@@ -46,11 +48,13 @@ export default function () {
 
             parentCont.addChild(this.cont);
             this.heroSwim.init(this.cont, wh, spritesheet);
+            this.heroJump.init(this.cont, wh, spritesheet);
 
             return this;
 		},
 		personMode: function () {
 			this.cont.removeChildren();
+			this.heroJump.addToStage();
 			if(!this.body){
 				this.body = new PIXI.Graphics();
 				this.body.beginFill(0xFF0000).drawCircle(0,0,this.radius).endFill();

@@ -16,7 +16,7 @@ export default function () {
 			this.parentCont = parentCont;
 			this.wh = wh;
 			this.spritesheet = spritesheet;
-			this.colQ = this.wh.canvasWidth / this.colSpacing;
+			this.colQ = 0;//this.wh.canvasWidth / this.colSpacing;
 
 
 			this.background.beginFill(0xFFFFFF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
