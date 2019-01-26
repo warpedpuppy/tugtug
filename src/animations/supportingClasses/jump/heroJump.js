@@ -5,7 +5,7 @@ export default function () {
 		cont: new PIXI.Container(),
 		w: 50,
 		h: 10,
-		spacer: 2,
+		spacer: 0.05,
 		blocks: [],
 		utils: Utils,
 		pos: {},
@@ -15,24 +15,25 @@ export default function () {
 		contractBoolean: true,
 		expandBoolean: false,
 		counter: 0,
+		trigger: 100,
+		gravity: 1.01,
 		init: function (parentCont, wh, spritesheet) {
 			this.parentCont = parentCont;
 			for(let i = 0; i < 5; i ++){
 				let g = new PIXI.Graphics();
-				g.beginFill(0x666600).drawRect(-this.w / 2,-this.h / 2,this.w, this.h).endFill();
+				g.beginFill(0x666600).drawRect(-this.w / 2, - this.h / 2,this.w, this.h).endFill();
 				g.pivot.set(0.5);
-				g.differential = i * 15 * -1;
-				g.y = g.yPos = g.storeY = (this.h + this.spacer) * i * -1;
-				g.distToTravel = (g.differential - g.storeY) / 2;
-				g.destY = g.storeY - g.differential * -1;
-				g.y = g.destY;
+				g.topY = i * (-this.h * 2);
+				g.y = g.bottomY = this.h * i * -1;
+				let distanceToTravel = Math.abs(g.topY - g.bottomY);
+				let vy = distanceToTravel / 10;
+				g.vy = g.storeVY = vy;
+				g.y = g.topY;
 				g.done = false;
 				this.blocks.push(g);
 				this.cont.addChild(g);
 
 			}
-			
-			
 		},
 		addToStage: function () {
 			this.parentCont.addChild(this.cont);
@@ -40,35 +41,7 @@ export default function () {
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
 		},
-		expand: function () {
-			for(let i = 0; i < 5; i ++){
-				let b = this.blocks[i];
-				if(b.y > b.destY){
-					b.y += b.distToTravel;
-				} else if(!b.done) {
-					b.done = true;
-					b.y = b.destY;
-				}
-			}
-		},
-		contract: function () {
-			for(let i = 0; i < 5; i ++){
-				let b = this.blocks[i];
-				 if(b.y < b.storeY){
-				 	
-				 	b.y -= b.distToTravel;
-				 } else if(!b.done) {
-				 	b.done = true;
-				 	b.y = b.storeY;
-				 	this.counter ++;
-
-				 	if(this.counter === 5){
-				 		this.expandBoolean = true;
-				 		this.contractBoolean = false;
-				 	}
-				 }
-			}
-		},
+		
 		reset: function () {
 			this.counter = 0;
 			for(let i = 0; i < 5; i ++){
@@ -80,26 +53,32 @@ export default function () {
 
 		},
 		animate: function (vx, vy) {
-
-			if(this.expandBoolean){
-				this.expand();
-			} else if(this.contractBoolean){
-				this.contract();
+			//console.log(this.counter, this.trigger)
+			if(this.counter !== this.trigger){
+				this.counter ++;
+				return;
 			}
-			//console.log(Math.floor(this.blocks[4].y), this.blocks[4].destY)
-			// if(this.counter < this.counterLimit){
-			// 	if(this.blocks[4].y < this.max){
-			// 		this.max = this.blocks[4].y
-			// 		//this.counter ++;
-			// 	}
-			// 	console.log(this.max)
-			// 	for(let i = 0; i < 5; i ++){
-			// 		let b = this.blocks[i];
 
-					
-			// 		b.y = this.utils.cosWave(b.storeY, b.differential, 0.01)	
-			// 	}
+			for(let i = 0; i < 5; i ++){
+				let b = this.blocks[i];
+				b.y += b.vy;
+				b.vy *= this.gravity;
+				if(b.y > b.bottomY) {
+					b.y = b.bottomY;
+					b.vy *= -1;
+				} else if (b.y < b.topY) {
+					b.y = b.topY;
+					b.vy *= -1;
+					b.vy = b.storeVY;
+					this.counter = 0;
+				}
+			}
+		
+			// for(let i = 0; i < 5; i ++){
+			// 	let b = this.blocks[i];
+			// 	b.y = this.utils.cosWave(b.storeY, b.differential, 0.01)	
 			// }
+			
 			
 		
 		}
