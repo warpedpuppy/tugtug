@@ -7,7 +7,7 @@ export default function () {
 		segmentsQ: 5,
 		cont: new PIXI.Container(),
 		pos: [],
-		radius: 20,
+		radius: 2,
 		storeRadius: 0,
 		body: undefined,
 		mode: undefined,

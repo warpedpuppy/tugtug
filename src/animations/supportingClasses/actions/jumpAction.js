@@ -21,6 +21,7 @@ export default function () {
 		jump: function () {
 			this.vy = 9;
 			this.jumpTimer = 1;
+			this.hero.heroJump.bounce();
 		},
 		resize: function (wh){
 			this.canvasWidth = wh.canvasWidth;
@@ -38,7 +39,7 @@ export default function () {
 		animate: function () {
 			this.hero.heroJump.animate(this.vx, this.vy);
 
-			//this.vy -= this.gravity;
+			this.vy -= this.gravity;
 
 			if(this.jumpTimer === 0){
 				if(this.vy > this.speedLimit){
@@ -66,7 +67,8 @@ export default function () {
 				let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
 
 				if(this.utils.circleRectangleCollision(this.hero.cont, tempRect)){
-
+					console.log('hit')
+					this.hero.heroJump.bounce();
 					let newY = ((this.canvasHeight / 2) - this.platforms[i].y) + this.hero.cont.radius + 10;
 
 					this.platformCont.y = newY;//this.hero.cont.radius;
