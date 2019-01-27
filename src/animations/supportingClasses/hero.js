@@ -66,7 +66,7 @@ export default function () {
 			this.cont.x = this.canvasWidth / 2;
 		},
 		dragonMode: function () {
-			this.cont.removeChildren();
+			
 			this.segmentsQ = 10;
 			if(!this.dragon.length){
 				 for (let i = 0; i < this.segmentsQ; i++) {
@@ -102,7 +102,7 @@ export default function () {
             this.cont.y = this.canvasHeight / 2;
 		},
 		switchPlayer: function (string) {
-
+			this.cont.removeChildren();
 			this.mode = string;
 			this.vx = 0;
 			if(string === 'jump' || string === 'bounce') {
