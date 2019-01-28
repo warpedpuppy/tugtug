@@ -65,7 +65,7 @@
 },
 "bodySegmentTail.png":
 {
-	"frame": {"x":513,"y":217,"w":24,"h":66},
+	"frame": {"x":513,"y":286,"w":24,"h":66},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":0,"w":24,"h":66},
@@ -180,6 +180,15 @@
 	"sourceSize": {"w":60,"h":60},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"redTile.png":
+{
+	"frame": {"x":478,"y":217,"w":67,"h":67},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":67,"h":67},
+	"sourceSize": {"w":67,"h":67},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "rightWing.png":
 {
 	"frame": {"x":362,"y":14,"w":204,"h":163},
@@ -245,7 +254,7 @@
 },
 "treasureRing.png":
 {
-	"frame": {"x":478,"y":217,"w":33,"h":61},
+	"frame": {"x":478,"y":286,"w":33,"h":61},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":61},
@@ -259,6 +268,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7fa2e36b98c13ed96c762e09c4a7b20d:d41408f5b072aaddb2cfe89f63f6db21:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ea608e231434280b4ef49be32adb9291:442223f54af47e49b57b8ee13c3639bd:7a7dafe8686879c23378e53f9469620c$"
 }
 }

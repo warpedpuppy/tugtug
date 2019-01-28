@@ -216,6 +216,7 @@
             <filename>../bmps/bodySegmentTail.png</filename>
             <filename>../bmps/headSegment.png</filename>
             <filename>../bmps/goldTile.png</filename>
+            <filename>../bmps/redTile.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
