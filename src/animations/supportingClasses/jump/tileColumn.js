@@ -30,8 +30,8 @@ export default function () {
 		height:0,
 		interval: 0, 
 		init: function (app, parentCont, wh, spritesheet, startX) {
-			this.width = this.utils.randomIntBetween(2, 3);
-			this.height = this.utils.randomIntBetween(4, 10);
+			this.width = 10;//this.utils.randomIntBetween(2, 3);
+			this.height = 20;//this.utils.randomIntBetween(4, 10);
 			this.interval = this.utils.randomIntBetween(0, 5);
 			this.parentCont = parentCont;
 			this.wh = wh;
@@ -66,7 +66,7 @@ export default function () {
 
 			
 			this.nextRed = this.utils.randomIntBetween(0,100);
-			this.cont.alpha = 0.25;
+			//this.cont.alpha = 0.25;
 
 		},
 		brick: function () {

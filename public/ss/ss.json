@@ -74,7 +74,7 @@
 },
 "bodySegment3.png":
 {
-	"frame": {"x":304,"y":953,"w":43,"h":62},
+	"frame": {"x":2,"y":953,"w":43,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":43,"h":62},
@@ -83,7 +83,7 @@
 },
 "bodySegment4.png":
 {
-	"frame": {"x":69,"y":970,"w":32,"h":38},
+	"frame": {"x":44,"y":180,"w":32,"h":38},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":38},
@@ -92,7 +92,7 @@
 },
 "bodySegment5.png":
 {
-	"frame": {"x":2,"y":970,"w":23,"h":47},
+	"frame": {"x":337,"y":14,"w":23,"h":47},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":47},
@@ -101,7 +101,7 @@
 },
 "bodySegmentTail.png":
 {
-	"frame": {"x":536,"y":360,"w":24,"h":66},
+	"frame": {"x":542,"y":201,"w":24,"h":66},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":0,"w":24,"h":66},
@@ -110,7 +110,7 @@
 },
 "bouncePlatformBall.png":
 {
-	"frame": {"x":27,"y":970,"w":40,"h":40},
+	"frame": {"x":2,"y":180,"w":40,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
@@ -128,7 +128,7 @@
 },
 "bounceTrans.png":
 {
-	"frame": {"x":421,"y":360,"w":113,"h":36},
+	"frame": {"x":219,"y":237,"w":113,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":36},
@@ -155,7 +155,7 @@
 },
 "gradientRing.png":
 {
-	"frame": {"x":362,"y":544,"w":221,"h":221},
+	"frame": {"x":114,"y":14,"w":221,"h":221},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":221,"h":221},
@@ -173,7 +173,7 @@
 },
 "jumpBody.png":
 {
-	"frame": {"x":114,"y":418,"w":88,"h":88},
+	"frame": {"x":2,"y":52,"w":88,"h":88},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":88},
@@ -191,7 +191,7 @@
 },
 "jumpLeg.png":
 {
-	"frame": {"x":95,"y":519,"w":10,"h":15},
+	"frame": {"x":88,"y":519,"w":10,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":15},
@@ -200,7 +200,7 @@
 },
 "jumpPupil.png":
 {
-	"frame": {"x":107,"y":519,"w":7,"h":7},
+	"frame": {"x":100,"y":519,"w":7,"h":7},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":7,"h":7},
@@ -218,7 +218,7 @@
 },
 "jumpTrans.png":
 {
-	"frame": {"x":103,"y":970,"w":85,"h":36},
+	"frame": {"x":2,"y":142,"w":85,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":36},
@@ -227,16 +227,16 @@
 },
 "jumpTwoFeet.png":
 {
-	"frame": {"x":45,"y":519,"w":31,"h":15},
+	"frame": {"x":45,"y":519,"w":24,"h":15},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":14,"y":0,"w":31,"h":15},
+	"spriteSourceSize": {"x":21,"y":0,"w":24,"h":15},
 	"sourceSize": {"w":60,"h":15},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "koi.png":
 {
-	"frame": {"x":2,"y":884,"w":300,"h":84},
+	"frame": {"x":114,"y":418,"w":300,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":84},
@@ -245,7 +245,7 @@
 },
 "leftWing.png":
 {
-	"frame": {"x":204,"y":360,"w":215,"h":174},
+	"frame": {"x":2,"y":237,"w":215,"h":174},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":215,"h":174},
@@ -281,7 +281,7 @@
 },
 "redTile.png":
 {
-	"frame": {"x":304,"y":884,"w":67,"h":67},
+	"frame": {"x":2,"y":884,"w":67,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":67,"h":67},
@@ -299,7 +299,7 @@
 },
 "shark.png":
 {
-	"frame": {"x":204,"y":201,"w":362,"h":157},
+	"frame": {"x":416,"y":392,"w":362,"h":157},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":0,"w":362,"h":157},
@@ -308,7 +308,7 @@
 },
 "star.png":
 {
-	"frame": {"x":2,"y":14,"w":178,"h":169},
+	"frame": {"x":362,"y":201,"w":178,"h":169},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":169},
@@ -317,7 +317,7 @@
 },
 "swimEye.png":
 {
-	"frame": {"x":78,"y":519,"w":15,"h":15},
+	"frame": {"x":71,"y":519,"w":15,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":15},
@@ -335,7 +335,7 @@
 },
 "swimTrans.png":
 {
-	"frame": {"x":421,"y":398,"w":100,"h":36},
+	"frame": {"x":2,"y":14,"w":100,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":36},
@@ -353,7 +353,7 @@
 },
 "treasureRing.png":
 {
-	"frame": {"x":349,"y":953,"w":33,"h":61},
+	"frame": {"x":47,"y":953,"w":33,"h":61},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":61},
@@ -367,6 +367,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:faa4f34db45d0503b092f1b49c9a8fcf:5f15a7ca4bcc5271c5720d41696cc31d:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:67b768cfc00262311ebbc78988d02cda:0d6da8b3a589faba8e38b2098d3a9052:7a7dafe8686879c23378e53f9469620c$"
 }
 }

@@ -4,7 +4,7 @@ export default function () {
 	return {
 		cont: new PIXI.Container(),
 		w: 60,
-		h: 15,
+		h: 14,
 		spacer: 0,
 		bounceQ: 10,
 		blocks: [],
