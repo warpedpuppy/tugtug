@@ -217,6 +217,17 @@
             <filename>../bmps/headSegment.png</filename>
             <filename>../bmps/goldTile.png</filename>
             <filename>../bmps/redTile.png</filename>
+            <filename>../bmps/jumpBody.png</filename>
+            <filename>../bmps/jumpEye.png</filename>
+            <filename>../bmps/jumpPupil.png</filename>
+            <filename>../bmps/jumpLeg.png</filename>
+            <filename>../bmps/jumpSegment.png</filename>
+            <filename>../bmps/jumpTwoFeet.png</filename>
+            <filename>../bmps/platform.png</filename>
+            <filename>../bmps/ball1.png</filename>
+            <filename>../bmps/ball2.png</filename>
+            <filename>../bmps/ball3.png</filename>
+            <filename>../bmps/ball4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

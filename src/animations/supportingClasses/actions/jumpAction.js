@@ -40,7 +40,8 @@ export default function () {
 			this.hero.heroJump.animate(this.vx, this.vy);
 
 			this.vy -= this.gravity;
-
+			this.platformCont.y += this.vy;
+			this.platformCont.x += this.vx;
 			if(this.jumpTimer === 0){
 				if(this.vy > this.speedLimit){
 					this.vy = this.speedLimit;
@@ -54,17 +55,14 @@ export default function () {
 				}
 			}
 			
-
-			// this.hero.cont.y += this.hero.vy;
-			// this.hero.cont.x += this.hero.vx;
-			this.platformCont.y += this.vy;
-			this.platformCont.x += this.vx;
+			// 
 
 
 			for(let i = 0; i < this.platforms.length; i++){
 				let globalPoint = this.platforms[i].toGlobal(this.stage, undefined, true);
 				//console.log(globalPoint)
-				let tempRect = new PIXI.Rectangle(globalPoint.x, globalPoint.y, this.platforms[i].width, this.platforms[i].height)
+				let tempRect = new PIXI.Rectangle(
+					globalPoint.x - this.platforms[i].halfWidth, globalPoint.y , this.platforms[i].width, this.platforms[i].height)
 
 				if(this.utils.circleRectangleCollision(this.hero.cont, tempRect)){
 					//console.log('hit')
@@ -92,3 +90,11 @@ export default function () {
 		}
 	}
 }
+
+
+
+
+
+
+
+

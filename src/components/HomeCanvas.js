@@ -44,13 +44,13 @@ export default class HomeCanvas extends React.Component {
 		return (
 			<div>
 			<div id='homeCanvas' className={backgroundCSS} ></div>
-			{/*
+			
 			<div className="testPanel">
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
 			<button onClick={() => this.switchPlayer()}>switch player</button>
 			</div>
-		*/}
+		
 			</div>
 		)
 	}

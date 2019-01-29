@@ -30,7 +30,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['jump', 'swim'],//, 'bounce', 'fly'],
+		mode: ['jump', 'bounce'],//, 'bounce', 'fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -147,13 +147,13 @@ export default function(obj) {
 				if(!this.platforms){
 					this.platforms = Platforms();
 					this.platformCont = new PIXI.Container();
-					this.platforms.init(this.platformCont, this.wh);
+					this.platforms.init(this.platformCont, this.wh, this.spritesheet);
 
 					this.jumpAction = JumpAction();
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 
             		this.jumpBackground = JumpBackground();
-            		this.jumpBackground.init(this.stage, this.wh, this.spritesheet);
+            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet);
 				}
 				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);
@@ -289,26 +289,31 @@ export default function(obj) {
 		keyDown: function (e) {
 
             //e.preventDefault();
+            this.hero.heroJump.look();
             switch (e.keyCode) {
             	case 32:
             		this.jumpAction.jump();
+            		this.hero.heroJump.look('up');
             		break;
                 case 37:
                     // left
                     if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateLeftBoolean = true;
+                    this.hero.heroJump.look('left');
                     //this.rotate('left');
                     break;
                 case 38:
                     // up
                     this.rotate('up');
+                    this.hero.heroJump.look('up');
                     break;
                 case 39:
                     // right
                     if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateRightBoolean = true;
+                    this.hero.heroJump.look('right');
                     //this.rotate('right');
                     break;
                 case 40:

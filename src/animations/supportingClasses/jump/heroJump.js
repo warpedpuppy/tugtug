@@ -3,9 +3,10 @@ import Utils from '../../utils/utils';
 export default function () {
 	return {
 		cont: new PIXI.Container(),
-		w: 50,
-		h: 10,
-		spacer: 10,
+		w: 60,
+		h: 15,
+		spacer: 0,
+		bounceQ: 10,
 		blocks: [],
 		utils: Utils,
 		pos: {},
@@ -20,25 +21,101 @@ export default function () {
 		bounceAllow: false,
 		blockQ: 5,
 		bounceBlockIndex: 4, 
-		doneCounter: 0, 
+		doneCounter: 0,
 		init: function (parentCont, wh, spritesheet) {
 			this.parentCont = parentCont;
+			this.spritesheet = spritesheet;
+			this.buildReticulatedHero();
+		},
+		buildSmileyHero: function () {
+			let body = new PIXI.Sprite(this.spritesheet.textures['jumpBody.png']);
+			body.anchor.set(0.5);
+			let leftEye = this.leftEye = this.smileyEye();
+			let rightEye = this.rightEye = this.smileyEye();
+			leftEye.x = -15;
+			leftEye.y = rightEye.y = -15;
+			rightEye.x = 15;
+			this.cont.addChild(body);
+			this.cont.addChild(leftEye);
+			this.cont.addChild(rightEye);
+
+		},
+		smileyEye: function () {
+			let cont = new PIXI.Container();
+			let eye = new PIXI.Sprite(this.spritesheet.textures['jumpEye.png']);
+			eye.anchor.set(0.5);
+			let pupil = new PIXI.Sprite(this.spritesheet.textures['jumpPupil.png']);
+			pupil.anchor.set(0.5);
+			cont.addChild(eye);
+			cont.addChild(pupil);
+			cont.pupil = pupil;
+			return cont;
+
+		},
+		look: function (str) {
+			if(str === 'right') {
+				this.leftEye.pupil.x += 5;
+				this.rightEye.pupil.x += 5;
+				this.leftEye.pupil.y = 0;
+				this.rightEye.pupil.y = 0;
+				this.feet.scale.x = 1;
+			} else if(str === 'left'){
+				this.leftEye.pupil.x -= 5;
+				this.rightEye.pupil.x -= 5;
+				this.leftEye.pupil.y = 0;
+				this.rightEye.pupil.y = 0;
+				this.feet.scale.x = -1;
+			} else if (str === 'up'){
+				this.leftEye.pupil.x -= 5;
+				this.rightEye.pupil.x -= 5;
+				this.leftEye.pupil.y = 0;
+				this.rightEye.pupil.y = 0;
+			} else if (str === 'down') {
+				this.leftEye.pupil.x -= 5;
+				this.rightEye.pupil.x -= 5;
+				this.leftEye.pupil.y += 5;
+				this.rightEye.pupil.y += 5;
+			} else {
+				this.leftEye.pupil.x = 0;
+				this.rightEye.pupil.x = 0;
+				this.leftEye.pupil.y = 0;
+				this.rightEye.pupil.y = 0;
+			}
+		},
+		buildReticulatedHero: function () {
 			for(let i = 0; i < this.blockQ; i ++){
-				let b = new PIXI.Graphics();
-				b.beginFill(0x666600).drawRect(-this.w / 2, - this.h / 2,this.w, this.h).endFill();
+				let b;
+				let num = i + 1;
+				if(i < this.blockQ - 1){
+					b = new PIXI.Sprite(this.spritesheet.textures[`ball${num}.png`]);
+				} else {
+					b = this.feet = new PIXI.Sprite(this.spritesheet.textures['jumpTwoFeet.png']);
+				}
+				// let b = new PIXI.Graphics();
+				// b.beginFill(0x666600).drawRect(-this.w / 2, - this.h / 2,this.w, this.h).endFill();
+				b.anchor.set(0.5);
 
 				b.y = b.bottomY = i * (this.h + this.spacer);
 				b.topY = i * this.h;
-				b.bounceTop = b.y - this.spacer;
-				if(i === 0)b.topY -= this.spacer;
-				let distanceToTravel = Math.abs(b.topY - b.bottomY);
+				//b.bounceTop = b.y - this.spacer;
+				b.bounceTop = b.y - this.bounceQ;
+				if(i === 0)b.topY -= this.bounceQ;
+				let distanceToTravel = this.bounceQ;//Math.abs(b.topY - b.bottomY);
 				let vy = distanceToTravel / 4;
 				b.vy = b.storeVY = vy;
 				this.blocks.push(b);
-				this.cont.addChild(b);
+				this.cont.addChildAt(b, 0);
 				this.cont.y = -b.y;
 			}
+			let leftEye = this.leftEye = this.smileyEye();
+			let rightEye = this.rightEye = this.smileyEye();
+			leftEye.x = -15;
+			leftEye.y = rightEye.y = 15;
+			rightEye.x = 15;
+			this.cont.addChild(leftEye);
+			this.cont.addChild(rightEye);
 			this.blocks[this.bounceBlockIndex].active = true;
+
 		},
 		addToStage: function () {
 			this.parentCont.addChild(this.cont);
@@ -120,29 +197,7 @@ export default function () {
 
 		},
 		animate: function (vx, vy) {
-			//console.log(this.counter, this.trigger)
-			//return;
-			// this.counter ++;
-			// if (this.counter === this.trigger ) {
-			// 	this.bounce();
-			// } 
-			//console.log('boom')
-			//this.cont.y += this.blocks[4].vy;
-			// if(this.bounceAllow){
-			// 	this.blocks[this.bounceBlockIndex].active = true;
-			// }
-			//if(this.bounceAllow){
 			this.bounceStyle2(vx, vy);
-			//}
-			
-		
-			// for(let i = 0; i < 5; i ++){
-			// 	let b = this.blocks[i];
-			// 	b.y = this.utils.cosWave(b.storeY, b.differential, 0.01)	
-			// }
-			
-			
-		
 		}
 	}
 }
