@@ -18,7 +18,7 @@ export default function () {
 		straightQ: 0,
 		curveQ: 0,
 		testCounter: 0,
-		straightQs: [70, 80],
+		straightQs: [4, 5],
 		curvedQs: [40, 160],
 		startCurveAngle: 10, 
 		spriteCounter: 0,
@@ -29,7 +29,10 @@ export default function () {
 		width: 0,
 		height:0,
 		interval: 0, 
-		init: function (app, parentCont, wh, spritesheet, startX) {
+		colWidth: 5,
+		init: function (app, parentCont, wh, spritesheet, startX, action) {
+			this.action = action;
+			this.goldTile = spritesheet.textures['goldTile.png'];
 			this.width = 10;//this.utils.randomIntBetween(2, 3);
 			this.height = 20;//this.utils.randomIntBetween(4, 10);
 			this.interval = this.utils.randomIntBetween(0, 5);
@@ -37,6 +40,8 @@ export default function () {
 			this.wh = wh;
 			this.spritesheet = spritesheet;
 			this.startX = startX;
+			this.columnCont = new PIXI.Container();
+			this.parentCont.addChild(this.columnCont);
 			this.cont = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
@@ -53,6 +58,15 @@ export default function () {
 				this.objectPool.push(s);
 			}
 
+			//make columns
+			this.column = new PIXI.Container();
+			this.colsHeight = {};
+			for(let i = 0; i < this.colWidth; i ++){
+				this.colsHeight[i] = 0;
+			}
+			this.colBrick();
+			this.columnCont.addChild(this.column);
+			this.column.x = this.startX;
 		
 
 			let s = this.objectPool[this.objectPoolCounter];
@@ -60,18 +74,35 @@ export default function () {
 			
 			this.bricks.push(s);
 			this.cont.addChild(s);
-			//this.newBrick();
+			this.newBrick();
 			this.straightQ = this.utils.randomIntBetween(this.straightQs[0], this.straightQs[1]);
 			this.curveQ = this.utils.randomIntBetween(this.curvedQs[0], this.curvedQs[1]);
 
 			
 			this.nextRed = this.utils.randomIntBetween(0,100);
-			//this.cont.alpha = 0.25;
 
+
+		},
+		colBrick: function () {
+			let s;
+			for(let i = 0; i < 20; i ++){
+				for(let j = 0; j < this.colWidth; j ++){
+					s = new PIXI.Sprite(this.goldTile);
+					s.anchor.y = 0;
+					s.width = 10;
+					s.height = this.utils.randomIntBetween(50, 100);
+
+					s.x = (s.width * j);
+					s.y = this.colsHeight[j];
+
+					this.colsHeight[j] += s.height;
+					this.column.addChild(s)
+				}	
+			}
 		},
 		brick: function () {
 			//let cont = new PIXI.Container();
-			let s = new PIXI.Sprite(this.spritesheet.textures['goldTile.png']);
+			let s = new PIXI.Sprite(this.goldTile);
 
 			if(this.bricks.length === this.nextRed) {
 				s = new PIXI.Sprite(this.spritesheet.textures['redTile.png']);
@@ -90,13 +121,14 @@ export default function () {
 			return s;
 		},
 		newBrick: function () {
-			//console.log('new brick')
+		
 
 			let s = this.objectPool[this.objectPoolCounter];
+
 			this.objectPoolCounter ++;
 			if(this.objectPoolCounter > this.objectPool.length - 1)this.objectPoolCounter = 0;
-
 			this.counter ++;
+
 			if(this.counter > this.straightQ){
 				this.curveCounter ++;
 				this.curve *= 1.05;
@@ -119,8 +151,8 @@ export default function () {
 
 			if (!this.activeBrick) {
 				let newPos = this.newXY();
-				s.y = s.dest = newPos.y;
-				s.x = newPos.x;
+				s.y = 300;//s.dest = newPos.y;
+				s.x = this.startX;
 				this.cont.addChild(s);
 			} else {
 				s.dest = -this.brickHeight;
@@ -129,7 +161,6 @@ export default function () {
 				let prevX = this.bricks[this.bricks.length - 1].x;
 				let prevY = this.bricks[this.bricks.length - 1].y;
 				let prevRotation = this.bricks[this.bricks.length - 1].rotation;
-				//console.log(prevRotation, s.height)
 				let newX = prevX + (s.height * Math.sin(prevRotation));
 				let newY = prevY - (s.height * Math.cos(prevRotation));
 				s.x = newX;
@@ -141,8 +172,8 @@ export default function () {
 					s.y > this.wh.canvasHeight
 					){
 					let newPos = this.newXY();
-					s.y = newPos.x;//this.wh.canvasHeight;
-					s.x = newPos.y;//this.startX;//this.utils.randomNumberBetween(0, this.wh.canvasWidth);
+					s.y = 300;//newPos.x;//this.wh.canvasHeight;
+					s.x = this.startX;//this.startX;//this.utils.randomNumberBetween(0, this.wh.canvasWidth);
 				}
 				this.cont.addChild(s);
 			}
@@ -170,6 +201,9 @@ export default function () {
 			this.testCounter ++;
 			if(this.testCounter % this.interval === 0)
 			this.newBrick();
+
+			this.column.x += this.action.vx;
+			if(this.column.x < -this.column.width)this.column.x = this.wh.canvasWidth;
 			
 			
 		}

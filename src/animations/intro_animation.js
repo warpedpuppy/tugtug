@@ -153,7 +153,7 @@ export default function(obj) {
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 
             		this.jumpBackground = JumpBackground();
-            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet);
+            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.jumpAction);
 				}
 				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);

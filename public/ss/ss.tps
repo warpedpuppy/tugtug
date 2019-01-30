@@ -228,6 +228,9 @@
             <filename>../bmps/ball2.png</filename>
             <filename>../bmps/ball3.png</filename>
             <filename>../bmps/ball4.png</filename>
+            <filename>../bmps/walk1.png</filename>
+            <filename>../bmps/walk2.png</filename>
+            <filename>../bmps/walk3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

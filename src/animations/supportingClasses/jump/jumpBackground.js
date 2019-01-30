@@ -5,6 +5,7 @@ export default function () {
 	return {
 		cont: new PIXI.Container(),
 		background: new PIXI.Graphics(),
+		ground: new PIXI.Graphics(),
 		colSpacing: 200,
 		colQ: undefined,
 		cols: {},
@@ -12,25 +13,34 @@ export default function () {
 		utils: Utils,
 		activeBrick: undefined,
 		brickHeight: 50,
-		init: function (app, parentCont, wh, spritesheet) {
+		groundHeight: 150,
+		init: function (app, parentCont, wh, spritesheet, action) {
 			this.parentCont = parentCont;
 			this.wh = wh;
 			this.spritesheet = spritesheet;
-			this.colQ = 3;//0;//this.wh.canvasWidth / this.colSpacing;
+			this.colQ = 3;//this.wh.canvasWidth / this.colSpacing;
 
 
-			this.background.beginFill(0x999999).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			this.background.beginFill(0x00CCFF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 			this.cont.addChild(this.background);
+
+
+
 			this.startXs = [0.25, 0.5, 0.75];
 			for(let i = 0; i < this.colQ; i ++){
 				this.tileColumn = TileColumn();
 				
 
-				this.tileColumn.init(app, this.cont, wh, spritesheet, this.wh.canvasWidth * this.startXs[i]);
+				this.tileColumn.init(app, this.cont, wh, spritesheet, this.wh.canvasWidth * this.startXs[i], action);
 				//this.tileColumn.cont.x = 200 + (i * this.colSpacing);
 				this.tileColumn.addToStage();
 				this.columns.push(this.tileColumn);
 			}
+
+			
+			this.ground.beginFill(0x33FF00).drawRect(0,0,wh.canvasWidth, this.groundHeight).endFill();
+			this.ground.y = wh.canvasHeight - this.groundHeight;
+			this.cont.addChild(this.ground);
 			
 		},
 		addToStage: function () {

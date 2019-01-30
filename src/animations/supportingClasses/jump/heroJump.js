@@ -83,13 +83,23 @@ export default function () {
 			}
 		},
 		buildReticulatedHero: function () {
+
+			let feed = [
+				PIXI.Texture.fromFrame('walk1.png'),
+				PIXI.Texture.fromFrame('walk2.png'),
+				PIXI.Texture.fromFrame('walk3.png'),
+				PIXI.Texture.fromFrame('walk2.png')
+			];
+			let walking = new PIXI.extras.AnimatedSprite(feed);
+			walking.animationSpeed = 0.1;
+			walking.play();
 			for(let i = 0; i < this.blockQ; i ++){
 				let b;
 				let num = i + 1;
 				if(i < this.blockQ - 1){
 					b = new PIXI.Sprite(this.spritesheet.textures[`ball${num}.png`]);
 				} else {
-					b = this.feet = new PIXI.Sprite(this.spritesheet.textures['jumpTwoFeet.png']);
+					b = this.feet = walking;//new PIXI.Sprite(this.spritesheet.textures['jumpTwoFeet.png']);
 				}
 				// let b = new PIXI.Graphics();
 				// b.beginFill(0x666600).drawRect(-this.w / 2, - this.h / 2,this.w, this.h).endFill();

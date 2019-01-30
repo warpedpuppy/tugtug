@@ -23,7 +23,7 @@ export default function () {
 		activeHero: undefined,
 		init: function (wh, items, parentCont, spritesheet) {
 
-
+			this.wh = wh;
 			this.parentCont = parentCont;
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
@@ -58,6 +58,7 @@ export default function () {
 			if(!this.body){
 				this.body = new PIXI.Graphics();
 				this.body.beginFill(0xFF0000).drawCircle(0,0,this.radius).endFill();
+				this.body.alpha = 0;
 				this.body.pivot.set(0.5);
 			}
 			this.cont.radius = this.radius;
@@ -105,7 +106,11 @@ export default function () {
 			this.cont.removeChildren();
 			this.mode = string;
 			this.vx = 0;
-			if(string === 'jump' || string === 'bounce') {
+			if(string === 'jump') {
+				this.personMode();
+				this.cont.y = this.wh.canvasHeight - 150;
+				console.log(this.cont.y)
+			} else if (string === 'bounce') {
 				this.personMode();
 			} else if (string === 'swim') {
 				this.cont.x = this.canvasWidth / 2;
