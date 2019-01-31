@@ -231,6 +231,11 @@
             <filename>../bmps/walk1.png</filename>
             <filename>../bmps/walk2.png</filename>
             <filename>../bmps/walk3.png</filename>
+            <filename>../bmps/gradientCircle.png</filename>
+            <filename>../bmps/tile.png</filename>
+            <filename>../bmps/circle.png</filename>
+            <filename>../bmps/smile.png</filename>
+            <filename>../bmps/grimace.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

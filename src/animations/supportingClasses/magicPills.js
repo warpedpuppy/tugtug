@@ -24,7 +24,7 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5);
 
-			this.pillQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
+			this.pillQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
 
 			 for(let i = 0; i < this.pillQ; i ++ ){
             	let s = new PIXI.Sprite(spritesheet.textures['star.png']);
@@ -34,7 +34,7 @@ export default function () {
             	s.vy = this.utils.randomNumberBetween(1,5); 
             	s.x = this.utils.randomNumberBetween(0, wh.canvasWidth);
             	s.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
-            	s.scale.set(this.utils.randomNumberBetween(0.25, 0.5));
+            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
             	s.rotate = this.utils.randomNumberBetween(-4, 4);
             	s.radius = s.width;
             	pills.addChild(s);
@@ -67,8 +67,8 @@ export default function () {
 
 			for(let i = 0; i < this.pillQ; i++){
 				let p = this.pills[i];
-				p.x -= vx || this.vx;
-             	p.y -= vy || this.vy;
+				p.x -= vx;/// || this.vx;
+             	p.y -= vy;// || this.vy;
              	p.rotation += this.utils.deg2rad(p.rotate);
 
             	if(p.y > this.bottomEdge) {

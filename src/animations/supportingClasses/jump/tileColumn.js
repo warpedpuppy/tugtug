@@ -13,14 +13,15 @@ export default function () {
 		totalHeight: 0,
 		brickHeight: 0,
 		counter: 0,
-		curve: 15,
+		curve: undefined,
 		curveCounter: 0,
 		straightQ: 0,
 		curveQ: 0,
 		testCounter: 0,
 		straightQs: [4, 5],
-		curvedQs: [40, 160],
+		curvedQs: [40, 80],
 		startCurveAngle: 10, 
+		curves: [45, -45, 135, -135],
 		spriteCounter: 0,
 		nextRed: 0,
 		contObject: {},
@@ -30,162 +31,135 @@ export default function () {
 		height:0,
 		interval: 0, 
 		colWidth: 5,
-		init: function (app, parentCont, wh, spritesheet, startX, action) {
-			this.action = action;
-			this.goldTile = spritesheet.textures['goldTile.png'];
-			this.width = 10;//this.utils.randomIntBetween(2, 3);
-			this.height = 20;//this.utils.randomIntBetween(4, 10);
-			this.interval = this.utils.randomIntBetween(0, 5);
+		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
+		colorCounter: 0,
+		init: function (app, parentCont, wh, spritesheet, quadrant, action) {
+			this.quadrant = quadrant;
+			this.curve = this.curves[Math.floor(Math.random()*4)];
+			this.app = app;
+			
+			this.goldTile = spritesheet.textures['tile.png'];
+			this.interval = this.utils.randomIntBetween(0, 2);
 			this.parentCont = parentCont;
 			this.wh = wh;
 			this.spritesheet = spritesheet;
-			this.startX = startX;
-			this.columnCont = new PIXI.Container();
-			this.parentCont.addChild(this.columnCont);
-			this.cont = new PIXI.particles.ParticleContainer(10000, {
+			
+
+			this.tileQ = app.renderer instanceof PIXI.WebGLRenderer ? 150 : 10;
+			this.cont = new PIXI.particles.ParticleContainer(this.tileQ, {
 			    scale: true,
 			    position: true,
 			    rotation: true,
 			    uvs: true,
 			    alpha: true
 			});
-			this.brick = this.brick.bind(this);
-			let max = this.utils.randomIntBetween(20, 500);
 
-			this.tileQ = app.renderer instanceof PIXI.WebGLRenderer ? max : 10;
+
 			for(let i = 0; i < this.tileQ; i ++){
 				let s = this.brick();
+				s.alpha = 0.5;
+				s.tint = this.colors[this.colorCounter];
+				this.colorCounter ++;
+				if (this.colorCounter > this.colors.length - 1)this.colorCounter = 0;
 				this.objectPool.push(s);
 			}
 
-			//make columns
-			this.column = new PIXI.Container();
-			this.colsHeight = {};
-			for(let i = 0; i < this.colWidth; i ++){
-				this.colsHeight[i] = 0;
-			}
-			this.colBrick();
-			this.columnCont.addChild(this.column);
-			this.column.x = this.startX;
 		
 
 			let s = this.objectPool[this.objectPoolCounter];
 			this.objectPoolCounter ++;
-			
-			this.bricks.push(s);
+			let newPos = this.newXY();
+			s.y = newPos.x;
+			s.x = newPos.y;
 			this.cont.addChild(s);
-			this.newBrick();
-			this.straightQ = this.utils.randomIntBetween(this.straightQs[0], this.straightQs[1]);
+
 			this.curveQ = this.utils.randomIntBetween(this.curvedQs[0], this.curvedQs[1]);
 
-			
-			this.nextRed = this.utils.randomIntBetween(0,100);
 
-
-		},
-		colBrick: function () {
-			let s;
-			for(let i = 0; i < 20; i ++){
-				for(let j = 0; j < this.colWidth; j ++){
-					s = new PIXI.Sprite(this.goldTile);
-					s.anchor.y = 0;
-					s.width = 10;
-					s.height = this.utils.randomIntBetween(50, 100);
-
-					s.x = (s.width * j);
-					s.y = this.colsHeight[j];
-
-					this.colsHeight[j] += s.height;
-					this.column.addChild(s)
-				}	
-			}
 		},
 		brick: function () {
-			//let cont = new PIXI.Container();
 			let s = new PIXI.Sprite(this.goldTile);
-
-			if(this.bricks.length === this.nextRed) {
-				s = new PIXI.Sprite(this.spritesheet.textures['redTile.png']);
-				this.nextRed = this.bricks.length + this.utils.randomIntBetween(0,100);
-			}
-
-
-			s.width = this.width;//5;
 			s.counter = 0;
 			s.curveCounter = 0;
-			s.height = this.height;//10;
 			this.brickHeight = s.height;
 			s.anchor.x = 0.5;
 			s.anchor.y = 1;
-			//cont.addChild(s);
 			return s;
 		},
 		newBrick: function () {
-		
 
 			let s = this.objectPool[this.objectPoolCounter];
-
 			this.objectPoolCounter ++;
-			if(this.objectPoolCounter > this.objectPool.length - 1)this.objectPoolCounter = 0;
-			this.counter ++;
+			if(this.objectPoolCounter > this.objectPool.length - 1){
+				this.objectPoolCounter = 0;
+			}
 
-			if(this.counter > this.straightQ){
-				this.curveCounter ++;
-				this.curve *= 1.05;
-				let deg = this.utils.deg2rad(this.curve)
-				s.rotation = deg;
-				if(this.curveCounter > this.curveQ ){
-					this.curve = (Math.floor(Math.random()*2))?-this.startCurveAngle:this.startCurveAngle;
-					this.counter = 0;
-					this.curveCounter = 0;
-					this.straightQ = this.utils.randomIntBetween(this.straightQs[0], this.straightQs[1]);
-					this.curveQ = this.utils.randomIntBetween(this.curvedQs[0], this.curvedQs[1]);
+			this.curveCounter ++;
+			this.curve *= 1.05;
+			let deg = this.utils.deg2rad(this.curve)
+			s.rotation = deg;
+			if (this.curveCounter > this.curveQ ) {
+				this.curve = this.curves[Math.floor(Math.random()*4)];
+				this.curveCounter = 0;
+				this.curveQ = this.utils.randomIntBetween(this.curvedQs[0], this.curvedQs[1]);
+				let newPos = this.newXY();
+				s.y = newPos.y;
+				s.x = newPos.x;
+			}
 
+		
+			let previousYVal = this.objectPool[this.objectPool.length -1].y;
+		
+			let prevIndex = (this.objectPoolCounter > 1)?this.objectPoolCounter - 2: this.objectPool.length - 1;
+			let prevX = this.objectPool[prevIndex].x;
+			let prevY = this.objectPool[prevIndex].y;
+			let prevRotation = this.objectPool[prevIndex].rotation;
+			let newX = prevX + (s.height * Math.sin(prevRotation));
+			let newY = prevY - (s.height * Math.cos(prevRotation));
+			s.x = newX;
+			s.y = newY;
+
+			let buffer = 1;
+			if(this.objectPoolCounter === 0 ||
+				s.y < -buffer || 
+				s.x < -buffer || 
+				s.x > this.wh.canvasWidth + buffer || 
+				s.y > this.wh.canvasHeight + buffer
+				){
+				let newPos = this.newXY();
+				s.x = newPos.x;
+				s.y = newPos.y;
+			}
+			this.cont.addChild(s);
+
+			
+		},
+		newXY: function () {
+			let buffer = 0;
+			let perc = 0.5;
+			if(this.quadrant === "TL"){
+				return {
+					x: this.utils.randomNumberBetween(buffer, this.wh.canvasWidth * perc),
+					y: this.utils.randomNumberBetween(buffer, this.wh.canvasHeight * perc),
+				}
+			} else if (this.quadrant == "TR") {
+				return {
+					x: this.utils.randomNumberBetween(this.wh.canvasWidth * perc, this.wh.canvasWidth),
+					y: this.utils.randomNumberBetween(buffer, this.wh.canvasHeight * perc),
+				}
+			} else if (this.quadrant == "BL") {
+				return {
+					x: this.utils.randomNumberBetween(buffer, this.wh.canvasWidth * perc),
+					y: this.utils.randomNumberBetween(this.wh.canvasHeight * perc, this.wh.canvasHeight),
+				}
+			} else if (this.quadrant == "BR") {
+			
+				return {
+					x: this.utils.randomNumberBetween(this.wh.canvasWidth * perc, this.wh.canvasWidth),
+					y: this.utils.randomNumberBetween(this.wh.canvasHeight * perc, this.wh.canvasHeight),
 				}
 			}
 			
-			this.totalHeight += this.brickHeight;
-			this.fallSpeed = this.utils.randomNumberBetween(1, 2);
-			let previousYVal = this.bricks[this.bricks.length -1].y;
-		
-
-			if (!this.activeBrick) {
-				let newPos = this.newXY();
-				s.y = 300;//s.dest = newPos.y;
-				s.x = this.startX;
-				this.cont.addChild(s);
-			} else {
-				s.dest = -this.brickHeight;
-				s.y = s.dest;
-				//calculate x and y
-				let prevX = this.bricks[this.bricks.length - 1].x;
-				let prevY = this.bricks[this.bricks.length - 1].y;
-				let prevRotation = this.bricks[this.bricks.length - 1].rotation;
-				let newX = prevX + (s.height * Math.sin(prevRotation));
-				let newY = prevY - (s.height * Math.cos(prevRotation));
-				s.x = newX;
-				s.y = newY;
-
-				if(s.y < 0 || 
-					s.x < 0 || 
-					s.x > this.wh.canvasWidth || 
-					s.y > this.wh.canvasHeight
-					){
-					let newPos = this.newXY();
-					s.y = 300;//newPos.x;//this.wh.canvasHeight;
-					s.x = this.startX;//this.startX;//this.utils.randomNumberBetween(0, this.wh.canvasWidth);
-				}
-				this.cont.addChild(s);
-			}
-			this.activeBrick = s;
-			this.bricks.push(s);
-		},
-		newXY: function () {
-			let buffer = 100;
-			return {
-				x: this.utils.randomNumberBetween(buffer, this.wh.canvasWidth - buffer),
-				y: this.utils.randomNumberBetween(buffer, this.wh.canvasHeight - buffer),
-			}
 		},
 		addToStage: function () {
 			this.parentCont.addChild(this.cont);
@@ -201,11 +175,7 @@ export default function () {
 			this.testCounter ++;
 			if(this.testCounter % this.interval === 0)
 			this.newBrick();
-
-			this.column.x += this.action.vx;
-			if(this.column.x < -this.column.width)this.column.x = this.wh.canvasWidth;
-			
-			
+		
 		}
 	}
 }

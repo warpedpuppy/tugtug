@@ -34,13 +34,13 @@ export default function () {
             this.fish = [];
             this.spritesheet = spritesheet;
 
-            this.bounce = this.utils.randomNumberBetween(-.6, -.9);
+            this.bounce = this.utils.randomNumberBetween(-0.6, -0.9);
             this.vy = this.utils.randomNumberBetween(3,5);
 
             if(items){
             	  for(let i = 0; i < items.length; i ++){
 	            	var item = PIXI.Sprite.fromImage(items[i].url);
-	            	if(items[i].active) {
+	            	if (items[i].active) {
 		            	this.cont.addChild(item);
 		            }
 	            }
@@ -108,8 +108,6 @@ export default function () {
 			this.vx = 0;
 			if(string === 'jump') {
 				this.personMode();
-				this.cont.y = this.wh.canvasHeight - 150;
-				console.log(this.cont.y)
 			} else if (string === 'bounce') {
 				this.personMode();
 			} else if (string === 'swim') {

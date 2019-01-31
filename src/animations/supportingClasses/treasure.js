@@ -27,7 +27,7 @@ export default function () {
 		this.wh = wh;
 		this.hero = hero;
 		this.ringQ = app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
-		this.chestQ = app.renderer instanceof PIXI.WebGLRenderer ? 4 : 1;
+		this.chestQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
 		this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
@@ -54,7 +54,7 @@ export default function () {
 
 			if (!(i >= this.chestQ)) {
 				let c = new PIXI.Sprite(spritesheet.textures['treasureChest.png']);
-				c.scale.set(this.utils.randomNumberBetween(0.35, 0.65));
+				c.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
 				c.anchor.set(0.5);
 				c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
 				c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
@@ -168,8 +168,8 @@ export default function () {
 	animate: function (vx, vy) {
 		for (let i = 0; i < this.chestQ; i ++) {
 			let c = this.chests[i];
-			c.x -= vx || c.vx;
-			c.y -= vy || c.vy;
+			c.x -= vx;
+			c.y -= vy;
 			c.rotation = this.utils.cosWave(this.utils.deg2rad(0), this.utils.deg2rad(c.variance), c.rotateSpeed);
 			let tempRect = {x: c.x, y: c.y, width: c.width, height: c.height};
 			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){

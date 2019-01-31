@@ -17,13 +17,13 @@ export default function () {
 			}
 		},
 		addPlatforms: function (boolean) {
-			for(let i = 0; i < this.platforms.length; i ++){
-				if(boolean){
-					this.cont.addChild(this.platforms[i]);
-				} else {
-					this.cont.removeChild(this.platforms[i]);
-				}
-			}
+			// for(let i = 0; i < this.platforms.length; i ++){
+			// 	if(boolean){
+			// 		this.cont.addChild(this.platforms[i]);
+			// 	} else {
+			// 		this.cont.removeChild(this.platforms[i]);
+			// 	}
+			// }
 		},
 		positionArray: function (wh){
 			return [

@@ -270,7 +270,8 @@ export default {
     },
     circleToCircleCollisionDetection: function (ballA, ballB) {
 
-       var rSum = ballA.radius + ballB.radius;
+
+        var rSum = ballA.radius + ballB.radius;
         var dx = ballB.x - ballA.x;
         var dy = ballB.y - ballA.y;
         return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];

@@ -15,7 +15,7 @@ export default function () {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, wh, spritesheet, hero, app, switchPlayer) {
-		this.itemQ = app.renderer instanceof PIXI.WebGLRenderer ? 40 : 1;
+		this.itemQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = app;
 		this.itemStrings = arr;
@@ -87,8 +87,8 @@ export default function () {
 
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = this.items[i];
-			c.x -= vx || this.vx;
-			c.y -= vy || this.vy;
+			c.x -= vx;// || this.vx;
+			c.y -= vy;// || this.vy;
 
 			if(c.y > this.bottomEdge) {
             	c.y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);

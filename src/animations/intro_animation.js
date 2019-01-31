@@ -117,7 +117,7 @@ export default function(obj) {
 
             this.treasure.init(this.app, this.wh, this.spritesheet, this.hero.cont, this.stage);
             
-            this.score.init(this.stage, this.wh);
+            //this.score.init(this.stage, this.wh);
 
             this.switchPlayer(this.mode[this.activeModeIndex]);
 
@@ -153,7 +153,7 @@ export default function(obj) {
             		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
 
             		this.jumpBackground = JumpBackground();
-            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.jumpAction);
+            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.jumpAction, this.hero);
 				}
 				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);
@@ -293,14 +293,13 @@ export default function(obj) {
             switch (e.keyCode) {
             	case 32:
             		this.jumpAction.jump();
-            		this.hero.heroJump.look('up');
             		break;
                 case 37:
                     // left
                     if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateLeftBoolean = true;
-                    this.hero.heroJump.look('left');
+                    
                     //this.rotate('left');
                     break;
                 case 38:
@@ -313,7 +312,6 @@ export default function(obj) {
                     if(this.activeMode === 'bounce')break;
                     if(this.swimAction)this.swimAction.spinning = true;
                     this.rotateRightBoolean = true;
-                    this.hero.heroJump.look('right');
                     //this.rotate('right');
                     break;
                 case 40:
@@ -358,9 +356,9 @@ export default function(obj) {
 				this.gears.animate();
 				this.activeAction.animate();
 				//this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-				this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
-				this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
-				this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
+				// this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
+				// this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
+				// this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
 				
 				if (this.activeMode === 'bounce') {
 					this.bouncePlatform.animate();
