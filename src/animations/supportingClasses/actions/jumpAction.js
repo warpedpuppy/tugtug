@@ -4,6 +4,7 @@ export default function () {
 	return {
 		gravity: 0.3,
 		speedLimit: 20,
+		speed: 1,
 		vy: 0,
 		vx: 0.5,
 		jumpTimer: 0,
@@ -16,11 +17,10 @@ export default function () {
 			this.canvasHeight = canvasHeight;
 			this.platformCont = platformCont;
 			this.stage = stage;
-
+			this.vx = this.speed;
 		},
 		jump: function () {
-			console.log("JUMP")
-			this.vy = -3;
+			this.vy = -6;
 			this.jumpTimer = 1;
 			this.hero.heroJump.bounce();
 			this.hero.heroJump.jumpMouth();
@@ -31,11 +31,11 @@ export default function () {
 		},
 		move: function (str) {
 			if(str === 'left'){
-				this.vx = -0.5;
+				this.vx = -this.speed;
 				//if(this.vx > this.speedLimit)this.vx = this.speedLimit;
 				this.hero.heroJump.look('left');
 			} else if (str === 'right'){
-				 this.vx = 0.5;
+				 this.vx = this.speed;
 				// if(this.vx < this.speedLimit)this.vx = -this.speedLimit;
 				 this.hero.heroJump.look('right');
 			} else {

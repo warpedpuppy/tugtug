@@ -228,7 +228,7 @@ export default function(obj) {
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 			this.clock.resize(wh);
 			this.gears.resize(wh);
-			this.score.resize(wh);
+		//	this.score.resize(wh);
 			if(this.platforms)this.platforms.resize(wh);
 			this.magicPills.resize(wh);
 			this.treasure.resize(wh);

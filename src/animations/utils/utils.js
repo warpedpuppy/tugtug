@@ -270,11 +270,63 @@ export default {
     },
     circleToCircleCollisionDetection: function (ballA, ballB) {
 
-
         var rSum = ballA.radius + ballB.radius;
         var dx = ballB.x - ballA.x;
         var dy = ballB.y - ballA.y;
         return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];
+    },
+    update: function (ball, wh) {
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+        ball.rotation += this.deg2rad(ball.rotate);
+        if(ball.x > wh.canvasWidth - ball.r) {
+            ball.x = wh.canvasWidth - ball.r;
+            ball.vx *= -1;
+        } else if(ball.x < ball.r) {
+            ball.x = ball.r;
+            ball.vx *= -1;
+        }
+        if(ball.y > wh.canvasHeight - ball.r) {
+            ball.y = wh.canvasHeight - ball.r;
+            ball.vy *= -1;
+        } else if(ball.y < ball.r) {
+            ball.y = ball.r + 1;
+            ball.vy *= -1;
+        }
+    },
+    adjustPositions: function (ballA, ballB, depth){
+        const percent = 0.2;
+        const slop = 0.01;
+        var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
+        
+        var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
+        var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
+        norm = [norm[0]/mag,norm[1]/mag];
+        correction = [correction*norm[0],correction*norm[1]];
+        ballA.x -= 1/ballA.r * correction[0];
+        ballA.y -= 1/ballA.r * correction[1];
+        ballB.x += 1/ballB.r * correction[0];
+        ballB.y += 1/ballB.r * correction[1];
+    },
+    resolveCollision: function (ballA, ballB){
+        var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
+        var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
+        var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
+        norm = [norm[0]/mag,norm[1]/mag];
+        
+        var velAlongNorm = relVel[0]*norm[0] + relVel[1]*norm[1];
+        if(velAlongNorm > 0)
+            return;
+        
+        var bounce = 0.7;
+        var j = -(1 + bounce) * velAlongNorm;
+        j /= 1/ballA.r + 1/ballB.r;
+        
+        var impulse = [j*norm[0],j*norm[1]];
+        ballA.vx -= 1/ballA.r * impulse[0];
+        ballA.vy -= 1/ballA.r * impulse[1];
+        ballB.vx += 1/ballB.r * impulse[0];
+        ballB.vy += 1/ballB.r * impulse[1];
     },
     lineIntersectCircle: function (A, B, C, r) {
         this.intersects = false;

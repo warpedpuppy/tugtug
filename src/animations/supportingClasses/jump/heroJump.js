@@ -100,10 +100,10 @@ export default function () {
 		buildReticulatedHero: function () {
 			this.type = 'reticulated';
 			let feet = [
-				PIXI.Texture.fromFrame('walk1.png'),
-				PIXI.Texture.fromFrame('walk2.png'),
-				PIXI.Texture.fromFrame('walk3.png'),
-				PIXI.Texture.fromFrame('walk2.png')
+				PIXI.Texture.fromFrame('walk1_yellow.png'),
+				PIXI.Texture.fromFrame('walk2_yellow.png'),
+				PIXI.Texture.fromFrame('walk3_yellow.png'),
+				PIXI.Texture.fromFrame('walk2_yellow.png')
 			];
 			let walking = new PIXI.extras.AnimatedSprite(feet);
 			walking.animationSpeed = 0.1;
@@ -149,10 +149,10 @@ export default function () {
 		buildHero: function () {
 
 			let feet = [
-				PIXI.Texture.fromFrame('walk1.png'),
-				PIXI.Texture.fromFrame('walk2.png'),
-				PIXI.Texture.fromFrame('walk3.png'),
-				PIXI.Texture.fromFrame('walk2.png')
+				PIXI.Texture.fromFrame('walk1_grey.png'),
+				PIXI.Texture.fromFrame('walk2_grey.png'),
+				PIXI.Texture.fromFrame('walk3_grey.png'),
+				PIXI.Texture.fromFrame('walk2_grey.png')
 			];
 			let walking = new PIXI.extras.AnimatedSprite(feet);
 			walking.animationSpeed = 0.1;

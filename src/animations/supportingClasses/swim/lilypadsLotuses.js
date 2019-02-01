@@ -39,75 +39,23 @@ export default function (spritesheet) {
 
 		
 		},
-		update: function (ball) {
-			ball.x += ball.vx;
-			ball.y += ball.vy;
-			ball.rotation += this.utils.deg2rad(ball.rotate);
-			if(ball.x > this.wh.canvasWidth - ball.r) {
-				ball.x = this.wh.canvasWidth - ball.r;
-				ball.vx *= -1;
-			} else if(ball.x < ball.r) {
-				ball.x = ball.r;
-				ball.vx *= -1;
-			}
-			if(ball.y > this.wh.canvasHeight - ball.r) {
-				ball.y = this.wh.canvasHeight - ball.r;
-				ball.vy *= -1;
-			} else if(ball.y < ball.r) {
-				ball.y = ball.r + 1;
-				ball.vy *= -1;
-			}
-		},
 		addToStage: function () {
 		  	this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
 		  	this.parentCont.removeChild(this.cont);
 		},
-		adjustPositions: function (ballA, ballB, depth){
-			const percent = 0.2;
-			const slop = 0.01;
-			var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
-			
-			var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
-			var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
-			norm = [norm[0]/mag,norm[1]/mag];
-			correction = [correction*norm[0],correction*norm[1]];
-			ballA.x -= 1/ballA.r * correction[0];
-			ballA.y -= 1/ballA.r * correction[1];
-			ballB.x += 1/ballB.r * correction[0];
-			ballB.y += 1/ballB.r * correction[1];
-		},
-		resolveCollision: function (ballA, ballB){
-			var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
-			var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
-			var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
-			norm = [norm[0]/mag,norm[1]/mag];
-			
-			var velAlongNorm = relVel[0]*norm[0] + relVel[1]*norm[1];
-			if(velAlongNorm > 0)
-				return;
-			
-			var bounce = 0.7;
-			var j = -(1 + bounce) * velAlongNorm;
-			j /= 1/ballA.r + 1/ballB.r;
-			
-			var impulse = [j*norm[0],j*norm[1]];
-			ballA.vx -= 1/ballA.r * impulse[0];
-			ballA.vy -= 1/ballA.r * impulse[1];
-			ballB.vx += 1/ballB.r * impulse[0];
-			ballB.vy += 1/ballB.r * impulse[1];
-		},
+	
 		animate: function () {
 
 			for(var ball of this.array){
-				this.update(ball);
+				this.utils.update(ball, this.wh);
 				for(var ball2 of this.array){
 					if(ball !== ball2){
 						let collision = this.utils.circleToCircleCollisionDetection(ball, ball2);
 						if(collision[0]){
-							this.adjustPositions(ball, ball2, collision[1]);
-							this.resolveCollision(ball, ball2);
+							this.utils.adjustPositions(ball, ball2, collision[1]);
+							this.utils.resolveCollision(ball, ball2);
 						}
 					}
 				
