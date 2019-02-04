@@ -238,9 +238,8 @@
             <filename>../bmps/grimace.png</filename>
             <filename>../bmps/circleAlpha1.png</filename>
             <filename>../bmps/pinWheel.png</filename>
-            <filename>../bmps/walk1_yellow.png</filename>
-            <filename>../bmps/walk2_yellow.png</filename>
-            <filename>../bmps/walk3_yellow.png</filename>
+            <filename>../bmps/bounceLegs1.png</filename>
+            <filename>../bmps/bounceLegs2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

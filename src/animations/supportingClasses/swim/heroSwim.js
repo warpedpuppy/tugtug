@@ -6,7 +6,8 @@ export default function () {
 		dists: [0, 40, 35, 30, 23],
 		airBubbles: [],
 		fish: [],
-		init: function (cont, wh, spritesheet) {
+		init: function (parentCont, wh, spritesheet) {
+			this.parentCont = parentCont;
 			this.spritesheet = spritesheet;
 			this.segmentsQ = 5;
 			this.finCont = new PIXI.Container();
@@ -73,7 +74,7 @@ export default function () {
             cont.xpos = 0;
             cont.ypos = 0;
 
-            //let b = new PIXI.Sprite.fromImage(str);
+ 
             let b = new PIXI.Sprite(this.spritesheet.textures[str]);
             this.fishRadius = b.width / 2;
             let scale = 1 - (num * 0.1);
@@ -94,10 +95,10 @@ export default function () {
             return cont;
 		},
 		addToStage: function () {
-
+			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
-
+			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
 

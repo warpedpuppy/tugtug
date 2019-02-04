@@ -149,10 +149,10 @@ export default function () {
 		buildHero: function () {
 
 			let feet = [
-				PIXI.Texture.fromFrame('walk1_grey.png'),
-				PIXI.Texture.fromFrame('walk2_grey.png'),
-				PIXI.Texture.fromFrame('walk3_grey.png'),
-				PIXI.Texture.fromFrame('walk2_grey.png')
+				PIXI.Texture.fromFrame('walk1.png'),
+				PIXI.Texture.fromFrame('walk2.png'),
+				PIXI.Texture.fromFrame('walk3.png'),
+				PIXI.Texture.fromFrame('walk2.png')
 			];
 			let walking = new PIXI.extras.AnimatedSprite(feet);
 			walking.animationSpeed = 0.1;
@@ -184,6 +184,8 @@ export default function () {
 
 		},
 		addToStage: function () {
+			console.log('add hero jump to stage')
+			console.log(this.cont)
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
@@ -195,16 +197,16 @@ export default function () {
 		bounce: function () {
 			if(this.type === 'reticulated'){
 				this.bounceAllow = true;
-			this.blocks[4].active = true;
-			this.doneCounter = 0;
-			this.bounceBlockIndex = this.blocks.length - 1;
-			for(let i = 0; i < this.blockQ; i ++){
-				let b = this.blocks[i];
-				b.y = b.bottomY;
-				b.vy = b.storeVY;
+				this.blocks[4].active = true;
+				this.doneCounter = 0;
+				this.bounceBlockIndex = this.blocks.length - 1;
+				for(let i = 0; i < this.blockQ; i ++){
+					let b = this.blocks[i];
+					b.y = b.bottomY;
+					b.vy = b.storeVY;
 
-			}
-			}
+				}
+				}
 			
 		},
 		bounceStyle1: function () {

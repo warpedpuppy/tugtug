@@ -24,7 +24,6 @@ export default function () {
 			this.stage = stage;
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
-            this.airBubbles.setupBubbles(wh, this.hero.activeHero, stage);
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -58,17 +57,10 @@ export default function () {
 	            }
 	        }
 
-        	this.airBubbles.animate();
-        	this.hero.activeHero.leftFin.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
-        	this.hero.activeHero.rightFin.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
-        	this.hero.activeHero.tail.rotation = this.utils.deg2rad(this.utils.cosWave(0, 60, 0.01));
-
+        	this.hero.activeHero.wingCont.rotation = this.storeRadius;
+        	this.hero.activeHero.leftWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
+        	this.hero.activeHero.rightWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
 	        
-	        this.hero.activeHero.finCont.rotation = this.radius;
-	        this.hero.activeHero.eyeCont.rotation = this.radius;
-	        this.airBubbles.bubblesCont.rotation = this.storeRadius; // this is why airbubbles needs to be in here
-
-
 
 		}
 	}

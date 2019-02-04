@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Platforms from './supportingClasses/platforms/platforms';
-import BouncePlatform from './supportingClasses/bouncePlatform';
+import BouncePlatform from './supportingClasses/bounce/bouncePlatform';
 import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';

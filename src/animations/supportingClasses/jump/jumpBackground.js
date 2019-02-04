@@ -20,7 +20,6 @@ export default function () {
 		brickHeight: 50,
 		groundHeight: 150,
 		centralOrb: undefined,
-		centralContainer: new PIXI.Container(),
 		transition: false,
 		currentOrb: undefined,
 		orbs: [],
@@ -74,6 +73,7 @@ export default function () {
 					
 					if(counter === centerOrb){
 						this.currentOrb = this.centralOrb = cont;
+						this.currentOrb.alpha = 0.5;
 					}
 					counter ++;
 				
@@ -85,19 +85,10 @@ export default function () {
 			this.orbsCont.y = (this.wh.canvasHeight / 2) - this.currentOrb.y;
 
 
-
-			this.hero.cont.x = 0;
-			this.hero.cont.y = this.hero.floor = -(this.centralOrb.width /2);
-			this.centralContainer.addChild(this.hero.cont);
-			this.centralContainer.x = wh.canvasWidth / 2;
-			this.centralContainer.y = wh.canvasHeight / 2;
-			this.parentCont.addChild(this.centralContainer);
-
-
 			this.background.beginFill(0x000066).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
-			this.parentCont.addChild(this.orbsCont);
+			//this.parentCont.addChild(this.orbsCont);
 
 			this.startXs = ["TL", "BL", "TR", "BR"];
 			for(let i = 0; i < this.tileColQ; i ++){
@@ -111,11 +102,16 @@ export default function () {
 		},
 		addToStage: function () {
 			// this.parentCont.addChild(this.cont);
+			// this.hero.cont.x = 0;
+			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.centralOrb.width /2);
+			
 			this.parentCont.addChildAt(this.cont, 0);
+			this.parentCont.addChild(this.orbsCont);
 		},
 		removeFromStage: function () {
+			TweenMax.killAll();
 			this.parentCont.removeChild(this.cont);
-
+			this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
 
@@ -123,32 +119,32 @@ export default function () {
 		switchPlanets: function (newPlanet) {
 			let newX = (this.wh.canvasWidth / 2) - newPlanet.x;
 			let newY = (this.wh.canvasHeight / 2) - newPlanet.y;
-			this.hero.floor = -newPlanet.radius;
+			this.hero.activeHero.floor = -newPlanet.radius;
 			this.currentOrb = newPlanet;
 			TweenMax.to(this.orbsCont, 1.5, {x: newX, y: newY, ease: Elastic.easeOut, onComplete: this.makeTransitionComplete})
-			TweenMax.to(this.hero.cont, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
+			TweenMax.to(this.hero.activeHero.cont, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
 		},
 		makeTransitionComplete: function () {
 
 			this.transition = false;
 		},
 		animate: function () {
-			this.centralContainer.rotation += this.utils.deg2rad(this.action.vx);
+			// this.centralContainer.rotation += this.utils.deg2rad(this.action.vx);
 
-			for(let i = 0; i < this.tileColQ; i ++){
+			for (let i = 0; i < this.tileColQ; i ++) {
 				this.columns[i].animate();
 			}
 
 
 			
-			let globalPoint = this.hero.heroJump.body.toGlobal(this.app.stage, undefined, true);
+			let globalPoint = this.hero.activeHero.body.toGlobal(this.app.stage, undefined, true);
 			let tempCircle = {
 				x: globalPoint.x,
 				y: globalPoint.y,
 				radius: 33
 			}
 
-			if(this.pauseCounter < this.delay){
+			if (this.pauseCounter < this.delay){
 				this.pauseCounter ++;
 				return;
 			}

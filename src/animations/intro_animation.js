@@ -1,11 +1,14 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
-import BouncePlatform from './supportingClasses/bouncePlatform';
+import BouncePlatform from './supportingClasses/bounce/bouncePlatform';
+import BounceBackground from './supportingClasses/bounce/bounceBackground';
+import FlyBackground from './supportingClasses/fly/flyBackground';
 import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
 import SwimAction from './supportingClasses/actions/swimAction';
 import Platforms from './supportingClasses/platforms/platforms';
+import FlyAction from './supportingClasses/actions/flyAction';
 import Pellets from './supportingClasses/pellets';
 import MagicPills from './supportingClasses/magicPills';
 import TransitionItems from './supportingClasses/transitionItems';
@@ -30,7 +33,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['jump', 'bounce'],//, 'bounce', 'fly'],
+		mode: ['fly', 'bounce', 'swim', 'jump'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -130,6 +133,7 @@ export default function(obj) {
             window.removeEventListener('keyup', this.keyUp);
 		},
 		switchPlayer: function (str) {
+
 			if(str) {
 				this.activeMode = str;
 			} else {
@@ -142,9 +146,9 @@ export default function(obj) {
 			this.hero.switchPlayer(this.activeMode);
 			this.pellets.changeMode(this.activeMode);
 
-			if(this.activeMode === 'jump'){
+			if (this.activeMode === 'jump') {
 
-				if(!this.platforms){
+				if (!this.jumpAction) {
 					this.platforms = Platforms();
 					this.platformCont = new PIXI.Container();
 					this.platforms.init(this.platformCont, this.wh, this.spritesheet);
@@ -154,13 +158,15 @@ export default function(obj) {
 
             		this.jumpBackground = JumpBackground();
             		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.jumpAction, this.hero);
+
 				}
 				this.activeAction = this.jumpAction;
 				this.platforms.addPlatforms(true);
 				this.stage.addChild(this.platformCont)
 				this.jumpBackground.addToStage();
+
 			} else {
-				if(this.jumpBackground) this.jumpBackground.removeFromStage();
+				if(this.jumpBackground)this.jumpBackground.removeFromStage();
 				if(this.platforms)this.platforms.addPlatforms(false);
 				this.stage.removeChild(this.platformCont)
 			}
@@ -182,8 +188,33 @@ export default function(obj) {
 				if (this.bouncePlatform) this.bouncePlatform.on(false);
 			}
 
-			if(this.activeMode === 'swim' || this.activeMode === 'fly'){
-				if (!this.swimAction) {
+			// if(this.activeMode === 'swim' || this.activeMode === 'fly'){
+			// 	if (!this.swimAction) {
+			// 		this.swimAction = SwimAction();
+			// 		this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
+
+			// 		this.fishSchool = FishSchool(this.spritesheet);
+			// 		this.fishSchool.init(this.stage, this.wh);
+
+			// 		this.swimBackground = SwimBackground();
+			// 		this.swimBackground.init(this.stage, this.wh);
+
+			// 		this.lilypadLotuses = LilypadsLotuses();
+			// 		this.lilypadLotuses.init(this.stage, this.wh);
+
+			// 	}
+			// 	this.fishSchool.addToStage();
+			// 	this.lilypadLotuses.addToStage();
+			// 	this.swimBackground.addToStage();
+			// 	this.activeAction = this.swimAction;
+			// 	this.swimAction.switchMode(this.activeMode);
+			// }
+
+			if(this.activeMode === 'swim'){
+				if (!this.ripples) {
+					this.ripples = Ripples();
+					this.ripples.init(this.app, this.wh);
+
 					this.swimAction = SwimAction();
 					this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
 
@@ -195,23 +226,14 @@ export default function(obj) {
 
 					this.lilypadLotuses = LilypadsLotuses();
 					this.lilypadLotuses.init(this.stage, this.wh);
-
-				}
-				this.fishSchool.addToStage();
-				this.lilypadLotuses.addToStage();
-				this.swimBackground.addToStage();
-				
-				this.activeAction = this.swimAction;
-				this.swimAction.switchMode(this.activeMode);
-			}
-
-			if(this.activeMode === 'swim'){
-				if (!this.ripples) {
-					this.ripples = Ripples();
-					this.ripples.init(this.app, this.wh);
 				}
 				
 				this.ripples.on(true);
+				this.fishSchool.addToStage();
+				this.lilypadLotuses.addToStage();
+				this.swimBackground.addToStage();
+				this.activeAction = this.swimAction;
+				this.swimAction.switchMode(this.activeMode);
 			} else {
 				if (this.ripples) this.ripples.on(false);
 				if (this.fishSchool) this.fishSchool.removeFromStage();
@@ -220,6 +242,22 @@ export default function(obj) {
 				if (this.swimAction) this.swimAction.airBubbles.resetAirBubbles();
 
 			}
+
+			if(this.activeMode === 'fly'){
+				if (!this.flyBackground) {
+					this.flyBackground = FlyBackground();
+					this.flyBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.hero);
+
+					this.flyAction = FlyAction();
+					this.flyAction.init(this.hero, this.activeMode, this.wh, this.stage);
+				}
+				this.activeAction = this.flyAction;
+				this.flyBackground.addToStage();
+			} else {
+				if(this.flyBackground)this.flyBackground.removeFromStage();
+
+			}
+
 		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -369,8 +407,9 @@ export default function(obj) {
 					this.lilypadLotuses.animate();
 				} else if (this.activeMode === 'jump') {
 					this.jumpBackground.animate();
+				} else if (this.activeMode === 'fly') {
+
 				}
-				
 			}
 			
 			

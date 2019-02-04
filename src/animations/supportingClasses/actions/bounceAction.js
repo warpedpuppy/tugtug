@@ -8,11 +8,15 @@ export default function () {
 		angle: 0,
 		velocity: 10,
 		utils: Utils,
+		legCounter: 0,
+		legCounterLimit: 10,
+		utils: Utils,
 		init: function (hero, bouncePlatform, canvasWidth, canvasHeight) {
 			this.hero = hero;
 			this.bouncePlatform = bouncePlatform;
 			this.canvasWidth = canvasWidth;
 			this.canvasHeight = canvasHeight;
+			console.log('test val', this.utils.testVal)
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -20,6 +24,15 @@ export default function () {
 		},
 		animate: function () {
 			//this.hero.vy += 0.25;
+
+				if(this.hero.activeHero.legStyle === 2){
+					this.legCounter ++;
+					if(this.legCounter >= this.legCounterLimit){
+						this.hero.activeHero.bounce(false);
+						this.legCounter = 0;
+					}
+				}
+
 				if (this.vy < this.speedLimit) {
 		            this.vy += 0.5;
 		        } 
@@ -55,7 +68,7 @@ export default function () {
 		        let B = new PIXI.Point(this.bouncePlatform.dot2.x, this.bouncePlatform.dot2.y);
 		        let C = new PIXI.Point(this.canvasWidth / 2, this.canvasHeight / 2);
 		        if (this.bouncePlatform.mouseDown !== true && this.utils.lineIntersectCircle(A, B, C, 20)) {
-		         
+		         	this.hero.activeHero.bounce(true);
 		            let delta_x = dot1.x - dot2.x;
 					let delta_y = dot1.y - dot2.y;
 					let theta_radians = Math.atan2(delta_y, delta_x);
