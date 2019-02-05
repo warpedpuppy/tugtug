@@ -297,31 +297,31 @@ export default function(obj) {
 
 			if (str === 'right') {
 				this.idle = false;
-				this.swimAction.radius += 0.25;
+				this.activeAction.radius += 0.25;
 				this.velocity = this.utils.randomNumberBetween(
 					this.config.swimVelocities[0], 
 					this.config.swimVelocities[1]);
-				this.vx = this.velocity * Math.sin(this.swimAction.radius);
-				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
-				this.swimAction.storeRadius = this.swimAction.radius;
+				this.vx = this.velocity * Math.sin(this.activeAction.radius);
+				this.vy = -this.velocity * Math.cos(this.activeAction.radius);
+				this.activeAction.storeRadius = this.activeAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy};
 				this.pellets.rotate(obj);
 				//this.transitionItems.rotate(obj);
-				this.swimAction.rotate(obj);
+				this.activeAction.rotate(obj);
 			
 			} else if (str === 'left') {
 				this.idle = false;
-				this.swimAction.radius -= 0.25;
+				this.activeAction.radius -= 0.25;
 				this.velocity = this.utils.randomNumberBetween(
 					this.config.swimVelocities[0], 
 					this.config.swimVelocities[1]);
-				this.vx = this.velocity * Math.sin(this.swimAction.radius);
-				this.vy = -this.velocity * Math.cos(this.swimAction.radius);
-				this.swimAction.storeRadius = this.swimAction.radius;
+				this.vx = this.velocity * Math.sin(this.activeAction.radius);
+				this.vy = -this.velocity * Math.cos(this.activeAction.radius);
+				this.activeAction.storeRadius = this.activeAction.radius;
 				let obj = {vx: -this.vx, vy: -this.vy};
 				this.pellets.rotate(obj);
 				//this.transitionItems.rotate(obj);
-				this.swimAction.rotate(obj);
+				this.activeAction.rotate(obj);
 			}
 		},
 		keyDown: function (e) {

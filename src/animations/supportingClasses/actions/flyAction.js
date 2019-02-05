@@ -42,7 +42,7 @@ export default function () {
 			if(!this.spinning){
 				this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 			}
-				
+			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.segments[0].rotation = this.radius;
 	        this.hero.pos.push(this.radius);
 
@@ -59,7 +59,10 @@ export default function () {
 
         	this.hero.activeHero.wingCont.rotation = this.storeRadius;
         	this.hero.activeHero.leftWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
+        	this.hero.activeHero.leftWing2.rotation = this.utils.deg2rad(this.utils.cosWave(0, 20, 0.004));
+
         	this.hero.activeHero.rightWing.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
+        	this.hero.activeHero.rightWing2.rotation = this.utils.deg2rad(this.utils.cosWave(0, -20, 0.004));
 	        
 
 		}

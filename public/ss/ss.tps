@@ -240,6 +240,12 @@
             <filename>../bmps/pinWheel.png</filename>
             <filename>../bmps/bounceLegs1.png</filename>
             <filename>../bmps/bounceLegs2.png</filename>
+            <filename>../bmps/wingPart1.png</filename>
+            <filename>../bmps/wingPart2.png</filename>
+            <filename>../bmps/dragonHead.png</filename>
+            <filename>../bmps/dragonSegment.png</filename>
+            <filename>../bmps/dragonTail.png</filename>
+            <filename>../bmps/dragonTriangle.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -18,7 +18,7 @@ export default function () {
 
 	
 
-			this.background.beginFill(0x000000).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			this.background.beginFill(0x333333).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 			//this.parentCont.addChild(this.orbsCont)
