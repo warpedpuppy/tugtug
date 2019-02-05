@@ -249,7 +249,7 @@ export default function(obj) {
 					this.flyBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.hero);
 
 					this.flyAction = FlyAction();
-					this.flyAction.init(this.hero, this.activeMode, this.wh, this.stage);
+					this.flyAction.init(this.hero, this.activeMode, this.wh, this.app, this.spritesheet);
 				}
 				this.activeAction = this.flyAction;
 				this.flyBackground.addToStage();
@@ -325,12 +325,13 @@ export default function(obj) {
 			}
 		},
 		keyDown: function (e) {
-
             //e.preventDefault();
             this.hero.heroJump.look();
             switch (e.keyCode) {
             	case 32:
-            		this.jumpAction.jump();
+            	// space
+            		if(this.jumpAction)this.jumpAction.jump();
+            		if(this.flyAction)this.flyAction.fire(true);
             		break;
                 case 37:
                     // left
@@ -364,6 +365,7 @@ export default function(obj) {
             this.rotateLeftBoolean = false;
             this.rotateRightBoolean = false;
             this.idle = true;
+            if(this.flyAction)this.flyAction.fire(false);
         },
 		animate: function () {
 
