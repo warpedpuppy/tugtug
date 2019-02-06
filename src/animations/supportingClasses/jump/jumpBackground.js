@@ -101,8 +101,8 @@ export default function () {
 			
 		},
 		addToStage: function () {
-			// this.parentCont.addChild(this.cont);
-			// this.hero.cont.x = 0;
+	
+			console.log('jump added to stage')
 			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.centralOrb.width /2);
 			
 			this.parentCont.addChildAt(this.cont, 0);

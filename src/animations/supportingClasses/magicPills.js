@@ -24,7 +24,7 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5);
 
-			this.pillQ = app.renderer instanceof PIXI.WebGLRenderer ? 100 : 1;
+			this.pillQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
 
 			 for(let i = 0; i < this.pillQ; i ++ ){
             	let s = new PIXI.Sprite(spritesheet.textures['star.png']);

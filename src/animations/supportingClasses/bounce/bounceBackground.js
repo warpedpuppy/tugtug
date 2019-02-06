@@ -11,6 +11,7 @@ export default function () {
 		level4: new PIXI.Container(),
 		ground: new PIXI.Graphics(),
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
+		colorCounter: 0,
 		utils: Utils,
 		bars: {},
 		buffer: 500,
@@ -30,29 +31,31 @@ export default function () {
 
 
 			this.array1 = [];
-			this.createBars(3, 50, 0.15, 0xFF0000, this.level1, this.array1);
+			this.dots = [];
+			this.createBars(3, 10, 0.15, 0xFF0000, this.level1, this.array1);
 	
 			this.array2 = [];
-			this.createBars(6, 25, 0.35, 0xFFFF00, this.level2, this.array2);
+			this.createBars(8, 5, 0.35, 0xFFFF00, this.level2, this.array2);
 
 			this.array3 = [];
-			this.createBars(12, 10, 0.65, 0xFFFF00, this.level3, this.array3);
+			this.createBars(20, 2, 0.65, 0xFFFF00, this.level3, this.array3);
 
 			this.array4 = [];
-			this.createBars(24, 5, 1, 0x33FF00, this.level4, this.array4);
+			this.createBars(30, 1, 1, 0x33FF00, this.level4, this.array4);
 
-			this.loopingQ = Math.max(this.array1.length, this.array2.length, this.array3.length, this.array4.length)
+			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 
 
 			
-			this.level3.alpha = this.level4.alpha = 0.5;
+			this.level3.alpha = this.level4.alpha = 0.75;
 
 		},
-		createBars: function (w, q, speedAdust, color, cont, array) {
+		createBars: function (w, q, speedAdjust, color, cont, array) {
 			let spacing = this.wh.canvasWidth / q;
 			for (let i = 0; i < q; i ++) {
 				let bar = new PIXI.Sprite(this.spritesheet.textures['line.png']);
-				bar.speedAdjust = speedAdust;
+				bar.anchor.x = 0.5;
+				bar.speedAdjust = speedAdjust;
 				bar.width = w;
 				bar.height = this.wh.canvasHeight;
 				bar.spacing = spacing;
@@ -61,6 +64,20 @@ export default function () {
 				bar.array = array;
 				cont.addChild(bar);
 				array.push(bar);
+
+				let dot = new PIXI.Sprite(this.spritesheet.textures['pellet.png']);
+				dot.bar = bar;
+				dot.scale.set(speedAdjust);
+				dot.x = bar.x;
+				dot.tint = this.colors[this.colorCounter];
+				this.colorCounter ++;
+				if(this.colorCounter > this.colors.length - 1){
+					this.colorCounter = 0;
+				}
+				dot.anchor.set(0.5);
+				dot.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight)
+				cont.addChild(dot);
+				this.dots.push(dot);
 			}
 		},
 		addToStage: function () {
@@ -108,6 +125,16 @@ export default function () {
 				}
 				if(this.array4[i]){
 					this.move(this.array4[i]);
+				}
+				if(this.dots[i]){
+					let dot = this.dots[i];
+					dot.x = dot.bar.x;
+					dot.y -= this.action.vy;
+					if(dot.y < -100){
+						dot.y = this.wh.canvasHeight + dot.height;
+					} else if(dot.y > this.wh.canvasHeight +100){
+						dot.y = -dot.height;
+					}
 				}
 			}
 		}
