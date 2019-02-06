@@ -6,9 +6,11 @@ export default function () {
 		dragon: [],
 		utils: Utils,
 		segmentsQ: 10,
+		dyeLot: [],
 		init: function (parentCont, wh, spritesheet) {
 			this.parentCont = parentCont;
 			let head = new PIXI.Sprite(spritesheet.textures['dragonHead.png']);
+			this.dyeLot.push(head);
 			head.anchor.x = 0.5;
 	        head.anchor.y = 0.5;
 			this.cont.addChild(head);
@@ -24,6 +26,7 @@ export default function () {
 
                 if (i !== this.segmentsQ - 1) {
                 	segment = new PIXI.Sprite(spritesheet.textures['dragonSegment.png']);
+
                 	segment.y = i * (segment.height - 20);
                 } else { 
                 	segment = new PIXI.Sprite(spritesheet.textures['dragonTail.png']);
@@ -31,7 +34,7 @@ export default function () {
                 }
                 segment.anchor.x = 0.5;
                 segment.anchor.y =  0;
-               
+               	this.dyeLot.push(segment);
                 cont.addChild(segment);
                 this.dragon.push(cont);
                 this.cont.addChild(cont);
@@ -43,12 +46,14 @@ export default function () {
             this.rightWing1 = new PIXI.Sprite(spritesheet.textures['wingPart1.png']);
 			this.rightWing1.anchor.x = 0;
 			this.rightWing1.anchor.y = 0.33;
+			this.dyeLot.push(this.rightWing1);
 
 			this.rightWing2 = new PIXI.Sprite(spritesheet.textures['wingPart2.png']);
 			this.rightWing2.x = 84;
 			this.rightWing2.y = -40;
 			this.rightWing2.anchor.x = 0;
 			this.rightWing2.pivot.y = 20;
+			this.dyeLot.push(this.rightWing2);
 
 			this.rightWing3 = new PIXI.Sprite(spritesheet.textures['dragonTriangle.png']);
 			this.rightWing3.anchor.x = 0.5;
@@ -56,6 +61,7 @@ export default function () {
 			this.rightWing3.x = 84;
 			this.rightWing3.rotation = this.utils.deg2rad(-30);
 			this.rightWing3.y = -40;
+			this.dyeLot.push(this.rightWing3);
 
 			this.rightWing.addChild(this.rightWing1);
 			this.rightWing.addChild(this.rightWing2);
@@ -66,6 +72,7 @@ export default function () {
 			this.leftWing1.scale.x = -1;
 			this.leftWing1.anchor.x = 0;
 			this.leftWing1.anchor.y = 0.33;
+			this.dyeLot.push(this.leftWing1);
 
 			this.leftWing2 = new PIXI.Sprite(spritesheet.textures['wingPart2.png']);
 			this.leftWing2.scale.x = -1;
@@ -73,6 +80,7 @@ export default function () {
 			this.leftWing2.y = -40;
 			this.leftWing2.anchor.x = 0;
 			this.leftWing2.pivot.y = 20;
+			this.dyeLot.push(this.leftWing2);
 
 			this.leftWing3 = new PIXI.Sprite(spritesheet.textures['dragonTriangle.png']);
 			this.leftWing3.anchor.x = 0.5;
@@ -80,6 +88,7 @@ export default function () {
 			this.leftWing3.x = -82;
 			this.leftWing3.rotation = this.utils.deg2rad(30);
 			this.leftWing3.y = -40;
+			this.dyeLot.push(this.leftWing3);
 
 			this.leftWing.addChild(this.leftWing1);
 			this.leftWing.addChild(this.leftWing2);
@@ -104,6 +113,13 @@ export default function () {
 			this.cont.radius = 0;
 			this.cont.addChildAt(this.wingCont, 0);
 			this.segments = this.dragon;
+
+			this.dye(0x000000);
+		},
+		dye: function (color) {
+			for(let part of this.dyeLot){
+				part.tint = color;
+			}
 		},
 		bodySegment: function (radius, color, yVal, str) {
 			let cont = new PIXI.Container();

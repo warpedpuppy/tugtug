@@ -33,7 +33,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['fly', 'bounce', 'swim', 'jump'],
+		mode: ['bounce', 'fly', 'swim', 'jump'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -179,13 +179,23 @@ export default function(obj) {
             		this.bouncePlatform.on(false); 
 					this.bounceAction = BounceAction();
             		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
+
+            		this.bounceBackground = BounceBackground();
+            		this.bounceBackground.init(
+            			this.app, 
+            			this.wh, 
+            			this.spritesheet,
+            			this.hero,
+            			this.bounceAction);
 				}  
 				this.activeAction = this.bounceAction;
 				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
 				this.bouncePlatform.on(true);
+				this.bounceBackground.addToStage();
 
 			} else {
 				if (this.bouncePlatform) this.bouncePlatform.on(false);
+				if (this.bounceBackground) this.bounceBackground.removeFromStage();
 			}
 
 			// if(this.activeMode === 'swim' || this.activeMode === 'fly'){
@@ -395,13 +405,14 @@ export default function(obj) {
 				
 				this.gears.animate();
 				this.activeAction.animate();
-				//this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-				// this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
-				// this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
-				// this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
+				this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
+				this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
+				this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
+				this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
 				
 				if (this.activeMode === 'bounce') {
 					this.bouncePlatform.animate();
+					this.bounceBackground.animate();
 				} else if (this.activeMode === 'swim') {
 					this.ripples.animate();
 					this.fishSchool.animate();

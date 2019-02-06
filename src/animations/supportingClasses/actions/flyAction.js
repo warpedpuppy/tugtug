@@ -42,13 +42,14 @@ export default function () {
 			let item;
 			for (let i = 0; i < this.flameQ; i ++) {
 				item = new PIXI.Sprite(spritesheet.textures['star.png']);
-				item.scale.set(0.15);
+				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
 				item.anchor.set(0.5);
 				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
 				item.fade = this.utils.randomNumberBetween(0.001, 0.01);
 				item.maxDistance = this.utils.randomNumberBetween(100, 1000);
-				item.vx = Math.cos(item.angle) * 10;
-	        	item.vy = Math.sin(item.angle) * 10;
+				let hypotenuse = this.utils.randomNumberBetween(10, 100);
+				item.vx = Math.cos(item.angle) * hypotenuse;
+	        	item.vy = Math.sin(item.angle) * hypotenuse;
 				
 				item.tint = this.colors[this.colorCounter];
 				this.colorCounter ++;
@@ -59,9 +60,11 @@ export default function () {
 				this.flameArray.push(item);
 
 			}
+			this.flames.visible = false;
 			this.flames.x = wh.canvasWidth / 2;
 			this.flames.y = wh.canvasHeight / 2;
-			app.stage.addChild(this.flames);
+			let index = app.stage.getChildIndex(hero.cont) - 1;
+			app.stage.addChildAt(this.flames, index);
 				
 
 			
@@ -81,7 +84,7 @@ export default function () {
 				this.vy = -obj.vy
 		},
 		fire: function (boolean) {
-			this.flameOn = boolean;
+			this.flameOn = this.flames.visible = boolean;
 		},
 		animate: function () {
 
@@ -90,6 +93,7 @@ export default function () {
 			}
 			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.segments[0].rotation = this.radius;
+			this.flames.rotation = this.radius;
 	        this.hero.pos.push(this.radius);
 
 	        if (this.hero.pos.length > this.maxLength) {
@@ -102,18 +106,17 @@ export default function () {
 	                this.hero.activeHero.segments[i].rotation = this.hero.pos[index];
 	            }
 	        }
-	        if (this.flameOn){
-	        	 for(let i = 0; i < this.flameArray.length; i ++) {
-	        	let item = this.flameArray[i];
-	        	item.x += item.vx;
-	        	item.y += item.vy;
-	        	item.alpha -= item.fade;
-	        	if(Math.abs(item.y) > item.maxDistance){
-	        		item.x = item.y = 0;
-	        		item.alpha = 1;
-	        	}
-
-	        }
+	        if (this.flameOn) {
+	        	for(let i = 0; i < this.flameArray.length; i ++) {
+		        	let item = this.flameArray[i];
+		        	item.x += item.vx;
+		        	item.y += item.vy;
+		        	item.alpha -= item.fade;
+		        	if (Math.abs(item.y) > item.maxDistance) {
+		        		item.x = item.y = 0;
+		        		item.alpha = 1;
+		        	}
+	            }
 	        }
 	       
 
