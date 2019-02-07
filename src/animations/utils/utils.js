@@ -18,6 +18,14 @@ export default {
     setHero: function (hero) {
         this.hero = hero;
     },
+    resize: function (w, h) {
+        this.canvasWidth = w;
+        this.canvasHeight = h;
+        this.wh = {
+            canvasHeight: h,
+            canvasWidth: w
+        }
+    },
     distributeAroundCircle:  function (circleCenter, numElements, radius) {
         let arr = [];
         for (let i = 0; i < numElements; i++) {
@@ -294,19 +302,19 @@ export default {
         var dy = ballB.y - ballA.y;
         return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];
     },
-    update: function (ball, wh) {
+    update: function (ball) {
         ball.x += ball.vx;
         ball.y += ball.vy;
         ball.rotation += this.deg2rad(ball.rotate);
-        if(ball.x > wh.canvasWidth - ball.r) {
-            ball.x = wh.canvasWidth - ball.r;
+        if(ball.x > this.canvasWidth - ball.r) {
+            ball.x = this.canvasWidth - ball.r;
             ball.vx *= -1;
         } else if(ball.x < ball.r) {
             ball.x = ball.r;
             ball.vx *= -1;
         }
-        if(ball.y > wh.canvasHeight - ball.r) {
-            ball.y = wh.canvasHeight - ball.r;
+        if(ball.y > this.canvasHeight - ball.r) {
+            ball.y = this.canvasHeight - ball.r;
             ball.vy *= -1;
         } else if(ball.y < ball.r) {
             ball.y = ball.r + 1;

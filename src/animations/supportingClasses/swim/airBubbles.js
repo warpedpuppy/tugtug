@@ -15,9 +15,9 @@ export default function () {
 		expand: [],
 		bubblesCont: new PIXI.Container(),
 		times: [50, 100], 
-		setupBubbles: function (wh, hero, cont) {
-			this.wh = wh;
-			this.hero = hero;
+		setupBubbles: function (cont) {
+			this.wh = this.utils.wh;
+			let hero = this.hero = this.utils.hero.heroSwim;
 			let startTimes = [0,10, 20,30];
 			this.bubblesCont.x = this.wh.canvasWidth / 2;
 			this.bubblesCont.y = this.wh.canvasHeight / 2;
@@ -46,6 +46,10 @@ export default function () {
 				this.resetAirBubbles();
 			}
 		},
+		resize: function () {
+			this.bubblesCont.x = this.utils.canvasWidth / 2;
+			this.bubblesCont.y = this.utils.canvasHeight / 2;
+		},
 		resetAirBubbles: function () {
 			for(let i = 0; i < this.expand.length; i ++){
 				let ab = this.expand[i];
@@ -62,7 +66,6 @@ export default function () {
 	        	if (this.countAllow) {
 	        		this.airBubbleCounter ++;
 		        	if (this.airBubbleCounter === this.airBubbleStart) {
-		        	
 		        		this.countAllow = false;
 		        	}
 	        	} else {

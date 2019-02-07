@@ -35,7 +35,7 @@ export default function () {
 			this.swimAction.airBubbles.resetAirBubbles();
 		},
 		resize: function () {
-
+			this.swimAction.resize();
 		},
 		animate: function () {
 			this.ripples.animate();

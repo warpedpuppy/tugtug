@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
 export default function () {
 	return {
@@ -63,9 +62,9 @@ export default function () {
 
 				 //BOUNCING PLATFORM COLLISION DETECTION
 				
-		        let A = new PIXI.Point(this.bouncePlatform.dot1.x, this.bouncePlatform.dot1.y);
-		        let B = new PIXI.Point(this.bouncePlatform.dot2.x, this.bouncePlatform.dot2.y);
-		        let C = new PIXI.Point(this.canvasWidth / 2, this.canvasHeight / 2);
+		        let A = {x:this.bouncePlatform.dot1.x, y: this.bouncePlatform.dot1.y};
+		        let B = {x: this.bouncePlatform.dot2.x, y: this.bouncePlatform.dot2.y};
+		        let C = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 		        if (this.bouncePlatform.mouseDown !== true && this.utils.lineIntersectCircle(A, B, C, 20)) {
 		         	this.hero.activeHero.bounce(true);
 		            let delta_x = dot1.x - dot2.x;

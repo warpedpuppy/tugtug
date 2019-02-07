@@ -20,7 +20,7 @@ export default function () {
 			this.jumpBackground.removeFromStage();
 		},
 		resize: function () {
-
+			this.jumpBackground.resize();
 		},
 		animate: function () {
 			this.jumpBackground.animate();

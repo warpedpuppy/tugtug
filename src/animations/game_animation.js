@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
-import Platforms from './supportingClasses/platforms/platforms';
 import BouncePlatform from './supportingClasses/bounce/bouncePlatform';
 import BounceAction from './supportingClasses/actions/bounceAction';
 import JumpAction from './supportingClasses/actions/jumpAction';
@@ -211,15 +210,15 @@ export default function Game (userObject, getUserName, primaryUser){
             if(this.activeMode === 'jump'){
 
                 if(!this.platforms){
-                    this.platforms = Platforms();
-                    this.platformCont = new PIXI.Container();
-                    this.platforms.init(this.platformCont, this.wh);
+                    // this.platforms = Platforms();
+                    // this.platformCont = new PIXI.Container();
+                    // this.platforms.init(this.platformCont, this.wh);
 
                     this.jumpAction = JumpAction();
-                    this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
+                    this.jumpAction.init(this.hero, {}, this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
                 }
                 this.activeAction = this.jumpAction;
-                this.platforms.addPlatforms(true);
+                //this.platforms.addPlatforms(true);
                 this.stage.addChild(this.platformCont)
             } else {
                 if(this.platforms)this.platforms.addPlatforms(false);

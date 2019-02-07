@@ -56,11 +56,11 @@ export default function () {
 
             return this;
 		},
-		resize: function (wh){
-			this.canvasWidth = wh.canvasWidth;
-			this.canvasHeight = wh.canvasHeight;
-			this.cont.x = this.canvasWidth / 2;
-            this.cont.y = this.canvasHeight / 2;
+		resize: function (){
+			this.canvasWidth = this.utils.canvasWidth;
+			this.canvasHeight = this.utils.canvasHeight;
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
 		},
 		switchPlayer: function (string) {
 			//this.cont.removeChildren();

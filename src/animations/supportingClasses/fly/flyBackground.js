@@ -91,7 +91,8 @@ export default function () {
 			this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
-
+			this.background.clear();
+			this.background.beginFill(0xFF00FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
 		animate: function () {
 	

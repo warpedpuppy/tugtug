@@ -47,7 +47,7 @@ export default {
 
          	cont.addChild(this.cont);
 		},
-		resize: function (wh) {
+		resize: function () {
 			this.cont.x = this.utils.wh.canvasWidth / 2;
          	this.cont.y = this.utils.wh.canvasHeight / 2;
 		},

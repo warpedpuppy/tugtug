@@ -1,7 +1,6 @@
 import BouncePlatform from './bouncePlatform';
 import BounceBackground from './bounceBackground';
 import BounceAction from '../actions/bounceAction';
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
 import Config from '../../animationsConfig';
 
@@ -29,7 +28,7 @@ export default function () {
 			this.bounceBackground.removeFromStage();
 		},
 		resize: function () {
-
+			this.bounceBackground.resize();
 		},
 		animate: function () {
 			this.bouncePlatform.animate();

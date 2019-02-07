@@ -23,8 +23,13 @@ export default {
 		}
 	},
 	resize: function () {
-		let corners = this.corners = [[0,0],[this.utils.wh.canvasWidth, 0], [this.utils.wh.canvasWidth, this.utils.wh.canvasHeight], [0, this.utils.wh.canvasHeight]];
-		for(let i = 0; i < 4;i++){
+		let corners = this.corners = [
+			[0,0],
+			[this.utils.wh.canvasWidth, 0], 
+			[this.utils.wh.canvasWidth, this.utils.wh.canvasHeight], 
+			[0, this.utils.wh.canvasHeight]
+		];
+		for (let i = 0; i < 4;i++) {
 		    let gear = this.gears[i];
 		    gear.x = corners[i][0];
 		    gear.y = corners[i][1];

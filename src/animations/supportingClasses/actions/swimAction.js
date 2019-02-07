@@ -1,5 +1,4 @@
 import Utils from '../../utils/utils';
-import * as PIXI from 'pixi.js';
 import AirBubbles from '../swim/airBubbles';
 export default function () {
 	return {
@@ -22,7 +21,7 @@ export default function () {
 			this.stage = stage;
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
-            this.airBubbles.setupBubbles(this.wh, this.hero.activeHero, stage);
+            this.airBubbles.setupBubbles(stage);
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -34,6 +33,9 @@ export default function () {
 		rotate: function (obj) {
 				this.vx = -obj.vx;
 				this.vy = -obj.vy;
+		},
+		resize: function () {
+			this.airBubbles.resize();
 		},
 		animate: function () {
 

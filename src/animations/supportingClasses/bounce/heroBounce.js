@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		w: 60,
 		h: 14,
 		spacer: 0,
@@ -30,10 +30,10 @@ export default function () {
 			this.buildHero();
 		},
 		smileyEye: function () {
-			let cont = new PIXI.Container();
-			let eye = new PIXI.Sprite(this.spritesheet.textures['jumpEye.png']);
+			let cont = Assets.Container();
+			let eye = Assets.Sprite('jumpEye.png');
 			eye.anchor.set(0.5);
-			let pupil = new PIXI.Sprite(this.spritesheet.textures['jumpPupil.png']);
+			let pupil = Assets.Sprite('jumpPupil.png');
 			pupil.anchor.set(0.5);
 			cont.addChild(eye);
 			cont.addChild(pupil);
@@ -43,7 +43,7 @@ export default function () {
 		},
 		smileyMouth: function () {
 			this.grimace = this.spritesheet.textures['grimace.png']
-			let s = new PIXI.Sprite(this.grimace);
+			let s = Assets.Sprite('grimace.png');
 			this.smile = this.spritesheet.textures['smile.png']
 			s.anchor.set(0.5);
 			s.scale.set(0.5);
@@ -106,13 +106,13 @@ export default function () {
 			// walking.animationSpeed = 0.1;
 			// walking.play();
 
-			this.feet = new PIXI.Sprite(this.spritesheet.textures['bounceLegs1.png'])
+			this.feet = Assets.Sprite('bounceLegs1.png')
 
 			//this.feet = walking;
 			this.feet.anchor.set(0.5)
 			this.cont.addChild(this.feet);
 
-			let body = new PIXI.Sprite(this.spritesheet.textures['jumpBody.png']);
+			let body = Assets.Sprite('jumpBody.png');
 			body.scale.set(0.75);
 			body.anchor.set(0.5)
 			body.y = -40;

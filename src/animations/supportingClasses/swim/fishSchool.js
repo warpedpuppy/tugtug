@@ -76,16 +76,12 @@ export default function () {
 		},
 		animate: function () {
 
-	
-
 			this.points[0].y = this.utils.cosWave(0, 40, 0.01);
 			this.points[3].y = this.utils.cosWave(0, -3, 0.01);
 			this.sharkPoints[0].y = this.utils.cosWave(0, 40, 0.001);
 			this.sharkPoints[3].y = this.utils.cosWave(0, -3, 0.001);
 
-
-
-			 for(let i = 0; i < this.loopingQ; i ++) {
+			for (let i = 0; i < this.loopingQ; i ++) {
 			 	let f = this.fishArray[i];
 			 	f.x += f.vx;
 			 	f.y += f.vy;
@@ -94,7 +90,7 @@ export default function () {
 			 		f.vx *= -1;
 			 		f.vy *= -1;
 			 		f.rotation = Math.atan2(f.vy , f.vx)
-			 	} else if(f.x > this.wh.canvasWidth + f.width + this.buffer) {
+			 	} else if(f.x > this.utils.canvasWidth + f.width + this.buffer) {
 			 		f.x -= this.buffer;
 			 		f.vx *= -1;
 			 		f.vy *= -1;
@@ -106,14 +102,13 @@ export default function () {
 			 		f.vx *= -1;
 			 		f.vy *= -1;
 			 		f.rotation = Math.atan2(f.vy , f.vx)
-			 	} else if(f.y > this.wh.canvasHeight + f.width+ this.buffer) {
+			 	} else if(f.y > this.utils.canvasHeight + f.width+ this.buffer) {
 			 		f.y -= this.buffer;
 			 		f.vx *= -1;
 			 		f.vy *= -1;
 			 		f.rotation = Math.atan2(f.vy , f.vx)
 			 	}
-
-			 }
+			}
 			
 
 						

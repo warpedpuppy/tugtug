@@ -21,7 +21,8 @@ export default function () {
 			this.flyBackground.removeFromStage();
 		},
 		resize: function () {
-
+			this.flyBackground.resize();
+			this.flyAction.resize();
 		},
 		animate: function () {
 			this.flyAction.animate();

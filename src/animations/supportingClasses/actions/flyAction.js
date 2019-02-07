@@ -1,5 +1,5 @@
 import Utils from '../../utils/utils';
-import * as PIXI from 'pixi.js';
+import Assets from '../../utils/assetCreation';
 import AirBubbles from '../swim/airBubbles';
 export default function () {
 	return {
@@ -14,7 +14,6 @@ export default function () {
 		countAllow: true,
 		expand: [],
 		percApply: true,
-		airBubbles: AirBubbles(),
 		increment: 5,
 		colors: [0xFF0000, 0xFFFF00, 0xFF9900],
 		colorCounter:0,
@@ -31,17 +30,11 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
 
-            this.flameQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
-            this.flames = new PIXI.particles.ParticleContainer(this.flameQ, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
+            this.flameQ = (Assets.webgl)? 500 : 10;
+            this.flames = Assets.ParticleContainer(this.flameQ);
 			let item;
 			for (let i = 0; i < this.flameQ; i ++) {
-				item = new PIXI.Sprite(this.utils.spritesheet.textures['star.png']);
+				item = Assets.Sprite('star.png');
 				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
 				item.anchor.set(0.5);
 				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
@@ -61,8 +54,8 @@ export default function () {
 
 			}
 			this.flames.visible = false;
-			this.flames.x = this.wh.canvasWidth / 2;
-			this.flames.y = this.wh.canvasHeight / 2;
+			this.flames.x = this.utils.canvasWidth / 2;
+			this.flames.y = this.utils.canvasHeight / 2;
 			let index = this.stage.getChildIndex(this.utils.hero.cont) - 1;
 			this.stage.addChildAt(this.flames, index);
 				
@@ -71,9 +64,9 @@ export default function () {
 
 
 		},
-		resize: function (wh) {
-			this.canvasWidth = wh.canvasWidth;
-			this.canvasHeight = wh.canvasHeight;
+		resize: function () {
+			this.flames.x = this.utils.canvasWidth / 2;
+			this.flames.y = this.utils.canvasHeight / 2;
 		},
 		switchMode: function(mode) {
 			this.mode = mode;

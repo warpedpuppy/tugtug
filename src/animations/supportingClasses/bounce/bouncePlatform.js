@@ -1,10 +1,10 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 export default function () {
     return {
-        line: new PIXI.Sprite(),
-        dot1: new PIXI.Sprite(),
-        dot2: new PIXI.Sprite(),
+        line: Assets.Sprite(),
+        dot1: Assets.Sprite(),
+        dot2: Assets.Sprite(),
         mouseDown:false, 
         startMode: true,
         utils: Utils,
@@ -40,8 +40,8 @@ export default function () {
 
             let halfWidth = canvasWidth / 2;
             let halfHeight = canvasHeight / 2;
-            let point1 = new PIXI.Point(halfWidth - 100, halfHeight + 100);
-            let point2 = new PIXI.Point(halfWidth + 100, halfHeight + 100);
+            let point1 = {x: halfWidth - 100, y: halfHeight + 100};
+            let point2 = {x:halfWidth + 100, y: halfHeight + 100};
 
             this.dot1.x = point1.x;
             this.dot1.y = point1.y;
@@ -49,7 +49,7 @@ export default function () {
             this.dot2.y = point2.y;
             this.line.x = this.dot1.x;
             this.line.y = this.dot1.y;
-            let disAngle = this.utils.distanceAndAngle(new PIXI.Point(this.dot1.x, this.dot1.y), new PIXI.Point(this.dot2.x, this.dot2.y));
+            let disAngle = this.utils.distanceAndAngle({x: this.dot1.x, y: this.dot1.y}, {x: this.dot2.x, y: this.dot2.y});
                 this.line.rotation = disAngle[1];
                 this.line.width = disAngle[0];
         },
@@ -71,7 +71,6 @@ export default function () {
             }
         },
         placeFirstDot: function(touchData) {
-            console.log('place first dot')
             this.startMode = false;
             let mouse = touchData.data.global,
                 mouseX = mouse.x,
@@ -96,7 +95,7 @@ export default function () {
                     mouseY = mouse.y;
                 this.dot2.x = mouseX;
                 this.dot2.y = mouseY;
-                let disAngle = this.utils.distanceAndAngle(new PIXI.Point(this.dot1.x, this.dot1.y), new PIXI.Point(this.dot2.x, this.dot2.y));
+                let disAngle = this.utils.distanceAndAngle({x: this.dot1.x, y: this.dot1.y}, {x: this.dot2.x, y: this.dot2.y});
                 this.line.rotation = disAngle[1];
                 this.line.width = disAngle[0];
             }

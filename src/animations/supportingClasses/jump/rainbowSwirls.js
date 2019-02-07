@@ -41,7 +41,7 @@ export default function () {
 			this.goldTile = this.utils.spritesheet.textures['tile.png'];
 			this.interval = this.utils.randomIntBetween(0, 2);
 			this.parentCont = parentCont;
-			this.wh = this.utils.wh;
+
 			this.spritesheet = this.utils.spritesheet;
 			
 
@@ -123,8 +123,8 @@ export default function () {
 			if(this.objectPoolCounter === 0 ||
 				s.y < -buffer || 
 				s.x < -buffer || 
-				s.x > this.wh.canvasWidth + buffer || 
-				s.y > this.wh.canvasHeight + buffer
+				s.x > this.utils.canvasWidth + buffer || 
+				s.y > this.utils.canvasHeight + buffer
 				){
 				let newPos = this.newXY();
 				s.x = newPos.x;
@@ -139,24 +139,23 @@ export default function () {
 			let perc = 0.5;
 			if(this.quadrant === "TL"){
 				return {
-					x: this.utils.randomNumberBetween(buffer, this.wh.canvasWidth * perc),
-					y: this.utils.randomNumberBetween(buffer, this.wh.canvasHeight * perc),
+					x: this.utils.randomNumberBetween(buffer, this.utils.canvasWidth * perc),
+					y: this.utils.randomNumberBetween(buffer, this.utils.canvasHeight * perc),
 				}
 			} else if (this.quadrant == "TR") {
 				return {
-					x: this.utils.randomNumberBetween(this.wh.canvasWidth * perc, this.wh.canvasWidth),
-					y: this.utils.randomNumberBetween(buffer, this.wh.canvasHeight * perc),
+					x: this.utils.randomNumberBetween(this.utils.canvasWidth * perc, this.utils.canvasWidth),
+					y: this.utils.randomNumberBetween(buffer, this.utils.canvasHeight * perc),
 				}
 			} else if (this.quadrant == "BL") {
 				return {
-					x: this.utils.randomNumberBetween(buffer, this.wh.canvasWidth * perc),
-					y: this.utils.randomNumberBetween(this.wh.canvasHeight * perc, this.wh.canvasHeight),
+					x: this.utils.randomNumberBetween(buffer, this.utils.canvasWidth * perc),
+					y: this.utils.randomNumberBetween(this.utils.canvasHeight * perc, this.utils.canvasHeight),
 				}
 			} else if (this.quadrant == "BR") {
-			
 				return {
-					x: this.utils.randomNumberBetween(this.wh.canvasWidth * perc, this.wh.canvasWidth),
-					y: this.utils.randomNumberBetween(this.wh.canvasHeight * perc, this.wh.canvasHeight),
+					x: this.utils.randomNumberBetween(this.utils.canvasWidth * perc, this.utils.canvasWidth),
+					y: this.utils.randomNumberBetween(this.utils.canvasHeight * perc, this.utils.canvasHeight),
 				}
 			}
 			
