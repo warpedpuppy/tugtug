@@ -6,9 +6,9 @@ export default function (spritesheet) {
 		utils: Utils,
 		cont: new PIXI.Container(),
 		buffer: 10, 
-		init: function (parentCont, wh) {
+		init: function (parentCont) {
 			this.parentCont = parentCont;
-			this.wh = wh;
+			this.wh = this.utils.wh;
 			this.strs = [
 				['/bmps/lilyPad2.png', 178],
 				['/bmps/lilypad1.png',211]

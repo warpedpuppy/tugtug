@@ -1,12 +1,14 @@
 import * as PIXI from 'pixi.js';
+import Utils from '../../utils/utils';
 export default function () {
 	return {
 		ripples: [],
 		growing: [],
 		action: true,
-		init: function (app, wh) {
+		utils: Utils,
+		init: function () {
 
-			this.wh = wh;
+			this.wh = this.utils.wh;
 
 			this.parent = new PIXI.Container();
 			this.parent.width = this.wh.canvasWidth;
@@ -14,7 +16,7 @@ export default function () {
 
 			let blurFilter = new PIXI.filters.BlurFilter(4);
 
-			this.app = app;
+			this.app = this.utils.app;
 			var sprites = this.sprites = new PIXI.particles.ParticleContainer(10000, {
 			    scale: true,
 			    position: true,
@@ -26,28 +28,28 @@ export default function () {
 
 			this.sprites.filters = [ blurFilter ];
 		
-            this.totalSprites = app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
+            this.totalSprites = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
 
             for (let i = 0; i < this.totalSprites; i++) {
-                var dude = PIXI.Sprite.fromImage('/bmps/gradientRing.png');
-                dude.anchor.x = dude.anchor.y = 0.5;
-                dude.startScale = 0.1
-                dude.scale.set(dude.startScale);
-                dude.counter = 0;
-                this.ripples.push(dude);
-                sprites.addChild(dude);
+                var ring = PIXI.Sprite.fromImage('gradientRing.png');
+                ring.anchor.x = ring.anchor.y = 0.5;
+                ring.startScale = 0.1;
+                ring.scale.set(ring.startScale);
+                ring.counter = 0;
+                this.ripples.push(ring);
+                sprites.addChild(ring);
             }
             // create a bounding box box for the little maggots
-            var dudeBoundsPadding = 100;
-            this.dudeBounds = new PIXI.Rectangle(
-                -dudeBoundsPadding,
-                -dudeBoundsPadding,
-                this.canvasWidth + dudeBoundsPadding * 2,
-                this.canvasHeight + dudeBoundsPadding * 2
+            var ringBoundsPadding = 100;
+            this.ringBounds = new PIXI.Rectangle(
+                -ringBoundsPadding,
+                -ringBoundsPadding,
+                this.canvasWidth + ringBoundsPadding * 2,
+                this.canvasHeight + ringBoundsPadding * 2
             );
 
             this.tick = 0;
-            app.stage.interactive = true;
+            this.utils.app.stage.interactive = true;
             this.mouseMove = this.mouseMove.bind(this);
             
             this.counter = 0;

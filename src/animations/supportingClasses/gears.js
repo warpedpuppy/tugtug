@@ -1,9 +1,16 @@
 import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
 export default {
 	gears: [],
-	init: function (cont, wh) {
+	utils: Utils,
+	init: function (cont) {
 		let gear;
-		let corners = this.corners = [[0,0],[wh.canvasWidth, 0], [wh.canvasWidth, wh.canvasHeight], [0, wh.canvasHeight]];
+		let corners = this.corners = [
+		[0,0],
+		[this.utils.wh.canvasWidth, 0], 
+		[this.utils.wh.canvasWidth,this.utils.wh.canvasHeight], 
+		[0, this.utils.wh.canvasHeight]
+		];
 		for(let i = 0; i < 4;i++){
 		    gear = new PIXI.Sprite.fromImage('/bmps/gear.png');
 		    gear.anchor.x = gear.anchor.y = 0.5;
@@ -15,8 +22,8 @@ export default {
 		    this.gears.push(gear);
 		}
 	},
-	resize: function (wh) {
-		let corners = this.corners = [[0,0],[wh.canvasWidth, 0], [wh.canvasWidth, wh.canvasHeight], [0, wh.canvasHeight]];
+	resize: function () {
+		let corners = this.corners = [[0,0],[this.utils.wh.canvasWidth, 0], [this.utils.wh.canvasWidth, this.utils.wh.canvasHeight], [0, this.utils.wh.canvasHeight]];
 		for(let i = 0; i < 4;i++){
 		    let gear = this.gears[i];
 		    gear.x = corners[i][0];

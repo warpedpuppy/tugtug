@@ -18,18 +18,18 @@ export default function () {
     done: false,
     utils: Utils,
     wh: {},
-    init: function (app, wh, spritesheet) {
+    init: function (cont) {
         this.halfAnimationLength = this.animationLength / 2;
         this.radialCont.scale.set(0);
-        this.wh.canvasHeight = wh.canvasHeight;
-        this.wh.canvasWidth = wh.canvasWidth;
+        this.wh.canvasHeight = this.utils.wh.canvasHeight;
+        this.wh.canvasWidth = this.utils.wh.canvasWidth;
 
-        this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+        this.radialQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 
-        this.explosionQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+        this.explosionQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 
         for(let i = 0; i < this.radialQ; i ++){
-            let r = new PIXI.Sprite(spritesheet.textures['line.png']);
+            let r = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
             r.width = 1;
             r.height = this.utils.randomNumberBetween(100, 500);
             r.alpha = this.utils.randomNumberBetween(0.2, 0.8);
@@ -43,7 +43,7 @@ export default function () {
             this.radials.push(r);
             this.radialCont.addChild(r);
 
-            let e = new PIXI.Sprite(spritesheet.textures['line.png']);
+            let e = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
             e.width = 5;
             e.height = 5;
             e.radius = 0;
@@ -61,12 +61,12 @@ export default function () {
     resize: function (wh) {
         this.wh = wh;
     },
-    addAnimations: function (cont, hero) {
+    addAnimations: function (cont) {
         this.radialCont.x = this.wh.canvasWidth / 2;
         this.radialCont.y = this.wh.canvasHeight / 2;
         this.explosionCont.x = this.wh.canvasWidth / 2;
         this.explosionCont.y = this.wh.canvasHeight / 2;
-        let contIndex = cont.getChildIndex(hero);
+        let contIndex = cont.getChildIndex(this.utils.hero.cont);
     
         cont.addChildAt(this.radialCont, contIndex - 2);
         cont.addChildAt(this.explosionCont, contIndex - 1);

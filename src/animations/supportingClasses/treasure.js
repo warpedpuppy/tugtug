@@ -22,13 +22,13 @@ export default function () {
 	vxs: [-8, 8],
 	fallSpeeds: [2, 4],
 	edgeBuffer: 200,
-	init: function (app, wh, spritesheet, hero, parent) {
+	init: function (parent) {
 		this.parent = parent;
-		this.wh = wh;
-		this.hero = hero;
-		this.ringQ = app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
-		this.chestQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
-		this.radialQ = this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+		this.wh = this.utils.wh;
+		this.hero = this.utils.hero.cont;
+		this.ringQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
+		this.chestQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
+		this.radialQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
 
@@ -42,7 +42,7 @@ export default function () {
 			this.ringCont.addChild(ringsPC);
 
 		for (let i = 0; i < this.ringQ; i ++) {
-			let r = new PIXI.Sprite(spritesheet.textures['treasureRing.png']);
+			let r = new PIXI.Sprite(this.utils.spritesheet.textures['treasureRing.png']);
 			r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
 			r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
@@ -53,7 +53,7 @@ export default function () {
 			this.rings.push(r);
 
 			if (!(i >= this.chestQ)) {
-				let c = new PIXI.Sprite(spritesheet.textures['treasureChest.png']);
+				let c = new PIXI.Sprite(this.utils.spritesheet.textures['treasureChest.png']);
 				c.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
 				c.anchor.set(0.5);
 				c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
@@ -66,12 +66,12 @@ export default function () {
 				this.parent.addChild(c);
 				this.chests.push(c);
 			}
-			this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
-			this.rightEdge = wh.canvasWidth + this.edgeBuffer;
+			this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
 		}
 		this.radialCont.scale.set(0);
 		for(let i = 0; i < this.radialQ; i ++){
-			let r = new PIXI.Sprite(spritesheet.textures['line.png']);
+			let r = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
 			r.width = 1;
 			r.height = this.utils.randomNumberBetween(100, 500);
 			//r.alpha = this.utils.randomNumberBetween(0.2, 0.8);

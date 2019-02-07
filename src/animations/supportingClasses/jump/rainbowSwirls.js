@@ -33,19 +33,19 @@ export default function () {
 		colWidth: 5,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 		colorCounter: 0,
-		init: function (app, parentCont, wh, spritesheet, quadrant, action) {
+		init: function (parentCont, quadrant, action) {
 			this.quadrant = quadrant;
 			this.curve = this.curves[Math.floor(Math.random()*4)];
-			this.app = app;
+			this.app = this.utils.app;
 			
-			this.goldTile = spritesheet.textures['tile.png'];
+			this.goldTile = this.utils.spritesheet.textures['tile.png'];
 			this.interval = this.utils.randomIntBetween(0, 2);
 			this.parentCont = parentCont;
-			this.wh = wh;
-			this.spritesheet = spritesheet;
+			this.wh = this.utils.wh;
+			this.spritesheet = this.utils.spritesheet;
 			
 
-			this.tileQ = app.renderer instanceof PIXI.WebGLRenderer ? 150 : 10;
+			this.tileQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 150 : 10;
 			this.cont = new PIXI.particles.ParticleContainer(this.tileQ, {
 			    scale: true,
 			    position: true,

@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
 export default {
 		hourToRadians: (1/12) * (2 * Math.PI),
 		minutesToRadians: (1/60) * (2 * Math.PI),
@@ -6,7 +7,8 @@ export default {
 		cont: new PIXI.Container(),
 		counter: 0,
 		demo: false,
-		init: function (cont, wh) {
+		utils: Utils,
+		init: function (cont) {
 
 			let hourhand = this.hourhand = new PIXI.Sprite.fromImage('/bmps/hourhand.png');
 			hourhand.anchor.set(0.5);
@@ -40,14 +42,14 @@ export default {
 
 			this.cont.alpha = 0.25;
          	this.cont.scale.set(0.5);
-         	this.cont.x = wh.canvasWidth / 2;
-         	this.cont.y = wh.canvasHeight / 2;
+         	this.cont.x = this.utils.wh.canvasWidth / 2;
+         	this.cont.y = this.utils.wh.canvasHeight / 2;
 
          	cont.addChild(this.cont);
 		},
 		resize: function (wh) {
-			this.cont.x = wh.canvasWidth / 2;
-         	this.cont.y = wh.canvasHeight / 2;
+			this.cont.x = this.utils.wh.canvasWidth / 2;
+         	this.cont.y = this.utils.wh.canvasHeight / 2;
 		},
 		animate: function () {
 			if(!this.demo) {

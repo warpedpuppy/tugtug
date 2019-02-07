@@ -3,7 +3,6 @@ import * as PIXI from 'pixi.js';
 import AirBubbles from '../swim/airBubbles';
 export default function () {
 	return {
-		mode: undefined,
 		radius: 0,
 		storeRadius: 0,
 		spinning: false,
@@ -17,21 +16,19 @@ export default function () {
 		percApply: true,
 		airBubbles: AirBubbles(),
 		increment: 5,
-		init: function (hero, mode, wh, stage) {
-			this.hero = hero;
-			this.mode = mode;
-			this.wh = wh;
+		init: function (stage) {
+			this.hero = this.utils.hero;
+			this.wh = this.utils.wh;
 			this.stage = stage;
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
-            this.airBubbles.setupBubbles(wh, this.hero.activeHero, stage);
+            this.airBubbles.setupBubbles(this.wh, this.hero.activeHero, stage);
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
 		},
-		switchMode: function(mode) {
-			this.mode = mode;
+		start: function() {
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
 		rotate: function (obj) {

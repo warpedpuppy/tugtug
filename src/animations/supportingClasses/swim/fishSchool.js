@@ -1,9 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
-export default function (spritesheet) {
+export default function () {
 	return {
-		texture: spritesheet.textures['koi.png'],
-		sharkTexture: spritesheet.textures['shark.png'],
 		points: [],
 		sharkPoints: [],
 		imageWidth: 300,
@@ -16,11 +14,14 @@ export default function (spritesheet) {
 		fishCont: new PIXI.Container(),
 		sharkQ: 20,
 		buffer: 10, 
-		init: function (cont, wh) {
+		init: function (cont) {
 			this.cont = cont;
-			this.wh = wh;
+			this.wh = this.utils.wh;
 			this.fish = this.fish.bind(this);
+			this.spritesheet = this.utils.spritesheet;
  			let steps = this.imageWidth / this.pointQ;
+ 			this.texture = this.spritesheet.textures['koi.png'];
+		    this.sharkTexture = this.spritesheet.textures['shark.png'];
             for (var i = 0; i < this.pointQ; i++) {
             	let startPoint = i * 10;
 			    this.points.push(new PIXI.Point( i * steps, 0));

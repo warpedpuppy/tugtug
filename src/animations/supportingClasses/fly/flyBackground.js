@@ -13,13 +13,14 @@ export default function () {
 		timer: undefined,
 		flashCounter: 0,
 		flashLimits: 10,
-		init: function (app, parentCont, wh, spritesheet, hero) {
-
-			this.hero = hero;
-			this.app = app;
+		init: function (parentCont) {
+			
+			this.app = this.utils.app;
 			this.parentCont = parentCont;
-			this.wh = wh;
-			this.spritesheet = spritesheet;
+
+			this.hero = this.utils.hero;
+			let wh = this.wh = this.utils.wh;
+			this.spritesheet = this.utils.spritesheet;
 
 	
 

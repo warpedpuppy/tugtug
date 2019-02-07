@@ -24,9 +24,9 @@ export default function () {
 		doneCounter: 0,
 		type:undefined,
 		legStyle: 2,
-		init: function (parentCont, wh, spritesheet) {
+		init: function (parentCont) {
 			this.parentCont = parentCont;
-			this.spritesheet = spritesheet;
+			this.spritesheet = this.utils.spritesheet;
 			this.buildHero();
 		},
 		smileyEye: function () {

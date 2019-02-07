@@ -24,17 +24,17 @@ export default function () {
 		heroFly: HeroFly(),
 		heroBounce: HeroBounce(),
 		activeHero: undefined,
-		init: function (wh, items, parentCont, spritesheet) {
+		init: function (items, parentCont) {
 
-			this.wh = wh;
+			this.wh = this.utils.wh;
 			this.parentCont = parentCont;
-			this.canvasWidth = wh.canvasWidth;
-			this.canvasHeight = wh.canvasHeight;
+			this.canvasWidth = this.utils.wh.canvasWidth;
+			this.canvasHeight = this.utils.wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;
             this.cont.y = (this.canvasHeight / 2) - this.yOffset;
             this.segments = [];
             this.fish = [];
-            this.spritesheet = spritesheet;
+            this.spritesheet = this.utils.spritesheet;
 
             this.bounce = this.utils.randomNumberBetween(-0.6, -0.9);
             this.vy = this.utils.randomNumberBetween(3,5);
@@ -49,10 +49,10 @@ export default function () {
             }
 
             parentCont.addChild(this.cont);
-            this.heroSwim.init(this.cont, wh, spritesheet);
-            this.heroJump.init(this.cont, wh, spritesheet);
-            this.heroFly.init(this.cont, wh, spritesheet);
-            this.heroBounce.init(this.cont, wh, spritesheet);
+            this.heroSwim.init(this.cont);
+            this.heroJump.init(this.cont);
+            this.heroFly.init(this.cont);
+            this.heroBounce.init(this.cont);
 
             return this;
 		},

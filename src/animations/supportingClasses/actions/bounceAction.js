@@ -11,12 +11,11 @@ export default function () {
 		legCounter: 0,
 		legCounterLimit: 10,
 		utils: Utils,
-		init: function (hero, bouncePlatform, canvasWidth, canvasHeight) {
-			this.hero = hero;
+		init: function (bouncePlatform) {
+			this.hero = this.utils.hero;
 			this.bouncePlatform = bouncePlatform;
-			this.canvasWidth = canvasWidth;
-			this.canvasHeight = canvasHeight;
-			console.log('test val', this.utils.testVal)
+			this.canvasWidth = this.utils.canvasWidth;
+			this.canvasHeight = this.utils.canvasHeight;
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;

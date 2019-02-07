@@ -8,9 +8,10 @@ export default function () {
 		speed1: 0.5,
 		speed2: 0.75,
 		sizeIncrement: 2,
-		init: function (cont, wh) {
+		utils: Utils,
+		init: function (cont) {
 			this.cont = cont;
-			this.wh = wh;
+			this.wh = this.utils.wh;
 			this.sprite1 = new PIXI.Sprite(this.texture);
 			this.sprite1.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.sprite1.height = this.wh.canvasHeight * this.sizeIncrement;
