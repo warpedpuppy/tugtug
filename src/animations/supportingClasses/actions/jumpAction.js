@@ -10,12 +10,10 @@ export default function () {
 		jumpTimer: 0,
 		jumpTimeLimit: 21,
 		utils: Utils,
-		init: function (hero, platforms, canvasWidth, canvasHeight, platformCont, stage) {
-			this.hero = hero;
-			this.platforms = platforms;
-			this.canvasWidth = canvasWidth;
-			this.canvasHeight = canvasHeight;
-			this.platformCont = platformCont;
+		init: function (stage) {
+			this.hero = this.utils.hero;
+			this.canvasWidth = this.utils.canvasWidth;
+			this.canvasHeight = this.utils.canvasHeight;
 			this.stage = stage;
 			this.vx = this.speed;
 		},
@@ -32,22 +30,16 @@ export default function () {
 		move: function (str) {
 			if(str === 'left'){
 				this.vx = -this.speed;
-				//if(this.vx > this.speedLimit)this.vx = this.speedLimit;
 				this.hero.heroJump.look('left');
 			} else if (str === 'right'){
 				 this.vx = this.speed;
-				// if(this.vx < this.speedLimit)this.vx = -this.speedLimit;
 				 this.hero.heroJump.look('right');
 			} else {
 				this.vx = 0;
 			}
-
-
 		},
 		animate: function () {
-
 			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
-
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {
 				this.hero.activeHero.cont.y = this.hero.activeHero.floor;

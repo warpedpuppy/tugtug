@@ -3,7 +3,6 @@ import * as PIXI from 'pixi.js';
 import AirBubbles from '../swim/airBubbles';
 export default function () {
 	return {
-		mode: undefined,
 		radius: 0,
 		storeRadius: 0,
 		spinning: false,
@@ -23,15 +22,16 @@ export default function () {
 		shootingFlames: [],
 		flameCounter: 0,
 		flameOn:false,
-		init: function (hero, mode, wh, app, spritesheet) {
-			this.hero = hero;
-			this.mode = mode;
-			this.wh = wh;
-			this.stage = app.stage;
+		utils: Utils,
+		init: function () {
+
+			this.hero = this.utils.hero;
+			this.wh = this.utils.wh;
+			this.stage = this.utils.app.stage;
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
 
-            this.flameQ = app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
+            this.flameQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
             this.flames = new PIXI.particles.ParticleContainer(this.flameQ, {
 			    scale: true,
 			    position: true,
@@ -41,7 +41,7 @@ export default function () {
 			});
 			let item;
 			for (let i = 0; i < this.flameQ; i ++) {
-				item = new PIXI.Sprite(spritesheet.textures['star.png']);
+				item = new PIXI.Sprite(this.utils.spritesheet.textures['star.png']);
 				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
 				item.anchor.set(0.5);
 				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
@@ -61,10 +61,10 @@ export default function () {
 
 			}
 			this.flames.visible = false;
-			this.flames.x = wh.canvasWidth / 2;
-			this.flames.y = wh.canvasHeight / 2;
-			let index = app.stage.getChildIndex(hero.cont) - 1;
-			app.stage.addChildAt(this.flames, index);
+			this.flames.x = this.wh.canvasWidth / 2;
+			this.flames.y = this.wh.canvasHeight / 2;
+			let index = this.stage.getChildIndex(this.utils.hero.cont) - 1;
+			this.stage.addChildAt(this.flames, index);
 				
 
 			

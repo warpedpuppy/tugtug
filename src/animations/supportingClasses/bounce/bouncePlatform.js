@@ -8,7 +8,8 @@ export default function () {
         mouseDown:false, 
         startMode: true,
         utils: Utils,
-        init: function (cont, spritesheet) {
+        init: function (cont) {
+            let spritesheet = this.utils.spritesheet;
             this.cont = cont;
             this.line.height = 2;
             this.line.anchor.y = 0.5;
@@ -33,6 +34,9 @@ export default function () {
             }
         },
         start: function (canvasWidth, canvasHeight) {
+
+            canvasWidth = this.utils.canvasWidth;
+            canvasHeight = this.utils.canvasHeight;
 
             let halfWidth = canvasWidth / 2;
             let halfHeight = canvasHeight / 2;

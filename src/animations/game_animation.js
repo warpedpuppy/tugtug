@@ -12,7 +12,7 @@ import Pellets from '../animations/supportingClasses/pellets';
 import FilterAnimation from '../animations/supportingClasses/filterAnimation';
 import PixiFps from "pixi-fps";
 import TransitionItems from './supportingClasses/transitionItems';
-import Ripples from '../animations/supportingClasses/ripples';
+import Ripples from '../animations/supportingClasses/swim/ripples';
 import Treasure from '../animations/supportingClasses/treasure';
 import Score from '../animations/supportingClasses/score';
 import Config from './animationsConfig';

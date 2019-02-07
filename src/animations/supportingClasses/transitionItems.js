@@ -14,23 +14,23 @@ export default function () {
 	itemQ: 0,
 	items: [],
 	edgeBuffer: 200,
-	init: function (arr, cont, wh, spritesheet, hero, app, switchPlayer) {
-		this.itemQ = app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
+	init: function (arr, cont, switchPlayer) {
+		this.itemQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
 		this.switchPlayer = switchPlayer;
-		this.app = app;
+		this.app = this.utils.app;
 		this.itemStrings = arr;
-		this.wh = wh;
+		this.wh = this.utils.wh;
 		this.cont = cont;
-		this.spritesheet = spritesheet;
-		this.hero = hero;
+		this.spritesheet = this.utils.spritesheet;
+		this.hero = this.utils.hero;
 		this.transitionAnimation = this.transitionAnimation.init(
 			this.app, 
 			this.wh, 
 			this.spritesheet
 			);
-		this.transitionAnimation.addAnimations(this.cont, this.hero);
-		this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
-		this.rightEdge = wh.canvasWidth + this.edgeBuffer;
+		this.transitionAnimation.addAnimations(this.cont);
+		this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
+		this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
 		return this;
 	},
 	changeItem: function () {

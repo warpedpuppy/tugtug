@@ -7,15 +7,16 @@ export default function () {
 		utils: Utils,
 		segmentsQ: 10,
 		dyeLot: [],
-		init: function (parentCont, wh, spritesheet) {
+		init: function (parentCont) {
 			this.parentCont = parentCont;
-			let head = new PIXI.Sprite(spritesheet.textures['dragonHead.png']);
+			let head = new PIXI.Sprite(this.utils.spritesheet.textures['dragonHead.png']);
 			this.dyeLot.push(head);
 			head.anchor.x = 0.5;
 	        head.anchor.y = 0.5;
 			this.cont.addChild(head);
 			this.dragon.push(head);
 			let i;
+			let spritesheet = this.utils.spritesheet;
 			 for (i = 0; i < this.segmentsQ; i++) {
 			 	let cont = new PIXI.Container();
 			 	cont.vx = 0;

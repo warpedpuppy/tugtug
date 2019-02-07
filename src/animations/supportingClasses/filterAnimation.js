@@ -1,13 +1,15 @@
 import * as PIXI from 'pixi.js';
+import Utils from '../utils/utils';
 export default function () {
     return {
         app: undefined,
         count: 0,
         enabled: false,
-        init: function (app, container, wh) {
-            this.app = app;
+        utils: Utils,
+        init: function (container) {
+            this.app = this.utils.app;
             var filter = this.filter = new PIXI.filters.ColorMatrixFilter();
-            this.wh = wh;
+            this.wh = this.utils.wh;
 
             container.x = this.wh.canvasWidth / 2;
             container.y = this.wh.canvasHeight / 2;
@@ -29,8 +31,8 @@ export default function () {
             container.addChild(light3);
 
 
-            app.stage.addChild(container);
-            app.stage.filters = [filter];
+            this.utils.app.stage.addChild(container);
+            this.utils.app.stage.filters = [filter];
 
             this.container = container;
         },

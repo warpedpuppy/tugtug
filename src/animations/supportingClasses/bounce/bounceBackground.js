@@ -15,17 +15,16 @@ export default function () {
 		utils: Utils,
 		bars: {},
 		buffer: 500,
-		init: function (app, wh, spritesheet, hero, action) {
+		init: function (action) {
 
-			this.hero = hero;
-			this.app = app;
+			this.hero = this.utils.hero;
+			this.app = this.utils.app;
 			this.parentCont = this.app.stage;
-			this.wh = wh;
-			this.spritesheet = spritesheet;
+			this.wh = this.utils.wh;
+			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
-	
 
-			this.background.beginFill(0x9900FF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			this.background.beginFill(0x9900FF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 

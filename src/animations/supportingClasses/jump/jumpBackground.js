@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
-import TileColumn from './tileColumn';
+import RainbowSwirls from './rainbowSwirls';
 import { TweenMax, Elastic } from 'gsap';
 export default function () {
 	return {
@@ -27,13 +27,13 @@ export default function () {
 		pauseCounter: 0,
 		delay: 10,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
-		init: function (app, parentCont, wh, spritesheet, action, hero) {
+		init: function (parentCont, action) {
 
-			this.hero = hero;
-			this.app = app;
+			this.hero = this.utils.hero;
+			this.app = this.utils.app;
 			this.parentCont = parentCont;
-			this.wh = wh;
-			this.spritesheet = spritesheet;
+			this.wh = this.utils.wh;
+			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
 
 			this.makeTransitionComplete = this.makeTransitionComplete.bind(this);
@@ -46,9 +46,9 @@ export default function () {
 
 				for(let j = 0; j < this.colQ; j ++){
 					let cont = new PIXI.Container();
-					let s = new PIXI.Sprite(spritesheet.textures['circleAlpha1.png']);
+					let s = new PIXI.Sprite(this.spritesheet.textures['circleAlpha1.png']);
 					s.anchor.set(0.5);
-					let p = new PIXI.Sprite(spritesheet.textures['pinWheel.png']);
+					let p = new PIXI.Sprite(this.spritesheet.textures['pinWheel.png']);
 					p.anchor.set(0.5);
 					cont.addChild(s);
 					cont.addChild(p);
@@ -85,15 +85,15 @@ export default function () {
 			this.orbsCont.y = (this.wh.canvasHeight / 2) - this.currentOrb.y;
 
 
-			this.background.beginFill(0x000066).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			this.background.beginFill(0x000066).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 			//this.parentCont.addChild(this.orbsCont);
 
 			this.startXs = ["TL", "BL", "TR", "BR"];
 			for(let i = 0; i < this.tileColQ; i ++){
-				this.tileColumn = TileColumn();
-				this.tileColumn.init(app, this.cont, wh, spritesheet, this.startXs[i], action);
+				this.tileColumn = RainbowSwirls();
+				this.tileColumn.init(this.cont, this.startXs[i], action);
 				this.tileColumn.addToStage();
 				this.columns.push(this.tileColumn);
 			}

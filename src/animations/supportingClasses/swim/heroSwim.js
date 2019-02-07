@@ -6,9 +6,10 @@ export default function () {
 		dists: [0, 40, 35, 30, 23],
 		airBubbles: [],
 		fish: [],
-		init: function (parentCont, wh, spritesheet) {
+		utils: Utils,
+		init: function (parentCont) {
 			this.parentCont = parentCont;
-			this.spritesheet = spritesheet;
+			this.spritesheet = this.utils.spritesheet;
 			this.segmentsQ = 5;
 			this.finCont = new PIXI.Container();
 			this.eyeCont = new PIXI.Container();

@@ -1,29 +1,33 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import Clock from './supportingClasses/clock';
-import BouncePlatform from './supportingClasses/bounce/bouncePlatform';
-import BounceBackground from './supportingClasses/bounce/bounceBackground';
-import FlyBackground from './supportingClasses/fly/flyBackground';
-import BounceAction from './supportingClasses/actions/bounceAction';
-import JumpAction from './supportingClasses/actions/jumpAction';
-import SwimAction from './supportingClasses/actions/swimAction';
-import Platforms from './supportingClasses/platforms/platforms';
-import FlyAction from './supportingClasses/actions/flyAction';
+
+import Swim from './supportingClasses/swim/indexSwim';
+import Bounce from './supportingClasses/bounce/indexBounce';
+import Fly from './supportingClasses/fly/indexFly';
+import Jump from './supportingClasses/jump/indexJump';
+
+
+
+//import Platforms from './supportingClasses/platforms/platforms';
+
 import Pellets from './supportingClasses/pellets';
+import Treasure from '../animations/supportingClasses/treasure';
 import MagicPills from './supportingClasses/magicPills';
+
 import TransitionItems from './supportingClasses/transitionItems';
 import FilterAnimation from './supportingClasses/filterAnimation';
+
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
-import Ripples from '../animations/supportingClasses/ripples';
-import Treasure from '../animations/supportingClasses/treasure';
+
+
+
 import Score from '../animations/supportingClasses/score';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
-import SwimBackground from './supportingClasses/swim/swimBackground';
-import FishSchool from './supportingClasses/swim/fishSchool';
-import LilypadsLotuses from './supportingClasses/swim/lilypadsLotuses';
-import JumpBackground from './supportingClasses/jump/jumpBackground';
+
+
 export default function(obj) {
 	return {
 		idle: true,
@@ -33,7 +37,7 @@ export default function(obj) {
 		rotateRightBoolean: false,
 		renderTextureTestBoolean: false,
 		inc: 90,
-		mode: ['bounce', 'fly', 'swim', 'jump'],
+		mode: ['swim', 'bounce', 'fly', 'jump'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: new PIXI.Container(),
@@ -56,6 +60,10 @@ export default function(obj) {
         loader: PIXI.loader,
         activeAction: undefined,
         config: Config,
+        swim: Swim(),
+        bounce: Bounce(),
+        fly: Fly(),
+        jump: Jump(),
 		init: function () {
 
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -95,33 +103,47 @@ export default function(obj) {
 		},
 		start: function () {
 
+			
+
 			this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
-			this.gears.init(this.stage, this.wh);
+			this.utils.setProperties({
+				spritesheet: this.spritesheet,
+				canvasWidth: this.canvasWidth,
+				canvasHeight: this.canvasHeight,
+				app: this.app
+			})
 
-            this.clock.init(this.stage, this.wh);
+			this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
+
+			this.utils.setHero(this.hero);
+		
+
+			this.gears.init(this.stage);
+
+            this.clock.init(this.stage);
 
 			//this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
 
-			this.magicPills.init(this.app, this.wh, this.filterTest.bind(this), this.backgroundCont, this.spritesheet);
+			this.magicPills.init(this.filterTest.bind(this), this.backgroundCont);
 
-            this.filterAnimation.init(this.app, this.filterContainer, this.wh);
-
-            this.hero.init(this.wh, undefined, this.stage, this.spritesheet).switchPlayer(this.mode[this.activeModeIndex]);
+            this.filterAnimation.init(this.filterContainer);
 
             this.transitionItems.init(
             	this.mode, 
             	this.stage, 
-            	this.wh, 
-            	this.spritesheet, 
-            	this.hero.cont, 
-            	this.app, 
             	this.switchPlayer.bind(this)).build();
 
-            this.treasure.init(this.app, this.wh, this.spritesheet, this.hero.cont, this.stage);
+            this.treasure.init(this.stage);
             
-            //this.score.init(this.stage, this.wh);
+			this.swim.init(this.stage);
 
+			this.bounce.init(this.stage);
+
+			this.fly.init(this.stage);
+
+			this.jump.init(this.stage);
+            
             this.switchPlayer(this.mode[this.activeModeIndex]);
 
             this.app.ticker.add(this.animate.bind(this));
@@ -133,141 +155,18 @@ export default function(obj) {
             window.removeEventListener('keyup', this.keyUp);
 		},
 		switchPlayer: function (str) {
-
-			if(str) {
+			if (this[this.activeMode]) this[this.activeMode].removeFromStage();
+			if (str) {
 				this.activeMode = str;
 			} else {
 				this.activeModeIndex ++;
 				if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
 				this.activeMode = this.mode[this.activeModeIndex];
 			}
-
+			this.activeAction = this[this.activeMode].addToStage();
 
 			this.hero.switchPlayer(this.activeMode);
 			this.pellets.changeMode(this.activeMode);
-
-			if (this.activeMode === 'jump') {
-
-				if (!this.jumpAction) {
-					this.platforms = Platforms();
-					this.platformCont = new PIXI.Container();
-					this.platforms.init(this.platformCont, this.wh, this.spritesheet);
-
-					this.jumpAction = JumpAction();
-            		this.jumpAction.init(this.hero, this.platforms.returnPlatforms('intro'), this.canvasWidth, this.canvasHeight, this.platformCont, this.stage);
-
-            		this.jumpBackground = JumpBackground();
-            		this.jumpBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.jumpAction, this.hero);
-
-				}
-				this.activeAction = this.jumpAction;
-				this.platforms.addPlatforms(true);
-				this.stage.addChild(this.platformCont)
-				this.jumpBackground.addToStage();
-
-			} else {
-				if(this.jumpBackground)this.jumpBackground.removeFromStage();
-				if(this.platforms)this.platforms.addPlatforms(false);
-				this.stage.removeChild(this.platformCont)
-			}
-
-			if (this.activeMode === 'bounce') {
-
-				if(!this.bouncePlatform){
-					this.bouncePlatform = BouncePlatform();
-            		this.bouncePlatform.init(this.stage, this.spritesheet);
-            		this.bouncePlatform.on(false); 
-					this.bounceAction = BounceAction();
-            		this.bounceAction.init(this.hero, this.bouncePlatform, this.canvasWidth, this.canvasHeight);
-
-            		this.bounceBackground = BounceBackground();
-            		this.bounceBackground.init(
-            			this.app, 
-            			this.wh, 
-            			this.spritesheet,
-            			this.hero,
-            			this.bounceAction);
-				}  
-				this.activeAction = this.bounceAction;
-				this.bouncePlatform.start(this.canvasWidth, this.canvasHeight);
-				this.bouncePlatform.on(true);
-				this.bounceBackground.addToStage();
-
-			} else {
-				if (this.bouncePlatform) this.bouncePlatform.on(false);
-				if (this.bounceBackground) this.bounceBackground.removeFromStage();
-			}
-
-			// if(this.activeMode === 'swim' || this.activeMode === 'fly'){
-			// 	if (!this.swimAction) {
-			// 		this.swimAction = SwimAction();
-			// 		this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
-
-			// 		this.fishSchool = FishSchool(this.spritesheet);
-			// 		this.fishSchool.init(this.stage, this.wh);
-
-			// 		this.swimBackground = SwimBackground();
-			// 		this.swimBackground.init(this.stage, this.wh);
-
-			// 		this.lilypadLotuses = LilypadsLotuses();
-			// 		this.lilypadLotuses.init(this.stage, this.wh);
-
-			// 	}
-			// 	this.fishSchool.addToStage();
-			// 	this.lilypadLotuses.addToStage();
-			// 	this.swimBackground.addToStage();
-			// 	this.activeAction = this.swimAction;
-			// 	this.swimAction.switchMode(this.activeMode);
-			// }
-
-			if(this.activeMode === 'swim'){
-				if (!this.ripples) {
-					this.ripples = Ripples();
-					this.ripples.init(this.app, this.wh);
-
-					this.swimAction = SwimAction();
-					this.swimAction.init(this.hero, this.activeMode, this.wh, this.stage);
-
-					this.fishSchool = FishSchool(this.spritesheet);
-					this.fishSchool.init(this.stage, this.wh);
-
-					this.swimBackground = SwimBackground();
-					this.swimBackground.init(this.stage, this.wh);
-
-					this.lilypadLotuses = LilypadsLotuses();
-					this.lilypadLotuses.init(this.stage, this.wh);
-				}
-				
-				this.ripples.on(true);
-				this.fishSchool.addToStage();
-				this.lilypadLotuses.addToStage();
-				this.swimBackground.addToStage();
-				this.activeAction = this.swimAction;
-				this.swimAction.switchMode(this.activeMode);
-			} else {
-				if (this.ripples) this.ripples.on(false);
-				if (this.fishSchool) this.fishSchool.removeFromStage();
-				if (this.lilypadLotuses) this.lilypadLotuses.removeFromStage();
-				if (this.swimBackground) this.swimBackground.removeFromStage();
-				if (this.swimAction) this.swimAction.airBubbles.resetAirBubbles();
-
-			}
-
-			if(this.activeMode === 'fly'){
-				if (!this.flyBackground) {
-					this.flyBackground = FlyBackground();
-					this.flyBackground.init(this.app, this.stage, this.wh, this.spritesheet, this.hero);
-
-					this.flyAction = FlyAction();
-					this.flyAction.init(this.hero, this.activeMode, this.wh, this.app, this.spritesheet);
-				}
-				this.activeAction = this.flyAction;
-				this.flyBackground.addToStage();
-			} else {
-				if(this.flyBackground)this.flyBackground.removeFromStage();
-
-			}
-
 		},
 		resizeHandler: function () {
 			this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -276,7 +175,6 @@ export default function(obj) {
 			let wh = {canvasWidth: this.canvasWidth, canvasHeight: this.canvasHeight};
 			this.clock.resize(wh);
 			this.gears.resize(wh);
-		//	this.score.resize(wh);
 			if(this.platforms)this.platforms.resize(wh);
 			this.magicPills.resize(wh);
 			this.treasure.resize(wh);
@@ -341,7 +239,7 @@ export default function(obj) {
             	case 32:
             	// space
             		if(this.jumpAction)this.jumpAction.jump();
-            		if(this.flyAction)this.flyAction.fire(true);
+            		if(this.activeMode === 'fly')this.activeAction.fire(true);
             		break;
                 case 37:
                     // left
@@ -375,7 +273,7 @@ export default function(obj) {
             this.rotateLeftBoolean = false;
             this.rotateRightBoolean = false;
             this.idle = true;
-            if(this.flyAction)this.flyAction.fire(false);
+           if(this.activeMode === 'fly')this.activeAction.fire(false);
         },
 		animate: function () {
 
@@ -397,7 +295,7 @@ export default function(obj) {
 				this.action = true;
 			}
 
-			if(this.action){
+			if (this.action) {
 				if(this.rotateLeftBoolean)this.rotate('left');
 				if(this.rotateRightBoolean)this.rotate('right');
 				this.clock.animate();
@@ -410,19 +308,8 @@ export default function(obj) {
 				this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
 				this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
 				
-				if (this.activeMode === 'bounce') {
-					this.bouncePlatform.animate();
-					this.bounceBackground.animate();
-				} else if (this.activeMode === 'swim') {
-					this.ripples.animate();
-					this.fishSchool.animate();
-					this.swimBackground.animate();
-					this.lilypadLotuses.animate();
-				} else if (this.activeMode === 'jump') {
-					this.jumpBackground.animate();
-				} else if (this.activeMode === 'fly') {
-
-				}
+				this[this.activeMode].animate();
+			
 			}
 			
 			

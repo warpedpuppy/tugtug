@@ -1,5 +1,23 @@
 export default {
-
+    spritesheet: undefined,
+    canvasWidth: undefined,
+    canvasHeight:undefined,
+    hero: undefined,
+    app: undefined,
+    wh: {},
+    setProperties: function (obj) {
+        this.canvasWidth = obj.canvasWidth;
+        this.canvasHeight = obj.canvasHeight;
+        this.spritesheet = obj.spritesheet;
+        this.app = obj.app;
+        this.wh = {
+            canvasHeight: obj.canvasHeight,
+            canvasWidth: obj.canvasWidth
+        }
+    },
+    setHero: function (hero) {
+        this.hero = hero;
+    },
     distributeAroundCircle:  function (circleCenter, numElements, radius) {
         let arr = [];
         for (let i = 0; i < numElements; i++) {

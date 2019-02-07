@@ -23,9 +23,9 @@ export default function () {
 		bounceBlockIndex: 4, 
 		doneCounter: 0,
 		type:undefined,
-		init: function (parentCont, wh, spritesheet) {
+		init: function (parentCont) {
 			this.parentCont = parentCont;
-			this.spritesheet = spritesheet;
+			this.spritesheet = this.utils.spritesheet;
 			this.buildHero();
 		},
 		buildSmileyHero: function () {
