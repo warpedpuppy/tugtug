@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 export default function () {
 	return {
@@ -10,28 +10,21 @@ export default function () {
 
 			this.wh = this.utils.wh;
 
-			this.parent = new PIXI.Container();
+			this.parent = Assets.Container();
 			this.parent.width = this.wh.canvasWidth;
 			this.parent.height = this.wh.canvasHeight;
 
-			let blurFilter = new PIXI.filters.BlurFilter(4);
 
 			this.app = this.utils.app;
-			var sprites = this.sprites = new PIXI.particles.ParticleContainer(10000, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
+
+			this.totalSprites = Assets.webgl? 10 : 10;
+
+			var sprites = this.sprites = Assets.ParticleContainer(this.totalSprites);
+
 			this.parent.addChild(sprites);
 
-			this.sprites.filters = [ blurFilter ];
-		
-            this.totalSprites = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 10 : 10;
-
             for (let i = 0; i < this.totalSprites; i++) {
-                var ring = PIXI.Sprite.fromImage('gradientRing.png');
+                var ring = Assets.Sprite('gradientRing.png');
                 ring.anchor.x = ring.anchor.y = 0.5;
                 ring.startScale = 0.1;
                 ring.scale.set(ring.startScale);
@@ -41,12 +34,12 @@ export default function () {
             }
             // create a bounding box box for the little maggots
             var ringBoundsPadding = 100;
-            this.ringBounds = new PIXI.Rectangle(
-                -ringBoundsPadding,
-                -ringBoundsPadding,
-                this.canvasWidth + ringBoundsPadding * 2,
-                this.canvasHeight + ringBoundsPadding * 2
-            );
+            this.ringBounds = {
+                x: -ringBoundsPadding,
+                y: -ringBoundsPadding,
+                width: this.canvasWidth + ringBoundsPadding * 2,
+                height: this.canvasHeight + ringBoundsPadding * 2
+            };
 
             this.tick = 0;
             this.utils.app.stage.interactive = true;
@@ -55,7 +48,7 @@ export default function () {
             this.counter = 0;
             this.opc = 0;
 
-            this.gradient = PIXI.Sprite.fromImage('/bmps/gradient.png');
+            this.gradient = Assets.Sprite('/gradient.png');
             this.gradient.alpha = 0.5;
 			this.gradient.anchor.set(0.5);
 			

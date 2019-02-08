@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
 	return {
@@ -8,25 +8,18 @@ export default function () {
 		activeMode: undefined,
 		init: function (app, wh, cont, str, spritesheet) {
 			this.activeMode = str;
-
-			var pellets = new PIXI.particles.ParticleContainer(10000, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
+			this.pelletQ = (Assets.webgl)? 100 : 10;
+			var pellets = Assets.ParticleContainer(this.pelletQ);
 			
 			cont.addChild(pellets);
 				
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5); 
 			
-			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;
 			for(let i = 0; i < this.pelletQ; i ++ ){
 			 	this.pelletTexture = spritesheet.textures['pellet.png'];
             	this.starTexture = spritesheet.textures['star.png'];
-            	let s = new PIXI.Sprite(this.pelletTexture);
+            	let s = Assets.Sprite('pellet.png');
             	s.tint = Math.random() * 0xFFFFFF;
             	
             	s.x = this.utils.randomNumberBetween(0, wh.canvasWidth);

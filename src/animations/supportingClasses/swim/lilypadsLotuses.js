@@ -1,34 +1,29 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 export default function (spritesheet) {
 	return {
 		array: [],
 		utils: Utils,
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		buffer: 10, 
 		init: function (parentCont) {
 			this.parentCont = parentCont;
 			this.wh = this.utils.wh;
 			this.strs = [
-				['/bmps/lilyPad2.png', 178],
-				['/bmps/lilypad1.png',211]
+				['lilyPad2.png', 178],
+				['lilypad1.png',211]
 			];
 			this.loopingQ = 6;
 
 			for(let i = 0; i < this.loopingQ; i ++){
-				//let s1 = new PIXI.Sprite.fromImage(this.strs[i]);
 
 				let t = this.utils.randomItemFromArray(this.strs);
-				let s1 = new PIXI.Sprite.fromImage(t[0]);
-				// let ballWidth =  this.utils.randomNumberBetween(50, 100);
-				// let halfWidth = ballWidth / 2;
-				// s1.beginFill(0x98FB98).drawCircle(-halfWidth,-halfWidth,ballWidth).endFill();
-
+				let s1 = Assets.Sprite(t[0]);
+			
 				s1.anchor.set(0.5);
 				s1.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
 				s1.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
 
-				//s1.pivot.set(0.5);
 				s1.radius = s1.r = t[1] / 2;
 				s1.vx = this.utils.randomNumberBetween(-1, 1);
 				s1.vy = this.utils.randomNumberBetween(-1, 1);

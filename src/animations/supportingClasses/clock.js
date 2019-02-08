@@ -1,26 +1,26 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default {
 		hourToRadians: (1/12) * (2 * Math.PI),
 		minutesToRadians: (1/60) * (2 * Math.PI),
 		secondsToRadians: (1/60) * (2 * Math.PI),
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		counter: 0,
 		demo: false,
 		utils: Utils,
 		init: function (cont) {
 
-			let hourhand = this.hourhand = new PIXI.Sprite.fromImage('/bmps/hourhand.png');
+			let hourhand = this.hourhand = Assets.Sprite('/hourhand.png');
 			hourhand.anchor.set(0.5);
 			hourhand.tint = 0xFF0000;
 			this.cont.addChild(hourhand);
 
-			let minutehand = this.minutehand = new PIXI.Sprite.fromImage('/bmps/minutehand.png');
+			let minutehand = this.minutehand = Assets.Sprite('/minutehand.png');
 			minutehand.anchor.set(0.5);
 			minutehand.tint = 0x000000;
 			this.cont.addChild(minutehand);
 
-			let secondhand = this.secondhand = new PIXI.Sprite.fromImage('/bmps/secondhand.png');
+			let secondhand = this.secondhand = Assets.Sprite('/secondhand.png');
 			secondhand.anchor.set(0.5);
 			secondhand.tint = 0xFF00FF;
 			this.cont.addChild(secondhand);

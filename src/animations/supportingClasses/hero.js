@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 import HeroSwim from './swim/heroSwim';
 import HeroJump from './jump/heroJump';
@@ -6,7 +6,7 @@ import HeroFly from './fly/heroFly';
 import HeroBounce from './bounce/heroBounce';
 export default function () {
 	return {
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		pos: [],
 		radius: 2,
 		storeRadius: 0,
@@ -41,7 +41,7 @@ export default function () {
 
             if(items){
             	  for(let i = 0; i < items.length; i ++){
-	            	var item = PIXI.Sprite.fromImage(items[i].url);
+	            	var item = Assets.Sprite(items[i].url);
 	            	if (items[i].active) {
 		            	this.cont.addChild(item);
 		            }

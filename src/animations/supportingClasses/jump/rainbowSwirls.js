@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
 		cont: undefined,
@@ -8,7 +8,6 @@ export default function () {
 		bricks: [],
 		utils: Utils,
 		activeBrick: undefined,
-		brickHeight: 50,
 		fallSpeed: undefined,
 		totalHeight: 0,
 		brickHeight: 0,
@@ -45,14 +44,8 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 			
 
-			this.tileQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 150 : 10;
-			this.cont = new PIXI.particles.ParticleContainer(this.tileQ, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
+			this.tileQ = Assets.webgl ? 150 : 10;
+			this.cont = Assets.ParticleContainer(this.tileQ);
 
 
 			for(let i = 0; i < this.tileQ; i ++){
@@ -78,7 +71,7 @@ export default function () {
 
 		},
 		brick: function () {
-			let s = new PIXI.Sprite(this.goldTile);
+			let s = Assets.Sprite('tile.png');
 			s.counter = 0;
 			s.curveCounter = 0;
 			this.brickHeight = s.height;
@@ -108,7 +101,7 @@ export default function () {
 			}
 
 		
-			let previousYVal = this.objectPool[this.objectPool.length -1].y;
+			//let previousYVal = this.objectPool[this.objectPool.length -1].y;
 		
 			let prevIndex = (this.objectPoolCounter > 1)?this.objectPoolCounter - 2: this.objectPool.length - 1;
 			let prevX = this.objectPool[prevIndex].x;
@@ -142,17 +135,17 @@ export default function () {
 					x: this.utils.randomNumberBetween(buffer, this.utils.canvasWidth * perc),
 					y: this.utils.randomNumberBetween(buffer, this.utils.canvasHeight * perc),
 				}
-			} else if (this.quadrant == "TR") {
+			} else if (this.quadrant === "TR") {
 				return {
 					x: this.utils.randomNumberBetween(this.utils.canvasWidth * perc, this.utils.canvasWidth),
 					y: this.utils.randomNumberBetween(buffer, this.utils.canvasHeight * perc),
 				}
-			} else if (this.quadrant == "BL") {
+			} else if (this.quadrant === "BL") {
 				return {
 					x: this.utils.randomNumberBetween(buffer, this.utils.canvasWidth * perc),
 					y: this.utils.randomNumberBetween(this.utils.canvasHeight * perc, this.utils.canvasHeight),
 				}
-			} else if (this.quadrant == "BR") {
+			} else if (this.quadrant === "BR") {
 				return {
 					x: this.utils.randomNumberBetween(this.utils.canvasWidth * perc, this.utils.canvasWidth),
 					y: this.utils.randomNumberBetween(this.utils.canvasHeight * perc, this.utils.canvasHeight),

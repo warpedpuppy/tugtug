@@ -1,8 +1,5 @@
-import * as PIXI from 'pixi.js';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
 import FlyBackground from './flyBackground';
-import FlyAction from '../actions/flyAction';
+import FlyAction from './flyAction';
 export default function () {
 	return {
 		flyBackground: FlyBackground(),
@@ -15,6 +12,7 @@ export default function () {
 		addToStage: function () {
 
 			this.flyBackground.addToStage();
+			this.flyAction.createPool();
 			return this.flyAction;
 		},
 		removeFromStage: function () {

@@ -1,21 +1,20 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 import RainbowSwirls from './rainbowSwirls';
 import { TweenMax, Elastic } from 'gsap';
 export default function () {
 	return {
-		cont: new PIXI.Container(),
-		background: new PIXI.Graphics(),
-		foreground: new PIXI.Graphics(),
-		orbsCont: new PIXI.Container(),
-		ground: new PIXI.Graphics(),
+		cont: Assets.Container(),
+		background: Assets.Graphics(),
+		foreground: Assets.Graphics(),
+		orbsCont: Assets.Container(),
+		ground: Assets.Graphics(),
 		colSpacing: 200,
 		colQ: 10,
 		rowQ: 10,
 		tileColQ: 4,
 		cols: {},
 		columns: [],
-		utils: Utils,
 		activeBrick: undefined,
 		brickHeight: 50,
 		groundHeight: 150,
@@ -45,10 +44,10 @@ export default function () {
 			for(let i = 0; i < this.rowQ; i ++){
 
 				for(let j = 0; j < this.colQ; j ++){
-					let cont = new PIXI.Container();
-					let s = new PIXI.Sprite(this.spritesheet.textures['circleAlpha1.png']);
+					let cont = Assets.Container();
+					let s = Assets.Sprite('circleAlpha1.png');
 					s.anchor.set(0.5);
-					let p = new PIXI.Sprite(this.spritesheet.textures['pinWheel.png']);
+					let p = Assets.Sprite('pinWheel.png');
 					p.anchor.set(0.5);
 					cont.addChild(s);
 					cont.addChild(p);
@@ -102,7 +101,6 @@ export default function () {
 		},
 		addToStage: function () {
 	
-			console.log('jump added to stage')
 			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.centralOrb.width /2);
 			
 			this.parentCont.addChildAt(this.cont, 0);

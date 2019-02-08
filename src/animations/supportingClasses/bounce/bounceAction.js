@@ -6,7 +6,6 @@ export default function () {
 		vy: 0,
 		angle: 0,
 		velocity: 10,
-		utils: Utils,
 		legCounter: 0,
 		legCounterLimit: 10,
 		utils: Utils,

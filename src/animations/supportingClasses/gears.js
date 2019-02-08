@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default {
 	gears: [],
@@ -12,7 +12,7 @@ export default {
 		[0, this.utils.wh.canvasHeight]
 		];
 		for(let i = 0; i < 4;i++){
-		    gear = new PIXI.Sprite.fromImage('/bmps/gear.png');
+		    gear = Assets.Sprite('/gear.png');
 		    gear.anchor.x = gear.anchor.y = 0.5;
 		    gear.x = corners[i][0];
 		    gear.y = corners[i][1];

@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 export default function () {
 	return {
-		texture: new PIXI.Texture.fromImage('/bmps/water.png'),
+		texture: 'water.png',
 		sprite1: undefined,
 		sprite2: undefined,
 		speed1: 0.5,
@@ -12,14 +12,14 @@ export default function () {
 		init: function (cont) {
 			this.cont = cont;
 			this.wh = this.utils.wh;
-			this.sprite1 = new PIXI.Sprite(this.texture);
+			this.sprite1 = Assets.Sprite(this.texture);
 			this.sprite1.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.sprite1.height = this.wh.canvasHeight * this.sizeIncrement;
 			this.sprite1.vx = this.speed1;
 			this.sprite1.vy = this.speed1;
 			this.sprite1.alpha = 0.15;
 
-			this.sprite2 = new PIXI.Sprite(this.texture);
+			this.sprite2 = Assets.Sprite(this.texture);
 			this.sprite2.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.sprite2.height = this.wh.canvasHeight * this.sizeIncrement;
 			this.sprite2.x = -this.wh.canvasWidth / this.sizeIncrement;

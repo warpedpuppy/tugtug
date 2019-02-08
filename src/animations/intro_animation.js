@@ -35,7 +35,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','fly','bounce','swim'],
+        mode: ['swim','fly','bounce','jump'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -62,6 +62,9 @@ export default function(obj) {
         fly: Fly(),
         jump: Jump(),
         init: function () {
+
+
+     
 
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
@@ -98,8 +101,7 @@ export default function(obj) {
         },
         start: function () {
 
-            
-
+        
             this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
             this.utils.setProperties({
@@ -108,6 +110,8 @@ export default function(obj) {
                 canvasHeight: this.canvasHeight,
                 app: this.app
             })
+
+            Assets.init();
 
             this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
 

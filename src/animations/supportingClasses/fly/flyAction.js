@@ -1,12 +1,10 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import AirBubbles from '../swim/airBubbles';
 export default function () {
 	return {
 		radius: 0,
 		storeRadius: 0,
 		spinning: false,
-		utils: Utils,
 		vx: 0,
 		vy: 0,
 		airBubbleCounter: 0,
@@ -30,11 +28,22 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
 
-            this.flameQ = (Assets.webgl)? 500 : 10;
+            //this.flameQ = (Assets.webgl)? 500 : 10;
+
+			
+				
+
+			
+
+
+		},
+		createPool: function () {
+			this.flameArray = Assets.returnObjectPool('star.png');
+            this.flameQ = this.flameArray.length;
             this.flames = Assets.ParticleContainer(this.flameQ);
 			let item;
 			for (let i = 0; i < this.flameQ; i ++) {
-				item = Assets.Sprite('star.png');
+				item = this.flameArray[i];
 				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
 				item.anchor.set(0.5);
 				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
@@ -50,19 +59,12 @@ export default function () {
 					this.colorCounter = 0;
 				}
 				this.flames.addChild(item);
-				this.flameArray.push(item);
-
 			}
 			this.flames.visible = false;
 			this.flames.x = this.utils.canvasWidth / 2;
 			this.flames.y = this.utils.canvasHeight / 2;
 			let index = this.stage.getChildIndex(this.utils.hero.cont) - 1;
 			this.stage.addChildAt(this.flames, index);
-				
-
-			
-
-
 		},
 		resize: function () {
 			this.flames.x = this.utils.canvasWidth / 2;

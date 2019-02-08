@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
 	return {
@@ -10,13 +10,8 @@ export default function () {
 		utils: Utils,
 		init: function (effectFunction, cont) {
 			this.effectFunction = effectFunction;
-			var pills = new PIXI.particles.ParticleContainer(10000, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
+			this.pillQ = Assets.webgl? 0 : 1;
+			var pills = Assets.ParticleContainer(this.pillQ);
 			
 	
 			cont.addChild(pills);
@@ -24,10 +19,10 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5);
 
-			this.pillQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
+			
 
 			 for(let i = 0; i < this.pillQ; i ++ ){
-            	let s = new PIXI.Sprite(this.utils.spritesheet.textures['star.png']);
+            	let s = Assets.Sprite('star.png');
             	s.anchor.set(0.5);
             	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = 0;

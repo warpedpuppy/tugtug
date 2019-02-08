@@ -1,6 +1,6 @@
 import React from 'react';
-import * as THREE from 'three';
-import Utils from '../animations/utils/utils'
+//import * as THREE from 'three';
+//import Utils from '../animations/utils/utils'
 //import sprial_code from '../animations/utils/spiral'
 
 export default class SpiralCanvas extends React.Component {

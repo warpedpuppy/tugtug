@@ -23,10 +23,6 @@ export default function () {
             this.vy = this.utils.randomNumberBetween(1,2);
             this.airBubbles.setupBubbles(stage);
 		},
-		resize: function (wh) {
-			this.canvasWidth = wh.canvasWidth;
-			this.canvasHeight = wh.canvasHeight;
-		},
 		start: function() {
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},

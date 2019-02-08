@@ -1,6 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import { TweenMax, Elastic } from 'gsap';
+import { TweenMax } from 'gsap';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -9,12 +9,13 @@ export default function () {
 		level2: Assets.Container(),
 		level3: Assets.Container(),
 		level4: Assets.Container(),
-		ground: Assets.Graphics(),
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 		colorCounter: 0,
 		utils: Utils,
-		bars: {},
+		barsOP: [],
+		dotsOP: [],
 		buffer: 500,
+		createCounter: 0,
 		init: function (action) {
 
 			this.hero = this.utils.hero;
@@ -28,19 +29,59 @@ export default function () {
 
 			this.cont.addChild(this.background);
 
-
-			this.array1 = [];
 			this.dots = [];
-			this.createBars(3, 10, 0.15, 0xFF0000, this.level1, this.array1);
-	
+			this.array1 = [];
 			this.array2 = [];
-			this.createBars(8, 5, 0.35, 0xFFFF00, this.level2, this.array2);
-
 			this.array3 = [];
-			this.createBars(20, 2, 0.65, 0xFFFF00, this.level3, this.array3);
-
 			this.array4 = [];
-			this.createBars(30, 1, 1, 0x33FF00, this.level4, this.array4);
+
+			this.level1Object = {
+				w: 3,
+				q: 10,
+				speedAdjust: 0.15,
+				color: 0xFF0000,
+				cont: this.level1, 
+				array: this.array1
+			}
+			this.level2Object = {
+				w: 8,
+				q: 5,
+				speedAdjust: 0.35,
+				color: 0x33FF00,
+				cont: this.level2, 
+				array: this.array2
+			}
+			this.level3Object = {
+				w: 20,
+				q: 2,
+				speedAdjust: 0.65,
+				color: 0xFFFF00,
+				cont: this.level3, 
+				array: this.array3
+			}
+			this.level4Object = {
+				w: 30,
+				q: 1,
+				speedAdjust: 0.15,
+				color: 0xFF00FF,
+				cont: this.level4, 
+				array: this.array4
+			}
+
+
+			let opQ = this.level1Object.q + this.level2Object.q + this.level3Object.q + this.level4Object.q;
+
+			for (let i = 0; i < opQ; i ++) {
+				this.barsOP.push(Assets.Sprite('line.png'));
+				this.dotsOP.push(Assets.Sprite('pellet.png'));
+			}
+
+
+			
+			this.createBars(this.level1Object);
+			this.createBars(this.level2Object);
+			this.createBars(this.level3Object);
+			this.createBars(this.level4Object);
 
 			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 
@@ -49,54 +90,61 @@ export default function () {
 			this.level3.alpha = this.level4.alpha = 0.75;
 
 		},
-		createBars: function (w, q, speedAdjust, color, cont, array) {
-			cont.removeChildren();
-			let spacing = this.utils.canvasWidth / q;
-			for (let i = 0; i < q; i ++) {
-				let bar = Assets.Sprite('line.png');
+		createBars: function (obj) {
+
+			obj.cont.removeChildren();
+			let spacing = this.utils.canvasWidth / obj.q;
+			for (let i = 0; i < obj.q; i ++) {
+
+				let bar = this.barsOP[this.createCounter];
+
 				bar.anchor.x = 0.5;
-				bar.speedAdjust = speedAdjust;
-				bar.width = w;
+				bar.speedAdjust = obj.speedAdjust;
+				bar.width = obj.w;
 				bar.height = this.utils.canvasHeight;
 				bar.spacing = spacing;
-				bar.tint = color;
+				bar.tint = obj.color;
 				bar.x = i * spacing;
-				bar.array = array;
-				cont.addChild(bar);
-				array.push(bar);
+				bar.array = obj.array;
+				obj.cont.addChild(bar);
+				obj.array.push(bar);
 
-				let dot = Assets.Sprite('pellet.png');
+				let dot = this.dotsOP[this.createCounter];
 				dot.bar = bar;
-				dot.scale.set(speedAdjust);
+				dot.scale.set(obj.speedAdjust);
 				dot.x = bar.x;
-				dot.tint = this.colors[this.colorCounter];
-				this.colorCounter ++;
-				if(this.colorCounter > this.colors.length - 1){
+				dot.tint = this.colors[this.colorCounter]; 
+
+				this.colorCounter ++; 
+
+				if (this.colorCounter > this.colors.length - 1) {
 					this.colorCounter = 0;
 				}
 
 				bar.dot = dot;
 				dot.anchor.set(0.5);
 				dot.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight)
-				cont.addChild(dot);
+				obj.cont.addChild(dot);
 				this.dots.push(dot);
+
+				this.createCounter ++;
 			}
+
 		},
 		resizeBars: function (array) {
 
-			this.array1 = [];
-			this.dots = [];
-			this.createBars(3, 10, 0.15, 0xFF0000, this.level1, this.array1);
-	
-			this.array2 = [];
-			this.createBars(8, 5, 0.35, 0xFFFF00, this.level2, this.array2);
+			this.createCounter = 0;
 
-			this.array3 = [];
-			this.createBars(20, 2, 0.65, 0xFFFF00, this.level3, this.array3);
+			this.dots.length = 0;
+			this.array1.length = 0;
+			this.array2.length = 0;
+			this.array3.length = 0;
+			this.array4.length = 0;
 
-			this.array4 = [];
-			this.createBars(30, 1, 1, 0x33FF00, this.level4, this.array4);
-
+			this.createBars(this.level1Object);
+			this.createBars(this.level2Object);
+			this.createBars(this.level3Object);
+			this.createBars(this.level4Object);
 		},
 		addToStage: function () {
 			this.cont.addChild(this.level1);

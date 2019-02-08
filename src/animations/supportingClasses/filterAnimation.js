@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
     return {
@@ -8,24 +8,24 @@ export default function () {
         utils: Utils,
         init: function (container) {
             this.app = this.utils.app;
-            var filter = this.filter = new PIXI.filters.ColorMatrixFilter();
+            var filter = this.filter = Assets.ColorFilter();
             this.wh = this.utils.wh;
 
             container.x = this.wh.canvasWidth / 2;
             container.y = this.wh.canvasHeight / 2;
 
 
-            var light2 = this.light2 = PIXI.Sprite.fromImage('/bmps/radial_1.png');
+            var light2 = this.light2 = Assets.Sprite('/radial_1.png');
             light2.visible = false;
             light2.anchor.set(0.5);
             container.addChild(light2);
 
-            var light1 = this.light1 = PIXI.Sprite.fromImage('/bmps/radial_2.png');
+            var light1 = this.light1 = Assets.Sprite('/radial_2.png');
             light1.visible = false;
             light1.anchor.set(0.5);
             container.addChild(light1);
 
-             var light3 = this.light3 = PIXI.Sprite.fromImage('/bmps/radial_3.png');
+             var light3 = this.light3 = Assets.Sprite('/radial_3.png');
             light3.visible = false;
             light3.anchor.set(0.5);
             container.addChild(light3);

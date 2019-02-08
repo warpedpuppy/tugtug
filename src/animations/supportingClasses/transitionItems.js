@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 import TransitionAnimation from './transitionAnimation';
 export default function () {
@@ -15,7 +15,7 @@ export default function () {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, switchPlayer) {
-		this.itemQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
+		this.itemQ = Assets.webgl ? 0 : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = this.utils.app;
 		this.itemStrings = arr;
@@ -43,7 +43,7 @@ export default function () {
 	},
 	build: function () {
 		for (let item of this.itemStrings) {
-			let s = this.spritesheet.textures[`${item}Trans.png`];
+			let s = `${item}Trans.png`;
 			this.textures.push(s);
 		}
 
@@ -51,7 +51,7 @@ export default function () {
         this.vy = this.utils.randomNumberBetween(1,5);
 
 		for (let i = 0; i < this.itemQ; i ++) {
-			let c = new PIXI.Sprite(this.textures[this.textureCounter]);
+			let c = Assets.Sprite(this.textures[this.textureCounter]);
 			c.name = this.itemStrings[this.textureCounter];
 			c.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			c.anchor.set(0.5);

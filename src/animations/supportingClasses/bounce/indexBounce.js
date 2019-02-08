@@ -1,8 +1,6 @@
 import BouncePlatform from './bouncePlatform';
 import BounceBackground from './bounceBackground';
-import BounceAction from '../actions/bounceAction';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+import BounceAction from './bounceAction';
 
 export default function () {
 	return {

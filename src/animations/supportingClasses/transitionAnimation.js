@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
     return {
@@ -8,9 +8,9 @@ export default function () {
     radials: [],
     explosions: [],
     doors: [],
-    radialCont: new PIXI.Container(),
-    explosionCont: new PIXI.Container(),
-    doorCont: new PIXI.Container(),
+    radialCont: Assets.Container(),
+    explosionCont: Assets.Container(),
+    doorCont: Assets.Container(),
     radialGrow: 0.01,
     radialIncrease: 0.0025,
     animationCounter: 0,
@@ -24,12 +24,12 @@ export default function () {
         this.wh.canvasHeight = this.utils.wh.canvasHeight;
         this.wh.canvasWidth = this.utils.wh.canvasWidth;
 
-        this.radialQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+        this.radialQ = this.pelletQ = Assets.webgl ? 1000 : 10;
 
-        this.explosionQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+        this.explosionQ = this.pelletQ = Assets.webgl ? 1000 : 10;
 
         for(let i = 0; i < this.radialQ; i ++){
-            let r = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
+            let r = Assets.Sprite('line.png');
             r.width = 1;
             r.height = this.utils.randomNumberBetween(100, 500);
             r.alpha = this.utils.randomNumberBetween(0.2, 0.8);
@@ -43,7 +43,7 @@ export default function () {
             this.radials.push(r);
             this.radialCont.addChild(r);
 
-            let e = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
+            let e = Assets.Sprite('line.png');
             e.width = 5;
             e.height = 5;
             e.radius = 0;

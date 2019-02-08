@@ -1,10 +1,8 @@
-import SwimAction from '../actions/swimAction';
+import SwimAction from './swimAction';
 import SwimBackground from './swimBackground';
 import FishSchool from './fishSchool';
 import LilypadsLotuses from './lilypadsLotuses';
 import Ripples from './ripples';
-import * as PIXI from 'pixi.js';
-import Utils from '../../utils/utils';
 export default function () {
 	return {
 		ripples: Ripples(),

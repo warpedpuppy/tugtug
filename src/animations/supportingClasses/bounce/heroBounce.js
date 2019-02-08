@@ -15,7 +15,6 @@ export default function () {
 		max: 0, 
 		contractBoolean: true,
 		expandBoolean: false,
-		counter: 0,
 		trigger: 100,
 		gravity: 1.01,
 		bounceAllow: false,

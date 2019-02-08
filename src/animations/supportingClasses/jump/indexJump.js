@@ -1,7 +1,4 @@
-import * as PIXI from 'pixi.js';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
-import JumpAction from '../actions/jumpAction';
+import JumpAction from './jumpAction';
 import JumpBackground from './jumpBackground';
 
 export default function () {

@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 export default function () {
 	return {
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		dists: [0, 40, 35, 30, 23],
 		airBubbles: [],
 		fish: [],
@@ -11,8 +11,8 @@ export default function () {
 			this.parentCont = parentCont;
 			this.spritesheet = this.utils.spritesheet;
 			this.segmentsQ = 5;
-			this.finCont = new PIXI.Container();
-			this.eyeCont = new PIXI.Container();
+			this.finCont = Assets.Container();
+			this.eyeCont = Assets.Container();
 			this.fishArray = [
 				'headSegment.png', 
 				'bodySegment1.png', 
@@ -24,7 +24,7 @@ export default function () {
 			
 			//AIR BUBBLES
 			for(let i = 0; i < 4; i ++){
-				let r = new PIXI.Sprite(this.spritesheet.textures['gradientRing.png']);
+				let r = Assets.Sprite('gradientRing.png');
 				r.anchor.set(0.5);
 				r.scale.set(0);
 				this.airBubbles.push(r);
@@ -32,30 +32,29 @@ export default function () {
 
 
 			 for (let i = 0; i < this.segmentsQ; i++) {
-			 	let fishNum = i+1;
                 let segment = this.fishBodySegment(this.segmentHeight, 0xFFFF00, i, this.fishArray[i]);
                 this.fish.push(segment);
                 this.cont.addChildAt(segment, 0);
             }
 
 
-            let rightFin = this.rightFin = new PIXI.Sprite(this.spritesheet.textures['swimFin.png']);
+            let rightFin = this.rightFin = Assets.Sprite('swimFin.png');
             this.rightFin.x = this.fishRadius + 20;
             this.rightFin.y = 25;
             let index = this.cont.children.length - 2;
             rightFin.scale.x = -1;
             this.finCont.addChild(rightFin)
-            let leftFin = this.leftFin = new PIXI.Sprite(this.spritesheet.textures['swimFin.png']);
+            let leftFin = this.leftFin = Assets.Sprite('swimFin.png');
             this.leftFin.x = -this.fishRadius - 20;
             leftFin.y = 25;
             this.finCont.addChild(leftFin);
             this.cont.addChildAt(this.finCont, index);
 
-            let rightEye = this.rightEye = new PIXI.Sprite(this.spritesheet.textures['swimEye.png']);
+            let rightEye = this.rightEye = Assets.Sprite('swimEye.png');
             rightEye.anchor.set(0.5);
             this.rightEye.x = this.fishRadius;
             this.eyeCont.addChild(rightEye)
-            let leftEye = this.leftEye = new PIXI.Sprite(this.spritesheet.textures['swimEye.png']);
+            let leftEye = this.leftEye = Assets.Sprite('swimEye.png');
             this.leftEye.x = -this.fishRadius;
             leftEye.anchor.set(0.5);
             this.eyeCont.addChild(leftEye);
@@ -67,7 +66,7 @@ export default function () {
 			
 		},
 		fishBodySegment: function (radius, color, num, str) {
-			let cont = new PIXI.Container();
+			let cont = Assets.Container();
             cont.radius = radius;
             cont.height = cont.radius * 4;
             cont.vx = 0;
@@ -76,7 +75,7 @@ export default function () {
             cont.ypos = 0;
 
  
-            let b = new PIXI.Sprite(this.spritesheet.textures[str]);
+            let b = Assets.Sprite(str);
             this.fishRadius = b.width / 2;
             let scale = 1 - (num * 0.1);
             b.scale.set(scale);
@@ -86,7 +85,7 @@ export default function () {
             cont.addChild(b);
             cont.body = b;
             if (num === this.segmentsQ - 1) {
-               let tail = this.tail = new PIXI.Sprite(this.spritesheet.textures['bodySegmentTail.png']);
+               let tail = this.tail = Assets.Sprite('bodySegmentTail.png');
                this.tail.anchor.x = 0.5;
 
                tail.y = b.y + (b.height / 2) - 10;

@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
 	return {
@@ -16,11 +16,11 @@ export default function () {
 
 		if(optionalStartScore)this.startScore = optionalStartScore;
 		this.makeScore(this.startScore);
-
+		this.scoreText = Assets.BitmapText(`score: 0`);
 	},
 	makeScore: function (score) {
 		score = this.utils.numberWithCommas(score);
-		this.scoreText = new PIXI.extras.BitmapText(`score: ${score}`, {font: "38px Hobo Std"});
+		this.scoreText.text = `score: ${score}`;
 		this.scoreText.x = (this.canvasWidth - this.scoreText.width) / 2;
 		this.cont.addChild(this.scoreText);
 	},

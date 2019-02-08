@@ -1,10 +1,14 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils';
-import Config from '../animationsConfig';
 export default {
 		utils: Utils,
-		init: function (cont, wh) {
-
+		opQ: 0,
+		op: [],
+		init: function () {
+			this.opQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?1000:100;
+			for (let i = 0; i < this.opQ; i ++) {
+				this.op.push(this.Sprite());
+			}
 		},
 		Container: function () {
 			return new PIXI.Container();
@@ -27,7 +31,29 @@ export default {
 			    alpha: true
 			});
 		},
+		ColorFilter: function () {
+			return new PIXI.filters.ColorMatrixFilter();
+		},
+		BitmapText: function (str) {
+			return new PIXI.extras.BitmapText(str, {font: "38px Hobo Std"});
+		},
+		Rope: function(texture, points) {
+			return new PIXI.mesh.Rope(texture, points);
+		},
+		Texture: function (str) {
+			return PIXI.Texture.fromFrame(str)
+		},
+		AnimatedSprite: function (array) {
+			return new PIXI.extras.AnimatedSprite(array);
+		},
+		returnObjectPool: function (str) {
+			for (let i = 0; i < this.opQ; i ++) {
+				this.op[i].texture = this.utils.spritesheet.textures[str];
+			}
+			return this.op;
+		},
 		Sprite: function (str) {
+
 			if(!str){
 				return new PIXI.Sprite();
 			} else {

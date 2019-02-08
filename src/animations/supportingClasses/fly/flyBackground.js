@@ -1,12 +1,11 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
-import { TweenMax, Elastic } from 'gsap';
+import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
-		cont: new PIXI.Container(),
-		background: new PIXI.Graphics(),
-		foreground: new PIXI.Graphics(),
-		orbsCont: new PIXI.Container(),
+		cont: Assets.Container(),
+		background: Assets.Graphics(),
+		foreground: Assets.Graphics(),
+		orbsCont: Assets.Container(),
 		utils: Utils,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 		boltQ: 30,
@@ -58,7 +57,7 @@ export default function () {
 		},
 		lightningBoltsBuild: function () {
 
-			let boltCont = new PIXI.Container();
+			let boltCont = Assets.Container();
 			for(let i = 0; i < this.boltQ; i ++){
 				let widthStore = 0, 
 				    startX = this.utils.randomNumberBetween(0, this.wh.canvasWidth),
@@ -67,7 +66,7 @@ export default function () {
 				    storeX, 
 				    storeY;
 				while (widthStore < this.wh.canvasHeight) {
-					let bolt = new PIXI.Sprite(this.spritesheet.textures['line.png']);
+					let bolt = Assets.Sprite(this.spritesheet.textures['line.png']);
 					bolt.height = 5;
 					bolt.x = storeX = (widthStore === 0)?startX:storeX + (Math.cos(storeRot) * storeHeight);
 					bolt.y = storeY = (widthStore === 0)?0:storeY + (Math.sin(storeRot) * storeHeight);
@@ -86,7 +85,6 @@ export default function () {
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {
-			TweenMax.killAll();
 			this.parentCont.removeChild(this.cont);
 			this.parentCont.removeChild(this.orbsCont);
 		},

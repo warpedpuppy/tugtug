@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils/utils';
 import BouncePlatform from './supportingClasses/bounce/bouncePlatform';
-import BounceAction from './supportingClasses/actions/bounceAction';
-import JumpAction from './supportingClasses/actions/jumpAction';
-import SwimAction from './supportingClasses/actions/swimAction';
+import BounceAction from './supportingClasses/bounce/bounceAction';
+import JumpAction from './supportingClasses/jump/jumpAction';
+import SwimAction from './supportingClasses/swim/swimAction';
 import MagicPills from './supportingClasses/magicPills';
 import Hero from '../animations/supportingClasses/hero';
 import PanelsBoard from '../animations/supportingClasses/panelsBoard';

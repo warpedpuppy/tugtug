@@ -1,6 +1,6 @@
 import {API_BASE_URL} from '../../config';
 import axios from 'axios';
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function() {
 	return {
@@ -20,9 +20,9 @@ export default function() {
 			this.lsToken = localStorage.getItem('token');
 	        this.canvasWidth = this.width;
 
-	        this.artBoard = new PIXI.Container();
+	        this.artBoard = Assets.Container();
 	        //this.pixelCont = new PIXI.Container(); 
-	        this.mouseListen = new PIXI.Container(); 
+	        this.mouseListen = Assets.Container(); 
 	      
 			this.height = this.utils.returnCanvasHeight();
 			this.halfWidth = this.width/2;
@@ -31,7 +31,7 @@ export default function() {
 
 			this.artBoard.addChild(this.mouseListen);
 			//this.artBoard.addChild(this.pixelCont);
-			let s = new PIXI.Graphics();
+			let s = Assets.Graphics();
 			s.beginFill(0xFFFF00).drawRect(0,0,this.boardWidth,this.boardHeight).endFill();
 			s.alpha = 0.5;
 			this.mouseListen.addChild(s);
@@ -39,7 +39,7 @@ export default function() {
 			if (fake) {
 				for(let i = 0; i < this.boardHeight; i += this.dotSize) {
 					for(let j = 0; j < this.boardWidth; j += this.dotSize) {
-						let n = new PIXI.Graphics();
+						let n = Assets.Graphics();
 						n.beginFill(this.utils.randomColor()).drawRect(0,0,10,10).endFill();
 						n.x = j;
 						n.y = i;
@@ -95,9 +95,9 @@ export default function() {
 			if (this.drag) {
 				this.x = Math.floor(e.data.global.x);
 				this.y = Math.floor(e.data.global.y);
-				let n = new PIXI.Graphics();
+				let n = Assets.Graphics();
 				
-				let fromPoint = new PIXI.Point(this.x, this.y);
+				let fromPoint = {x: this.x, y: this.y};
 				let localPoint = this.artBoard.toLocal(fromPoint, this.stage, undefined, true);
 				n.beginFill(this.chosenColor).drawRect(0,0,10,10).endFill();
 				n.x = Math.floor(localPoint.x / 10) * 10;
@@ -119,7 +119,7 @@ export default function() {
 							let tempArray = key.split("_");
 							// let x = tempArray[0];
 							// let y = tempArray[1];
-							let n = new PIXI.Graphics();
+							let n = Assets.Graphics();
 							n.beginFill(result.data.board[0][key]).drawRect(0,0,10,10).endFill();
 							n.x = tempArray[0];
 							n.y = tempArray[1];

@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import Assets from '../utils/assetCreation';
 import Utils from '../utils/utils';
 export default function () {
 	return {
@@ -11,8 +11,8 @@ export default function () {
 	activeChest: undefined,
 	line: undefined,
 	radialQ: undefined,
-	radialCont: new PIXI.Container(),
-	ringCont: new PIXI.Container(),
+	radialCont: Assets.Container(),
+	ringCont: Assets.Container(),
 	radials: [],
 	gravity: 0.3,
 	counter: 0,
@@ -26,23 +26,17 @@ export default function () {
 		this.parent = parent;
 		this.wh = this.utils.wh;
 		this.hero = this.utils.hero.cont;
-		this.ringQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 500 : 10;
-		this.chestQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 0 : 1;
-		this.radialQ = this.pelletQ = this.utils.app.renderer instanceof PIXI.WebGLRenderer ? 1000 : 10;
+		this.ringQ = Assets.webgl ? 500 : 10;
+		this.chestQ = Assets.webgl ? 0 : 1;
+		this.radialQ = this.pelletQ = Assets.webgl ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
 
-		var ringsPC = new PIXI.particles.ParticleContainer(500, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
-			this.ringCont.addChild(ringsPC);
+		var ringsPC = Assets.ParticleContainer(this.ringQ);
+		this.ringCont.addChild(ringsPC);
 
 		for (let i = 0; i < this.ringQ; i ++) {
-			let r = new PIXI.Sprite(this.utils.spritesheet.textures['treasureRing.png']);
+			let r = Assets.Sprite('treasureRing.png');
 			r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
 			r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
@@ -53,7 +47,7 @@ export default function () {
 			this.rings.push(r);
 
 			if (!(i >= this.chestQ)) {
-				let c = new PIXI.Sprite(this.utils.spritesheet.textures['treasureChest.png']);
+				let c = Assets.Sprite('treasureChest.png');
 				c.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
 				c.anchor.set(0.5);
 				c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
@@ -71,7 +65,7 @@ export default function () {
 		}
 		this.radialCont.scale.set(0);
 		for(let i = 0; i < this.radialQ; i ++){
-			let r = new PIXI.Sprite(this.utils.spritesheet.textures['line.png']);
+			let r = Assets.Sprite('line.png');
 			r.width = 1;
 			r.height = this.utils.randomNumberBetween(100, 500);
 			//r.alpha = this.utils.randomNumberBetween(0.2, 0.8);
@@ -171,7 +165,7 @@ export default function () {
 			c.x -= vx;
 			c.y -= vy;
 			c.rotation = this.utils.cosWave(this.utils.deg2rad(0), this.utils.deg2rad(c.variance), c.rotateSpeed);
-			let tempRect = {x: c.x, y: c.y, width: c.width, height: c.height};
+			//let tempRect = {x: c.x, y: c.y, width: c.width, height: c.height};
 			// if(this.utils.circleRectangleCollisionRegPointCenter(this.hero, tempRect)){
 			// 	this.hit = true;
 			// 	this.activeChest = c;

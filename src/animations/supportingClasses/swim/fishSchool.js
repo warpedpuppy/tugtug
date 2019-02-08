@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
 		points: [],
@@ -10,8 +10,8 @@ export default function () {
 		fishArray: [],
 		sharkArray: [],
 		utils: Utils,
-		sharkCont: new PIXI.Container(),
-		fishCont: new PIXI.Container(),
+		sharkCont: Assets.Container(),
+		fishCont: Assets.Container(),
 		sharkQ: 20,
 		buffer: 10, 
 		init: function (cont) {
@@ -23,16 +23,14 @@ export default function () {
  			this.texture = this.spritesheet.textures['koi.png'];
 		    this.sharkTexture = this.spritesheet.textures['shark.png'];
             for (var i = 0; i < this.pointQ; i++) {
-            	let startPoint = i * 10;
-			    this.points.push(new PIXI.Point( i * steps, 0));
-			    this.sharkPoints.push(new PIXI.Point( i * steps, 0));
+			    this.points.push({x: i * steps, y:0});
+			    this.sharkPoints.push({x: i * steps, y: 0});
 			}
 
            for(let i = 0; i < this.fishQ; i ++) {
            		let f = this.fish(this.texture, this.points, this.utils);
            		f.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
            		f.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
-           		let num = this.utils.randomNumberBetween(0, 360)
            		f.vx = this.utils.randomNumberBetween(-3, 3);
 				f.vy = this.utils.randomNumberBetween(-3, 3);
 				f.alpha = 0.5;
@@ -45,7 +43,6 @@ export default function () {
            		let f = this.fish(this.sharkTexture, this.sharkPoints, this.utils);
            		f.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
            		f.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
-           		let num = this.utils.randomNumberBetween(0, 360)
            		f.vx = this.utils.randomNumberBetween(-3, 3);
 				f.vy = this.utils.randomNumberBetween(-3, 3);
 				f.alpha = 0.15;
@@ -68,9 +65,9 @@ export default function () {
 		  	this.cont.removeChild(this.sharkCont);
 		},
 		fish: function (texture, points, utils) {
-			let stripCont = new PIXI.Container();
+			let stripCont = Assets.Container();
 			stripCont.pivot.set(0.5);
-			var strip = this.strip = new PIXI.mesh.Rope(texture, points);
+			var strip = this.strip = Assets.Rope(texture, points);
 			stripCont.addChild(strip);
 			return stripCont;
 		},
