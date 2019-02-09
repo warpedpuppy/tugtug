@@ -38,9 +38,9 @@ export default function () {
 			this.makeTransitionComplete = this.makeTransitionComplete.bind(this);
 
 
-			let centerOrb = Math.floor((this.rowQ * this.colQ) / 2) + 5;
+			let centerOrb = this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
-
+			this.widths = [];
 			for(let i = 0; i < this.rowQ; i ++){
 
 				for(let j = 0; j < this.colQ; j ++){
@@ -60,21 +60,24 @@ export default function () {
 					}
 					s.tint = color1;
 					p.tint = color2;
-					cont.rotate = this.utils.randomNumberBetween(-10, 10)
-					cont.scale.set(this.utils.randomNumberBetween(0.25, 0.8));
+					cont.rotate = this.utils.randomNumberBetween(-10, 10);
+					let scale = this.utils.randomNumberBetween(0.25, 0.8);
+					cont.scale.set(scale);
 
 					cont.radius = cont.r = cont.width / 2;
 					cont.x = j * 350;//this.utils.randomNumberBetween(300, 400);
 					cont.y = i * 350;//this.utils.randomNumberBetween(300, 400);
-	
+					cont.index = counter;
 					this.orbsCont.addChild(cont);
 					this.orbs.push(cont);
 					
 					if(counter === centerOrb){
+						this.centerOrbIndex = centerOrb;
 						this.currentOrb = this.centralOrb = cont;
 						this.currentOrb.alpha = 0.5;
 					}
 					counter ++;
+					this.widths.push(cont.width);
 				
 				}
 			}
@@ -100,9 +103,11 @@ export default function () {
 			
 		},
 		addToStage: function () {
-	
-			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.centralOrb.width /2);
-			
+			this.hero.cont.y = this.utils.canvasHeight / 2;
+			this.hero.activeHero.cont.y = 
+			this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
+			console.log(this.currentOrb.width)
+			console.log(this.widths[this.currentOrb.index])
 			this.parentCont.addChildAt(this.cont, 0);
 			this.parentCont.addChild(this.orbsCont);
 		},
@@ -119,6 +124,7 @@ export default function () {
 			this.orbsCont.y = (this.utils.canvasHeight / 2) - this.currentOrb.y;
 		},
 		switchPlanets: function (newPlanet) {
+
 			let newX = (this.wh.canvasWidth / 2) - newPlanet.x;
 			let newY = (this.wh.canvasHeight / 2) - newPlanet.y;
 			this.hero.activeHero.floor = -newPlanet.radius;

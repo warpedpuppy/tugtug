@@ -27,7 +27,7 @@ export default function () {
 		this.wh = this.utils.wh;
 		this.hero = this.utils.hero.cont;
 		this.ringQ = Assets.webgl ? 500 : 10;
-		this.chestQ = Assets.webgl ? 0 : 1;
+		this.chestQ = Assets.webgl ? 1 : 1;
 		this.radialQ = this.pelletQ = Assets.webgl ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;

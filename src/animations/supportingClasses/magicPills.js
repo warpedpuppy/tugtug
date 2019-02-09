@@ -10,7 +10,7 @@ export default function () {
 		utils: Utils,
 		init: function (effectFunction, cont) {
 			this.effectFunction = effectFunction;
-			this.pillQ = Assets.webgl? 0 : 1;
+			this.pillQ = Assets.webgl? 1 : 1;
 			var pills = Assets.ParticleContainer(this.pillQ);
 			
 	

@@ -17,9 +17,10 @@ export default function () {
 			this.vx = this.speed;
 		},
 		jump: function () {
+			console.log('jump')
 			this.vy = -6;
 			this.jumpTimer = 1;
-			this.hero.heroJump.bounce();
+			//this.hero.heroJump.bounce();
 			this.hero.heroJump.jumpMouth();
 		},
 		resize: function (wh){

@@ -1,30 +1,20 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Clock from './supportingClasses/clock';
-
 import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
-
-
-
 import Pellets from './supportingClasses/pellets';
 import Treasure from '../animations/supportingClasses/treasure';
 import MagicPills from './supportingClasses/magicPills';
-
 import TransitionItems from './supportingClasses/transitionItems';
 import FilterAnimation from './supportingClasses/filterAnimation';
-
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
-
-
-
 import Score from '../animations/supportingClasses/score';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
-
 
 export default function(obj) {
     return {
@@ -35,7 +25,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['swim','fly','bounce','jump'],
+        mode: ['bounce','jump','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -163,9 +153,10 @@ export default function(obj) {
                 if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
                 this.activeMode = this.mode[this.activeModeIndex];
             }
-            this.activeAction = this[this.activeMode].addToStage();
+            
 
             this.hero.switchPlayer(this.activeMode);
+            this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
         },
         resizeHandler: function () {
@@ -205,7 +196,7 @@ export default function(obj) {
         rotate: function (str) {
 
             if (this.activeMode === 'jump') {
-                this.jumpAction.move(str);
+                this.activeAction.move(str);
                 return;
             }
 
@@ -244,7 +235,7 @@ export default function(obj) {
             switch (e.keyCode) {
                 case 32:
                 // space
-                    if(this.jumpAction)this.jumpAction.jump();
+                    if(this.activeAction.jump)this.activeAction.jump();
                     if(this.activeMode === 'fly')this.activeAction.fire(true);
                     break;
                 case 37:

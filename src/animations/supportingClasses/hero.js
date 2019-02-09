@@ -67,7 +67,9 @@ export default function () {
 			if(this.activeHero)this.activeHero.removeFromStage();
 			this.cont.x = this.cont.y = 0;
 			this.mode = string;
-
+			this.cont.rotation = 0;
+			this.cont.y = this.canvasHeight / 2;
+			this.cont.x = this.canvasWidth / 2;
 			if (string === 'jump') {
 				this.activeHero = this.heroJump;
 			} else if (string === 'bounce') {
@@ -77,9 +79,7 @@ export default function () {
 			} else {
 				this.activeHero = this.heroFly;
 			}
-			this.cont.rotation = 0;
-			this.cont.y = this.canvasHeight / 2;
-			this.cont.x = this.canvasWidth / 2;
+			
 			this.activeHero.addToStage();
 		}
 	}

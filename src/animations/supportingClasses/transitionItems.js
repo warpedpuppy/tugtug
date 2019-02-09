@@ -15,7 +15,7 @@ export default function () {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, switchPlayer) {
-		this.itemQ = Assets.webgl ? 0 : 1;
+		this.itemQ = Assets.webgl ? 1 : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = this.utils.app;
 		this.itemStrings = arr;
