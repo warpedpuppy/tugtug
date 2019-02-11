@@ -5,6 +5,10 @@ export default {
     hero: undefined,
     app: undefined,
     wh: {},
+    lilypads: Object,
+    setLilypads: function (object) {
+        this.lilypads = object;
+    },
     setProperties: function (obj) {
         this.canvasWidth = obj.canvasWidth;
         this.canvasHeight = obj.canvasHeight;
@@ -26,7 +30,7 @@ export default {
             canvasWidth: w
         }
     },
-    distributeAroundCircle:  function (circleCenter, numElements, radius) {
+    distributeAroundCircle: function (circleCenter, numElements, radius) {
         let arr = [];
         for (let i = 0; i < numElements; i++) {
             let x = circleCenter.x + radius * Math.cos( ( 2 * Math.PI) * i / numElements);

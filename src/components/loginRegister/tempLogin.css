@@ -1,0 +1,15 @@
+fieldset {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.tempLoginForm {
+	display: block;
+	border: 5px solid #FF00FF;
+	margin: 0 auto;
+	padding: 20px;
+	text-align: center;
+}
+.tempLoginForm input{
+	font-size: 36px;
+}

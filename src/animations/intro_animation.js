@@ -13,6 +13,8 @@ import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
 import Score from '../animations/supportingClasses/score';
+import LevelSlots from './supportingClasses/level/levelSlots';
+import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 
@@ -32,7 +34,7 @@ export default function(obj) {
         foregroundCont: Assets.Container(),
         filterContainer: Assets.Container(),
         ripples: undefined,
-        action: true,
+        action: false,
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
@@ -51,6 +53,8 @@ export default function(obj) {
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
+        levelSlots: LevelSlots(),
+        introScreen: IntroScreen(),
         init: function () {
 
 
@@ -133,8 +137,18 @@ export default function(obj) {
 
             this.jump.init(this.stage);
             
-            this.switchPlayer(this.mode[this.activeModeIndex]);
+            //this.switchPlayer(this.mode[this.activeModeIndex]);
 
+            this.levelSlots.init(this.stage).addToStage();
+            this.startGame = this.startGame.bind(this);
+            this.introScreen.init(this.stage, this.startGame).addToStage();
+
+            
+        },
+        startGame: function () {
+            this.mode = this.utils.shuffle(this.mode);
+            this.introScreen.removeFromStage();
+            this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
         },
         stop: function () {
@@ -172,6 +186,7 @@ export default function(obj) {
             this.bounce.resize();
             this.fly.resize();
             this.jump.resize();
+            this.levelSlots.resize();
             // if(this.platforms)this.platforms.resize(wh);
             // this.magicPills.resize(wh);
             // this.treasure.resize(wh);

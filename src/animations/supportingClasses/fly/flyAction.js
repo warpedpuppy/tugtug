@@ -27,15 +27,7 @@ export default function () {
 			this.stage = this.utils.app.stage;
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
-
             //this.flameQ = (Assets.webgl)? 500 : 10;
-
-			
-				
-
-			
-
-
 		},
 		createPool: function () {
 			this.flameArray = Assets.returnObjectPool('star.png');
@@ -67,8 +59,11 @@ export default function () {
 			this.stage.addChildAt(this.flames, index);
 		},
 		resize: function () {
-			this.flames.x = this.utils.canvasWidth / 2;
-			this.flames.y = this.utils.canvasHeight / 2;
+			if(this.flames){
+				this.flames.x = this.utils.canvasWidth / 2;
+			    this.flames.y = this.utils.canvasHeight / 2;
+			}
+			
 		},
 		switchMode: function(mode) {
 			this.mode = mode;

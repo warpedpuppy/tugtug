@@ -41,7 +41,7 @@ export default function () {
             let halfWidth = canvasWidth / 2;
             let halfHeight = canvasHeight / 2;
             let point1 = {x: halfWidth - 100, y: halfHeight + 100};
-            let point2 = {x:halfWidth + 100, y: halfHeight + 100};
+            let point2 = {x: halfWidth + 100, y: halfHeight + 100};
 
             this.dot1.x = point1.x;
             this.dot1.y = point1.y;

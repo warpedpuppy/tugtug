@@ -87,7 +87,7 @@ export default function () {
 
 
 			
-			this.level3.alpha = this.level4.alpha = 0.75;
+			//this.level3.alpha = this.level4.alpha = 0.75;
 
 		},
 		createBars: function (obj) {

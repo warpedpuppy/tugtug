@@ -106,8 +106,7 @@ export default function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.hero.activeHero.cont.y = 
 			this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
-			console.log(this.currentOrb.width)
-			console.log(this.widths[this.currentOrb.index])
+
 			this.parentCont.addChildAt(this.cont, 0);
 			this.parentCont.addChild(this.orbsCont);
 		},

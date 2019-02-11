@@ -31,11 +31,11 @@ export default function (spritesheet) {
 				this.cont.addChild(s1);
 				this.array.push(s1);
 			}
-
-		
+			this.utils.setLilypads(this);
 		},
 		addToStage: function () {
 		  	this.parentCont.addChild(this.cont);
+
 		},
 		removeFromStage: function () {
 		  	this.parentCont.removeChild(this.cont);

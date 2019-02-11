@@ -21,7 +21,8 @@ export default function () {
 		},
 		animate: function () {
 			//this.hero.vy += 0.25;
-
+				this.hero.activeHero.animate();
+				
 				if(this.hero.activeHero.legStyle === 2){
 					this.legCounter ++;
 					if(this.legCounter >= this.legCounterLimit){

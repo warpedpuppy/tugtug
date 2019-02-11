@@ -83,7 +83,7 @@
 },
 "bodySegment4.png":
 {
-	"frame": {"x":970,"y":764,"w":32,"h":38},
+	"frame": {"x":925,"y":805,"w":32,"h":38},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":38},
@@ -119,7 +119,7 @@
 },
 "bounceLegs2.png":
 {
-	"frame": {"x":318,"y":555,"w":35,"h":13},
+	"frame": {"x":407,"y":567,"w":35,"h":13},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":11,"y":0,"w":35,"h":13},
@@ -342,6 +342,15 @@
 	"sourceSize": {"w":215,"h":174},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"levelToken.png":
+{
+	"frame": {"x":318,"y":555,"w":40,"h":40},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "line.png":
 {
 	"frame": {"x":1011,"y":256,"w":10,"h":389},
@@ -405,9 +414,18 @@
 	"sourceSize": {"w":367,"h":157},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"slot.png":
+{
+	"frame": {"x":970,"y":764,"w":40,"h":40},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "smile.png":
 {
-	"frame": {"x":318,"y":570,"w":45,"h":22},
+	"frame": {"x":360,"y":567,"w":45,"h":22},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":22},
@@ -529,6 +547,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2bc58b1436b9c6beb506addc5c2810ee:cfeb98e36fef3654d0a5af372d16e470:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e5024748a5745248fdfcda54da3c1c8c:c42fcef5e019f6968a78468d8cc387d4:7a7dafe8686879c23378e53f9469620c$"
 }
 }

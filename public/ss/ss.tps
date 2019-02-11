@@ -246,6 +246,8 @@
             <filename>../bmps/dragonSegment.png</filename>
             <filename>../bmps/dragonTail.png</filename>
             <filename>../bmps/dragonTriangle.png</filename>
+            <filename>../bmps/slot.png</filename>
+            <filename>../bmps/levelToken.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

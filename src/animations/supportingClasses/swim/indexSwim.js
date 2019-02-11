@@ -5,17 +5,18 @@ import LilypadsLotuses from './lilypadsLotuses';
 import Ripples from './ripples';
 export default function () {
 	return {
+		lilypadLotuses: LilypadsLotuses(),
 		ripples: Ripples(),
 		swimAction: SwimAction(),
 		fishSchool: FishSchool(),
 		swimBackground: SwimBackground(),
-		lilypadLotuses: LilypadsLotuses(),
 		init: function (cont) {
 			this.ripples.init();
+			this.lilypadLotuses.init(cont);
 			this.swimAction.init(cont);
 			this.fishSchool.init(cont);
 			this.swimBackground.init(cont);
-			this.lilypadLotuses.init(cont);
+			
 		},
 		addToStage: function () {
 			this.ripples.on(true);

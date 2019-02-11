@@ -31,14 +31,34 @@ export default function () {
 			}
 			this.airBubbleStart = this.utils.randomIntBetween(this.times[0],this.times[1]);
 			cont.addChild(this.bubblesCont);
+			this.lilypads = this.utils.lilypads.array;
 		},
 		fishExhale: function () {
+			for(let j = 0; j < this.lilypads.length; j ++){
+				let ab = this.expand[0];
+				ab.radius = ab.r = ab.width / 2;
+						let tempCicle = {
+							x: this.utils.canvasWidth / 2,
+							y: this.utils.canvasHeight / 2,
+							radius: ab.radius,
+							r: ab.radius,
+							vx: 0,
+							vy: 0
+						}
+
+						let collision = this.utils.circleToCircleCollisionDetection(tempCicle, this.lilypads[j]);
+						if (collision[0]) {
+							this.utils.adjustPositions(tempCicle, this.lilypads[j], collision[1]);
+						}
+					}
+
 			for(let i = 0; i < this.expand.length; i ++){
 				let ab = this.expand[i];
 				if(ab.counter >= ab.startTime){
 					ab.scale.x += 0.01;
 					ab.scale.y += 0.01;
 					if(ab.alpha > 0)ab.alpha -= 0.01;
+
 				}
 				ab.counter ++;
 			}
