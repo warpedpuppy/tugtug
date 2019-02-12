@@ -34,6 +34,7 @@ export default class TempLoginForm extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/auth/testLogin`, obj)
 		  .then(function(response){
+		  	console.log(response)
 		  	if (response.data.valid === true) {
 		  		that.setState({password: ''});
 		  		that.props.loggedInFunction()
@@ -41,7 +42,7 @@ export default class TempLoginForm extends React.Component {
 		    
 		  })
 		  .catch((err) => {
-		  	
+		  	console.log(err)
 		  });  
 
 	}
@@ -65,7 +66,7 @@ export default class TempLoginForm extends React.Component {
 			<legend>log in:</legend>
 			<form className="tempLoginForm" style={formClass} onSubmit={ this.sendToServer }>
 				<input 
-					type="text" 
+					type="password" 
 					placeholder="password"
 					value={this.state.password} 
 					onChange={ e => this.login(e) } required/>
