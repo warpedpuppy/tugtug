@@ -1,5 +1,49 @@
-export default function(gv,createjs) {
-  return {
+export default {
+    spritesheet: undefined,
+    canvasWidth: undefined,
+    canvasHeight:undefined,
+    hero: undefined,
+    app: undefined,
+    wh: {},
+    lilypads: Object,
+    setLilypads: function (object) {
+        this.lilypads = object;
+    },
+    setProperties: function (obj) {
+        this.canvasWidth = obj.canvasWidth;
+        this.canvasHeight = obj.canvasHeight;
+        this.spritesheet = obj.spritesheet;
+        this.app = obj.app;
+        this.wh = {
+            canvasHeight: obj.canvasHeight,
+            canvasWidth: obj.canvasWidth
+        }
+    },
+    setHero: function (hero) {
+        this.hero = hero;
+    },
+    resize: function (w, h) {
+        this.canvasWidth = w;
+        this.canvasHeight = h;
+        this.wh = {
+            canvasHeight: h,
+            canvasWidth: w
+        }
+    },
+    distributeAroundCircle: function (circleCenter, numElements, radius) {
+        let arr = [];
+        for (let i = 0; i < numElements; i++) {
+            let x = circleCenter.x + radius * Math.cos( ( 2 * Math.PI) * i / numElements);
+            let y = circleCenter.y + radius * Math.sin( ( 2 * Math.PI) * i / numElements);
+            arr.push({x: x, y:y});
+        }
+        return arr;
+    },
+    returnPointsAroundACircle: function (radius, i, numElements) {
+        let x = radius * Math.cos( ( 2 * Math.PI) * i / numElements);
+        let y = radius * Math.sin( ( 2 * Math.PI) * i / numElements);
+        return {x: x, y: y};
+    },
     lineDistance: function (point1, point2) {
         var xs = 0;
         var ys = 0;
@@ -11,11 +55,6 @@ export default function(gv,createjs) {
         ys = ys * ys;
 
         return Math.sqrt(xs + ys);
-    },
-    traceGlobal: function () {
-        for (var key in gv) {
-            console.log(key + ") " + gv[key]);
-        }
     },
     lineAngle: function(point1, point2) {
         return Math.atan2(point2.y - point1.y, point2.x - point1.x);
@@ -49,6 +88,9 @@ export default function(gv,createjs) {
         return "#000000".replace(/0/g, function() {
             return (~~(Math.random() * 16)).toString(16);
         });
+    },
+    randomItemFromArray: function (arr) {
+        return arr[Math.floor(Math.random()*arr.length)]
     },
     randomColor: function () {
 
@@ -181,8 +223,27 @@ export default function(gv,createjs) {
     rgbToHex: function (r, g, b) {
         return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
     },
-    circleRectangleCollision: function (circle, rect) {
+    circleRectangleCollisionRegPointCenter: function (circle, rect) {
+ 
+        var distX = Math.abs(circle.x - rect.x - rect.width * 0.25);
+        var distY = Math.abs(circle.y - rect.y - rect.height * 0.25);
 
+        if (distX > (rect.width * 0.25 + circle.radius)) {
+            return false;
+        }
+        if (distY > (rect.height * 0.25 + circle.radius)) {
+            return false;
+        }
+        if (distX <= (rect.width * 0.25)) {
+            return true;
+        }
+        if (distY <= (rect.height)) {
+            return true;
+        }
+
+    },
+    circleRectangleCollision: function (circle, rect) {
+ 
         var distX = Math.abs(circle.x - rect.x - rect.width / 2);
         var distY = Math.abs(circle.y - rect.y - rect.height / 2);
 
@@ -195,7 +256,7 @@ export default function(gv,createjs) {
         if (distX <= (rect.width / 2)) {
             return true;
         }
-        if (distY <= (rect.height / 2)) {
+        if (distY <= (rect.height)) {
             return true;
         }
 
@@ -238,20 +299,65 @@ export default function(gv,createjs) {
         }
         return returnObj;
     },
-    circleToCircleCollisionDetection: function (circle1, circle2) {
+    circleToCircleCollisionDetection: function (ballA, ballB) {
 
-        var x1 = circle1.x;
-        var y1 = circle1.y;
-        var x2 = circle2.x;
-        var y2 = circle2.y;
-        var radius1 = circle1.radius;
-        var radius2 = circle2.radius;
-
-        if (Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) < (radius1 + radius2)) {
-            return true;
-        } else {
-            return false;
+        var rSum = ballA.radius + ballB.radius;
+        var dx = ballB.x - ballA.x;
+        var dy = ballB.y - ballA.y;
+        return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];
+    },
+    update: function (ball) {
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+        ball.rotation += this.deg2rad(ball.rotate);
+        if(ball.x > this.canvasWidth - ball.r) {
+            ball.x = this.canvasWidth - ball.r;
+            ball.vx *= -1;
+        } else if(ball.x < ball.r) {
+            ball.x = ball.r;
+            ball.vx *= -1;
         }
+        if(ball.y > this.canvasHeight - ball.r) {
+            ball.y = this.canvasHeight - ball.r;
+            ball.vy *= -1;
+        } else if(ball.y < ball.r) {
+            ball.y = ball.r + 1;
+            ball.vy *= -1;
+        }
+    },
+    adjustPositions: function (ballA, ballB, depth){
+        const percent = 0.2;
+        const slop = 0.01;
+        var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
+        
+        var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
+        var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
+        norm = [norm[0]/mag,norm[1]/mag];
+        correction = [correction*norm[0],correction*norm[1]];
+        ballA.x -= 1/ballA.r * correction[0];
+        ballA.y -= 1/ballA.r * correction[1];
+        ballB.x += 1/ballB.r * correction[0];
+        ballB.y += 1/ballB.r * correction[1];
+    },
+    resolveCollision: function (ballA, ballB){
+        var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
+        var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
+        var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
+        norm = [norm[0]/mag,norm[1]/mag];
+        
+        var velAlongNorm = relVel[0]*norm[0] + relVel[1]*norm[1];
+        if(velAlongNorm > 0)
+            return;
+        
+        var bounce = 0.7;
+        var j = -(1 + bounce) * velAlongNorm;
+        j /= 1/ballA.r + 1/ballB.r;
+        
+        var impulse = [j*norm[0],j*norm[1]];
+        ballA.vx -= 1/ballA.r * impulse[0];
+        ballA.vy -= 1/ballA.r * impulse[1];
+        ballB.vx += 1/ballB.r * impulse[0];
+        ballB.vy += 1/ballB.r * impulse[1];
     },
     lineIntersectCircle: function (A, B, C, r) {
         this.intersects = false;
@@ -285,25 +391,6 @@ export default function(gv,createjs) {
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;
         mc.body.y = (canvasHeight - mc.body.getBounds().height) / 2;
-    },
-    AssetLoaderClass: function (gv, loading_text_visible) {
-
-        //load graphic assets and show loading text
-        this.gv = gv;
-
-        if (loading_text_visible === undefined) loading_text_visible = true;
-
-        var loaderProgressText = new createjs.Text(0 + " %", "bold 50px Arial", "#FFFF00");
-        loaderProgressText.visible = loading_text_visible
-        this.bounds = loaderProgressText.getBounds();
-
-
-        loaderProgressText.x = gv.halfWidth - (this.bounds.width / 2);
-        loaderProgressText.y = gv.halfHeight - (this.bounds.height / 2);
-
-        this.loaderProgressText = loaderProgressText;
-        var loader = new createjs.LoadQueue(false);
-        this.loader = loader;
     }
-   }
-};
+
+}

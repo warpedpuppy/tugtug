@@ -1,13 +1,19 @@
-export default function Panel(PIXI, wH, portal_code) {
+import ArtBoard from './art_board_sub';
+import * as PIXI from 'pixi.js';
+import portal_code from './portal';
+import Score from './score';
+export default function Panel(wH) {
 	return {
 		cont: new PIXI.Container(),
-		build: function (num, width, height, userData, point, artBoard) {
-
+        artBoardLoaded: false,
+        art_board: ArtBoard(),
+        score: Score(),
+		build: function (num, width, height, userData, point, primary, stage) {
 			this.Doorway = portal_code;
-
+            this.primary = primary;
+            this.stage = stage;
 			this.panelWidth = width;
 			this.panelHeight = height;
-
             let dot = new PIXI.Graphics();
             dot.beginFill(0x000000).drawCircle(0,0,100).endFill();
             dot.x = this.panelWidth/2;
@@ -24,7 +30,9 @@ export default function Panel(PIXI, wH, portal_code) {
             let name = new PIXI.Text(`user name: ${userData.username}`,{fontFamily : 'Arial', fontSize: 22, fill : 0xFFFFFF, align : 'center'});
             name.x = 20;
             name.y = 60;
-            this.cont.addChild(name)
+            this.cont.addChild(name);
+            this.fake = userData.fake;
+            this.username = userData.username;
 
              let frame = new PIXI.Graphics();
                 frame.lineStyle(5, 0xFF00FF)
@@ -34,31 +42,34 @@ export default function Panel(PIXI, wH, portal_code) {
                 .lineTo(0,this.panelHeight).lineTo(0,0)
                 this.cont.addChild(frame);
          
-            let topDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'top');
+            let topDoor = this.Doorway(wH.characterHeight, 10, 'top');
             topDoor.x = (width - wH.characterHeight)/2;
             if (point.y !== 0) {
                 this.cont.addChild(topDoor);
             }
-            
-            let bottomDoor = this.Doorway(PIXI, wH.characterHeight, 10, 'bottom');
-            bottomDoor.x = (width - wH.characterHeight)/2;
-            bottomDoor.y = this.panelHeight - 10;
-            if(point.y !== this.bottomY){
-                this.cont.addChild(bottomDoor);
-            }
+         
 
-            let leftDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'left');
+            let leftDoor = this.Doorway(10, wH.characterHeight, 'left');
             leftDoor.x = 0;
             leftDoor.y = (height - wH.characterHeight)/2;
             if (point.x !== 0) {
                 this.cont.addChild(leftDoor);
             }
 
-            let rightDoor = this.Doorway(PIXI, 10, wH.characterHeight, 'right');
+            let rightDoor = this.Doorway(10, wH.characterHeight, 'right');
             rightDoor.x = width - 10;
             rightDoor.y = (height - wH.characterHeight)/2;
-            if(point.x !== this.leftX){
+            if(point.x !== wH.leftX){
                 this.cont.addChild(rightDoor);
+            } else {
+
+            }
+
+            let bottomDoor = this.Doorway(wH.characterHeight, 10, 'bottom');
+            bottomDoor.x = (width - wH.characterHeight)/2;
+            bottomDoor.y = this.panelHeight - 10;
+            if(point.y !== wH.bottomY){
+                this.cont.addChild(bottomDoor);
             }
             
             this.doors = [topDoor, bottomDoor, leftDoor, rightDoor];
@@ -71,6 +82,8 @@ export default function Panel(PIXI, wH, portal_code) {
             line2.lineStyle(25, 0xFF00FF, 0.25, 0).moveTo(0,this.panelHeight).lineTo(this.panelWidth,0);
             this.cont.addChild(line2);
 
+            
+
 
             let gear;
             let corners = [[0,0],[this.panelWidth, 0], [this.panelWidth, this.panelHeight], [0, this.panelHeight]];
@@ -82,23 +95,41 @@ export default function Panel(PIXI, wH, portal_code) {
                 gear.y = corners[i][1];
                 gear.alpha = 0.25;
                 gear.rotate = (Math.random()*0.01)+0.01;
-                this.cont.addChild(gear);
+                //this.cont.addChild(gear);
                 this.gears.push(gear);
             }
 
-         
-
-            if(artBoard){
-            	//console.log("art board = ", artBoard.stage)
-                artBoard.pivot.x  = artBoard.width / 2;
-                artBoard.pivot.y = artBoard.height / 2;
-                artBoard.x = this.panelWidth / 2;
-                artBoard.y = this.panelHeight / 2;
-            	this.cont.addChild(artBoard)
+            //if primary user load artboard to start
+            if(primary){
+                this.loadArtBoard(primary);
+            } else {
+                this.score.init(this.cont, {canvasHeight: this.panelHeight, canvasWidth: this.panelWidth}, userData.score);
             }
-
        
 		},
+        loadArtBoard: function () {
+          
+            if(this.artBoardLoaded)return;
+            this.artBoardLoaded = true;
+            this.art_board.init(this.fake);
+            let artBoard = this.art_board.returnArtBoard();
+            artBoard.pivot.x  = artBoard.width / 2;
+            artBoard.pivot.y = artBoard.height / 2;
+            artBoard.x = this.panelWidth / 2;
+            artBoard.y = this.panelHeight / 2;
+            this.art_board.loadData({username: this.username});
+            this.cont.addChild(artBoard);
+            this.artBoardLoaded = true;
+            if(this.primary){
+                this.art_board.assignStage(this.stage);
+            }
+            
+        },
+        removeArtBoard: function () {
+            if(!this.artBoardLoaded)return;
+            this.cont.removeChild(this.art_board.returnArtBoard())
+            this.artBoardLoaded = false;
+        },
 		returnPanel: function () {
 			return this.cont;
 		}

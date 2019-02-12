@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import './Admin.css';
 import {API_BASE_URL} from '../config';
-import { toggleActive } from '../actions/avatarActions';
+import { toggleActive, deleteItem } from '../actions/avatarActions';
 import AdminItemModule from '../components/admin/AdminItemModule';
 import CheckForToken from '../components/utils/CheckForToken.js';
 
@@ -18,6 +18,7 @@ class Admin extends React.Component {
 		this.updateEmail = this.updateEmail.bind(this);
 		this.toggleActive = this.toggleActive.bind(this);
 		this.changeTab = this.changeTab.bind(this);
+		this.deleteItem = this.deleteItem.bind(this);
 		this.state = {
 			username: this.props.username,
 			firstName: this.props.firstName,
@@ -68,28 +69,60 @@ class Admin extends React.Component {
 			email: e.target.value
 		})
 	}
-	toggleActive (index, name, active) {
+	toggleActive (index, name, active, url, buttonInstance) {
+		console.log('toggle active', index, name, active)
 		let newActive = (active.toString() === 'true')?false:true;
 		let obj = {
 			name,
-			active: newActive
+			active: newActive,
+			url:url
 		}
 
-		this.props.dispatch(toggleActive(name, newActive));
+		this.props.dispatch(toggleActive(name, newActive, url));
+
 
 		axios.put(`${API_BASE_URL}/store/make_item_active`, obj, {
 			headers: { "Authorization": `Bearer ${this.props.token}`}
 		})
 		.then(function(response){
 		  console.log('toggle active response = ', response.data);
+		  buttonInstance.changeToActive();
 
 		})
 		.catch((err) => {
-		  console.error(err);
+		  console.error('toggle active response error= ', err);
+		   buttonInstance.changeToActive();
 		});  
 
 	}
-	
+
+	deleteItem(index, name){
+		//remove from local store
+		//this.props.dispatch(deleteItem({index, name}));
+
+		//remove from db
+		let lsToken = localStorage.getItem('token');
+		let obj = { name };
+		let that = this;
+		axios
+		.post(`${API_BASE_URL}/store/delete_accessory`, 
+			obj,
+			{ headers: {"Authorization" : `Bearer ${lsToken}`} })
+		.then(function(response){
+			console.log("on delete record = ", response.data);
+			//console.log("on bitmaps = ", response.data.newRecord.bitmaps);
+			//response.data.newRecord.bitmaps will be array of items
+			if(response.data.result){
+	            //console.log('items array = ', response.data.newRecord.accessories)
+	            that.props.dispatch(deleteItem(response.data.result));
+	          }
+		})
+		.catch((err) => {
+			console.error(err);
+		});  
+
+	}
+
 	changeTab(e){
 		this.setState({activeTab: e.target.innerHTML})
 	}
@@ -110,6 +143,7 @@ class Admin extends React.Component {
 				name={item.name} 
 				active={item.active.toString()} 
 				toggleActive={this.toggleActive} 
+				deleteItem={this.deleteItem}
 			/>
 		})
 		let productsClass = (this.state.activeTab === 'products')?'productsDiv':'productsDiv hide';

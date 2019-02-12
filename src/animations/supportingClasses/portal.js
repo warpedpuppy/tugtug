@@ -1,4 +1,5 @@
-export default function Portal (PIXI, w, h, name) {
+import * as PIXI from 'pixi.js';
+export default function Portal (w, h, name) {
 	let cont = new PIXI.Container();
 	cont.loc = name;
     let platform = new PIXI.Graphics();

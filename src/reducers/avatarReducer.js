@@ -26,7 +26,7 @@ function avatarReducer (state=initialState, action) {
         });
     } else if (action.type === DELETE_ITEM) {
         return Object.assign({}, state, {
-            items: state.items.filter(item => item.id !== action.item.id)
+            items: state.items.filter(item => item.name !== action.item.name)
         });
     } else if (action.type === DELETE_ALL) {
         return Object.assign({}, state, {
@@ -34,9 +34,9 @@ function avatarReducer (state=initialState, action) {
         });
     } else if (action.type === TOGGLE_ACTIVE) {
        return Object.assign({}, state, {
-            items: state.items.map(item => {
+            items: state.items.map((item, index) => {
                 if(item.name === action.name) {
-                    return {...item, active: action.active}
+                    return {name:action.name, active: action.active, url: action.url}
                 } else {
                     return item;
                 }

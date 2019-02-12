@@ -7,6 +7,7 @@ footer {
 	background: grey;
 	height:50px;
 	z-index: 1000;
+	display: none;
 }
 footer a {
 	display: inline-block;

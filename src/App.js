@@ -31,14 +31,16 @@ class App extends React.Component {
         { headers: {"Authorization" : `Bearer ${lsToken}`} }
       )
       .then(function(response){
+        
         if(response.data.valid) {
 
           //set store token & userdata
           that.props.dispatch(addUserdata(response.data.user));
           that.props.dispatch(addToken(lsToken));
 
-          if (response.data.user.avatars) {
-            that.props.dispatch(addItems(response.data.user.avatars));
+          if (response.data.user) {
+           console.log('appjs = ', response.data.user.accessories)
+           that.props.dispatch(addItems(response.data.user.accessories));
           }
 
         } else {

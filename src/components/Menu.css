@@ -8,7 +8,7 @@ nav {
 
 	z-index: 5000;
 	border-bottom:5px solid black;
-	
+	display:none;
 }
 nav img {
 	font-size: 35px;

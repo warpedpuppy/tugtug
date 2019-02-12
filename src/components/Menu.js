@@ -56,18 +56,18 @@ class Menu extends Component {
 	  	this.setState({ showLogin: false })
 	  }
 	  testUser (e) {
-
 		let that = this;
-		e.preventDefault();
-		return axios.post(`${API_BASE_URL}/api/auth/testUser`)
-		  .then(function(response){
-		  	console.log('authToken = ', response.data.authToken)
-		  	let userData = {
+		let userData = {
 		  	    username: "Testy",
                 firstName: "Testy",
                 lastName: "McTesterson",
                 email: "testy@tugtug.com"
             }
+
+		e.preventDefault();
+		return axios.post(`${API_BASE_URL}/api/auth/testUser`, userData)
+		  .then(function(response){
+		  	
 		    that.props.dispatch(testUser(response.data.authToken, userData, true));
 		  })
 		  .catch((err) => {

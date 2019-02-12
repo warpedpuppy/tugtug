@@ -1,24 +1,10 @@
 import React from 'react';
 import './GameCanvas.css';
-import * as PIXI from 'pixi.js';
-import Utils from '../animations/utils';
 import game_code from '../animations/game_animation';
-import art_board_code from '../animations/supportingClasses/art_board_sub';
-import portal_code from '../animations/supportingClasses/portal';
-import hero from '../animations/supportingClasses/hero';
-//import keyHandler from '../animations/supportingClasses/keyHandler';
-import pellets from '../animations/supportingClasses/pellets';
-import ripples from '../animations/supportingClasses/ripples';
-import Panel from '../animations/supportingClasses/panel';
-import filter_animation from '../animations/supportingClasses/filterAnimation';
-import magicPills from '../animations/supportingClasses/magicPills';
-
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import faker from 'faker';
-import { TweenMax } from 'gsap';
-import PixiFps from "pixi-fps";
 
 class GameCanvas extends React.Component {
 	constructor(props){
@@ -31,20 +17,6 @@ class GameCanvas extends React.Component {
 		    panelButtonText: "see panel",
 		    filterTest: "off"
 		  };
-		this.supportingClasses = {
-			art_board_code,
-			portal_code,
-			// keyHandler,
-			PixiFps,
-			Panel,
-			TweenMax,
-			hero,
-			pellets,
-			ripples,
-			filter_animation,
-			magicPills
-		}
-
 	}
 	getUserName () {
 		return faker.name.firstName();
@@ -61,20 +33,23 @@ class GameCanvas extends React.Component {
 	}
 	componentWillMount () {
 		this.getUserData();
+		console.log("GET USER DATA")
 	}
 	startGame(data){
-		
+
 		if(this.props.testMode){
 			// change data to non database
 			data = {users: [{
 				username: this.props.username,
 				firstName: this.props.firstName,
 				lastName: this.props.lastName,
-				email: this.props.email
+				email: this.props.email,
+				items: this.props.items
 			}]}
 		}
-
-		this.game = game_code(PIXI, Utils, this.supportingClasses, data, this.getUserName, TweenMax);
+		data.items = this.props.items;
+		// console.log('data = ', data)
+		this.game = game_code(data, this.getUserName, this.props.username);
 		this.game.init();
 		//this.game.update(this.props.items);
 		this.editMode = this.props.editMode;
@@ -86,13 +61,17 @@ class GameCanvas extends React.Component {
 	componentDidUpdate(){
 		this.game.changeColor(this.props.color);
 		// console.log('this is the color'+this.props.color);
-		console.log('edit mode = '+this.props.editMode.toString())
+		//console.log('edit mode = '+this.props.editMode.toString())
 
 		if(this.editMode !== this.props.editMode){
-			this.game.toggleAvi(this.props.editMode);
+			this.game.editMode(this.props.editMode);
 			this.editMode = this.props.editMode;
 		}
+
 		
+	}
+	switchPlayer () {
+		this.game.switchPlayer();
 	}
 	testFilter () {
 		this.game.filterTest();
@@ -106,9 +85,12 @@ class GameCanvas extends React.Component {
 		return (
 			<div>
 			<div id='game_canvas'></div>
+			
 			<div className="testPanel">
+			<button onClick={() => this.switchPlayer()}>switch player</button>
 			<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 			</div>
+		
 			</div>
 		)
 	}

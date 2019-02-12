@@ -3,4 +3,11 @@
 }
 .editModeShell {
 	display:inline-block;
+	position:relative;
+}
+.editPanel {
+	border: 10px solid black;
+	position: absolute;
+	top: 50px;
+	right:0;
 }

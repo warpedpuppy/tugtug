@@ -1,74 +1,86 @@
-export default function Hero (PIXI, app, utils, wh) {
+import Assets from '../utils/assetCreation';
+import Utils from '../utils/utils';
+import HeroSwim from './swim/heroSwim';
+import HeroJump from './jump/heroJump';
+import HeroFly from './fly/heroFly';
+import HeroBounce from './bounce/heroBounce';
+export default function () {
 	return {
-		segmentsQ: 5,
-		cont: new PIXI.Container(),
+		cont: Assets.Container(),
 		pos: [],
-		radius: 0,
+		radius: 2,
 		storeRadius: 0,
-		init: function () {
-			this.utils = utils;
-			this.canvasWidth = wh.canvasWidth;
-			this.canvasHeight = wh.canvasHeight;
+		body: undefined,
+		mode: undefined,
+		vy: 0,
+		vx: 0,
+		bounce: 0,
+		platforms: [],
+		yOffset: 0,
+		parentCont: undefined,
+		utils: Utils,
+		heroSwim: HeroSwim(),
+		heroJump: HeroJump(),
+		heroFly: HeroFly(),
+		heroBounce: HeroBounce(),
+		activeHero: undefined,
+		init: function (items, parentCont) {
+
+			this.wh = this.utils.wh;
+			this.parentCont = parentCont;
+			this.canvasWidth = this.utils.wh.canvasWidth;
+			this.canvasHeight = this.utils.wh.canvasHeight;
             this.cont.x = this.canvasWidth / 2;
-            this.cont.y = this.canvasHeight / 2;
-            app.stage.addChild(this.cont);
+            this.cont.y = (this.canvasHeight / 2) - this.yOffset;
             this.segments = [];
-            for (let i = 0; i < this.segmentsQ; i++) {
-                let segment = this.bodySegment(25, 0xFFFF00, i*25);
-                this.segments.push(segment);
-                this.cont.addChild(segment);
-            }
-		},
-		bodySegment: function (radius, color, yVal) {
-			let cont = new PIXI.Container();
-            cont.radius = radius;
-            cont.height = cont.radius * 4;
-            cont.vx = 0;
-            cont.vy = 0;
-            cont.xpos = 0;
-            cont.ypos = 0;
+            this.fish = [];
+            this.spritesheet = this.utils.spritesheet;
 
-            let b = new PIXI.Graphics();
-            b.y = yVal;
-            let triangleWidth = 25,
-		        triangleHeight = triangleWidth,
-		        triangleHalfway = triangleWidth/2;
+            this.bounce = this.utils.randomNumberBetween(-0.6, -0.9);
+            this.vy = this.utils.randomNumberBetween(3,5);
 
-		    //draw triangle 
-		    b.beginFill(0xFF0000, 1);
-		    b.lineStyle(0, 0xFF0000, 1);
-		    b.moveTo(triangleWidth, 0);
-		    b.lineTo(triangleHalfway, triangleHeight); 
-		    b.lineTo(0, 0);
-		    b.lineTo(triangleHalfway, 0);
-		    b.endFill();
-		    b.pivot.x = b.pivot.y = 12.5;
-		    b.rotation = this.utils.deg2rad(180);
-            cont.addChild(b);
-            cont.body = b;
-            return cont;
-		},
-		rotateChain: function () {
-
-			if(!this.rotateBoolean)this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
-
-	        this.pos.push(this.radius);
-	        this.increment = 5;
-	        let maxLength = this.increment * 5;
-	        if (this.pos.length > maxLength) {
-	            this.pos = this.pos.slice(-maxLength);
-	        }
-
-	        this.segments[0].rotation = this.radius;
-	        for (let i = 1; i < 5; i++) {
-	            let index = this.pos.length - (i * this.increment);
-	            if (this.pos.length >= index) {
-	             this.segments[i].rotation = this.pos[index];
+            if(items){
+            	  for(let i = 0; i < items.length; i ++){
+	            	var item = Assets.Sprite(items[i].url);
+	            	if (items[i].active) {
+		            	this.cont.addChild(item);
+		            }
 	            }
-	        }
-        },
-		animate: function () {
-			this.rotateChain();
+            }
+
+            parentCont.addChild(this.cont);
+            this.heroSwim.init(this.cont);
+            this.heroJump.init(this.cont);
+            this.heroFly.init(this.cont);
+            this.heroBounce.init(this.cont);
+
+            return this;
+		},
+		resize: function (){
+			this.canvasWidth = this.utils.canvasWidth;
+			this.canvasHeight = this.utils.canvasHeight;
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
+		},
+		switchPlayer: function (string) {
+			//this.cont.removeChildren();
+			if(this.activeHero)this.activeHero.removeFromStage();
+			this.cont.x = this.cont.y = 0;
+			this.mode = string;
+			this.cont.rotation = 0;
+			this.cont.y = this.canvasHeight / 2;
+			this.cont.x = this.canvasWidth / 2;
+			if (string === 'jump') {
+				this.activeHero = this.heroJump;
+			} else if (string === 'bounce') {
+				this.activeHero = this.heroBounce;
+			} else if (string === 'swim') {
+				this.activeHero = this.heroSwim;
+			} else {
+				this.activeHero = this.heroFly;
+			}
+			
+			this.activeHero.addToStage();
 		}
 	}
 }

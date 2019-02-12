@@ -1,93 +1,100 @@
-export default function MagicPills(PIXI, app, utils, wh, effectFunction) {
+import Assets from '../utils/assetCreation';
+import Utils from '../utils/utils';
+export default function () {
 	return {
 		pills: [],
 		edgeBuffer: 200,
 		effect: false,
 		lifeSpan: 100,
 		counter: 0,
-		init: function () {
-			this.utils = utils;
+		utils: Utils,
+		init: function (effectFunction, cont) {
+			this.effectFunction = effectFunction;
+			this.pillQ = Assets.webgl? 1 : 1;
+			var pills = Assets.ParticleContainer(this.pillQ);
+			
+	
+			cont.addChild(pills);
+			
+			this.vx = this.utils.randomNumberBetween(1,5); 
+            this.vy = this.utils.randomNumberBetween(1,5);
 
-			var pills = new PIXI.particles.ParticleContainer(10000, {
-			    scale: true,
-			    position: true,
-			    rotation: true,
-			    uvs: true,
-			    alpha: true
-			});
 			
-		
-			app.stage.addChild(pills);
-			
-			
-			this.pelletQ = app.renderer instanceof PIXI.WebGLRenderer ? 1 : 1;
 
-			 for(let i = 0; i < this.pelletQ; i ++ ){
-            	let s =  PIXI.Sprite.fromImage('/bmps/star.png');
-            	s.anchor.x = s.width / 2;
+			 for(let i = 0; i < this.pillQ; i ++ ){
+            	let s = Assets.Sprite('star.png');
+            	s.anchor.set(0.5);
             	s.tint = Math.random() * 0xFFFFFF;
             	s.vx = 0;
             	s.vy = this.utils.randomNumberBetween(1,5); 
-            	s.x = wh.canvasWidth / 2;
-            	s.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
-            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.25));
+            	s.x = this.utils.randomNumberBetween(0, this.utils.wh.canvasWidth);
+            	s.y = this.utils.randomNumberBetween(0, this.utils.wh.canvasHeight);
+            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
+            	s.rotate = this.utils.randomNumberBetween(-4, 4);
             	s.radius = s.width;
             	pills.addChild(s);
             	this.pills.push(s);
             }
-            this.bottomEdge = wh.canvasHeight + this.edgeBuffer;
-			this.rightEdge = wh.canvasWidth + this.edgeBuffer;
-			this.wh = wh;
+            this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
+			this.wh =this.utils.wh;
 		},
 		playEffect: function () {
 			if(!this.effect) {
 				this.effect = true;
-				effectFunction();
+				this.effectFunction();
 			}
+		},
+		rotate: function (obj) {
+				this.vx = obj.vx;
+				this.vy = obj.vy;
 		},
 		resize: function (wh) {
 			this.wh = wh;
 			this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = this.wh.canvasWidth + this.edgeBuffer;
-			for(let i = 0; i < this.pelletQ; i ++ ){
-            	this.pills[i].x = this.wh.canvasWidth / 2;
-            	this.pills[i].y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
+			for (let i = 0; i < this.pelletQ; i ++ ) {
+            	this.pills[i].x = this.utils.randomNumberBetween(0, wh.canvasWidth);
+            	this.pills[i].y = this.utils.randomNumberBetween(0, wh.canvasHeight);
             }
 		},
-		animate: function () {
+		animate: function (vx, vy) {
 
-			for(let i = 0; i < this.pelletQ; i++){
-				this.pills[i].x += this.pills[i].vx;
-            	this.pills[i].y += this.pills[i].vy;
+			for(let i = 0; i < this.pillQ; i++){
+				let p = this.pills[i];
+				p.x -= vx;/// || this.vx;
+             	p.y -= vy;// || this.vy;
+             	p.rotation += this.utils.deg2rad(p.rotate);
 
-            	if(this.pills[i].y > this.bottomEdge) {
-            		this.pills[i].y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
+            	if(p.y > this.bottomEdge) {
+            		p.y = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
 
-            	} else if(this.pills[i].y < -this.edgeBuffer) {
-            		this.pills[i].y = this.utils.randomNumberBetween(this.wh.canvasHeight, this.bottomEdge);
+            	} else if(p.y < -this.edgeBuffer) {
+            		p.y = this.utils.randomNumberBetween(this.wh.canvasHeight, this.bottomEdge);
             	}
 
-            	if(this.pills[i].x > this.rightEdge) {
-            		this.pills[i].x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
-            	} else if(this.pills[i].x < -this.edgeBuffer) {
-            		this.pills[i].x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
+            	if(p.x > this.rightEdge) {
+            		p.x = this.utils.randomNumberBetween(-this.edgeBuffer, 0);
+            	} else if(p.x < -this.edgeBuffer) {
+            		p.x = this.utils.randomNumberBetween(this.wh.canvasWidth, this.rightEdge);
             	}
-            	let c1 = {radius: 20, x: (this.wh.canvasWidth / 2), y: (this.wh.canvasHeight / 2)};
+            	// let c1 = {radius: 20, x: (this.wh.canvasWidth / 2), y: (this.wh.canvasHeight / 2)};
 
-            	if(!this.effect && this.utils.circleToCircleCollisionDetection(c1, this.pills[i])) {
-            		this.playEffect();
-            	} else if(this.effect === true){
-            		this.counter ++;
+            	// if(!this.effect && this.utils.circleToCircleCollisionDetection(c1, this.pills[i])) {
+            	// 	this.playEffect();
+            	// } else if(this.effect === true){
+            	// 	this.counter ++;
 
-            		if (this.counter >= this.lifeSpan){
-            			effectFunction();
-            			this.effect = false;
-            			this.counter = 0;
-            		}
-            	}
+            	// 	if (this.counter >= this.lifeSpan){
+            	// 		this.effectFunction();
+            	// 		this.effect = false;
+            	// 		this.counter = 0;
+            	// 	}
+            	// }
 
 			}
 
 		}
 	}
+	
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import ItemModule from '../components/store/itemModule.js';
 import './Store.css';
+import '../components/store/floatGrid.css';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 import CheckForToken from '../components/utils/CheckForToken.js';
 import { connect } from 'react-redux';
-import { addItems } from '../actions/avatarActions.js';
+import { addItem } from '../actions/avatarActions.js';
 
 class Store extends React.Component {
 
@@ -13,7 +14,9 @@ class Store extends React.Component {
 		super(props);
 		this.onPurchase = this.onPurchase.bind(this);
 		this.state = {
-			products: []
+			freeProducts: [],
+			paidProducts: [],
+			disableButton: false
 		}
 	}
 
@@ -22,8 +25,10 @@ class Store extends React.Component {
 		axios
 		.get(`${API_BASE_URL}/store`)
 		.then(function(response){
+			console.log(response)
 			that.setState({
-				products: response.data.products
+				freeProducts: response.data.products.free,
+				paidProducts: response.data.products.paid
 			})
 		})
 		.catch((err) => {
@@ -31,20 +36,38 @@ class Store extends React.Component {
 		});  
 	}
 	onPurchase (price, name, url){
-		//this.props.dispatch(addItem(name));
+
+		//make button disabled until transaction is complete
+		this.setState({
+			disableButton: true
+		})
+
+		if(this.props.username === "Testy") {
+			let obj = {
+				url: url,
+				name: name,
+				active: false
+			}
+			console.log(obj)
+			this.props.dispatch(addItem(obj));
+			return;
+		}
+
 		let lsToken = localStorage.getItem('token');
 		let obj = { name, url, username: this.props.username };
-		console.log('obj = ', obj)
 		let that = this;
+		
 		axios
-		.post(`${API_BASE_URL}/store/avatar_item`, 
+		.post(`${API_BASE_URL}/store/buy_accessory`, 
 			obj,
 			{ headers: {"Authorization" : `Bearer ${lsToken}`} })
 		.then(function(response){
-			console.log("on purchase = ", response);
-			if(response.data.avatars){
-	            //console.log('items array = ', response.data.user.avatars)
-	            that.props.dispatch(addItems(response.data.avatars));
+			//console.log("on newRecord = ", response.data.newRecord);
+			//console.log("on bitmaps = ", response.data.newRecord.bitmaps);
+			//response.data.newRecord.bitmaps will be array of items
+			if(response.data.newRecord){
+	            //console.log('items array = ', response.data.newRecord.accessories)
+	            that.props.dispatch(addItem(response.data.newRecord));
 	          }
 		})
 		.catch((err) => {
@@ -52,21 +75,45 @@ class Store extends React.Component {
 		});  
 	}
 
-	render () {
-		let products = this.state.products.map( (product, index) => {
-			let test = this.props.items.find(item => {
-				return item.name === product.name
-			}
+	createItemModules (array) {
+		let itemsPerRow = 4;
+		let products = [];
+		let temp = [];
+		for(let index = 0; index < array.length; index ++){
+			let product = array[index];
+			let testIfOwned = this.props.items.find(item => {return item.url === product.imgURL});
+			let owned =(testIfOwned)?'true':'false';
+			temp.push(<ItemModule index={index} disabled={this.state.disableButton} key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
 			)
-			let owned =(test)?'true':'false';
-			
-			return <ItemModule key={index} name={product.name} image={product.imgURL} price={product.price} purchase={this.onPurchase} owned={owned} />
-		})
+			let testItemsPerRow = itemsPerRow - 1;
+			if(index  % itemsPerRow === testItemsPerRow || index === array.length - 1){
+				products.push(
+					<div className="row" key={index}>
+					{temp}
+					</div>
+				)
+				temp = [];
+			}
+		}
+		return products;
+	}
+
+	render () {
+
+		let products = this.createItemModules(this.state.freeProducts);
+		let paidProducts = this.createItemModules(this.state.paidProducts);
+	
+
 		return (
 			<div className="storeCont">
 				<CheckForToken />
 				<h1>store</h1>
+				<fieldset><legend>free products</legend>
 				{products}
+				</fieldset>
+				<fieldset><legend>paid products</legend>
+				{paidProducts}
+				</fieldset>
 			</div>
 		)
 
