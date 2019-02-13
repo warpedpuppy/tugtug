@@ -56,9 +56,9 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
        // introScreen: IntroScreen(),
-        init: function () {
+        init: function (isMobile) {
 
-
+            this.isMobile = isMobile;
      
 
             this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -147,7 +147,60 @@ export default function(obj) {
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
+            // if(this.isMobile){
+            //     console.log("mobile")
+            // } else {
+            //     console.log("not mobile")
+            // }
+            this.uiUX();
             
+        },
+        uiUX: function () {
+
+            this.uiUICont = Assets.Container();
+
+            this.upButton = Assets.Sprite('redTile.png');
+            this.upButton.x = 10;
+            this.upButton.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
+            this.uiUICont.addChild(this.upButton);
+
+            this.leftButton = Assets.Sprite('redTile.png');
+            this.leftButton.x = 10;
+            this.leftButton.y = this.utils.canvasHeight - 77 - 77 - 10;
+            this.uiUICont.addChild(this.leftButton);
+
+            this.downButton = Assets.Sprite('redTile.png');
+            this.downButton.x = 10;
+            this.downButton.y = this.utils.canvasHeight - 77 - 10;
+            this.uiUICont.addChild(this.downButton);
+
+            this.upButton = Assets.Sprite('redTile.png');
+            this.upButton.x = this.utils.canvasWidth - 77;
+            this.upButton.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
+            this.uiUICont.addChild(this.upButton);
+
+            this.rightButton = Assets.Sprite('redTile.png');
+            this.rightButton.x = this.utils.canvasWidth - 77;
+            this.rightButton.y = this.utils.canvasHeight - 77 - 77 - 10;
+            this.uiUICont.addChild(this.rightButton);
+
+            this.downButton = Assets.Sprite('redTile.png');
+            this.downButton.x = this.utils.canvasWidth - 77;
+            this.downButton.y = this.utils.canvasHeight - 77 - 10;
+            this.uiUICont.addChild(this.downButton);
+
+            this.stage.addChild(this.uiUICont);
+
+
+            
+            this.spaceButton = Assets.Sprite('redTile.png');
+            this.spaceButton.width = this.utils.canvasWidth
+
+
+
+
+
+
         },
         startGame: function () {
             this.mode = this.utils.shuffle(this.mode);

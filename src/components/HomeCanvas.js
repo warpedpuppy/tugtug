@@ -3,6 +3,7 @@ import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
 import start_canvas from '../animations/startGameAnimation';
+import {isMobile} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -13,13 +14,13 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: false
+			loggedIn: true
 		}
 	}
 	componentDidMount(){
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
-			this.home_page.init();
+			this.home_page.init(isMobile);
 			this.start_canvas = start_canvas();
 			this.start_canvas.init(this.startGame);
 		}
