@@ -34,7 +34,6 @@ export default class TempLoginForm extends React.Component {
 
 		return axios.post(`${API_BASE_URL}/api/auth/testLogin`, obj)
 		  .then(function(response){
-		  	console.log(response)
 		  	if (response.data.valid === true) {
 		  		that.setState({password: ''});
 		  		that.props.loggedInFunction()

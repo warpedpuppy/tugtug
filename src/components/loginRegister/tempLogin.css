@@ -11,5 +11,12 @@ fieldset {
 	text-align: center;
 }
 .tempLoginForm input{
-	font-size: 36px;
+	font-size: 12px;
+}
+
+
+@media screen and (min-width: 600px) {
+	.tempLoginForm input{
+		font-size: 36px;
+	}
 }

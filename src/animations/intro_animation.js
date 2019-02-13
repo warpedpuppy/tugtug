@@ -14,7 +14,7 @@ import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
 import Score from '../animations/supportingClasses/score';
 import LevelSlots from './supportingClasses/level/levelSlots';
-import IntroScreen from './supportingClasses/introScreen';
+//import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 
@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['bounce','jump','fly','swim'],
+        mode: ['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -54,7 +54,8 @@ export default function(obj) {
         fly: Fly(),
         jump: Jump(),
         levelSlots: LevelSlots(),
-        introScreen: IntroScreen(),
+        screen: Assets.Graphics(),
+       // introScreen: IntroScreen(),
         init: function () {
 
 
@@ -63,7 +64,7 @@ export default function(obj) {
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
 
-            var app = this.app = Assets.Application();
+            var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
 
             this.stage = app.stage;
@@ -141,15 +142,19 @@ export default function(obj) {
 
             this.levelSlots.init(this.stage).addToStage();
             this.startGame = this.startGame.bind(this);
-            this.introScreen.init(this.stage, this.startGame).addToStage();
+            //this.introScreen.init(this.stage, this.startGame).addToStage();
+
+            this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
+            this.stage.addChild(this.screen);
 
             
         },
         startGame: function () {
             this.mode = this.utils.shuffle(this.mode);
-            this.introScreen.removeFromStage();
+            //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
+             this.stage.removeChild(this.screen);
         },
         stop: function () {
             window.onresize = undefined;

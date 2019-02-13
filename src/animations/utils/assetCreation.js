@@ -16,8 +16,8 @@ export default {
 		Loader: function () {
 			return PIXI.loader;
 		},
-		Application: function () {
-			return new PIXI.Application(this.utils.returnCanvasWidth(), this.utils.returnCanvasHeight(), {transparent: true});
+		Application: function (w, h, transParentBoolean) {
+			return new PIXI.Application(w, h, {transparent: transParentBoolean});
 		},
 		webgl: function () {
 			return this.utils.app.renderer instanceof PIXI.WebGLRenderer;

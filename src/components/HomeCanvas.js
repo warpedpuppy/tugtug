@@ -2,7 +2,7 @@ import React from 'react';
 import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
-
+import start_canvas from '../animations/startGameAnimation';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -17,17 +17,26 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	componentDidMount(){
-		//this.home_page = home_page();
-		//this.home_page.init();
+		if (this.state.loggedIn) {
+			this.home_page = home_page();
+			this.home_page.init();
+			this.start_canvas = start_canvas();
+			this.start_canvas.init(this.startGame);
+		}
+		
+	}
+	startGame = () => {
+		this.home_page.startGame();
 	}
 	componentWillUnmount(){
 		this.home_page.stop();
 	}
 	loggedInCheck () {
-		console.log('logged in');
 		this.setState({loggedIn:true})
 		this.home_page = home_page();
 		this.home_page.init();
+		this.start_canvas = start_canvas();
+		this.start_canvas.init(this.startGame);
 	}
 	testFilter () {
 		this.home_page.filterTest();
@@ -53,6 +62,8 @@ export default class HomeCanvas extends React.Component {
 		if (this.state.loggedIn) {
 			return (
 				<div>
+
+				<div id='startGameCanvas' className={backgroundCSS} ></div>
 				<div id='homeCanvas' className={backgroundCSS} ></div>
 				<div className="testPanel">
 				<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
