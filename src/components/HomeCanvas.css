@@ -32,14 +32,15 @@
 
 .testPanel {
 	position: fixed;
-	right:0;
-	top:100px;
+	right: 0;
+	bottom: 0;
 }
 .testPanel button {
 	cursor: pointer;
 	padding: 5px 10px;
 	border:1px solid black;
 	border-radius: 10px;
+	margin: 10px 0 0;
 	display:block;
 }
 .nightBackground canvas{
