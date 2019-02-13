@@ -34,7 +34,7 @@ export default function (spritesheet) {
 			this.utils.setLilypads(this);
 		},
 		addToStage: function () {
-		  	this.parentCont.addChild(this.cont);
+		  	this.parentCont.addChildAt(this.cont, this.parentCont.children.length - 5);
 
 		},
 		removeFromStage: function () {

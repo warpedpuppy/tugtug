@@ -144,60 +144,95 @@ export default function(obj) {
             this.startGame = this.startGame.bind(this);
             //this.introScreen.init(this.stage, this.startGame).addToStage();
 
-            this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
-            this.stage.addChild(this.screen);
-
             // if(this.isMobile){
             //     console.log("mobile")
             // } else {
             //     console.log("not mobile")
             // }
+            this.upHit = this.upHit.bind(this);
+            this.downHit = this.downHit.bind(this);
+            this.rightHit = this.rightHit.bind(this);
+            this.leftHit = this.leftHit.bind(this);
+            this.spaceHit = this.spaceHit.bind(this);
+            this.keyRelease = this.keyRelease.bind(this);
             this.uiUX();
+
+            this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
+            this.stage.addChild(this.screen);
+
+            
+            
             
         },
         uiUX: function () {
 
             this.uiUICont = Assets.Container();
-
+            
             this.upButton = Assets.Sprite('redTile.png');
+            this.upButton.interactive = true;
+            this.upButton.buttonMode = true;
             this.upButton.x = 10;
             this.upButton.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
+            this.upButton.pointerdown = this.upHit;
+            this.upButton.pointerup = this.keyRelease;
             this.uiUICont.addChild(this.upButton);
 
             this.leftButton = Assets.Sprite('redTile.png');
+            this.leftButton.interactive = true;
+            this.leftButton.buttonMode = true;
             this.leftButton.x = 10;
             this.leftButton.y = this.utils.canvasHeight - 77 - 77 - 10;
+            this.leftButton.pointerdown = this.leftHit;
+            this.leftButton.pointerup = this.keyRelease;
             this.uiUICont.addChild(this.leftButton);
 
             this.downButton = Assets.Sprite('redTile.png');
+            this.downButton.interactive = true;
+            this.downButton.buttonMode = true;
             this.downButton.x = 10;
             this.downButton.y = this.utils.canvasHeight - 77 - 10;
+            this.downButton.pointerdown = this.downHit;
+            this.downButton.pointerup = this.keyRelease;
             this.uiUICont.addChild(this.downButton);
 
-            this.upButton = Assets.Sprite('redTile.png');
-            this.upButton.x = this.utils.canvasWidth - 77;
-            this.upButton.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
-            this.uiUICont.addChild(this.upButton);
+            this.upButton2 = Assets.Sprite('redTile.png');
+            this.upButton2.interactive = true;
+            this.upButton2.buttonMode = true;
+            this.upButton2.x = this.utils.canvasWidth - 77;
+            this.upButton2.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
+            this.upButton2.pointerdown = this.upHit;
+            this.upButton2.pointerup = this.keyRelease;
+            this.uiUICont.addChild(this.upButton2);
 
             this.rightButton = Assets.Sprite('redTile.png');
+            this.rightButton.interactive = true;
+            this.rightButton.buttonMode = true;
             this.rightButton.x = this.utils.canvasWidth - 77;
             this.rightButton.y = this.utils.canvasHeight - 77 - 77 - 10;
+            this.rightButton.pointerdown = this.rightHit;
+            this.rightButton.pointerup = this.keyRelease;
             this.uiUICont.addChild(this.rightButton);
 
-            this.downButton = Assets.Sprite('redTile.png');
-            this.downButton.x = this.utils.canvasWidth - 77;
-            this.downButton.y = this.utils.canvasHeight - 77 - 10;
-            this.uiUICont.addChild(this.downButton);
-
-            this.stage.addChild(this.uiUICont);
-
-
+            this.downButton2 = Assets.Sprite('redTile.png');
+            this.downButton2.interactive = true;
+            this.downButton2.buttonMode = true;
+            this.downButton2.x = this.utils.canvasWidth - 77;
+            this.downButton2.y = this.utils.canvasHeight - 77 - 10;
+            this.downButton2.pointerdown = this.downHit;
+            this.downButton2.pointerup = this.keyRelease;
+            this.uiUICont.addChild(this.downButton2);
             
             this.spaceButton = Assets.Sprite('redTile.png');
-            this.spaceButton.width = this.utils.canvasWidth
+            this.spaceButton.interactive = true;
+            this.spaceButton.buttonMode = true;
+            this.spaceButton.width = this.utils.canvasWidth - 77 - 77 - 77;
+            this.spaceButton.x = this.leftButton.x + 77 + 10;
+            this.spaceButton.y = this.utils.canvasHeight - 77 - 10;
+            this.spaceButton.pointerdown = this.spaceHit;
+            this.spaceButton.pointerup = this.keyRelease;
+            this.uiUICont.addChild(this.spaceButton);
 
-
-
+            this.stage.addChild(this.uiUICont);
 
 
 
@@ -302,48 +337,65 @@ export default function(obj) {
                 this.activeAction.rotate(obj);
             }
         },
+        spaceHit: function () {
+            if(this.activeAction.jump)this.activeAction.jump();
+            if(this.activeMode === 'fly')this.activeAction.fire(true);
+        },
+        upHit: function () {
+            this.rotate('up');
+            this.hero.heroJump.look('up');
+        },
+        downHit: function () {
+            this.vy = 0;
+        },
+        leftHit: function () {
+            //if(this.activeMode === 'bounce')break;
+            if(this.swimAction)this.swimAction.spinning = true;
+            this.rotateLeftBoolean = true;
+        },
+        rightHit: function (){
+            //if(this.activeMode === 'bounce')break;
+            if(this.swimAction)this.swimAction.spinning = true;
+            this.rotateRightBoolean = true;
+        },
+        keyRelease: function () {
+            if(this.swimAction)this.swimAction.spinning = false;
+            this.rotateLeftBoolean = false;
+            this.rotateRightBoolean = false;
+            this.idle = true;
+            if(this.activeMode === 'fly')this.activeAction.fire(false);
+        },
         keyDown: function (e) {
             //e.preventDefault();
             this.hero.heroJump.look();
             switch (e.keyCode) {
                 case 32:
                 // space
-                    if(this.activeAction.jump)this.activeAction.jump();
-                    if(this.activeMode === 'fly')this.activeAction.fire(true);
+                    this.spaceHit();
                     break;
                 case 37:
                     // left
-                    if(this.activeMode === 'bounce')break;
-                    if(this.swimAction)this.swimAction.spinning = true;
-                    this.rotateLeftBoolean = true;
-                    
+                    this.leftHit();
                     //this.rotate('left');
                     break;
                 case 38:
                     // up
-                    this.rotate('up');
-                    this.hero.heroJump.look('up');
+                    this.upHit();
                     break;
                 case 39:
                     // right
-                    if(this.activeMode === 'bounce')break;
-                    if(this.swimAction)this.swimAction.spinning = true;
-                    this.rotateRightBoolean = true;
+                    this.rightHit();
                     //this.rotate('right');
                     break;
                 case 40:
                     break;
                 default:
-                    this.vy = 0;
+                    this.downHit();
             }
         },
         keyUp: function (e) {
             e.preventDefault();
-            if(this.swimAction)this.swimAction.spinning = false;
-            this.rotateLeftBoolean = false;
-            this.rotateRightBoolean = false;
-            this.idle = true;
-           if(this.activeMode === 'fly')this.activeAction.fire(false);
+            this.keyRelease();
         },
         animate: function () {
 

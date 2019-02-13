@@ -54,7 +54,7 @@ export default function () {
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
 			this.cont.addChildAt(this.cont2, 0);
-			this.cont.addChild(this.cont1);
+			this.cont.addChildAt(this.cont1, this.cont.children.length - 2);
 		},
 		removeFromStage: function () {
 			this.cont.removeChild(this.cont2);

@@ -149,8 +149,8 @@ export default function () {
 		addToStage: function () {
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
-			this.parentCont.addChild(this.level3);
-			this.parentCont.addChild(this.level4);
+			this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
+			this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {

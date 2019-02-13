@@ -108,7 +108,7 @@ export default function () {
 			this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
 
 			this.parentCont.addChildAt(this.cont, 0);
-			this.parentCont.addChild(this.orbsCont);
+			this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
 		},
 		removeFromStage: function () {
 			TweenMax.killAll();
