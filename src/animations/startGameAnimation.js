@@ -22,11 +22,13 @@ export default function () {
 
             let test = this.test = Assets.Graphics();
             test.beginFill(0xFF00FF).drawRect(0,0,100, 50).endFill();
+            test.x = test.y = 100;
+            this.stage.interactive = true;
             this.stage.addChild(test);
-            test.interactive = true;
-            test.buttonMode = true;
+            this.test.interactive = true;
+            this.test.buttonMode = true;
             this.startGame = this.startGame.bind(this);
-            test.mousedown = test.touchdown = this.startGame;
+            test.pointerdown = this.startGame;
 
             this.app.ticker.add(this.animate.bind(this));
         },
