@@ -335,7 +335,7 @@ export default function(obj) {
             this.keyRelease();
         },
         animate: function () {
-
+            document.getElementById("sizeShow").innerHTML = `${this.utils.canvasWidth},${this.utils.canvasHeight}`;
             this.score.animate();
 
             if (this.treasure.hit || this.transitionItems.hit) {

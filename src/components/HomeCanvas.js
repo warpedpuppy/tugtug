@@ -75,6 +75,7 @@ export default class HomeCanvas extends React.Component {
 					<button onClick={() => this.switchPlayer()}>numbered token found</button>
 					<button onClick={() => this.switchPlayer()}>level complete</button>
 				</div>
+				<h1 id="sizeShow"></h1>
 				</div>
 			)
 		} else {

@@ -30,6 +30,12 @@
 	
 }
 
+#sizeShow {
+	position: fixed;
+	z-index: 6000;
+	top:30px
+}
+
 .testPanel {
 	width:100%;
 	display: flex;
@@ -40,15 +46,28 @@
 }
 .testPanel button {
 	cursor: pointer;
-	padding: 2px 5px;
+	padding: 1px;
 	border:1px solid black;
 	border-radius: 10px;
-	margin: 0 5px;
+	margin: 0 1px;
 	background-color: white;
+	font-size: 8px;
 }
 .nightBackground canvas{
 	background-color: black;
 }
 .waterBackground canvas{
 	background-color: #0033CC;
+}
+
+@media screen and (min-width: 500px){
+	.testPanel button {
+		cursor: pointer;
+		padding: 5px 10px;
+		border:1px solid black;
+		border-radius: 10px;
+		margin: 0 5px;
+		background-color: white;
+		font-size: 12px;
+	}
 }

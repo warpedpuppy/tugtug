@@ -24,9 +24,9 @@
 	z-index: 20000;
 }
 .testPanel button {
-	cursor: pointer;
+	/*cursor: pointer;
 	padding: 5px 10px;
 	border:1px solid black;
 	border-radius: 10px;
-	display:block;
+	display:block;*/
 }
