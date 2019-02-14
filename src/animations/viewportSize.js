@@ -73,14 +73,25 @@ export default function(obj) {
             const fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
-            let box = Assets.Graphics();
+            let box = this.box = Assets.Graphics();
             box.beginFill(0xFF00FF).drawRect(-5,-5,10,10).endFill();
             box.y = this.canvasHeight / 2;
-            box.x = this.canvasWidth /2;
+            box.x = this.canvasWidth / 2;
             this.stage.addChild(box)
-
+             window.onresize = this.resizeHandler.bind(this);
             this.app.ticker.add(this.animate.bind(this));
 
+        },
+        resizeHandler: function () {
+            this.canvasWidth =  this.utils.returnCanvasWidth();
+            this.canvasHeight = this.utils.returnCanvasHeight();
+
+            this.utils.resize(this.canvasWidth, this.canvasHeight);
+
+            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+
+            this.box.y = this.canvasHeight / 2;
+            this.box.x = this.canvasWidth / 2;
         },
         animate: function () {
            
