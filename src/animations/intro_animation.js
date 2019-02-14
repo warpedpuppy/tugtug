@@ -336,7 +336,7 @@ export default function(obj) {
         },
         animate: function () {
             document.getElementById("sizeShow").innerHTML = 
-            `${window.devicePixelRatio}`;
+            `${window.devicePixelRatio},${this.utils.canvasHeight}`;
 
             document.getElementById("sizeShow2").innerHTML = 
             `${window.innerHeight}, 
