@@ -76,6 +76,7 @@ export default class HomeCanvas extends React.Component {
 					<button onClick={() => this.switchPlayer()}>level complete</button>
 				</div>
 				<h1 id="sizeShow"></h1>
+				<h1 id="sizeShow2"></h1>
 				</div>
 			)
 		} else {

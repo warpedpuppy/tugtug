@@ -337,6 +337,13 @@ export default function(obj) {
         animate: function () {
             document.getElementById("sizeShow").innerHTML = 
             `${window.devicePixelRatio}`;
+
+            document.getElementById("sizeShow2").innerHTML = 
+            `${window.innerHeight}, 
+            ${document.documentElement.clientHeight},
+            ${document.body.clientHeight}`;
+
+
             this.score.animate();
 
             if (this.treasure.hit || this.transitionItems.hit) {

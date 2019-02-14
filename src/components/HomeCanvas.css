@@ -39,7 +39,14 @@
 	width:100%;
 	
 }
-
+#sizeShow2 {
+	position: fixed;
+	z-index: 6000;
+	top:60px;
+	text-align:center;
+	font-size: 12px;
+	width:100%;
+}
 .testPanel {
 	width:100%;
 	display: flex;
