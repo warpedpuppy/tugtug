@@ -33,7 +33,11 @@
 #sizeShow {
 	position: fixed;
 	z-index: 6000;
-	top:30px
+	top:30px;
+	text-align:center;
+	font-size: 12px;
+	width:100%;
+	
 }
 
 .testPanel {
