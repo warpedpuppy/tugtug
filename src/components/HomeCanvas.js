@@ -15,18 +15,18 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: true
+			loggedIn: false
 		}
 	}
 	componentDidMount () {
-		this.test = viewPortSize();
-		this.test.init()
-		// if (this.state.loggedIn) {
-		// 	this.home_page = home_page();
-		// 	this.home_page.init(isMobile, isMobileOnly);
-		// 	this.start_canvas = start_canvas();
-		// 	this.start_canvas.init(this.startGame);
-		// }
+		// this.test = viewPortSize();
+		// this.test.init()
+		if (this.state.loggedIn) {
+			this.home_page = home_page();
+			this.home_page.init(isMobile, isMobileOnly);
+			this.start_canvas = start_canvas();
+			this.start_canvas.init(this.startGame);
+		}
 		
 	}
 	startGame = () => {

@@ -78,7 +78,7 @@ export default function(obj) {
             box.y = this.canvasHeight / 2;
             box.x = this.canvasWidth / 2;
             this.stage.addChild(box)
-             window.onresize = this.resizeHandler.bind(this);
+            window.onresize = this.resizeHandler.bind(this);
             this.app.ticker.add(this.animate.bind(this));
 
         },

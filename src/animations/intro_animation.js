@@ -65,7 +65,7 @@ export default function(obj) {
      
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly);
+            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * 0.75;
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
