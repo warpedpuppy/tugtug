@@ -13,6 +13,7 @@ import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
 import Score from '../animations/supportingClasses/score';
+import ControlPanel from './supportingClasses/controlPanel';
 import LevelSlots from './supportingClasses/level/levelSlots';
 //import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
@@ -55,6 +56,7 @@ export default function(obj) {
         jump: Jump(),
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
+        controlPanel: ControlPanel(),
        // introScreen: IntroScreen(),
         init: function (isMobile) {
 
@@ -155,87 +157,15 @@ export default function(obj) {
             this.leftHit = this.leftHit.bind(this);
             this.spaceHit = this.spaceHit.bind(this);
             this.keyRelease = this.keyRelease.bind(this);
-            this.uiUX();
 
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
             
+            this.controlPanel.init(this);
+
+
             
-            
-        },
-        uiUX: function () {
-
-            this.uiUICont = Assets.Container();
-            
-            this.upButton = Assets.Sprite('redTile.png');
-            this.upButton.interactive = true;
-            this.upButton.buttonMode = true;
-            this.upButton.x = 10;
-            this.upButton.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
-            this.upButton.pointerdown = this.upHit;
-            this.upButton.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.upButton);
-
-            this.leftButton = Assets.Sprite('redTile.png');
-            this.leftButton.interactive = true;
-            this.leftButton.buttonMode = true;
-            this.leftButton.x = 10;
-            this.leftButton.y = this.utils.canvasHeight - 77 - 77 - 10;
-            this.leftButton.pointerdown = this.leftHit;
-            this.leftButton.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.leftButton);
-
-            this.downButton = Assets.Sprite('redTile.png');
-            this.downButton.interactive = true;
-            this.downButton.buttonMode = true;
-            this.downButton.x = 10;
-            this.downButton.y = this.utils.canvasHeight - 77 - 10;
-            this.downButton.pointerdown = this.downHit;
-            this.downButton.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.downButton);
-
-            this.upButton2 = Assets.Sprite('redTile.png');
-            this.upButton2.interactive = true;
-            this.upButton2.buttonMode = true;
-            this.upButton2.x = this.utils.canvasWidth - 77;
-            this.upButton2.y = this.utils.canvasHeight - 77 - 77 - 77- 10;
-            this.upButton2.pointerdown = this.upHit;
-            this.upButton2.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.upButton2);
-
-            this.rightButton = Assets.Sprite('redTile.png');
-            this.rightButton.interactive = true;
-            this.rightButton.buttonMode = true;
-            this.rightButton.x = this.utils.canvasWidth - 77;
-            this.rightButton.y = this.utils.canvasHeight - 77 - 77 - 10;
-            this.rightButton.pointerdown = this.rightHit;
-            this.rightButton.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.rightButton);
-
-            this.downButton2 = Assets.Sprite('redTile.png');
-            this.downButton2.interactive = true;
-            this.downButton2.buttonMode = true;
-            this.downButton2.x = this.utils.canvasWidth - 77;
-            this.downButton2.y = this.utils.canvasHeight - 77 - 10;
-            this.downButton2.pointerdown = this.downHit;
-            this.downButton2.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.downButton2);
-            
-            this.spaceButton = Assets.Sprite('redTile.png');
-            this.spaceButton.interactive = true;
-            this.spaceButton.buttonMode = true;
-            this.spaceButton.width = this.utils.canvasWidth - 77 - 77 - 77;
-            this.spaceButton.x = this.leftButton.x + 77 + 10;
-            this.spaceButton.y = this.utils.canvasHeight - 77 - 10;
-            this.spaceButton.pointerdown = this.spaceHit;
-            this.spaceButton.pointerup = this.keyRelease;
-            this.uiUICont.addChild(this.spaceButton);
-
-            this.stage.addChild(this.uiUICont);
-
-
-
         },
         startGame: function () {
             this.mode = this.utils.shuffle(this.mode);
@@ -265,6 +195,12 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
+
+            if(this.activeMode === 'bounce'){
+                this.controlPanel.removeFromStage();
+            } else {
+                this.controlPanel.addToStage();
+            }
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
@@ -280,6 +216,7 @@ export default function(obj) {
             this.fly.resize();
             this.jump.resize();
             this.levelSlots.resize();
+            this.controlPanel.resize();
             // if(this.platforms)this.platforms.resize(wh);
             // this.magicPills.resize(wh);
             // this.treasure.resize(wh);

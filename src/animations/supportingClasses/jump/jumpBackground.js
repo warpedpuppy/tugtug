@@ -74,7 +74,7 @@ export default function () {
 					if(counter === centerOrb){
 						this.centerOrbIndex = centerOrb;
 						this.currentOrb = this.centralOrb = cont;
-						this.currentOrb.alpha = 0.5;
+						//this.currentOrb.alpha = 0.5;
 					}
 					counter ++;
 					this.widths.push(cont.width);
