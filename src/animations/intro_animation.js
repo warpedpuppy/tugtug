@@ -62,10 +62,10 @@ export default function(obj) {
 
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-     
+            this.mobileModifier = 0.25
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * 0.5;
+            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
@@ -205,7 +205,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight();
+            this.canvasHeight = this.utils.returnCanvasHeight() * this.mobileModifier;;
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
