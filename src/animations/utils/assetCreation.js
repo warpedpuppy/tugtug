@@ -57,7 +57,7 @@ export default {
 			if(!str){
 				return new PIXI.Sprite();
 			} else {
-				if (this.utils.spritesheet.textures[str]) {
+				if (this.utils.spritesheet && this.utils.spritesheet.textures[str]) {
 					return new PIXI.Sprite(this.utils.spritesheet.textures[str])
 				} else {
 					return new PIXI.Sprite.fromImage(`/bmps/${str}`);

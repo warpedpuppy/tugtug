@@ -21,9 +21,6 @@
 }
 
 .testPanel {
-	position: fixed;
-	right:0;
-	top:100px;
 	z-index: 20000;
 }
 .testPanel button {
