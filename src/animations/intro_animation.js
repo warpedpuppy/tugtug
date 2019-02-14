@@ -336,7 +336,7 @@ export default function(obj) {
         },
         animate: function () {
             document.getElementById("sizeShow").innerHTML = 
-            `${window.innerWidth},${document.documentElement.clientWidth},${document.body.clientWidth}`;
+            `${window.devicePixelRatio}`;
             this.score.animate();
 
             if (this.treasure.hit || this.transitionItems.hit) {
