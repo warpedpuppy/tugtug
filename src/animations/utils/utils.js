@@ -383,10 +383,12 @@ export default {
         return this.intersects;
     },
     returnCanvasWidth: function (){
-        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        var scale = window.devicePixelRatio;
+        return (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale;
     },
     returnCanvasHeight: function (){
-        return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var scale = window.devicePixelRatio;
+        return (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale;
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;
