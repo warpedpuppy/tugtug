@@ -24,7 +24,7 @@ export default class HomeCanvas extends React.Component {
 			this.start_canvas = start_canvas();
 			this.start_canvas.init(this.startGame);
 		}
-		console.log("height 2= ", document.getElementById('homeCanvas').offsetHeight)
+		
 	}
 	startGame = () => {
 		this.home_page.startGame();
