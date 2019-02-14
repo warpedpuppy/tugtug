@@ -3,7 +3,7 @@ import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
 import start_canvas from '../animations/startGameAnimation';
-import {isMobile} from 'react-device-detect';
+import {isMobile, isMobileOnly} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -20,11 +20,11 @@ export default class HomeCanvas extends React.Component {
 	componentDidMount () {
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
-			this.home_page.init(isMobile);
+			this.home_page.init(isMobile, isMobileOnly);
 			this.start_canvas = start_canvas();
 			this.start_canvas.init(this.startGame);
 		}
-		
+		console.log("height 2= ", document.getElementById('homeCanvas').offsetHeight)
 	}
 	startGame = () => {
 		this.home_page.startGame();

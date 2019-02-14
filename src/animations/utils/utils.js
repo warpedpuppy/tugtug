@@ -382,13 +382,23 @@ export default {
 
         return this.intersects;
     },
-    returnCanvasWidth: function (){
+    returnCanvasWidth: function (isMobileOnly){
         var scale = window.devicePixelRatio;
+       // console.log( document.getElementById('homeCanvas').clientWidth)
         return (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale;
+
+        //document.getElementById('homeCanvas').clientWidth * scale;
+
+        //
     },
-    returnCanvasHeight: function (){
+    returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
+       // console.log("height = ", document.getElementById('homeCanvas').offsetHeight)
         return (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale;
+
+        //document.getElementById('homeCanvas').offsetHeight * scale;
+
+        //
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;

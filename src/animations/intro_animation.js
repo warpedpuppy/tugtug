@@ -58,13 +58,14 @@ export default function(obj) {
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
        // introScreen: IntroScreen(),
-        init: function (isMobile) {
+        init: function (isMobile, isMobileOnly) {
 
             this.isMobile = isMobile;
+            this.isMobileOnly = isMobileOnly;
      
 
-            this.canvasWidth =  this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight();
+            this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
+            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly);
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
@@ -313,7 +314,6 @@ export default function(obj) {
                 case 37:
                     // left
                     this.leftHit();
-                    //this.rotate('left');
                     break;
                 case 38:
                     // up
@@ -322,7 +322,6 @@ export default function(obj) {
                 case 39:
                     // right
                     this.rightHit();
-                    //this.rotate('right');
                     break;
                 case 40:
                     break;
