@@ -2,6 +2,7 @@ import React from 'react';
 import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
+import viewPortSize from '../animations/viewportSize';
 import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {
@@ -14,16 +15,18 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: false
+			loggedIn: true
 		}
 	}
 	componentDidMount () {
-		if (this.state.loggedIn) {
-			this.home_page = home_page();
-			this.home_page.init(isMobile, isMobileOnly);
-			this.start_canvas = start_canvas();
-			this.start_canvas.init(this.startGame);
-		}
+		this.test = viewPortSize();
+		this.test.init()
+		// if (this.state.loggedIn) {
+		// 	this.home_page = home_page();
+		// 	this.home_page.init(isMobile, isMobileOnly);
+		// 	this.start_canvas = start_canvas();
+		// 	this.start_canvas.init(this.startGame);
+		// }
 		
 	}
 	startGame = () => {
