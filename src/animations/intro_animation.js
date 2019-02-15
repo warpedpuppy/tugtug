@@ -309,7 +309,7 @@ export default function(obj) {
         },
         keyDown: function (e) {
             //e.preventDefault();
-            this.hero.heroJump.look();
+            //this.hero.heroJump.look();
             switch (e.keyCode) {
                 case 32:
                 // space

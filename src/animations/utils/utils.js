@@ -393,11 +393,12 @@ export default {
     },
     returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
+        let mobileAdjust = isMobileOnly?200:0;
         // if(isMobileOnly){
         //     return 300;
         // }
        // console.log("height = ", document.getElementById('homeCanvas').offsetHeight)
-        return (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale;
+        return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale) - mobileAdjust;
 
         //document.getElementById('homeCanvas').offsetHeight * scale;
 
