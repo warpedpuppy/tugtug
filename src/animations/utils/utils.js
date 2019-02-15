@@ -19,6 +19,14 @@ export default {
             canvasWidth: obj.canvasWidth
         }
     },
+    setWidthAndHeight: function(w, h){
+        this.canvasWidth = w;
+        this.canvasHeight = h;
+        this.wh = {
+            canvasWidth: w,
+            canvasHeight: h
+        }
+    },
     setHero: function (hero) {
         this.hero = hero;
     },
@@ -385,24 +393,16 @@ export default {
     returnCanvasWidth: function (isMobileOnly) {
         var scale = window.devicePixelRatio;
          let mobileAdjust = isMobileOnly?20:0;
-         // if(isMobileOnly){
-         //     return 100;
-         // }
-        return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale) - mobileAdjust;
+
+        return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
 
     },
     returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
         let mobileAdjust = isMobileOnly?300:0;
-        // if(isMobileOnly){
-        //     return 300;
-        // }
-       // console.log("height = ", document.getElementById('homeCanvas').offsetHeight)
-        return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale) - mobileAdjust;
+     
+        return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale);
 
-        //document.getElementById('homeCanvas').offsetHeight * scale;
-
-        //
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;

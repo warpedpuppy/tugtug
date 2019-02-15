@@ -5,6 +5,7 @@ import home_page from '../animations/intro_animation';
 import viewPortSize from '../animations/viewportSize';
 //import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
+
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -15,7 +16,7 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: false,
+			loggedIn: true,
 			showStartScreen: true
 		}
 	}
@@ -66,15 +67,21 @@ export default class HomeCanvas extends React.Component {
 		this.home_page.switchPlayer();
 	}
 	render () {
-		let mobileCheck = (isMobileOnly)?'mobile':'nonMobile';
 		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
+		// if (isMobileOnly) {
+		// 	return (
+		// 		<div className="mobileOnlyApology">
+		// 			<h1>please view this content on either an ipad or a computer!</h1>
+		// 		</div>
+		// 	)
+		// } else 
+
 		if (this.state.loggedIn) {
 			return (
 				<div>
-
-				{/*<div id='startGameCanvas' className={startScreenCSS} ></div>*/}
-				<div id='homeCanvas' className={mobileCheck} ></div>
-				{/*	<div className="testPanel">
+				<div id='startGameCanvas' className={startScreenCSS} ></div>
+				<div id='homeCanvas'></div>
+				<div className="testPanel">
 					<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 					<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
 					<button onClick={() => this.switchPlayer()}>switch player</button>
@@ -82,7 +89,7 @@ export default class HomeCanvas extends React.Component {
 					<button onClick={() => this.switchPlayer()}>coin animation</button>
 					<button onClick={() => this.switchPlayer()}>numbered token found</button>
 					<button onClick={() => this.switchPlayer()}>level complete</button>
-				</div>*/}
+				</div>
 				</div>
 			)
 		} else {

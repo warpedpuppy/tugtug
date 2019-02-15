@@ -18,7 +18,6 @@ import LevelSlots from './supportingClasses/level/levelSlots';
 //import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
-
 export default function(obj) {
     return {
         idle: true,
@@ -28,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','bounce','fly','swim'],
+        mode: ['fly'], // ['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -62,9 +61,33 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
             this.mobileModifier = isMobileOnly?1:1;
+            console.log(window.screen)
+            // if(!this.isMobileOnly){
+              
+            // } else {
+            //       var scale = window.devicePixelRatio;
+            //     this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+            //     this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-            this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
+            //     if(this.testWidth > this.testHeight  ){
+            //         //landscape
+            //         console.log('make landscape')
+            //         this.canvasWidth = window.screen.height * scale;
+            //         this.canvasHeight = window.screen.width * scale;
+                    
+            //     } else {
+            //         // portrait
+            //         console.log('make portrait')
+            //         this.canvasWidth = window.screen.width * scale;
+            //         this.canvasHeight = window.screen.height * scale;
+            //     }
+            // }
+           
+
+  this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
+                this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
+
+
             console.log('here', this.canvasWidth, this.canvasHeight)
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
@@ -84,6 +107,8 @@ export default function(obj) {
             window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 
+            this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
+         
 
             this.start = this.start.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
@@ -95,7 +120,12 @@ export default function(obj) {
                 this.start();
             }
 
+ 
+
+ 
+
         },
+
         start: function () {
 
         
@@ -166,7 +196,11 @@ export default function(obj) {
 
             this.startGame();
             
-            window.onresize = this.resizeHandler.bind(this);
+            if(this.isMobileOnly){
+                window.addEventListener("orientationchange", this.orientationChangeHandler);
+            } else {
+                 window.onresize = this.resizeHandler.bind(this);
+            }
         },
         startGame: function () {
             this.mode = this.utils.shuffle(this.mode);
@@ -202,6 +236,39 @@ export default function(obj) {
             } else {
                 this.controlPanel.addToStage();
             }
+        },
+        orientationChangeHandler: function (e) {
+            //console.log("the orientation of the device is now ", window.screen.orientation.angle);
+            if(window.screen){
+                console.log("1", window.screen)
+            }
+             var scale = window.devicePixelRatio;
+            
+            this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+            this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+
+            if(this.testHeight > this.testWidth ){
+                //landscape
+                console.log('make landscape')
+                this.val1 = window.screen.height * scale;
+                this.val2 = window.screen.width * scale;
+                this.canvasWidth = (this.val1 > this.val2)?this.val1:this.val2;
+                this.canvasHeight = (this.val1 > this.val2)?this.val2:this.val1;
+                console.log('width', this.canvasWidth, 'height', this.canvasHeight)
+                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+                this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+            } else {
+                // portrait
+                console.log('make portrait')
+                this.val1 = window.screen.width * scale;
+                this.val2 = window.screen.height * scale;
+                this.canvasWidth = (this.val1 > this.val2)?this.val2:this.val1;
+                this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
+                console.log('width', this.canvasWidth, 'height', this.canvasHeight)
+                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+                this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+            }
+            
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
