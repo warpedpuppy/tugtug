@@ -164,7 +164,7 @@ export default function(obj) {
             
             this.controlPanel.init(this);
 
-            //this.startGame();
+            this.startGame();
             
         },
         startGame: function () {
