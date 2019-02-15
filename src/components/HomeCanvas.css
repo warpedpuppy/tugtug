@@ -14,18 +14,21 @@
 .startScreenHide {
 	display:none;
 }
-/*#homeCanvas {
-	width: 300px;
-	height: 600px;
+#homeCanvas {
+	width:100vw;
+	text-align: center;
+	background-color: #FF00FF;
 }
-*/
+
 #homeCanvas canvas{
-	/*width:100vw;*/
+	width:calc(100vw - 20px);
+	display: block;
+	margin:0 auto;
 	/*width: 300px;
 	height: 600px;*/
-	position:fixed;
+	/*position:fixed;
 	top:20px;
-	left:0;
+	left:0;*/
 }
 
 .fpsCheckerShell {
