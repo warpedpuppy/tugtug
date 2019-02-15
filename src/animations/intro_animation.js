@@ -57,20 +57,21 @@ export default function(obj) {
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
         init: function (isMobile, isMobileOnly) {
-
+            this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
             this.mobileModifier = isMobileOnly?1:1;
             console.log(window.screen)
-            if(!this.isMobileOnly){
-                this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-                this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
+            if (!this.isMobileOnly) {
+                this.canvasWidth = this.utils.returnCanvasWidth(isMobileOnly);
+                this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly);
             } else {
                 var scale = window.devicePixelRatio;
+                console.log('scale = ', scale)
                 this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
                 this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-                if(this.testWidth > this.testHeight  ){
+                if (this.testWidth > this.testHeight) {
                     //landscape
                     console.log('make landscape')
                     document.getElementById('testOrientation').innerHTML = "landscape";
@@ -83,11 +84,12 @@ export default function(obj) {
                     document.getElementById('testOrientation').innerHTML = "portrait";
                     this.canvasWidth = window.screen.width * scale;
                     this.canvasHeight = window.screen.height * scale;
-                    this.canvasHeight -= 400;
+                    this.canvasHeight -= this.cropHeight;
                 }
             }
            
-
+            // this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
+            // this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
            
 
             console.log('here', this.canvasWidth, this.canvasHeight)
@@ -264,7 +266,7 @@ export default function(obj) {
                 console.log('make portrait')
                 this.canvasWidth = (this.val1 > this.val2)?this.val2:this.val1;
                 this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
-                this.canvasHeight -= 400; 
+                this.canvasHeight -= this.cropHeight; 
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
                 document.getElementById('testOrientation').innerHTML = "portrait";
             }
