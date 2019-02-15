@@ -255,7 +255,23 @@ export default function(obj) {
                 this.canvasWidth = (this.val1 > this.val2)?this.val1:this.val2;
                 this.canvasHeight = (this.val1 > this.val2)?this.val2:this.val1;
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
-                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight);
+
+                 this.clock.resize();
+                this.gears.resize();
+                this.hero.resize();
+                this.swim.resize();
+
+                if(!this.bounce.started){
+                    this.bounce.init(this.stage);
+                }
+                this.bounce.resize();
+                this.fly.resize();
+                this.jump.resize();
+                this.levelSlots.resize();
+                this.controlPanel.resize();
+
+                
                 this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
             } else {
                 // portrait
@@ -266,6 +282,23 @@ export default function(obj) {
                 this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
                 this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+
+                this.clock.resize();
+                this.gears.resize();
+                this.hero.resize();
+                this.swim.resize();
+
+                if(!this.bounce.started){
+                    this.bounce.init(this.stage);
+                }
+                this.bounce.resize();
+                this.fly.resize();
+                this.jump.resize();
+                this.levelSlots.resize();
+                this.controlPanel.resize();
+
+
+
                 this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
             }
             
