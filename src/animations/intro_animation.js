@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly'], // ['jump','bounce','fly','swim'],
+        mode: ['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -84,9 +84,8 @@ export default function(obj) {
             // }
            
 
-  this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-                this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
-
+            this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
+            this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
 
             console.log('here', this.canvasWidth, this.canvasHeight)
 
@@ -242,73 +241,33 @@ export default function(obj) {
             if(window.screen){
                 console.log("1", window.screen)
             }
-             var scale = window.devicePixelRatio;
+            let scale = window.devicePixelRatio;
             
             this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
             this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
+            this.val1 = window.screen.availHeight * scale;
+            this.val2 = window.screen.availWidth * scale;
+
             if(this.testHeight > this.testWidth ){
                 //landscape
                 console.log('make landscape')
-                this.val1 = window.screen.height * scale;
-                this.val2 = window.screen.width * scale;
                 this.canvasWidth = (this.val1 > this.val2)?this.val1:this.val2;
                 this.canvasHeight = (this.val1 > this.val2)?this.val2:this.val1;
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
-                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight);
-
-                 this.clock.resize();
-                this.gears.resize();
-                this.hero.resize();
-                this.swim.resize();
-
-                if(!this.bounce.started){
-                    this.bounce.init(this.stage);
-                }
-                this.bounce.resize();
-                this.fly.resize();
-                this.jump.resize();
-                this.levelSlots.resize();
-                this.controlPanel.resize();
-
-                
-                this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
             } else {
                 // portrait
                 console.log('make portrait')
-                this.val1 = window.screen.width * scale;
-                this.val2 = window.screen.height * scale;
                 this.canvasWidth = (this.val1 > this.val2)?this.val2:this.val1;
                 this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
+                this.canvasHeight -= 400; 
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
-                this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-
-                this.clock.resize();
-                this.gears.resize();
-                this.hero.resize();
-                this.swim.resize();
-
-                if(!this.bounce.started){
-                    this.bounce.init(this.stage);
-                }
-                this.bounce.resize();
-                this.fly.resize();
-                this.jump.resize();
-                this.levelSlots.resize();
-                this.controlPanel.resize();
-
-
-
-                this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
             }
-            
+            this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+            this.resizeBundle();
+            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
-        resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) * this.mobileModifier;;
-
-            this.utils.resize(this.canvasWidth, this.canvasHeight);
-
+        resizeBundle: function () {
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
@@ -322,6 +281,15 @@ export default function(obj) {
             this.jump.resize();
             this.levelSlots.resize();
             this.controlPanel.resize();
+        },
+        resizeHandler: function () {
+            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) * this.mobileModifier;;
+
+            this.utils.resize(this.canvasWidth, this.canvasHeight);
+
+            this.resizeBundle();
+           
             // if(this.platforms)this.platforms.resize(wh);
             // this.magicPills.resize(wh);
             // this.treasure.resize(wh);

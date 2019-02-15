@@ -391,15 +391,15 @@ export default {
         return this.intersects;
     },
     returnCanvasWidth: function (isMobileOnly) {
-        var scale = window.devicePixelRatio;
-         let mobileAdjust = isMobileOnly?20:0;
+        let scale = window.devicePixelRatio,
+            mobileAdjust = isMobileOnly?20:0;
 
         return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
 
     },
     returnCanvasHeight: function (isMobileOnly){
-        var scale = window.devicePixelRatio;
-        let mobileAdjust = isMobileOnly?300:0;
+        let scale = window.devicePixelRatio,
+            mobileAdjust = isMobileOnly?300:0;
      
         return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale);
 
