@@ -23,7 +23,7 @@ export default function () {
 
             this.startButton.anchor.set(0.5);
             this.startButton.x = this.canvasWidth / 2;
-            this.startButton.y = 100;
+            this.startButton.y = 200;
             this.stage.interactive = true;
             this.stage.addChild(this.startButton);
             this.startButton.interactive = true;
@@ -39,7 +39,7 @@ export default function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.startButton.x = this.canvasWidth / 2;;
-            this.startButton.y = 100;
+            this.startButton.y =  200;
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         startGame: function () {

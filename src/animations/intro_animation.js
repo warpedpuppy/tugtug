@@ -61,7 +61,7 @@ export default function(obj) {
 
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = isMobileOnly?0.75:1;
+            this.mobileModifier = isMobileOnly?0.5:1;
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
             this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
