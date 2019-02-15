@@ -75,15 +75,15 @@ export default function(obj) {
                     //landscape
                     console.log('make landscape')
                     document.getElementById('testOrientation').innerHTML = "landscape";
-                    this.canvasWidth = window.screen.availHeight * scale;
-                    this.canvasHeight = window.screen.availWidth * scale;
+                    this.canvasWidth = window.screen.height * scale;
+                    this.canvasHeight = window.screen.width * scale;
                     
                 } else {
                     // portrait
                     console.log('make portrait')
                     document.getElementById('testOrientation').innerHTML = "portrait";
-                    this.canvasWidth = window.screen.availWidth * scale;
-                    this.canvasHeight = window.screen.availHeight * scale;
+                    this.canvasWidth = window.screen.width * scale;
+                    this.canvasHeight = window.screen.height * scale;
                     ///this.canvasHeight -= this.cropHeight;
                 }
             }
@@ -243,16 +243,16 @@ export default function(obj) {
         },
         orientationChangeHandler: function (e) {
             //console.log("the orientation of the device is now ", window.screen.orientation.angle);
-            if(window.screen){
-                console.log("1", window.screen)
-            }
+            // if(window.screen){
+            //     console.log("1", window.screen)
+            // }
             let scale = window.devicePixelRatio;
             
             this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
             this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-            this.val1 = window.screen.availHeight * scale;
-            this.val2 = window.screen.availWidth * scale;
+            this.val1 = window.screen.height * scale;
+            this.val2 = window.screen.width * scale;
 
             if(this.testHeight > this.testWidth ){
                 //landscape

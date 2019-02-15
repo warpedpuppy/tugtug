@@ -391,6 +391,7 @@ export default {
         return this.intersects;
     },
     returnCanvasWidth: function (isMobileOnly) {
+        console.log('width = ', document.getElementById('homeCanvas').offsetWidth)
         let scale = window.devicePixelRatio,
             mobileAdjust = isMobileOnly?20:0;
 
