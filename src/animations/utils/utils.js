@@ -384,16 +384,15 @@ export default {
     },
     returnCanvasWidth: function (isMobileOnly) {
         var scale = window.devicePixelRatio;
-        // if(isMobileOnly){
-        //     console.log('here it is mobile only')
-        //     return 100;
-        // }
+         // if(isMobileOnly){
+         //     return 100;
+         // }
         return (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale;
 
     },
     returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
-        let mobileAdjust = isMobileOnly?200:0;
+        let mobileAdjust = isMobileOnly?300:0;
         // if(isMobileOnly){
         //     return 300;
         // }
