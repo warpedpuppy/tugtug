@@ -21,10 +21,7 @@ export default function () {
 		array4: [],
 		buffer: 500,
 		createCounter: 0,
-		level1Object:{},
-		level2Object:{},
-		level3Object:{},
-		level4Object:{},
+		started: false,
 		init: function (action) {
 
 			this.hero = this.utils.hero;
@@ -38,6 +35,26 @@ export default function () {
 
 			this.cont.addChild(this.background);
 
+			
+			if(!this.started) {
+				this.started = true;
+				this.createResources();
+			}
+
+			
+			this.createBars(this.level1Object);
+			this.createBars(this.level2Object);
+			this.createBars(this.level3Object);
+			this.createBars(this.level4Object);
+
+			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
+
+
+			
+			//this.level3.alpha = this.level4.alpha = 0.75;
+
+		},
+		createResources: function () {
 			this.array1 = [];
 			this.array2 = [];
 			this.array3 = [];
@@ -83,29 +100,17 @@ export default function () {
 				this.barsOP.push(Assets.Sprite('line.png'));
 				this.dotsOP.push(Assets.Sprite('pellet.png'));
 			}
-
-
-			
-			this.createBars(this.level1Object);
-			this.createBars(this.level2Object);
-			this.createBars(this.level3Object);
-			this.createBars(this.level4Object);
-
-			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
-
-
-			
-			//this.level3.alpha = this.level4.alpha = 0.75;
-
 		},
 		createBars: function (obj) {
-
+			
 			obj.cont.removeChildren();
 			let spacing = this.utils.canvasWidth / obj.q;
 			for (let i = 0; i < obj.q; i ++) {
-
 				let bar = this.barsOP[this.createCounter];
-
+				if(!bar){
+					this.createCounter = 0;
+					bar = this.barsOP[this.createCounter];
+				}
 				bar.anchor.x = 0.5;
 				bar.speedAdjust = obj.speedAdjust;
 				bar.width = obj.w;
@@ -140,7 +145,7 @@ export default function () {
 
 		},
 		resizeBars: function (array) {
-
+		
 			this.createCounter = 0;
 
 			this.dots.length = 0;
@@ -153,6 +158,8 @@ export default function () {
 			this.createBars(this.level2Object);
 			this.createBars(this.level3Object);
 			this.createBars(this.level4Object);
+
+			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 		},
 		addToStage: function () {
 			this.cont.addChild(this.level1);

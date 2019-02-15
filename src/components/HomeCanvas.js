@@ -3,7 +3,7 @@ import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
 import viewPortSize from '../animations/viewportSize';
-import start_canvas from '../animations/startGameAnimation';
+//import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {
 
@@ -22,12 +22,13 @@ export default class HomeCanvas extends React.Component {
 	componentDidMount () {
 		// this.test = viewPortSize();
 		// this.test.init()
+
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
 			this.home_page.init(isMobile, isMobileOnly);
 			
-			this.start_canvas = start_canvas();
-			this.start_canvas.init(this.startGame);
+			// this.start_canvas = start_canvas();
+			// this.start_canvas.init(this.startGame);
 		}
 		
 	}
@@ -41,9 +42,9 @@ export default class HomeCanvas extends React.Component {
 	loggedInCheck () {
 		this.setState({loggedIn:true})
 		this.home_page = home_page();
-		this.home_page.init();
-		this.start_canvas = start_canvas();
-		this.start_canvas.init(this.startGame);
+		this.home_page.init(isMobile, isMobileOnly);
+		// this.start_canvas = start_canvas();
+		// this.start_canvas.init(this.startGame);
 	}
 	testFilter () {
 		this.home_page.filterTest();
@@ -65,14 +66,14 @@ export default class HomeCanvas extends React.Component {
 		this.home_page.switchPlayer();
 	}
 	render () {
-		let backgroundCSS = (this.state.nightMode === "off")?'waterBackground':'nightBackground';
+		let mobileCheck = (isMobileOnly)?'mobile':'nonMobile';
 		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
 		if (this.state.loggedIn) {
 			return (
 				<div>
 
 				{/*<div id='startGameCanvas' className={startScreenCSS} ></div>*/}
-				<div id='homeCanvas' className={backgroundCSS} ></div>
+				<div id='homeCanvas' className={mobileCheck} ></div>
 				{/*	<div className="testPanel">
 					<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 					<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>

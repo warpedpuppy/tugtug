@@ -14,14 +14,15 @@
 .startScreenHide {
 	display:none;
 }
-#homeCanvas {
-	width: 100vw;
-	height: calc(100vh * 0.5);
+/*#homeCanvas {
+	width: 300px;
+	height: 600px;
 }
-
+*/
 #homeCanvas canvas{
-	width: 100vw;
-	height: calc(100vh * 0.5);
+	width:100vw;
+	/*width: 300px;
+	height: 600px;*/
 	position:fixed;
 	top:0;
 	left:0;
@@ -80,12 +81,12 @@
 
 @media screen and (min-width: 768px){
 
-	#homeCanvas {
+	#homeCanvas.nonMobile {
 		width: 100vw;
 		height: 100vh;
 	}
 
-	#homeCanvas canvas{
+	#homeCanvas.nonMobile canvas{
 		width: 100vw;
 		height: 100vh;
 		position:fixed;

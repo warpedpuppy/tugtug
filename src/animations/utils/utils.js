@@ -382,17 +382,20 @@ export default {
 
         return this.intersects;
     },
-    returnCanvasWidth: function (isMobileOnly){
+    returnCanvasWidth: function (isMobileOnly) {
         var scale = window.devicePixelRatio;
-       // console.log( document.getElementById('homeCanvas').clientWidth)
+        // if(isMobileOnly){
+        //     console.log('here it is mobile only')
+        //     return 100;
+        // }
         return (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale;
 
-        //document.getElementById('homeCanvas').clientWidth * scale;
-
-        //
     },
     returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
+        if(isMobileOnly){
+            return 300;
+        }
        // console.log("height = ", document.getElementById('homeCanvas').offsetHeight)
         return (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale;
 

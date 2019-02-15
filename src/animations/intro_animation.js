@@ -61,10 +61,11 @@ export default function(obj) {
 
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = isMobileOnly?0.5:1;
+            this.mobileModifier = isMobileOnly?1:1;
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
             this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
+            console.log('here', this.canvasWidth, this.canvasHeight)
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
@@ -83,7 +84,6 @@ export default function(obj) {
             window.addEventListener('keydown', this.keyDown);
             window.addEventListener('keyup', this.keyUp);
 
-            window.onresize = this.resizeHandler.bind(this);
 
             this.start = this.start.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
@@ -166,6 +166,7 @@ export default function(obj) {
 
             this.startGame();
             
+            window.onresize = this.resizeHandler.bind(this);
         },
         startGame: function () {
             this.mode = this.utils.shuffle(this.mode);
@@ -203,8 +204,8 @@ export default function(obj) {
             }
         },
         resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight() * this.mobileModifier;;
+            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) * this.mobileModifier;;
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
@@ -212,6 +213,10 @@ export default function(obj) {
             this.gears.resize();
             this.hero.resize();
             this.swim.resize();
+
+            if(!this.bounce.started){
+                this.bounce.init(this.stage);
+            }
             this.bounce.resize();
             this.fly.resize();
             this.jump.resize();
