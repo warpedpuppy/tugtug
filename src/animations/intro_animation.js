@@ -62,30 +62,33 @@ export default function(obj) {
             this.isMobileOnly = isMobileOnly;
             this.mobileModifier = isMobileOnly?1:1;
             console.log(window.screen)
-            // if(!this.isMobileOnly){
-              
-            // } else {
-            //       var scale = window.devicePixelRatio;
-            //     this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            //     this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+            if(!this.isMobileOnly){
+                this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
+                this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
+            } else {
+                var scale = window.devicePixelRatio;
+                this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+                this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-            //     if(this.testWidth > this.testHeight  ){
-            //         //landscape
-            //         console.log('make landscape')
-            //         this.canvasWidth = window.screen.height * scale;
-            //         this.canvasHeight = window.screen.width * scale;
+                if(this.testWidth > this.testHeight  ){
+                    //landscape
+                    console.log('make landscape')
+                    document.getElementById('testOrientation').innerHTML = "landscape";
+                    this.canvasWidth = window.screen.height * scale;
+                    this.canvasHeight = window.screen.width * scale;
                     
-            //     } else {
-            //         // portrait
-            //         console.log('make portrait')
-            //         this.canvasWidth = window.screen.width * scale;
-            //         this.canvasHeight = window.screen.height * scale;
-            //     }
-            // }
+                } else {
+                    // portrait
+                    console.log('make portrait')
+                    document.getElementById('testOrientation').innerHTML = "portrait";
+                    this.canvasWidth = window.screen.width * scale;
+                    this.canvasHeight = window.screen.height * scale;
+                    this.canvasHeight -= 400;
+                }
+            }
            
 
-            this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-            this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
+           
 
             console.log('here', this.canvasWidth, this.canvasHeight)
 
