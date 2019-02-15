@@ -75,16 +75,16 @@ export default function(obj) {
                     //landscape
                     console.log('make landscape')
                     document.getElementById('testOrientation').innerHTML = "landscape";
-                    this.canvasWidth = window.screen.height * scale;
-                    this.canvasHeight = window.screen.width * scale;
+                    this.canvasWidth = window.screen.availHeight * scale;
+                    this.canvasHeight = window.screen.availWidth * scale;
                     
                 } else {
                     // portrait
                     console.log('make portrait')
                     document.getElementById('testOrientation').innerHTML = "portrait";
-                    this.canvasWidth = window.screen.width * scale;
-                    this.canvasHeight = window.screen.height * scale;
-                    this.canvasHeight -= this.cropHeight;
+                    this.canvasWidth = window.screen.availWidth * scale;
+                    this.canvasHeight = window.screen.availHeight * scale;
+                    ///this.canvasHeight -= this.cropHeight;
                 }
             }
            
@@ -266,7 +266,7 @@ export default function(obj) {
                 console.log('make portrait')
                 this.canvasWidth = (this.val1 > this.val2)?this.val2:this.val1;
                 this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
-                this.canvasHeight -= this.cropHeight; 
+                //this.canvasHeight -= this.cropHeight; 
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
                 document.getElementById('testOrientation').innerHTML = "portrait";
             }
