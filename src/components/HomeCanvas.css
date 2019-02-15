@@ -12,10 +12,14 @@
 	display:none;
 }
 
+#homeCanvas {
+	width: 100vw;
+	height: calc(100vh * 0.75);
+}
 
 #homeCanvas canvas{
 	width: 100vw;
-	height: calc(100vh * 0.85);
+	height: calc(100vh * 0.75);
 	position:fixed;
 	top:0;
 	left:0;
@@ -73,6 +77,20 @@
 }
 
 @media screen and (min-width: 500px){
+
+	#homeCanvas {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	#homeCanvas canvas{
+		width: 100vw;
+		height: 100vh;
+		position:fixed;
+		top:0;
+		left:0;
+	}
+
 	.testPanel button {
 		cursor: pointer;
 		padding: 5px 10px;

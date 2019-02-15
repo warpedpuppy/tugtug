@@ -14,8 +14,17 @@ export default function () {
 		utils: Utils,
 		barsOP: [],
 		dotsOP: [],
+		dots: [],
+		array1: [],
+		array2: [],
+		array3: [],
+		array4: [],
 		buffer: 500,
 		createCounter: 0,
+		level1Object:{},
+		level2Object:{},
+		level3Object:{},
+		level4Object:{},
 		init: function (action) {
 
 			this.hero = this.utils.hero;
@@ -29,7 +38,6 @@ export default function () {
 
 			this.cont.addChild(this.background);
 
-			this.dots = [];
 			this.array1 = [];
 			this.array2 = [];
 			this.array3 = [];

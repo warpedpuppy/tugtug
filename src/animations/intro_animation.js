@@ -57,12 +57,11 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
-       // introScreen: IntroScreen(),
         init: function (isMobile, isMobileOnly) {
-
+            console.log(isMobileOnly)
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = 0.85;
+            this.mobileModifier = isMobileOnly?0.75:0.75;
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
             this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;

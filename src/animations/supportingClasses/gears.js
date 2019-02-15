@@ -29,7 +29,7 @@ export default {
 			[this.utils.wh.canvasWidth, this.utils.wh.canvasHeight], 
 			[0, this.utils.wh.canvasHeight]
 		];
-		for (let i = 0; i < 4;i++) {
+		for (let i = 0; i < this.gears.length;i++) {
 		    let gear = this.gears[i];
 		    gear.x = corners[i][0];
 		    gear.y = corners[i][1];
