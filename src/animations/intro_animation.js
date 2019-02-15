@@ -255,6 +255,7 @@ export default function(obj) {
                 this.canvasWidth = (this.val1 > this.val2)?this.val1:this.val2;
                 this.canvasHeight = (this.val1 > this.val2)?this.val2:this.val1;
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
+                document.getElementById('testOrientation').innerHTML = "landscape";
             } else {
                 // portrait
                 console.log('make portrait')
@@ -262,6 +263,7 @@ export default function(obj) {
                 this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
                 this.canvasHeight -= 400; 
                 console.log('width', this.canvasWidth, 'height', this.canvasHeight)
+                document.getElementById('testOrientation').innerHTML = "portrait";
             }
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
             this.resizeBundle();
