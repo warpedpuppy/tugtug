@@ -393,9 +393,9 @@ export default {
     },
     returnCanvasHeight: function (isMobileOnly){
         var scale = window.devicePixelRatio;
-        if(isMobileOnly){
-            return 300;
-        }
+        // if(isMobileOnly){
+        //     return 300;
+        // }
        // console.log("height = ", document.getElementById('homeCanvas').offsetHeight)
         return (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale;
 
