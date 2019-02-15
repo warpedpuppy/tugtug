@@ -62,7 +62,7 @@ export default function(obj) {
 
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = 0.85;
+            this.mobileModifier = 0.5;
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
             this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
@@ -165,7 +165,7 @@ export default function(obj) {
             
             this.controlPanel.init(this);
 
-
+            this.startGame();
             
         },
         startGame: function () {

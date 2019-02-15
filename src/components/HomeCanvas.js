@@ -15,7 +15,7 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: false
+			loggedIn: true
 		}
 	}
 	componentDidMount () {
@@ -24,8 +24,9 @@ export default class HomeCanvas extends React.Component {
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
 			this.home_page.init(isMobile, isMobileOnly);
-			this.start_canvas = start_canvas();
-			this.start_canvas.init(this.startGame);
+			//this.startGame();
+			//this.start_canvas = start_canvas();
+			//this.start_canvas.init(this.startGame);
 		}
 		
 	}
@@ -67,7 +68,7 @@ export default class HomeCanvas extends React.Component {
 			return (
 				<div>
 
-				<div id='startGameCanvas' className={backgroundCSS} ></div>
+				{/*<div id='startGameCanvas' className={backgroundCSS} ></div>*/}
 				<div id='homeCanvas' className={backgroundCSS} ></div>
 				<div className="testPanel">
 					<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
