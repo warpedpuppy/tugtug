@@ -2,7 +2,8 @@
 	outline: none;
 }
 body {
-	/*overflow: hidden;*/
+	width:100vw;
+	overflow: hidden;
 }
 main {
 /*	padding-top: 50px;*/
