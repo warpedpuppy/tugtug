@@ -58,10 +58,10 @@ export default function(obj) {
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
         init: function (isMobile, isMobileOnly) {
-            console.log(isMobileOnly)
+
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = isMobileOnly?0.75:0.75;
+            this.mobileModifier = isMobileOnly?0.75:1;
 
             this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
             this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly) * this.mobileModifier;
@@ -164,7 +164,7 @@ export default function(obj) {
             
             this.controlPanel.init(this);
 
-            this.startGame();
+            //this.startGame();
             
         },
         startGame: function () {

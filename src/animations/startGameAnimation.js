@@ -22,7 +22,7 @@ export default function () {
             this.startGameFunction = startGameFunction;
 
             this.startButton.anchor.set(0.5);
-            this.startButton.x = 200;
+            this.startButton.x = this.canvasWidth / 2;
             this.startButton.y = 100;
             this.stage.interactive = true;
             this.stage.addChild(this.startButton);
@@ -35,25 +35,21 @@ export default function () {
 
             this.app.ticker.add(this.animate.bind(this));
         },
-        resizeX: function () {
-            console.log('resize')
+        resizeHandlerX: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
-            this.startButton.x = 200;
+            this.startButton.x = this.canvasWidth / 2;;
             this.startButton.y = 100;
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         startGame: function () {
+            window.onresize = undefined;
             this.stage.removeChild(this.startButton);
-
-             if(this.app)this.app.destroy(true);
-             this.startGameFunction();
+            if(this.app)this.app.destroy(true);
+            this.startGameFunction();
         },
         stop: function () {
-            // window.onresize = undefined;
            
-            // window.removeEventListener('keydown', this.keyDown);
-            // window.removeEventListener('keyup', this.keyUp);
         },
         animate: function () {
 

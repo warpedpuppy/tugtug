@@ -3,15 +3,17 @@
 	z-index: 10;
 	flex-direction: row;
 	justify-content: center;
-	display:none;
+
 }
 #startGameCanvas canvas{
 	width: 100vw;
 	height: 100vh;
 	background: transparent;
+
+}
+.startScreenHide {
 	display:none;
 }
-
 #homeCanvas {
 	width: 100vw;
 	height: calc(100vh * 0.75);
@@ -76,7 +78,7 @@
 	background-color: #0033CC;
 }
 
-@media screen and (min-width: 500px){
+@media screen and (min-width: 768px){
 
 	#homeCanvas {
 		width: 100vw;
