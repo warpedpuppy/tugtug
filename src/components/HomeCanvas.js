@@ -69,7 +69,7 @@ export default class HomeCanvas extends React.Component {
 
 				<div id='startGameCanvas' className={backgroundCSS} ></div>
 				<div id='homeCanvas' className={backgroundCSS} ></div>
-				{/*<div className="testPanel">
+				<div className="testPanel">
 					<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
 					<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
 					<button onClick={() => this.switchPlayer()}>switch player</button>
@@ -77,9 +77,7 @@ export default class HomeCanvas extends React.Component {
 					<button onClick={() => this.switchPlayer()}>coin animation</button>
 					<button onClick={() => this.switchPlayer()}>numbered token found</button>
 					<button onClick={() => this.switchPlayer()}>level complete</button>
-				</div>*/}
-				<h1 id="sizeShow"></h1>
-				<h1 id="sizeShow2"></h1>
+				</div>
 				</div>
 			)
 		} else {

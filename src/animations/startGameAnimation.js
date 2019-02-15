@@ -11,7 +11,7 @@ export default function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
 
-            var app = this.app = Assets.Application( 400, 400, false);
+            var app = this.app = Assets.Application( this.canvasWidth, this.canvasHeight, false);
             document.getElementById('startGameCanvas').appendChild(app.view);
 
             this.stage = app.stage;
@@ -32,6 +32,13 @@ export default function () {
             this.startButton.pointerdown = this.startGame;
 
             this.app.ticker.add(this.animate.bind(this));
+        },
+        resize: function () {
+            this.canvasWidth =  this.utils.returnCanvasWidth();
+            this.canvasHeight = this.utils.returnCanvasHeight();
+            this.startButton.x = 200;
+            this.startButton.y = 100;
+            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         startGame: function () {
             this.stage.removeChild(this.startButton);

@@ -1,13 +1,12 @@
 #startGameCanvas {
-	display:flex;
 	position: relative;
 	z-index: 10;
 	flex-direction: row;
 	justify-content: center;
 }
 #startGameCanvas canvas{
-	width: 400px;
-	height: 400px;
+	width: 100vw;
+	height: 100vh;
 	background: transparent;
 }
 
@@ -48,7 +47,7 @@
 	width:100%;
 }
 .testPanel {
-	width:100%;
+	width:100vw;
 	display: flex;
 	justify-content: center;
 	position: fixed;

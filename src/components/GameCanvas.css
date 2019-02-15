@@ -1,4 +1,4 @@
-#game_canvas {
+/*#game_canvas {
 	background-color: #333;
 	width: 100vw;
 	height: calc(100vh - 100px);
@@ -24,9 +24,9 @@
 	z-index: 20000;
 }
 .testPanel button {
-	/*cursor: pointer;
+	cursor: pointer;
 	padding: 5px 10px;
 	border:1px solid black;
 	border-radius: 10px;
-	display:block;*/
-}
+	display:block;
+}*/
