@@ -31,9 +31,12 @@ export default function () {
             this.startGame = this.startGame.bind(this);
             this.startButton.pointerdown = this.startGame;
 
+            window.onresize = this.resizeHandlerX.bind(this);
+
             this.app.ticker.add(this.animate.bind(this));
         },
-        resize: function () {
+        resizeX: function () {
+            console.log('resize')
             this.canvasWidth =  this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
             this.startButton.x = 200;
