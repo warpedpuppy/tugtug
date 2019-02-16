@@ -1,3 +1,9 @@
+.tempLogin {
+	background-color: black;
+	height:100vh;
+	width: 100vw;
+	padding-top: 50px;
+}
 fieldset {
 	width: 50%;
 	margin: 0 auto;

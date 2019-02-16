@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','bounce','fly','swim'],
+        mode: ['bounce'],//['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -64,8 +64,8 @@ export default function(obj) {
             this.mobileModifier = isMobileOnly?1:1;
 
             if(window.screen){
-                console.log("1", window.screen)
-                console.log(window.DeviceOrientationEvent)
+                // console.log("1", window.screen)
+                // console.log(window.DeviceOrientationEvent)
             }
            
 
@@ -226,11 +226,13 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
-
-            if(this.activeMode === 'bounce'){
-                this.controlPanel.removeFromStage();
-            } else {
-                this.controlPanel.addToStage();
+            
+            if (this.isMobile) {
+                if (this.activeMode === 'bounce') {
+                    this.controlPanel.removeFromStage();
+                } else {
+                    this.controlPanel.addToStage();
+                }
             }
         },
         makeLandscape: function () {
@@ -252,8 +254,8 @@ export default function(obj) {
             document.getElementById('testOrientation').innerHTML = "portrait";
         },
         determinePortraitOrLandscape: function () {
-            console.log('determine h', this.utils.returnCanvasHeight());
-            console.log('determine w', this.utils.returnCanvasWidth());
+            // console.log('determine h', this.utils.returnCanvasHeight());
+            // console.log('determine w', this.utils.returnCanvasWidth());
 
             this.testWidth = this.utils.returnCanvasWidth();
             this.testHeight = this.utils.returnCanvasHeight();
@@ -272,8 +274,8 @@ export default function(obj) {
         },
         orientationChangeHandler: function (e) {
 
-             console.log('orientation h', this.utils.returnCanvasHeight())
-             console.log('orientation w', this.utils.returnCanvasWidth())
+             // console.log('orientation h', this.utils.returnCanvasHeight())
+             // console.log('orientation w', this.utils.returnCanvasWidth())
 
             this.testForHeight = true;
 
@@ -283,15 +285,14 @@ export default function(obj) {
             this.gears.resize();
             this.hero.resize();
             this.swim.resize();
-
-            if(!this.bounce.started){
-                this.bounce.init(this.stage);
-            }
             this.bounce.resize();
             this.fly.resize();
             this.jump.resize();
             this.levelSlots.resize();
-            this.controlPanel.resize();
+            if(this.isMobile){
+                this.controlPanel.resize();
+            }
+            
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
@@ -317,7 +318,7 @@ export default function(obj) {
         nightMode: function () {
             this.pellets.change();
             this.app._options.backgroundColor = '0x000000';
-            console.log(this.app._options.backgroundColor)
+           // console.log(this.app._options.backgroundColor)
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();
@@ -420,8 +421,8 @@ export default function(obj) {
 
             if(this.testForHeight){
                 this.action = false;
-              console.log('animate h', this.utils.returnCanvasHeight());
-              console.log('animate w', this.utils.returnCanvasWidth());
+              // console.log('animate h', this.utils.returnCanvasHeight());
+              // console.log('animate w', this.utils.returnCanvasWidth());
               this.determinePortraitOrLandscape();
               this.testForHeight = false;
             }

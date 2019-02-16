@@ -21,7 +21,6 @@ export default function () {
 		array4: [],
 		buffer: 500,
 		createCounter: 0,
-		started: false,
 		init: function (action) {
 
 			this.hero = this.utils.hero;
@@ -36,10 +35,8 @@ export default function () {
 			this.cont.addChild(this.background);
 
 			
-			if(!this.started) {
-				this.started = true;
-				this.createResources();
-			}
+			
+			this.createResources();
 
 			
 			this.createBars(this.level1Object);
@@ -102,10 +99,13 @@ export default function () {
 			}
 		},
 		createBars: function (obj) {
-			
+
 			obj.cont.removeChildren();
-			let spacing = this.utils.canvasWidth / obj.q;
+			let w = this.utils.canvasWidth;
+			let spacing = w / obj.q;
+
 			for (let i = 0; i < obj.q; i ++) {
+
 				let bar = this.barsOP[this.createCounter];
 				if(!bar){
 					this.createCounter = 0;
@@ -118,8 +118,10 @@ export default function () {
 				bar.spacing = spacing;
 				bar.tint = obj.color;
 				bar.x = i * spacing;
+				//console.log(i, spacing)
 				bar.array = obj.array;
 				obj.cont.addChild(bar);
+				//console.log(bar.x, bar.y)
 				obj.array.push(bar);
 
 				let dot = this.dotsOP[this.createCounter];
@@ -144,8 +146,8 @@ export default function () {
 			}
 
 		},
-		resizeBars: function (array) {
-		
+		resizeBars: function () {
+			console.log('resize bars')
 			this.createCounter = 0;
 
 			this.dots.length = 0;

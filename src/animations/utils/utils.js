@@ -392,15 +392,11 @@ export default {
     },
     returnCanvasWidth: function () {
         let scale = window.devicePixelRatio;
-
         return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
-
     },
     returnCanvasHeight: function (){
         let scale = window.devicePixelRatio;
-     
         return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale);
-
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;

@@ -61,6 +61,7 @@ export default class TempLoginForm extends React.Component {
 			borderBottomColor: `${this.state.color3}`
 		};
 		return (
+			<div className="tempLogin">
 			<fieldset style={fieldsetClass}>
 			<legend>log in:</legend>
 			<form className="tempLoginForm" style={formClass} onSubmit={ this.sendToServer }>
@@ -72,6 +73,7 @@ export default class TempLoginForm extends React.Component {
 				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
 			</fieldset>
+			</div>
 		)
 	}
 	
