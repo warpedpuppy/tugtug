@@ -16,7 +16,7 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: true,
+			loggedIn: false,
 			showStartScreen: true
 		}
 	}

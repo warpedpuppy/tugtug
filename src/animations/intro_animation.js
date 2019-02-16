@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly'],//['jump','bounce','fly','swim'],
+        mode: ['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -82,8 +82,7 @@ export default function(obj) {
                     
                 } else {
                     // portrait
-                    this.makePortrait()
-                    ///this.canvasHeight -= this.cropHeight;
+                    this.makePortrait();
                 }
             }
 
@@ -122,7 +121,6 @@ export default function(obj) {
  
 
         },
-
         start: function () {
 
         
@@ -188,9 +186,10 @@ export default function(obj) {
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
-            
-            this.controlPanel.init(this);
-
+            if (this.isMobile) {
+                 this.controlPanel.init(this);
+            }
+           
             this.startGame();
             
             if(this.isMobileOnly){
