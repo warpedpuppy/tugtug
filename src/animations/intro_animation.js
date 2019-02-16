@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','bounce','fly','swim'],
+        mode: ['fly'],//['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -56,43 +56,36 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
+        testForHeight: false,
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
             this.mobileModifier = isMobileOnly?1:1;
-            console.log(window.screen)
-            if (!this.isMobileOnly) {
-                this.canvasWidth = this.utils.returnCanvasWidth(isMobileOnly);
-                this.canvasHeight = this.utils.returnCanvasHeight(isMobileOnly);
-            } else {
-                var scale = window.devicePixelRatio;
-                console.log('scale = ', scale)
-                this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-                this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-                if (this.testWidth > this.testHeight) {
+            if(window.screen){
+                console.log("1", window.screen)
+                console.log(window.DeviceOrientationEvent)
+            }
+           
+
+            if (!this.isMobileOnly) {
+                this.canvasWidth = this.utils.returnCanvasWidth();
+                this.canvasHeight = this.utils.returnCanvasHeight();
+            } else {
+                let test1 = this.utils.returnCanvasWidth(),
+                    test2 = this.utils.returnCanvasHeight();
+
+                if (test1 > test2) {
                     //landscape
-                    console.log('make landscape')
-                    document.getElementById('testOrientation').innerHTML = "landscape";
-                    this.canvasWidth = window.screen.height * scale;
-                    this.canvasHeight = window.screen.width * scale;
+                    this.makeLandscape();
                     
                 } else {
                     // portrait
-                    console.log('make portrait')
-                    document.getElementById('testOrientation').innerHTML = "portrait";
-                    this.canvasWidth = window.screen.width * scale;
-                    this.canvasHeight = window.screen.height * scale;
+                    this.makePortrait()
                     ///this.canvasHeight -= this.cropHeight;
                 }
             }
-           
-            // this.canvasWidth =  this.utils.returnCanvasWidth(isMobileOnly);
-            // this.canvasHeight =  this.utils.returnCanvasHeight(isMobileOnly);
-           
-
-            console.log('here', this.canvasWidth, this.canvasHeight)
 
             var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
@@ -241,38 +234,50 @@ export default function(obj) {
                 this.controlPanel.addToStage();
             }
         },
-        orientationChangeHandler: function (e) {
-            //console.log("the orientation of the device is now ", window.screen.orientation.angle);
-            // if(window.screen){
-            //     console.log("1", window.screen)
-            // }
-            let scale = window.devicePixelRatio;
+        makeLandscape: function () {
             
-            this.testWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.testHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+            let scale = window.devicePixelRatio;
+            let val1 = window.screen.height * scale,
+                val2 = window.screen.width * scale;
+            this.canvasWidth = Math.max(val1, val2);
+            this.canvasHeight = Math.min(val1, val2);
+            document.getElementById('testOrientation').innerHTML = "landscape";
+        },
+        makePortrait: function () {
+           
+            let val1 =  this.utils.returnCanvasWidth(),
+                val2 =  this.utils.returnCanvasHeight();
 
-            this.val1 = window.screen.height * scale;
-            this.val2 = window.screen.width * scale;
+            this.canvasWidth = Math.min(val1, val2);
+            this.canvasHeight = Math.max(val1, val2);
+            document.getElementById('testOrientation').innerHTML = "portrait";
+        },
+        determinePortraitOrLandscape: function () {
+            console.log('determine h', this.utils.returnCanvasHeight());
+            console.log('determine w', this.utils.returnCanvasWidth());
 
-            if(this.testHeight > this.testWidth ){
+            this.testWidth = this.utils.returnCanvasWidth();
+            this.testHeight = this.utils.returnCanvasHeight();
+
+            if (this.testHeight < this.testWidth){
                 //landscape
-                console.log('make landscape')
-                this.canvasWidth = (this.val1 > this.val2)?this.val1:this.val2;
-                this.canvasHeight = (this.val1 > this.val2)?this.val2:this.val1;
-                console.log('width', this.canvasWidth, 'height', this.canvasHeight)
-                document.getElementById('testOrientation').innerHTML = "landscape";
+                this.makeLandscape();
             } else {
                 // portrait
-                console.log('make portrait')
-                this.canvasWidth = (this.val1 > this.val2)?this.val2:this.val1;
-                this.canvasHeight = (this.val1 > this.val2)?this.val1:this.val2;
-                //this.canvasHeight -= this.cropHeight; 
-                console.log('width', this.canvasWidth, 'height', this.canvasHeight)
-                document.getElementById('testOrientation').innerHTML = "portrait";
+                this.makePortrait();
             }
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
             this.resizeBundle();
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+            this.action = true;
+        },
+        orientationChangeHandler: function (e) {
+
+             console.log('orientation h', this.utils.returnCanvasHeight())
+             console.log('orientation w', this.utils.returnCanvasWidth())
+
+            this.testForHeight = true;
+
         },
         resizeBundle: function () {
             this.clock.resize();
@@ -413,6 +418,14 @@ export default function(obj) {
             this.keyRelease();
         },
         animate: function () {
+
+            if(this.testForHeight){
+                this.action = false;
+              console.log('animate h', this.utils.returnCanvasHeight());
+              console.log('animate w', this.utils.returnCanvasWidth());
+              this.determinePortraitOrLandscape();
+              this.testForHeight = false;
+            }
             
             this.score.animate();
 

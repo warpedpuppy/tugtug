@@ -390,17 +390,14 @@ export default {
 
         return this.intersects;
     },
-    returnCanvasWidth: function (isMobileOnly) {
-        console.log('width = ', document.getElementById('homeCanvas').offsetWidth)
-        let scale = window.devicePixelRatio,
-            mobileAdjust = isMobileOnly?20:0;
+    returnCanvasWidth: function () {
+        let scale = window.devicePixelRatio;
 
         return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
 
     },
-    returnCanvasHeight: function (isMobileOnly){
-        let scale = window.devicePixelRatio,
-            mobileAdjust = isMobileOnly?300:0;
+    returnCanvasHeight: function (){
+        let scale = window.devicePixelRatio;
      
         return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale);
 
