@@ -30,12 +30,12 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
 
-			this.background.beginFill(0xFFFFFF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
+			this.background.beginFill(0x00CCFF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 
-			
-			
+			this.createCircles();
+
 			this.createResources();
 
 			
@@ -49,6 +49,28 @@ export default function () {
 
 			
 			//this.level3.alpha = this.level4.alpha = 0.75;
+
+		},
+		createCircles: function () {
+			this.circleArray = Assets.returnObjectPool('transparentRing.png');
+			this.circleQ = this.circleArray.length;
+            this.circles = Assets.ParticleContainer(this.circleQ);
+			for (let i = 0; i < this.circleQ; i ++) {
+				let item = this.circleArray[i];
+				item.anchor.set(0.5);
+				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+				item.speedAdjust = this.utils.randomNumberBetween(0.001, 0.065);
+				item.scale.set(this.utils.randomNumberBetween(0.3, 1));
+				item.alpha = this.utils.randomNumberBetween(0.5, 0.8);
+				item.tint = this.colors[this.colorCounter];
+				this.colorCounter ++;
+				if (this.colorCounter > this.colors.length - 1) {
+					this.colorCounter = 0;
+				}
+				this.circles.addChild(item);
+			}
+			this.cont.addChild(this.circles);
 
 		},
 		createResources: function () {
@@ -195,6 +217,12 @@ export default function () {
 
 			this.resizeBars();
 
+			for (let i = 0; i < this.circleQ; i ++) {
+				let item = this.circleArray[i];
+				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);	
+			}
+
 		},
 		move: function (bar) {
 			bar.x -= (this.action.vx * bar.speedAdjust);
@@ -232,6 +260,24 @@ export default function () {
 						dot.y = this.utils.canvasHeight + dot.height;
 					} else if(dot.y > this.utils.canvasHeight +100){
 						dot.y = -dot.height;
+					}
+				}
+
+				for (let i = 0; i < this.circleQ; i ++) {
+					let item = this.circleArray[i];
+					item.x += this.action.vx * item.speedAdjust;
+					item.y += this.action.vy * item.speedAdjust;	
+
+					if(item.x < -item.width){
+						item.x = this.utils.canvasWidth + item.width
+					} else if (item.x > this.utils.canvasWidth + item.width){
+						item.x = -item.width
+					}
+
+					if(item.y < -item.width){
+						item.y = this.utils.canvasHeight + item.width
+					} else if (item.y > this.utils.canvasHeight + item.width){
+						item.y = -item.width
 					}
 				}
 			}

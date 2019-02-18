@@ -27,7 +27,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['bounce'],//['jump','bounce','fly','swim'],
+        mode: ['jump','bounce','fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -212,7 +212,8 @@ export default function(obj) {
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
-             this.stage.removeChild(this.screen);
+            this.stage.removeChild(this.screen);
+            this.clock.addToStage();
         },
         stop: function () {
             window.onresize = undefined;
