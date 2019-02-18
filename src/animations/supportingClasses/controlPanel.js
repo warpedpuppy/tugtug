@@ -16,7 +16,7 @@ export default function () {
             this.upButton.interactive = true;
             this.upButton.buttonMode = true;
             this.upButton.x = 10;
-            this.upButton.pointerdown = parent.switchPlayer;
+            this.upButton.pointerdown = parent.upHit;
             this.upButton.pointerup = parent.keyRelease;
             this.uiCont.addChild(this.upButton);
 
@@ -52,7 +52,7 @@ export default function () {
             this.upButton2.interactive = true;
             this.upButton2.buttonMode = true;
             this.upButton2.x = this.spaceButton.x + this.spaceButton.width + this.spacer;
-            this.upButton2.pointerdown = parent.switchPlayer;
+            this.upButton2.pointerdown = parent.upHit;
             this.upButton2.pointerup = parent.keyRelease;
             this.uiCont.addChild(this.upButton2);
 

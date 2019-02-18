@@ -35,6 +35,7 @@ export default function () {
 		},
 		resize: function () {
 			this.swimAction.resize();
+			this.swimBackground.resize();
 		},
 		animate: function () {
 			this.ripples.animate();

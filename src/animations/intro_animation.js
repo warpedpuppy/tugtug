@@ -182,12 +182,21 @@ export default function(obj) {
             this.leftHit = this.leftHit.bind(this);
             this.spaceHit = this.spaceHit.bind(this);
             this.keyRelease = this.keyRelease.bind(this);
+            this.switchPlayer = this.switchPlayer.bind(this);
 
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
             if (this.isMobile) {
                  this.controlPanel.init(this);
+
+                this.testButton = Assets.Sprite('redTile.png');
+                this.testButton.x = 10;
+                this.testButton.y = 140;
+                this.testButton.interactive = true;
+                let that = this;
+                this.testButton.pointerdown = function(){that.switchPlayer()};
+                this.stage.addChild(this.testButton)
             }
            
             this.startGame();
@@ -222,6 +231,7 @@ export default function(obj) {
                 this.activeMode = this.mode[this.activeModeIndex];
             }
             
+
 
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();

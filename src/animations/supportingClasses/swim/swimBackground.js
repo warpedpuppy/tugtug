@@ -39,6 +39,15 @@ export default function () {
 			this.cont2.vy = this.speed2;
 
 		},
+		resize: function () {
+			this.cont1.width = this.utils.canvasWidth * this.sizeIncrement;
+			this.cont1.height = this.utils.canvasHeight * this.sizeIncrement;
+			this.cont2.width = this.utils.canvasWidth * this.sizeIncrement;
+			this.cont2.height = this.utils.canvasHeight * this.sizeIncrement;
+			this.cont1.x = this.cont1.y = 0;
+			this.cont2.x = -this.utils.canvasWidth / this.sizeIncrement;
+			this.cont2.y = -this.utils.canvasHeight / this.sizeIncrement;
+		},
 		build: function (arr) {
 			let s, cont = Assets.Container();
 			for(let i = 0; i < 4; i ++){

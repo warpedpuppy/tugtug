@@ -147,7 +147,6 @@ export default function () {
 
 		},
 		resizeBars: function () {
-			console.log('resize bars')
 			this.createCounter = 0;
 
 			this.dots.length = 0;
