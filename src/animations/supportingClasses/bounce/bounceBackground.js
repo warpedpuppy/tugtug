@@ -61,7 +61,7 @@ export default function () {
 				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
 				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
 				item.speedAdjust = this.utils.randomNumberBetween(0.001, 0.065);
-				item.scale.set(this.utils.randomNumberBetween(0.3, 1));
+				item.scale.set(this.utils.randomNumberBetween(0.05, 0.35));
 				item.alpha = this.utils.randomNumberBetween(0.5, 0.8);
 				item.tint = this.colors[this.colorCounter];
 				this.colorCounter ++;
@@ -193,6 +193,7 @@ export default function () {
 			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 		},
 		addToStage: function () {
+			this.createCircles();
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
 			this.cont.addChild(this.level3);

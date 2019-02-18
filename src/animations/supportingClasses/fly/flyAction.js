@@ -97,7 +97,7 @@ export default function () {
 	            }
 	        }
 	        if (this.flameOn) {
-	        	for(let i = 0; i < this.flameArray.length; i ++) {
+	        	for(let i = 0; i < this.flameQ; i ++) {
 		        	let item = this.flameArray[i];
 		        	item.x += item.vx;
 		        	item.y += item.vy;
