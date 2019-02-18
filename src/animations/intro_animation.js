@@ -212,7 +212,8 @@ export default function(obj) {
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
-             this.stage.removeChild(this.screen);
+            this.stage.removeChild(this.screen);
+            this.clock.addToStage();
         },
         stop: function () {
             window.onresize = undefined;
@@ -302,7 +303,13 @@ export default function(obj) {
             if(this.isMobile){
                 this.controlPanel.resize();
             }
-            
+            // this.magicPills.resize(wh);
+            // this.treasure.resize(wh);
+            // this.transitionItems.resize(wh);
+            // this.filterAnimation.resize(wh);
+            // this.pellets.resize(wh);
+            // this.hero.resize(wh);
+            // if(this.bouncePlatform)this.bouncePlatform.resize(wh);            
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
@@ -312,17 +319,7 @@ export default function(obj) {
 
             this.resizeBundle();
            
-            // if(this.platforms)this.platforms.resize(wh);
-            // this.magicPills.resize(wh);
-            // this.treasure.resize(wh);
-            // this.transitionItems.resize(wh);
-            // this.filterAnimation.resize(wh);
-            // this.pellets.resize(wh);
-            // this.hero.resize(wh);
-            // if(this.jumpAction)this.jumpAction.resize(wh);
-            // if(this.bouncePlatform)this.bouncePlatform.resize(wh);
-            // if(this.bounceAction)this.bounceAction.resize(wh);
-
+         
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         nightMode: function () {
@@ -334,7 +331,7 @@ export default function(obj) {
             this.filterAnimation.filterToggle();
         },
         rotate: function (str) {
-
+            // leaving this here for now because this really relates to the background current
             if (this.activeMode === 'jump') {
                 this.activeAction.move(str);
                 return;
@@ -381,12 +378,10 @@ export default function(obj) {
             this.vy = 0;
         },
         leftHit: function () {
-            //if(this.activeMode === 'bounce')break;
             if(this.swimAction)this.swimAction.spinning = true;
             this.rotateLeftBoolean = true;
         },
         rightHit: function (){
-            //if(this.activeMode === 'bounce')break;
             if(this.swimAction)this.swimAction.spinning = true;
             this.rotateRightBoolean = true;
         },

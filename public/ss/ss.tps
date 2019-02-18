@@ -248,6 +248,11 @@
             <filename>../bmps/dragonTriangle.png</filename>
             <filename>../bmps/slot.png</filename>
             <filename>../bmps/levelToken.png</filename>
+            <filename>../bmps/orangeGradient.png</filename>
+            <filename>../bmps/blueGradient.png</filename>
+            <filename>../bmps/redGradient.png</filename>
+            <filename>../bmps/pinkGradient.png</filename>
+            <filename>../bmps/transparentRing.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

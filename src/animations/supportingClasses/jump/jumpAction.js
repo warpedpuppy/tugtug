@@ -16,6 +16,9 @@ export default function () {
 			this.stage = stage;
 			this.vx = this.speed;
 		},
+		rotate: function () {
+
+		},
 		jump: function () {
 			console.log('jump')
 			this.vy = -6;

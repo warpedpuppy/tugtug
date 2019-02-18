@@ -30,12 +30,12 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
 
-			this.background.beginFill(0x9900FF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
+			this.background.beginFill(0x00CCFF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 
-			
-			
+			this.createCircles();
+
 			this.createResources();
 
 			
@@ -51,6 +51,28 @@ export default function () {
 			//this.level3.alpha = this.level4.alpha = 0.75;
 
 		},
+		createCircles: function () {
+			this.circleArray = Assets.returnObjectPool('transparentRing.png');
+			this.circleQ = this.circleArray.length;
+            this.circles = Assets.ParticleContainer(this.circleQ);
+			for (let i = 0; i < this.circleQ; i ++) {
+				let item = this.circleArray[i];
+				item.anchor.set(0.5);
+				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+				item.speedAdjust = this.utils.randomNumberBetween(0.001, 0.065);
+				item.scale.set(this.utils.randomNumberBetween(0.05, 0.35));
+				item.alpha = this.utils.randomNumberBetween(0.5, 0.8);
+				item.tint = this.colors[this.colorCounter];
+				this.colorCounter ++;
+				if (this.colorCounter > this.colors.length - 1) {
+					this.colorCounter = 0;
+				}
+				this.circles.addChild(item);
+			}
+			this.cont.addChild(this.circles);
+
+		},
 		createResources: function () {
 			this.array1 = [];
 			this.array2 = [];
@@ -58,15 +80,15 @@ export default function () {
 			this.array4 = [];
 
 			this.level1Object = {
-				w: 3,
-				q: 10,
+				w: 100,
+				q: 3,
 				speedAdjust: 0.15,
 				color: 0xFF0000,
 				cont: this.level1, 
 				array: this.array1
 			}
 			this.level2Object = {
-				w: 8,
+				w: 50,
 				q: 5,
 				speedAdjust: 0.35,
 				color: 0x33FF00,
@@ -75,15 +97,15 @@ export default function () {
 			}
 			this.level3Object = {
 				w: 20,
-				q: 2,
+				q: 10,
 				speedAdjust: 0.65,
 				color: 0xFFFF00,
 				cont: this.level3, 
 				array: this.array3
 			}
 			this.level4Object = {
-				w: 30,
-				q: 1,
+				w: 10,
+				q: 20,
 				speedAdjust: 0.15,
 				color: 0xFF00FF,
 				cont: this.level4, 
@@ -92,9 +114,17 @@ export default function () {
 
 
 			let opQ = this.level1Object.q + this.level2Object.q + this.level3Object.q + this.level4Object.q;
-
+			let arr = [
+				'pinkGradient.png',
+				'orangeGradient.png',
+				'blueGradient.png',
+				'redGradient.png'
+			],
+			arrCounter = 0;
 			for (let i = 0; i < opQ; i ++) {
-				this.barsOP.push(Assets.Sprite('line.png'));
+				this.barsOP.push(Assets.Sprite(arr[arrCounter]));
+				arrCounter ++;
+				if(arrCounter >= arr.length)arrCounter = 0;
 				this.dotsOP.push(Assets.Sprite('pellet.png'));
 			}
 		},
@@ -116,7 +146,7 @@ export default function () {
 				bar.width = obj.w;
 				bar.height = this.utils.canvasHeight;
 				bar.spacing = spacing;
-				bar.tint = obj.color;
+				//bar.tint = obj.color;
 				bar.x = i * spacing;
 				//console.log(i, spacing)
 				bar.array = obj.array;
@@ -163,18 +193,23 @@ export default function () {
 			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 		},
 		addToStage: function () {
+			this.createCircles();
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
-			this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
-			this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
+			this.cont.addChild(this.level3);
+			this.cont.addChild(this.level4)
+			// this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
+			// this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {
 			TweenMax.killAll();
 			this.cont.removeChild(this.level1);
 			this.cont.removeChild(this.level2);
-			this.parentCont.removeChild(this.level3);
-			this.parentCont.removeChild(this.level4);
+			this.cont.removeChild(this.level3);
+			this.cont.removeChild(this.level4);
+			// this.parentCont.removeChild(this.level3);
+			// this.parentCont.removeChild(this.level4);
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
@@ -182,6 +217,12 @@ export default function () {
 			this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
 			this.resizeBars();
+
+			for (let i = 0; i < this.circleQ; i ++) {
+				let item = this.circleArray[i];
+				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);	
+			}
 
 		},
 		move: function (bar) {
@@ -220,6 +261,24 @@ export default function () {
 						dot.y = this.utils.canvasHeight + dot.height;
 					} else if(dot.y > this.utils.canvasHeight +100){
 						dot.y = -dot.height;
+					}
+				}
+
+				for (let i = 0; i < this.circleQ; i ++) {
+					let item = this.circleArray[i];
+					item.x += this.action.vx * item.speedAdjust;
+					item.y += this.action.vy * item.speedAdjust;	
+
+					if(item.x < -item.width){
+						item.x = this.utils.canvasWidth + item.width
+					} else if (item.x > this.utils.canvasWidth + item.width){
+						item.x = -item.width
+					}
+
+					if(item.y < -item.width){
+						item.y = this.utils.canvasHeight + item.width
+					} else if (item.y > this.utils.canvasHeight + item.width){
+						item.y = -item.width
 					}
 				}
 			}

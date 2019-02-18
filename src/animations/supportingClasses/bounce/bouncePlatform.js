@@ -11,13 +11,16 @@ export default function () {
         init: function (cont) {
             let spritesheet = this.utils.spritesheet;
             this.cont = cont;
-            this.line.height = 2;
+            this.line.height = 10;
             this.line.anchor.y = 0.5;
             this.line.tint = 0x000000;
 
             this.line.texture = spritesheet.textures['bouncePlatformLine.png'];
-            this.dot1.texture = spritesheet.textures['bouncePlatformBall.png'];
-            this.dot2.texture = spritesheet.textures['bouncePlatformBall.png'];
+            this.dot1.texture = spritesheet.textures['transparentRing.png'];
+            this.dot2.texture = spritesheet.textures['transparentRing.png'];
+
+            this.dot1.scale.set(0.5);
+            this.dot2.scale.set(0.5);
 
             cont.addChild(this.line);
             this.dot1.anchor.x = this.dot1.anchor.y = 0.5;

@@ -19,6 +19,9 @@ export default function () {
 			this.canvasWidth = wh.canvasWidth;
 			this.canvasHeight = wh.canvasHeight;
 		},
+		rotate: function () {
+
+		},
 		animate: function () {
 			//this.hero.vy += 0.25;
 				this.hero.activeHero.animate();
