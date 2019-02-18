@@ -30,7 +30,7 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
 
-			this.background.beginFill(0x9900FF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
+			this.background.beginFill(0xFFFFFF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 
@@ -58,15 +58,15 @@ export default function () {
 			this.array4 = [];
 
 			this.level1Object = {
-				w: 3,
-				q: 10,
+				w: 100,
+				q: 3,
 				speedAdjust: 0.15,
 				color: 0xFF0000,
 				cont: this.level1, 
 				array: this.array1
 			}
 			this.level2Object = {
-				w: 8,
+				w: 50,
 				q: 5,
 				speedAdjust: 0.35,
 				color: 0x33FF00,
@@ -75,15 +75,15 @@ export default function () {
 			}
 			this.level3Object = {
 				w: 20,
-				q: 2,
+				q: 10,
 				speedAdjust: 0.65,
 				color: 0xFFFF00,
 				cont: this.level3, 
 				array: this.array3
 			}
 			this.level4Object = {
-				w: 30,
-				q: 1,
+				w: 10,
+				q: 20,
 				speedAdjust: 0.15,
 				color: 0xFF00FF,
 				cont: this.level4, 
@@ -92,9 +92,17 @@ export default function () {
 
 
 			let opQ = this.level1Object.q + this.level2Object.q + this.level3Object.q + this.level4Object.q;
-
+			let arr = [
+				'pinkGradient.png',
+				'orangeGradient.png',
+				'blueGradient.png',
+				'redGradient.png'
+			],
+			arrCounter = 0;
 			for (let i = 0; i < opQ; i ++) {
-				this.barsOP.push(Assets.Sprite('line.png'));
+				this.barsOP.push(Assets.Sprite(arr[arrCounter]));
+				arrCounter ++;
+				if(arrCounter >= arr.length)arrCounter = 0;
 				this.dotsOP.push(Assets.Sprite('pellet.png'));
 			}
 		},
@@ -116,7 +124,7 @@ export default function () {
 				bar.width = obj.w;
 				bar.height = this.utils.canvasHeight;
 				bar.spacing = spacing;
-				bar.tint = obj.color;
+				//bar.tint = obj.color;
 				bar.x = i * spacing;
 				//console.log(i, spacing)
 				bar.array = obj.array;
@@ -165,16 +173,20 @@ export default function () {
 		addToStage: function () {
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
-			this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
-			this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
+			this.cont.addChild(this.level3);
+			this.cont.addChild(this.level4)
+			// this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
+			// this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {
 			TweenMax.killAll();
 			this.cont.removeChild(this.level1);
 			this.cont.removeChild(this.level2);
-			this.parentCont.removeChild(this.level3);
-			this.parentCont.removeChild(this.level4);
+			this.cont.removeChild(this.level3);
+			this.cont.removeChild(this.level4);
+			// this.parentCont.removeChild(this.level3);
+			// this.parentCont.removeChild(this.level4);
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
