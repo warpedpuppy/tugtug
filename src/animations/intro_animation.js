@@ -18,6 +18,7 @@ import LevelSlots from './supportingClasses/level/levelSlots';
 //import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
+import KeyHandler from './supportingClasses/keyHandler';
 export default function(obj) {
     return {
         idle: true,
@@ -98,10 +99,6 @@ export default function(obj) {
             this.stage.addChild(this.filterContainer);
             this.stage.addChild(this.foregroundCont);
 
-            this.keyDown = this.keyDown.bind(this);
-            this.keyUp = this.keyUp.bind(this);
-            window.addEventListener('keydown', this.keyDown);
-            window.addEventListener('keyup', this.keyUp);
 
             this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
          
@@ -165,31 +162,18 @@ export default function(obj) {
 
             this.jump.init(this.stage);
             
-            //this.switchPlayer(this.mode[this.activeModeIndex]);
-
             this.levelSlots.init(this.stage).addToStage();
             this.startGame = this.startGame.bind(this);
             //this.introScreen.init(this.stage, this.startGame).addToStage();
 
-            // if(this.isMobile){
-            //     console.log("mobile")
-            // } else {
-            //     console.log("not mobile")
-            // }
-            this.upHit = this.upHit.bind(this);
-            this.downHit = this.downHit.bind(this);
-            this.rightHit = this.rightHit.bind(this);
-            this.leftHit = this.leftHit.bind(this);
-            this.spaceHit = this.spaceHit.bind(this);
-            this.keyRelease = this.keyRelease.bind(this);
             this.switchPlayer = this.switchPlayer.bind(this);
 
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
             if (this.isMobile) {
-                 this.controlPanel.init(this);
-
+                //ipad and mobile
+                this.controlPanel.init(this);
                 this.testButton = Assets.Sprite('redTile.png');
                 this.testButton.x = 10;
                 this.testButton.y = 140;
@@ -197,11 +181,15 @@ export default function(obj) {
                 let that = this;
                 this.testButton.pointerdown = function(){that.switchPlayer()};
                 this.stage.addChild(this.testButton)
+            } else {
+                this.keyHandler = KeyHandler();
+                this.keyHandler.init(this);
             }
            
             this.startGame();
             
             if(this.isMobileOnly){
+                //mobile
                 window.addEventListener("orientationchange", this.orientationChangeHandler);
             } else {
                  window.onresize = this.resizeHandler.bind(this);
@@ -214,12 +202,17 @@ export default function(obj) {
             this.app.ticker.add(this.animate.bind(this));
             this.stage.removeChild(this.screen);
             this.clock.addToStage();
+
+            if (!this.isMobile) {
+                this.keyHandler.addToStage();
+            }
         },
         stop: function () {
             window.onresize = undefined;
             if(this.app)this.app.destroy(true);
-            window.removeEventListener('keydown', this.keyDown);
-            window.removeEventListener('keyup', this.keyUp);
+             if (!this.isMobile) {
+                this.keyHandler.removeFromStage();
+            }
         },
         switchPlayer: function (str) {
             if (this[this.activeMode]) this[this.activeMode].removeFromStage();
@@ -366,65 +359,6 @@ export default function(obj) {
                 this.activeAction.rotate(obj);
             }
         },
-        // spaceHit: function () {
-        //     if(this.activeAction.jump)this.activeAction.jump();
-        //     if(this.activeMode === 'fly')this.activeAction.fire(true);
-        // },
-        // upHit: function () {
-        //     this.rotate('up');
-        //     this.hero.heroJump.look('up');
-        // },
-        // downHit: function () {
-        //     this.vy = 0;
-        // },
-        // leftHit: function () {
-        //     if(this.swimAction)this.swimAction.spinning = true;
-        //     this.rotateLeftBoolean = true;
-        // },
-        // rightHit: function (){
-        //     if(this.swimAction)this.swimAction.spinning = true;
-        //     this.rotateRightBoolean = true;
-        // },
-        // keyRelease: function () {
-        //     if(this.swimAction)this.swimAction.spinning = false;
-        //     this.rotateLeftBoolean = false;
-        //     this.rotateRightBoolean = false;
-        //     this.idle = true;
-        //     if(this.activeMode === 'fly')this.activeAction.fire(false);
-        // },
-        // keyDown: function (e) {
-        //     //e.preventDefault();
-        //     // console.log(e.keyCode)
-        //     switch (e.keyCode) {
-        //         case 32:
-        //         // space
-        //             this.spaceHit();
-        //             break;
-        //         case 37:
-        //             // left
-        //             this.leftHit();
-        //             break;
-        //         case 38:
-        //             // up
-        //             this.upHit();
-        //             break;
-        //         case 39:
-        //             // right
-        //             this.rightHit();
-        //             break;
-        //         case 67:
-        //             // the letter c for switch player
-        //             this.switchPlayer();
-        //         case 40:
-        //             break;
-        //         default:
-        //             this.downHit();
-        //     }
-        // },
-        // keyUp: function (e) {
-        //     e.preventDefault();
-        //     this.keyRelease();
-        // },
         animate: function () {
 
             if(this.testForHeight){

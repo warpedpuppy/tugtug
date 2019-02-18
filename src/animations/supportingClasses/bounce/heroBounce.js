@@ -42,7 +42,7 @@ export default function () {
 		},
 		smileyMouth: function () {
 			this.grimace = this.spritesheet.textures['grimace.png']
-			let s = Assets.Sprite('grimace.png');
+			let s = Assets.Sprite('smile.png');
 			this.smile = this.spritesheet.textures['smile.png']
 			s.anchor.set(0.5);
 			s.scale.set(0.5);

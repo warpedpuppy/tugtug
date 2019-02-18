@@ -1,38 +1,58 @@
-import Assets from '../../utils/assetCreation';
-import Utils from '../../utils/utils';
-import Config from './animationsConfig';
+import Assets from '../utils/assetCreation';
+import Utils from '../utils/utils';
+// import Config from './animationsConfig';
 export default function () {
 	return {
-		init: function (parentCont) {
+		init: function (parent) {
+			this.parent = parent;
+			this.upHit = this.upHit.bind(this);
+            this.downHit = this.downHit.bind(this);
+            this.rightHit = this.rightHit.bind(this);
+            this.leftHit = this.leftHit.bind(this);
+            this.spaceHit = this.spaceHit.bind(this);
+            this.keyRelease = this.keyRelease.bind(this);
+            this.keyDown = this.keyDown.bind(this);
+            this.keyUp = this.keyUp.bind(this);
 		},
 		addToStage: function () {
-
+			window.addEventListener('keydown', this.keyDown);
+            window.addEventListener('keyup', this.keyUp);
+		},
+		removeFromStage: function () {
+			window.removeEventListener('keydown', this.keyDown);
+            window.removeEventListener('keyup', this.keyUp);
 		},
 		spaceHit: function () {
-            if(this.activeAction.jump)this.activeAction.jump();
-            if(this.activeMode === 'fly')this.activeAction.fire(true);
+            if(this.parent.activeAction.jump){
+            	this.parent.activeAction.jump();
+            }
+            if(this.parent.activeMode === 'fly'){
+            	this.parent.activeAction.fire(true);
+            }
         },
         upHit: function () {
             this.rotate('up');
-            this.hero.heroJump.look('up');
+            this.parent.hero.heroJump.look('up');
         },
         downHit: function () {
-            this.vy = 0;
+            //this.vy = 0;
         },
         leftHit: function () {
-            if(this.swimAction)this.swimAction.spinning = true;
-            this.rotateLeftBoolean = true;
+            this.parent.activeAction.spinning = true;
+            this.parent.rotateLeftBoolean = true;
         },
         rightHit: function (){
-            if(this.swimAction)this.swimAction.spinning = true;
-            this.rotateRightBoolean = true;
+            this.parent.activeAction.spinning = true;
+            this.parent.rotateRightBoolean = true;
         },
         keyRelease: function () {
-            if(this.swimAction)this.swimAction.spinning = false;
-            this.rotateLeftBoolean = false;
-            this.rotateRightBoolean = false;
-            this.idle = true;
-            if(this.activeMode === 'fly')this.activeAction.fire(false);
+            this.parent.activeAction.spinning = false;
+            this.parent.rotateLeftBoolean = false;
+            this.parent.rotateRightBoolean = false;
+            this.parent.idle = true;
+            if (this.parent.activeMode === 'fly') {
+            	this.parent.activeAction.fire(false);
+            }
         },
 		keyDown: function (e) {
             //e.preventDefault();
@@ -56,7 +76,7 @@ export default function () {
                     break;
                 case 67:
                     // the letter c for switch player
-                    this.switchPlayer();
+                    this.parent.switchPlayer();
                 case 40:
                     break;
                 default:
@@ -67,9 +87,6 @@ export default function () {
             e.preventDefault();
             this.keyRelease();
         },
-		removeFromStage: function () {
-
-		},
 		resize: function () {
 
 		},
