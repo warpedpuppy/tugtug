@@ -96,6 +96,7 @@ export default class HomeCanvas extends React.Component {
 		} else {
 			return (
 				<div>
+				
 				<TempLogIn loggedInFunction={this.loggedInCheck}/>
 				</div>
 			)

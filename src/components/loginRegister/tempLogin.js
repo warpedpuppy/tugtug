@@ -14,10 +14,13 @@ export default class TempLoginForm extends React.Component {
 			password: '',
 			color1: '#FF0000',
 			color2: '#FFFF00',
-			color3: '#FF00FF'
+			color3: '#FF00FF',
+			login: false
 		}
 	}
-	
+	toggleLogin (e) {
+		this.setState({login: !this.state.login})
+	}
 	login (e) {
 		e.preventDefault();
 		let hex = Utils.randomHex();
@@ -60,8 +63,7 @@ export default class TempLoginForm extends React.Component {
 			borderTopColor: `${this.state.color3}`,
 			borderBottomColor: `${this.state.color3}`
 		};
-		return (
-			<div className="tempLogin">
+		let content = (this.state.login)?
 			<fieldset style={fieldsetClass}>
 			<legend>log in:</legend>
 			<form className="tempLoginForm" style={formClass} onSubmit={ this.sendToServer }>
@@ -72,7 +74,22 @@ export default class TempLoginForm extends React.Component {
 					onChange={ e => this.login(e) } required/>
 				<div className='formFeedback'>{this.state.feedback}</div>
 			</form>
-			</fieldset>
+			</fieldset>:
+			<div>
+				<p>Tugtug is launching June 2019.</p>
+			</div>
+			;
+		let clickValue = (this.state.login)?"hide log in":"log in";
+
+		return (
+			<div className="tempLogin">
+				<div className="inner">
+					<img src="/bmps/tugtug.png" />
+						{content}
+					<span 
+					onClick={(e) => this.toggleLogin()}
+					className="loginClick">{clickValue}</span>
+				</div>
 			</div>
 		)
 	}

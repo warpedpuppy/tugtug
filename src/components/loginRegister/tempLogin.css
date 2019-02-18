@@ -4,6 +4,31 @@
 	width: 100vw;
 	padding-top: 50px;
 }
+.tempLogin .inner {
+	width: 500px;
+	margin: 0 auto;
+}
+.tempLogin .loginClick {
+	cursor: pointer;
+	color:white;
+	float:right;
+	margin-top: 10px;
+	color: #FF9900;
+	font-weight: bold;
+}
+.tempLogin .loginClick:hover {
+	color: #FF6600;
+}
+.tempLogin p {
+	color: white;
+	font-size: 30px;
+}
+.tempLogin img {
+	width: 150px;
+	position: relative;
+	left: -50px;
+}
+
 fieldset {
 	width: 50%;
 	margin: 0 auto;
