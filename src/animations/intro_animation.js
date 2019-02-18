@@ -389,7 +389,7 @@ export default function(obj) {
         },
         keyDown: function (e) {
             //e.preventDefault();
-            //this.hero.heroJump.look();
+            // console.log(e.keyCode)
             switch (e.keyCode) {
                 case 32:
                 // space
@@ -407,6 +407,9 @@ export default function(obj) {
                     // right
                     this.rightHit();
                     break;
+                case 67:
+                    // the letter c for switch player
+                    this.switchPlayer();
                 case 40:
                     break;
                 default:
