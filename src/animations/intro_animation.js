@@ -62,13 +62,7 @@ export default function(obj) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            //this.mobileModifier = isMobileOnly?1:1;
-
-            if(window.screen){
-                // console.log("1", window.screen)
-                // console.log(window.DeviceOrientationEvent)
-            }
-           
+    
 
             if (!this.isMobileOnly) {
                 this.canvasWidth = this.utils.returnCanvasWidth();
@@ -182,10 +176,7 @@ export default function(obj) {
                 let that = this;
                 this.testButton.pointerdown = function(){that.switchPlayer()};
                 this.stage.addChild(this.testButton)
-            } else {
-                
-                
-            }
+            } 
            
             this.startGame();
             
@@ -265,7 +256,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) * this.mobileModifier;;
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
