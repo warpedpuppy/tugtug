@@ -1,5 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/clock';
 import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
@@ -57,12 +58,11 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
-        testForHeight: false,
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = isMobileOnly?1:1;
+            //this.mobileModifier = isMobileOnly?1:1;
 
             if(window.screen){
                 // console.log("1", window.screen)
@@ -79,15 +79,15 @@ export default function(obj) {
 
                 if (test1 > test2) {
                     //landscape
-                    this.makeLandscape();
+                    OrientationChange.makeLandscape();
                     
                 } else {
                     // portrait
-                    this.makePortrait();
+                    OrientationChange.makePortrait();
                 }
             }
-
-            var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
+            console.log(this.utils.canvasWidth,this.utils.canvasHeight)
+            var app = this.app = Assets.Application( this.utils.canvasWidth,  this.utils.canvasHeight, false);
             document.getElementById('homeCanvas').appendChild(app.view);
 
             this.stage = app.stage;
@@ -100,8 +100,7 @@ export default function(obj) {
             this.stage.addChild(this.foregroundCont);
 
 
-            this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
-         
+           
 
             this.start = this.start.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
@@ -125,8 +124,8 @@ export default function(obj) {
 
             this.utils.setProperties({
                 spritesheet: this.spritesheet,
-                canvasWidth: this.canvasWidth,
-                canvasHeight: this.canvasHeight,
+                canvasWidth: this.utils.canvasWidth,
+                canvasHeight: this.utils.canvasHeight,
                 app: this.app
             })
 
@@ -192,7 +191,10 @@ export default function(obj) {
             
             if(this.isMobileOnly){
                 //mobile
-                window.addEventListener("orientationchange", this.orientationChangeHandler);
+                OrientationChange.init(this);
+                // this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
+         
+                // window.addEventListener("orientationchange", this.orientationChangeHandler);
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
@@ -241,51 +243,6 @@ export default function(obj) {
                 }
             }
         },
-        makeLandscape: function () {
-            
-            let scale = window.devicePixelRatio;
-            let val1 = window.screen.height * scale,
-                val2 = window.screen.width * scale;
-            this.canvasWidth = Math.max(val1, val2);
-            this.canvasHeight = Math.min(val1, val2);
-            document.getElementById('testOrientation').innerHTML = "landscape";
-        },
-        makePortrait: function () {
-           
-            let val1 =  this.utils.returnCanvasWidth(),
-                val2 =  this.utils.returnCanvasHeight();
-
-            this.canvasWidth = Math.min(val1, val2);
-            this.canvasHeight = Math.max(val1, val2);
-            document.getElementById('testOrientation').innerHTML = "portrait";
-        },
-        determinePortraitOrLandscape: function () {
-            // console.log('determine h', this.utils.returnCanvasHeight());
-            // console.log('determine w', this.utils.returnCanvasWidth());
-
-            this.testWidth = this.utils.returnCanvasWidth();
-            this.testHeight = this.utils.returnCanvasHeight();
-
-            if (this.testHeight < this.testWidth){
-                //landscape
-                this.makeLandscape();
-            } else {
-                // portrait
-                this.makePortrait();
-            }
-            this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-            this.resizeBundle();
-            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-            this.action = true;
-        },
-        orientationChangeHandler: function (e) {
-
-             // console.log('orientation h', this.utils.returnCanvasHeight())
-             // console.log('orientation w', this.utils.returnCanvasWidth())
-
-            this.testForHeight = true;
-
-        },
         resizeBundle: function () {
             this.clock.resize();
             this.gears.resize();
@@ -325,51 +282,10 @@ export default function(obj) {
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
-        rotate: function (str) {
-            // leaving this here for now because this really relates to the background current
-            if (this.activeMode === 'jump') {
-                this.activeAction.move(str);
-                return;
-            }
-
-            if (str === 'right') {
-                this.idle = false;
-                this.activeAction.radius += 0.25;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
-                this.vx = this.velocity * Math.sin(this.activeAction.radius);
-                this.vy = -this.velocity * Math.cos(this.activeAction.radius);
-                this.activeAction.storeRadius = this.activeAction.radius;
-                let obj = {vx: -this.vx, vy: -this.vy};
-                this.pellets.rotate(obj);
-                //this.transitionItems.rotate(obj);
-                this.activeAction.rotate(obj);
-            
-            } else if (str === 'left') {
-                this.idle = false;
-                this.activeAction.radius -= 0.25;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
-                this.vx = this.velocity * Math.sin(this.activeAction.radius);
-                this.vy = -this.velocity * Math.cos(this.activeAction.radius);
-                this.activeAction.storeRadius = this.activeAction.radius;
-                let obj = {vx: -this.vx, vy: -this.vy};
-                this.pellets.rotate(obj);
-                //this.transitionItems.rotate(obj);
-                this.activeAction.rotate(obj);
-            }
-        },
         animate: function () {
 
-            if(this.testForHeight){
-                this.action = false;
-              // console.log('animate h', this.utils.returnCanvasHeight());
-              // console.log('animate w', this.utils.returnCanvasWidth());
-              this.determinePortraitOrLandscape();
-              this.testForHeight = false;
-            }
+            OrientationChange.animate();
+           
             
             this.score.animate();
 
@@ -390,8 +306,8 @@ export default function(obj) {
             }
 
             if (this.action) {
-                if(this.rotateLeftBoolean)this.rotate('left');
-                if(this.rotateRightBoolean)this.rotate('right');
+                if(this.rotateLeftBoolean)this.activeAction.rotate('left');
+                if(this.rotateRightBoolean)this.activeAction.rotate('right');
                 this.clock.animate();
                 this.filterAnimation.animate();
                 

@@ -1,5 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import Rotate from '../action/rotate';
 export default function () {
 	return {
 		radius: 0,
@@ -69,7 +70,8 @@ export default function () {
 			this.mode = mode;
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
-		rotate: function (obj) {
+		rotate: function (str) {
+				let obj = Rotate.rotate(str, this);
 				this.vx = -obj.vx;
 				this.vy = -obj.vy
 		},
