@@ -171,6 +171,8 @@ export default function(obj) {
             this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
             this.stage.addChild(this.screen);
 
+            this.keyHandler = KeyHandler();
+            this.keyHandler.init(this);
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
@@ -182,8 +184,8 @@ export default function(obj) {
                 this.testButton.pointerdown = function(){that.switchPlayer()};
                 this.stage.addChild(this.testButton)
             } else {
-                this.keyHandler = KeyHandler();
-                this.keyHandler.init(this);
+                
+                
             }
            
             this.startGame();
