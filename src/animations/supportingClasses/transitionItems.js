@@ -10,7 +10,7 @@ export default function () {
 	textureCounter: 1,
 	hit: false,
 	utils: Utils,
-	transitionAnimation: TransitionAnimation(),
+	transitionAnimation: TransitionAnimation,
 	itemQ: 0,
 	items: [],
 	edgeBuffer: 200,
@@ -23,12 +23,8 @@ export default function () {
 		this.cont = cont;
 		this.spritesheet = this.utils.spritesheet;
 		this.hero = this.utils.hero;
-		this.transitionAnimation = this.transitionAnimation.init(
-			this.app, 
-			this.wh, 
-			this.spritesheet
-			);
-		this.transitionAnimation.addAnimations(this.cont);
+		//this.transitionAnimation = this.transitionAnimation.init();
+		//this.transitionAnimation.start(this.cont);
 		this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
 		this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
 		return this;

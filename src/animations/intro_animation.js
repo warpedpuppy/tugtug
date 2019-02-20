@@ -10,6 +10,7 @@ import Pellets from './supportingClasses/pellets';
 import Treasure from '../animations/supportingClasses/treasure';
 import MagicPills from './supportingClasses/magicPills';
 import TransitionItems from './supportingClasses/transitionItems';
+import TransitionAnimation from './supportingClasses/transitionAnimation';
 import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
@@ -20,6 +21,7 @@ import LevelSlots from './supportingClasses/level/levelSlots';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/keyHandler';
+//import Animate from './supportingClasses/action/animate';
 export default function(obj) {
     return {
         idle: true,
@@ -29,7 +31,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','bounce','fly','swim'],
+        mode: ['jump', 'bounce', 'fly', 'swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -45,6 +47,7 @@ export default function(obj) {
         filterAnimation: FilterAnimation(),
         hero: Hero(),
         transitionItems: TransitionItems(),
+        transitionAnimation: TransitionAnimation,
         utils: Utils,
         treasure: Treasure(),
         score: Score(),
@@ -62,11 +65,10 @@ export default function(obj) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-    
+
 
             if (!this.isMobileOnly) {
-                this.canvasWidth = this.utils.returnCanvasWidth();
-                this.canvasHeight = this.utils.returnCanvasHeight();
+                this.utils.getWidthAndHeight();
             } else {
                 let test1 = this.utils.returnCanvasWidth(),
                     test2 = this.utils.returnCanvasHeight();
@@ -80,8 +82,11 @@ export default function(obj) {
                     OrientationChange.makePortrait();
                 }
             }
-            console.log(this.utils.canvasWidth,this.utils.canvasHeight)
-            var app = this.app = Assets.Application( this.utils.canvasWidth,  this.utils.canvasHeight, false);
+            var app = this.app = Assets.Application( 
+                this.utils.canvasWidth,  
+                this.utils.canvasHeight, 
+                false
+            );
             document.getElementById('homeCanvas').appendChild(app.view);
 
             this.stage = app.stage;
@@ -191,7 +196,7 @@ export default function(obj) {
             }
         },
         startGame: function () {
-            this.mode = this.utils.shuffle(this.mode);
+           // this.mode = this.utils.shuffle(this.mode);
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
@@ -199,8 +204,15 @@ export default function(obj) {
             this.clock.addToStage();
 
             if (!this.isMobile) {
+                this.app.ticker.add(this.animateDesktopIpad.bind(this));
                 this.keyHandler.addToStage();
+            } else {
+                this.app.ticker.add(this.animateMobile.bind(this)); 
             }
+
+
+            this.transitionAnimation.init();
+    
         },
         stop: function () {
             window.onresize = undefined;
@@ -210,14 +222,13 @@ export default function(obj) {
             }
         },
         switchPlayer: function (str) {
+
             if (this[this.activeMode]) this[this.activeMode].removeFromStage();
             
             if (str) {
                 this.activeMode = str;
             } else {
-                this.activeModeIndex ++;
-                if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-                this.activeMode = this.mode[this.activeModeIndex];
+                this.increaseIndex();
             }
             
 
@@ -233,6 +244,30 @@ export default function(obj) {
                     this.controlPanel.addToStage();
                 }
             }
+        },
+        increaseIndex: function() {
+            this.activeModeIndex ++;
+            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+            this.activeMode = this.mode[this.activeModeIndex];
+        },
+        switchPlayerMaskedAction: function () {
+            //this[this.activeMode].background.cont.alpha = 0.5;
+            let oldBackground = this[this.activeMode];
+            this.stage.setChildIndex(oldBackground.background.cont, 0);
+
+            this.increaseIndex();
+            //overlay new 
+          
+
+            let newBackground = this[this.activeMode];
+
+            this.hero.switchPlayer(this.activeMode);
+            
+            //this[this.activeMode].background.cont.alpha = 0.5;
+            //need to make sure this goes right above it
+            this.activeAction = this[this.activeMode].addToStage();
+            this.transitionAnimation.start(newBackground, oldBackground)
+
         },
         resizeBundle: function () {
             this.clock.resize();
@@ -273,11 +308,19 @@ export default function(obj) {
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
+        animateMobile: function () {
+            OrientationChange.animate();
+            this.animate();
+        },
+        animateDesktopIpad: function () {
+            this.animate();
+        },
         animate: function () {
 
-            OrientationChange.animate();
-           
-            
+            this.transitionAnimation.animate();
+            if (this.transitionAnimation.done) {
+                this.transitionAnimation.reset();
+            }
             this.score.animate();
 
             if (this.treasure.hit || this.transitionItems.hit) {
@@ -303,12 +346,13 @@ export default function(obj) {
                 this.filterAnimation.animate();
                 
                 this.gears.animate();
-                this.activeAction.animate();
+                
                 this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
                 this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
                 this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
                 this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
-                
+
+                this.activeAction.animate();
                 this[this.activeMode].animate();
             
             }

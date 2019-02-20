@@ -5,9 +5,12 @@ export default function () {
 		flyBackground: FlyBackground(),
 		flyAction: FlyAction(),
 		init: function (stage) {
-
+			this.background = this.flyBackground;
 			this.flyBackground.init(stage);
 			this.flyAction.init();
+			this.maskedItems = [
+				this.flyBackground.cont
+			];
 		},
 		addToStage: function () {
 

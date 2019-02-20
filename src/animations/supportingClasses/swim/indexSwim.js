@@ -11,12 +11,19 @@ export default function () {
 		fishSchool: FishSchool(),
 		swimBackground: SwimBackground(),
 		init: function (cont) {
+			this.background = this.swimBackground;
 			this.ripples.init();
 			this.lilypadLotuses.init(cont);
 			this.swimAction.init(cont);
 			this.fishSchool.init(cont);
 			this.swimBackground.init(cont);
-			
+			this.maskedItems = [
+				this.swimBackground.cont, 
+				this.swimBackground.cont2, 
+				this.swimBackground.background,
+				this.fishSchool.cont,
+				this.lilypadLotuses.cont
+			];
 		},
 		addToStage: function () {
 			this.ripples.on(true);

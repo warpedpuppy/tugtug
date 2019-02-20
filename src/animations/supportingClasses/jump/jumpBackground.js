@@ -90,6 +90,7 @@ export default function () {
 			this.background.beginFill(0x000066).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
+			this.cont.addChild(this.orbsCont);
 			//this.parentCont.addChild(this.orbsCont);
 
 			this.startXs = ["TL", "BL", "TR", "BR"];
@@ -106,14 +107,14 @@ export default function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.hero.activeHero.cont.y = 
 			this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
-
-			this.parentCont.addChildAt(this.cont, 0);
-			this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
+			
+			this.parentCont.addChildAt(this.cont, 10);
+			//this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
 		},
 		removeFromStage: function () {
 			TweenMax.killAll();
 			this.parentCont.removeChild(this.cont);
-			this.parentCont.removeChild(this.orbsCont);
+			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
 			this.background.clear();

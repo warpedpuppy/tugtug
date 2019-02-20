@@ -81,12 +81,11 @@ export default function () {
 			this.boltCont = boltCont;
 		},
 		addToStage: function () {
-			
-			this.parentCont.addChildAt(this.cont, 0);
+			this.parentCont.addChildAt(this.cont, 1);
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
-			this.parentCont.removeChild(this.orbsCont);
+			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
 			this.background.clear();

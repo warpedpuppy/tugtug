@@ -52,6 +52,18 @@ export default {
 			}
 			return this.op;
 		},
+		returnFirstHalfObjectPool: function(str){
+			for (let i = 0; i < this.opQ; i ++) {
+				this.op[i].texture = this.utils.spritesheet.textures[str];
+			}
+			return this.op;
+		},
+		returnSecondHalfObjectPool: function(str){
+			for (let i = 0; i < this.opQ; i ++) {
+				this.op[i].texture = this.utils.spritesheet.textures[str];
+			}
+			return this.op;
+		},
 		Sprite: function (str) {
 
 			if(!str){

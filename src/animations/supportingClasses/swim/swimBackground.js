@@ -9,8 +9,8 @@ export default function () {
 		speed2: 0.75,
 		sizeIncrement: 2,
 		utils: Utils,
-		init: function (cont) {
-			this.cont = cont;
+		init: function () {
+			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;
 
 			let arr = [
@@ -20,15 +20,15 @@ export default function () {
 				[2000,1000,-1,-1]
 			]
 
-			this.cont1 = this.build(arr);
+			this.cont = this.build(arr);
 			this.cont2 = this.build(arr);
 			
-			this.cont1.width = this.wh.canvasWidth * this.sizeIncrement;
-			this.cont1.height = this.wh.canvasHeight * this.sizeIncrement;
+			this.cont.width = this.wh.canvasWidth * this.sizeIncrement;
+			this.cont.height = this.wh.canvasHeight * this.sizeIncrement;
 
-			this.cont1.vx = this.speed1;
-			this.cont1.vy = this.speed1;
-			this.cont1.alpha = 0.15;
+			this.cont.vx = this.speed1;
+			this.cont.vy = this.speed1;
+			this.cont.alpha = 0.15;
 
 			this.cont2.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.cont2.height = this.wh.canvasHeight * this.sizeIncrement;
@@ -38,13 +38,16 @@ export default function () {
 			this.cont2.vx = this.speed2;
 			this.cont2.vy = this.speed2;
 
+			this.background = Assets.Graphics();
+			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+
 		},
 		resize: function () {
-			this.cont1.width = this.utils.canvasWidth * this.sizeIncrement;
-			this.cont1.height = this.utils.canvasHeight * this.sizeIncrement;
+			this.cont.width = this.utils.canvasWidth * this.sizeIncrement;
+			this.cont.height = this.utils.canvasHeight * this.sizeIncrement;
 			this.cont2.width = this.utils.canvasWidth * this.sizeIncrement;
 			this.cont2.height = this.utils.canvasHeight * this.sizeIncrement;
-			this.cont1.x = this.cont1.y = 0;
+			this.cont.x = this.cont.y = 0;
 			this.cont2.x = -this.utils.canvasWidth / this.sizeIncrement;
 			this.cont2.y = -this.utils.canvasHeight / this.sizeIncrement;
 		},
@@ -62,12 +65,14 @@ export default function () {
 		},
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
-			this.cont.addChildAt(this.cont2, 0);
-			this.cont.addChildAt(this.cont1, this.cont.children.length - 2);
+			this.parentCont.addChildAt(this.background, 1);
+			this.parentCont.addChildAt(this.cont2, 2);
+			this.parentCont.addChildAt(this.cont, this.parentCont.children.length - 2);
 		},
 		removeFromStage: function () {
-			this.cont.removeChild(this.cont2);
-			this.cont.removeChild(this.cont1);
+			this.parentCont.removeChild(this.background);
+			this.parentCont.removeChild(this.cont2);
+			this.parentCont.removeChild(this.cont);
 		},
 		animate: function () {
 
@@ -91,23 +96,23 @@ export default function () {
 				this.cont2.vy *= -1;
 			}
 
-			this.cont1.x += this.cont1.vx;
-			this.cont1.y += this.cont1.vy;
+			this.cont.x += this.cont.vx;
+			this.cont.y += this.cont.vy;
 
-			if (this.cont1.x > 0) {
-				this.cont1.x = 0;
-				this.cont1.vx *= -1;
-			} else if(this.cont1.x < -this.wh.canvasWidth / this.sizeIncrement){
-				this.cont1.x = -this.wh.canvasWidth / this.sizeIncrement;;
-				this.cont1.vx *= -1;
+			if (this.cont.x > 0) {
+				this.cont.x = 0;
+				this.cont.vx *= -1;
+			} else if(this.cont.x < -this.wh.canvasWidth / this.sizeIncrement){
+				this.cont.x = -this.wh.canvasWidth / this.sizeIncrement;;
+				this.cont.vx *= -1;
 			}
 
-			if (this.cont1.y > 0) {
-				this.cont1.y = 0;
-				this.cont1.vy *= -1;
-			} else if(this.cont1.y < -this.wh.canvasHeight / this.sizeIncrement){
-				this.cont1.y = -this.wh.canvasHeight / this.sizeIncrement;
-				this.cont1.vy *= -1;
+			if (this.cont.y > 0) {
+				this.cont.y = 0;
+				this.cont.vy *= -1;
+			} else if(this.cont.y < -this.wh.canvasHeight / this.sizeIncrement){
+				this.cont.y = -this.wh.canvasHeight / this.sizeIncrement;
+				this.cont.vy *= -1;
 			}
 		}
 
