@@ -31,7 +31,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump', 'bounce', 'fly', 'swim'],
+        mode: ['fly', 'swim','jump', 'bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -61,6 +61,7 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
+        transitionAnimationPlaying: false,
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
@@ -211,7 +212,7 @@ export default function(obj) {
             }
 
 
-            this.transitionAnimation.init();
+            this.transitionAnimation.init(this);
     
         },
         stop: function () {
@@ -252,21 +253,26 @@ export default function(obj) {
         },
         switchPlayerMaskedAction: function () {
             //this[this.activeMode].background.cont.alpha = 0.5;
-            let oldBackground = this[this.activeMode];
-            this.stage.setChildIndex(oldBackground.background.cont, 0);
+            if(!this.transitionAnimationPlaying){
+                this.transitionAnimationPlaying = true;
+                let oldActiveMode = this[this.activeMode];
+            oldActiveMode.removeFromStage();
+           // this.stage.setChildIndex(oldBackground.background.cont, 0);
 
             this.increaseIndex();
             //overlay new 
           
 
-            let newBackground = this[this.activeMode];
+            let newActiveMode = this[this.activeMode];
 
             this.hero.switchPlayer(this.activeMode);
             
             //this[this.activeMode].background.cont.alpha = 0.5;
             //need to make sure this goes right above it
             this.activeAction = this[this.activeMode].addToStage();
-            this.transitionAnimation.start(newBackground, oldBackground)
+            this.transitionAnimation.start(newActiveMode, oldActiveMode)
+            }
+            
 
         },
         resizeBundle: function () {

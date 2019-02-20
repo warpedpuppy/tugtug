@@ -91,7 +91,6 @@ export default function () {
 
 			this.cont.addChild(this.background);
 			this.cont.addChild(this.orbsCont);
-			//this.parentCont.addChild(this.orbsCont);
 
 			this.startXs = ["TL", "BL", "TR", "BR"];
 			for(let i = 0; i < this.tileColQ; i ++){
@@ -105,10 +104,10 @@ export default function () {
 		},
 		addToStage: function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
-			this.hero.activeHero.cont.y = 
-			this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
-			
-			this.parentCont.addChildAt(this.cont, 10);
+			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
+			console.log('set jump hero y')
+			this.cont.addChild(this.orbsCont);
+			this.parentCont.addChildAt(this.cont, 1);
 			//this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
 		},
 		removeFromStage: function () {

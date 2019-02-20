@@ -13,12 +13,13 @@ export default {
     radialGrow: 0.01,
     radialIncrease: 0.0025,
     animationCounter: 0,
-    animationLength: 240,
+    animationLength: 120,
     done: false,
     utils: Utils,
     wh: {},
     runAnimation: false,
-    init: function () {
+    init: function (parent) {
+        this.parent = parent;
 
         //first add concentric circles one layer beneath hero
         // let heroIndex = this.utils.app.stage.getChildIndex(this.utils.hero.cont);
@@ -41,6 +42,7 @@ export default {
         
         this.circle = Assets.Sprite('circleAlpha1.png');
         this.circle.tint = 0x000000;
+        this.circle.scale.set(0);
         this.circle.anchor.set(0.5);
 
         this.halfAnimationLength = this.animationLength / 2;
@@ -87,7 +89,7 @@ export default {
     start: function (newBackground, oldBackground) {
         this.oldBackground = oldBackground;
         this.newBackground = newBackground;
-        //console.log(newBackground.maskedItems);
+        console.log(newBackground.maskedItems);
        
         newBackground.maskedItems.forEach(item => {
             item.mask = this.circle;
@@ -105,14 +107,15 @@ export default {
         //this.cont.visible = false;
         this.circle.scale.set(0);
         this.newBackground.maskedItems.forEach(item => {
-            item.mask = undefined;
+            item.mask = null;
         })
         for (let i = 0; i < this.explosionQ; i ++) {
             //fade out
             let e = this.explosions[i];
             e.radius = 0;
         }
-        this.oldBackground.removeFromStage();
+        this.parent.transitionAnimationPlaying = false;
+        //this.oldBackground.removeFromStage();
         //console.log('remove old background')
     },
     animate: function () {
@@ -127,8 +130,8 @@ export default {
 
         if(!this.done){
 
-            this.circle.scale.x += 0.05;
-            this.circle.scale.y += 0.05;
+            this.circle.scale.x += 0.1;
+            this.circle.scale.y += 0.1;
             // if (this.animationCounter <= this.halfAnimationLength) {
             //         this.radialGrow += this.radialIncrease;
             //         this.radialCont.scale.x += this.radialGrow;
