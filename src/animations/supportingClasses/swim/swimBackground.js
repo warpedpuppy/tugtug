@@ -50,6 +50,9 @@ export default function () {
 			this.cont.x = this.cont.y = 0;
 			this.cont2.x = -this.utils.canvasWidth / this.sizeIncrement;
 			this.cont2.y = -this.utils.canvasHeight / this.sizeIncrement;
+
+			this.background.clear();
+			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
 		build: function (arr) {
 			let s, cont = Assets.Container();

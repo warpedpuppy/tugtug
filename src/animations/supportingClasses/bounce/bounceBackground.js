@@ -213,8 +213,8 @@ export default function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
-			this.background.clear();
-			this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+			// this.background.clear();
+			// this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
 			this.resizeBars();
 

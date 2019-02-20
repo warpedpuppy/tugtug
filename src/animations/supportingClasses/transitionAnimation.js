@@ -40,7 +40,7 @@ export default {
         this.utils.app.stage.addChildAt(this.radialCont, contIndex - 2);
         this.utils.app.stage.addChildAt(this.explosionCont, contIndex - 1);
         
-        this.circle = Assets.Sprite('circleAlpha1.png');
+        this.circle = Assets.Sprite('circleMask.png');
         this.circle.tint = 0x000000;
         this.circle.scale.set(0);
         this.circle.anchor.set(0.5);
@@ -130,44 +130,44 @@ export default {
 
         if(!this.done){
 
-            this.circle.scale.x += 0.1;
-            this.circle.scale.y += 0.1;
-            // if (this.animationCounter <= this.halfAnimationLength) {
-            //         this.radialGrow += this.radialIncrease;
-            //         this.radialCont.scale.x += this.radialGrow;
-            //         this.radialCont.scale.y += this.radialGrow;
+            this.circle.scale.x += 0.01;
+            this.circle.scale.y += 0.01;
+            if (this.animationCounter <= this.halfAnimationLength) {
+                    this.radialGrow += this.radialIncrease;
+                    this.radialCont.scale.x += this.radialGrow;
+                    this.radialCont.scale.y += this.radialGrow;
                 
-            // } else {
-            //         //this.radialGrow += this.radialIncrease;
-            //         if(this.radialCont.scale.x < 0){
-            //             this.radialGrow = 0;
-            //             this.radialCont.scale.set(0);
-            //         } else {
-            //             this.radialCont.scale.x -= this.radialGrow;
-            //             this.radialCont.scale.y -= this.radialGrow;
-            //         }
-            // }
+            } else {
+                    //this.radialGrow += this.radialIncrease;
+                    if(this.radialCont.scale.x < 0){
+                        this.radialGrow = 0;
+                        this.radialCont.scale.set(0);
+                    } else {
+                        this.radialCont.scale.x -= this.radialGrow;
+                        this.radialCont.scale.y -= this.radialGrow;
+                    }
+            }
         }
         
 
-        // this.radialCont.rotation += this.utils.deg2rad(0.5);
-        // for (let i = 0; i < this.radialQ; i ++) {
+        this.radialCont.rotation += this.utils.deg2rad(0.5);
+        for (let i = 0; i < this.radialQ; i ++) {
 
-        //     let r = this.radials[i];
-        //     r.height = this.utils.cosWave(r.storeHeight, r.variance, r.speed);
+            let r = this.radials[i];
+            r.height = this.utils.cosWave(r.storeHeight, r.variance, r.speed);
 
-        //     let e = this.explosions[i];
-        //     e.rotation = this.utils.deg2rad(e.rotate)
-        //     if (this.animationCounter <= this.halfAnimationLength) {
-        //         e.radius += e.increaseVariant;
-        //         if(e.radius > e.maxRadius)e.radius = 0;
-        //     } else {
-        //         e.radius = 0;
-        //     }
-        //     e.x = e.radius * Math.cos( ( 2 * Math.PI) * i / this.explosionQ);
-        //     e.y = e.radius * Math.sin( ( 2 * Math.PI) * i / this.explosionQ);
+            let e = this.explosions[i];
+            e.rotation = this.utils.deg2rad(e.rotate)
+            if (this.animationCounter <= this.halfAnimationLength) {
+                e.radius += e.increaseVariant;
+                if(e.radius > e.maxRadius)e.radius = 0;
+            } else {
+                e.radius = 0;
+            }
+            e.x = e.radius * Math.cos( ( 2 * Math.PI) * i / this.explosionQ);
+            e.y = e.radius * Math.sin( ( 2 * Math.PI) * i / this.explosionQ);
 
-        // }
+        }
     }
 
 }
