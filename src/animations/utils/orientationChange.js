@@ -56,7 +56,7 @@ export default {
 
         },
 		animate: function () {
-			 if(this.testForHeight){
+			 if (this.testForHeight) {
                this.action = false;
               // console.log('animate h', this.utils.returnCanvasHeight());
               // console.log('animate w', this.utils.returnCanvasWidth());
