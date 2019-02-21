@@ -53,16 +53,22 @@ export default {
 			return this.op;
 		},
 		returnFirstHalfObjectPool: function(str){
-			for (let i = 0; i < this.opQ; i ++) {
+			let stopVal = this.opQ / 2,
+			    returnArr = [];
+			for (let i = 0; i < stopVal; i ++) {
 				this.op[i].texture = this.utils.spritesheet.textures[str];
+				returnArr.push(this.op[i]);
 			}
-			return this.op;
+			return returnArr;
 		},
 		returnSecondHalfObjectPool: function(str){
-			for (let i = 0; i < this.opQ; i ++) {
+			let startVal = this.opQ / 2,
+			    returnArr = [];
+			for (let i = startVal; i < this.opQ; i ++) {
 				this.op[i].texture = this.utils.spritesheet.textures[str];
+				returnArr.push(this.op[i]);
 			}
-			return this.op;
+			return returnArr;
 		},
 		Sprite: function (str) {
 

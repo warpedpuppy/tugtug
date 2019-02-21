@@ -266,8 +266,8 @@ export default function () {
 
 				for (let i = 0; i < this.circleQ; i ++) {
 					let item = this.circleArray[i];
-					item.x += this.action.vx * item.speedAdjust;
-					item.y += this.action.vy * item.speedAdjust;	
+					item.x -= this.action.vx * item.speedAdjust;
+					item.y -= this.action.vy * item.speedAdjust;	
 
 					if(item.x < -item.width){
 						item.x = this.utils.canvasWidth + item.width

@@ -38,7 +38,7 @@ export default function(obj) {
         foregroundCont: Assets.Container(),
         filterContainer: Assets.Container(),
         ripples: undefined,
-        action: false,
+        action: true,
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
@@ -197,7 +197,7 @@ export default function(obj) {
             }
         },
         startGame: function () {
-           // this.mode = this.utils.shuffle(this.mode);
+            this.mode = this.utils.shuffle(this.mode);
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
@@ -253,24 +253,21 @@ export default function(obj) {
         },
         switchPlayerMaskedAction: function () {
             //this[this.activeMode].background.cont.alpha = 0.5;
-            if(!this.transitionAnimationPlaying){
+            if (!this.transitionAnimationPlaying) {
+                this.action = false;
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
-            oldActiveMode.removeFromStage();
-           // this.stage.setChildIndex(oldBackground.background.cont, 0);
+                oldActiveMode.removeFromStage();
+                // this.stage.setChildIndex(oldBackground.background.cont, 0);
 
-            this.increaseIndex();
-            //overlay new 
+                this.increaseIndex();
           
 
-            let newActiveMode = this[this.activeMode];
+                let newActiveMode = this[this.activeMode];
 
-            this.hero.switchPlayer(this.activeMode);
-            
-            //this[this.activeMode].background.cont.alpha = 0.5;
-            //need to make sure this goes right above it
-            this.activeAction = this[this.activeMode].addToStage();
-            this.transitionAnimation.start(newActiveMode, oldActiveMode)
+                // this.hero.switchPlayer(this.activeMode);
+                // this.activeAction = this[this.activeMode].addToStage();
+                this.transitionAnimation.start(newActiveMode, oldActiveMode)
             }
             
 
@@ -342,7 +339,7 @@ export default function(obj) {
                 }
 
             } else {
-                this.action = true;
+               // this.action = true;
             }
 
             if (this.action) {
