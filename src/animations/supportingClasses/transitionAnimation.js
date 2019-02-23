@@ -94,6 +94,8 @@ export default {
         this.parent.hero.switchPlayer(this.parent.activeMode);
         this.parent.activeAction = this.newActiveMode.addToStage();
 
+        this.parent.grid.setAction(this.parent.activeAction);
+
         let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
             console.log("index = ", index)
         this.parent.stage.setChildIndex(this.parent.grid.cont, index) 

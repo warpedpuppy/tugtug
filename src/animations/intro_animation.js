@@ -244,6 +244,7 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
+            this.grid.setAction(this.activeAction);
             
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {

@@ -38,6 +38,9 @@ export default {
 			//console.log(this.blocks)
 			this.setLimits();
 		},
+		setAction: function (action) {
+			this.action = action;
+		},
 		block: function () {
 			let b = Assets.Graphics();
 			b.lineStyle(3, 0x000000, 1).moveTo(0,0).lineTo(this.blockWidth, 0).lineTo(this.blockWidth, this.blockHeight).lineTo(0,this.blockHeight).lineTo(0,0);
@@ -59,27 +62,36 @@ export default {
 		resize: function () {
 			this.setLimits();
 		},
+		currentSquare: function () {
+			let halfCanvasWidth = (this.utils.canvasWidth / 2),
+			    halfCanvasHeight = (this.utils.canvasHeight / 2),
+			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
+			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
+			console.log(iVal,jVal);
+		},
 		animate: function (vx, vy) {
+			
 
+			this.currentSquare();
 			
 			//boundaries
 			//console.log(this.cont.x, hw);
 			this.cont.x -= vx;
 			if (this.cont.x > this.hw) {
 			 	this.cont.x = this.hw - this.buffer;
-			 	vx *= -1;
+			 	this.action.vx *= -1;
 			} else if (this.cont.x < -this.rightBorder) {
 				this.cont.x = -this.rightBorder + this.buffer;
-			 	vx *= -1;
+			 	this.action.vx *= -1;
 			}
 
 			this.cont.y -= vy;
 			if (this.cont.y > this.hh) {
 			 	this.cont.y = this.hh - this.buffer;
-			 	vy *= -1;
+			 	this.action.vy *= -1;
 			} else if (this.cont.y < -this.bottomBorder) {
 				this.cont.y = -this.bottomBorder + this.buffer;
-			 	vy *= -1;
+			 	this.action.vy *= -1;
 			}
 			
 
