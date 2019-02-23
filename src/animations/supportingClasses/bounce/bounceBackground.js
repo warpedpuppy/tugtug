@@ -21,6 +21,7 @@ export default function () {
 		array4: [],
 		buffer: 500,
 		createCounter: 0,
+		gridIndex: 5,
 		init: function (action) {
 
 			this.hero = this.utils.hero;
@@ -60,7 +61,7 @@ export default function () {
 				item.anchor.set(0.5);
 				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
 				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
-				item.speedAdjust = this.utils.randomNumberBetween(0.001, 0.065);
+				item.speedAdjust = this.utils.randomNumberBetween(0.0001, 0.0065);
 				item.scale.set(this.utils.randomNumberBetween(0.05, 0.35));
 				item.alpha = this.utils.randomNumberBetween(0.5, 0.8);
 				item.tint = this.colors[this.colorCounter];
@@ -200,7 +201,7 @@ export default function () {
 			this.cont.addChild(this.level4)
 			// this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
 			// this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
-			this.parentCont.addChildAt(this.cont, 0);
+			this.parentCont.addChildAt(this.cont, 1);
 		},
 		removeFromStage: function () {
 			TweenMax.killAll();
@@ -213,8 +214,8 @@ export default function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
-			this.background.clear();
-			this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+			// this.background.clear();
+			// this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
 			this.resizeBars();
 
@@ -266,8 +267,8 @@ export default function () {
 
 				for (let i = 0; i < this.circleQ; i ++) {
 					let item = this.circleArray[i];
-					item.x += this.action.vx * item.speedAdjust;
-					item.y += this.action.vy * item.speedAdjust;	
+					item.x -= this.action.vx * item.speedAdjust;
+					item.y -= this.action.vy * item.speedAdjust;	
 
 					if(item.x < -item.width){
 						item.x = this.utils.canvasWidth + item.width

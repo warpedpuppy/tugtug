@@ -1,5 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/clock';
 import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
@@ -9,6 +10,7 @@ import Pellets from './supportingClasses/pellets';
 import Treasure from '../animations/supportingClasses/treasure';
 import MagicPills from './supportingClasses/magicPills';
 import TransitionItems from './supportingClasses/transitionItems';
+import TransitionAnimation from './supportingClasses/transitionAnimation';
 import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
 import Hero from './supportingClasses/hero';
@@ -19,6 +21,8 @@ import LevelSlots from './supportingClasses/level/levelSlots';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/keyHandler';
+import Grid from './supportingClasses/grid/gridIndex';
+//import Animate from './supportingClasses/action/animate';
 export default function(obj) {
     return {
         idle: true,
@@ -28,14 +32,14 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['jump','bounce','fly','swim'],
+        mode: ['fly', 'swim','jump', 'bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
         foregroundCont: Assets.Container(),
         filterContainer: Assets.Container(),
         ripples: undefined,
-        action: false,
+        action: true,
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
@@ -44,6 +48,7 @@ export default function(obj) {
         filterAnimation: FilterAnimation(),
         hero: Hero(),
         transitionItems: TransitionItems(),
+        transitionAnimation: TransitionAnimation,
         utils: Utils,
         treasure: Treasure(),
         score: Score(),
@@ -57,37 +62,34 @@ export default function(obj) {
         levelSlots: LevelSlots(),
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
-        testForHeight: false,
+        transitionAnimationPlaying: false,
+        grid: Grid,
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
-            this.mobileModifier = isMobileOnly?1:1;
 
-            if(window.screen){
-                // console.log("1", window.screen)
-                // console.log(window.DeviceOrientationEvent)
-            }
-           
 
             if (!this.isMobileOnly) {
-                this.canvasWidth = this.utils.returnCanvasWidth();
-                this.canvasHeight = this.utils.returnCanvasHeight();
+                this.utils.getWidthAndHeight();
             } else {
                 let test1 = this.utils.returnCanvasWidth(),
                     test2 = this.utils.returnCanvasHeight();
 
                 if (test1 > test2) {
                     //landscape
-                    this.makeLandscape();
+                    OrientationChange.makeLandscape();
                     
                 } else {
                     // portrait
-                    this.makePortrait();
+                    OrientationChange.makePortrait();
                 }
             }
-
-            var app = this.app = Assets.Application( this.canvasWidth,  this.canvasHeight, false);
+            var app = this.app = Assets.Application( 
+                this.utils.canvasWidth,  
+                this.utils.canvasHeight, 
+                false
+            );
             document.getElementById('homeCanvas').appendChild(app.view);
 
             this.stage = app.stage;
@@ -100,8 +102,7 @@ export default function(obj) {
             this.stage.addChild(this.foregroundCont);
 
 
-            this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
-         
+           
 
             this.start = this.start.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
@@ -125,8 +126,8 @@ export default function(obj) {
 
             this.utils.setProperties({
                 spritesheet: this.spritesheet,
-                canvasWidth: this.canvasWidth,
-                canvasHeight: this.canvasHeight,
+                canvasWidth: this.utils.canvasWidth,
+                canvasHeight: this.utils.canvasHeight,
                 app: this.app
             })
 
@@ -183,22 +184,22 @@ export default function(obj) {
                 let that = this;
                 this.testButton.pointerdown = function(){that.switchPlayer()};
                 this.stage.addChild(this.testButton)
-            } else {
-                
-                
-            }
+            } 
            
             this.startGame();
             
             if(this.isMobileOnly){
                 //mobile
-                window.addEventListener("orientationchange", this.orientationChangeHandler);
+                OrientationChange.init(this);
+                // this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
+         
+                // window.addEventListener("orientationchange", this.orientationChangeHandler);
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
         },
         startGame: function () {
-            this.mode = this.utils.shuffle(this.mode);
+            //this.mode = this.utils.shuffle(this.mode);
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
@@ -206,8 +207,20 @@ export default function(obj) {
             this.clock.addToStage();
 
             if (!this.isMobile) {
+                this.app.ticker.add(this.animateDesktopIpad.bind(this));
                 this.keyHandler.addToStage();
+            } else {
+                this.app.ticker.add(this.animateMobile.bind(this)); 
             }
+
+
+            this.transitionAnimation.init(this);
+            this.grid.init(this.stage);
+            let index = this[this.activeMode].background.gridIndex + 1;
+            console.log("index = ", index)
+            this.grid.addToStage(index);
+
+    
         },
         stop: function () {
             window.onresize = undefined;
@@ -217,14 +230,13 @@ export default function(obj) {
             }
         },
         switchPlayer: function (str) {
+
             if (this[this.activeMode]) this[this.activeMode].removeFromStage();
             
             if (str) {
                 this.activeMode = str;
             } else {
-                this.activeModeIndex ++;
-                if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-                this.activeMode = this.mode[this.activeModeIndex];
+                this.increaseIndex();
             }
             
 
@@ -232,6 +244,7 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
+            this.grid.setAction(this.activeAction);
             
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
@@ -241,49 +254,31 @@ export default function(obj) {
                 }
             }
         },
-        makeLandscape: function () {
-            
-            let scale = window.devicePixelRatio;
-            let val1 = window.screen.height * scale,
-                val2 = window.screen.width * scale;
-            this.canvasWidth = Math.max(val1, val2);
-            this.canvasHeight = Math.min(val1, val2);
-            document.getElementById('testOrientation').innerHTML = "landscape";
+        increaseIndex: function() {
+            this.activeModeIndex ++;
+            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+            this.activeMode = this.mode[this.activeModeIndex];
         },
-        makePortrait: function () {
-           
-            let val1 =  this.utils.returnCanvasWidth(),
-                val2 =  this.utils.returnCanvasHeight();
+        switchPlayerMaskedAction: function () {
+            //this[this.activeMode].background.cont.alpha = 0.5;
+            if (!this.transitionAnimationPlaying) {
+                this.action = false;
+                this.transitionAnimationPlaying = true;
+                let oldActiveMode = this[this.activeMode];
+                oldActiveMode.removeFromStage();
+                // this.stage.setChildIndex(oldBackground.background.cont, 0);
 
-            this.canvasWidth = Math.min(val1, val2);
-            this.canvasHeight = Math.max(val1, val2);
-            document.getElementById('testOrientation').innerHTML = "portrait";
-        },
-        determinePortraitOrLandscape: function () {
-            // console.log('determine h', this.utils.returnCanvasHeight());
-            // console.log('determine w', this.utils.returnCanvasWidth());
+                this.increaseIndex();
+          
 
-            this.testWidth = this.utils.returnCanvasWidth();
-            this.testHeight = this.utils.returnCanvasHeight();
+                let newActiveMode = this[this.activeMode];
 
-            if (this.testHeight < this.testWidth){
-                //landscape
-                this.makeLandscape();
-            } else {
-                // portrait
-                this.makePortrait();
+                // this.hero.switchPlayer(this.activeMode);
+                // this.activeAction = this[this.activeMode].addToStage();
+                this.transitionAnimation.start(newActiveMode, Grid);
+
             }
-            this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-            this.resizeBundle();
-            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-            this.action = true;
-        },
-        orientationChangeHandler: function (e) {
-
-             // console.log('orientation h', this.utils.returnCanvasHeight())
-             // console.log('orientation w', this.utils.returnCanvasWidth())
-
-            this.testForHeight = true;
+            
 
         },
         resizeBundle: function () {
@@ -308,7 +303,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) * this.mobileModifier;;
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
@@ -325,52 +320,19 @@ export default function(obj) {
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
-        rotate: function (str) {
-            // leaving this here for now because this really relates to the background current
-            if (this.activeMode === 'jump') {
-                this.activeAction.move(str);
-                return;
-            }
-
-            if (str === 'right') {
-                this.idle = false;
-                this.activeAction.radius += 0.25;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
-                this.vx = this.velocity * Math.sin(this.activeAction.radius);
-                this.vy = -this.velocity * Math.cos(this.activeAction.radius);
-                this.activeAction.storeRadius = this.activeAction.radius;
-                let obj = {vx: -this.vx, vy: -this.vy};
-                this.pellets.rotate(obj);
-                //this.transitionItems.rotate(obj);
-                this.activeAction.rotate(obj);
-            
-            } else if (str === 'left') {
-                this.idle = false;
-                this.activeAction.radius -= 0.25;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
-                this.vx = this.velocity * Math.sin(this.activeAction.radius);
-                this.vy = -this.velocity * Math.cos(this.activeAction.radius);
-                this.activeAction.storeRadius = this.activeAction.radius;
-                let obj = {vx: -this.vx, vy: -this.vy};
-                this.pellets.rotate(obj);
-                //this.transitionItems.rotate(obj);
-                this.activeAction.rotate(obj);
-            }
+        animateMobile: function () {
+            OrientationChange.animate();
+            this.animate();
+        },
+        animateDesktopIpad: function () {
+            this.animate();
         },
         animate: function () {
 
-            if(this.testForHeight){
-                this.action = false;
-              // console.log('animate h', this.utils.returnCanvasHeight());
-              // console.log('animate w', this.utils.returnCanvasWidth());
-              this.determinePortraitOrLandscape();
-              this.testForHeight = false;
+            this.transitionAnimation.animate();
+            if (this.transitionAnimation.done) {
+                this.transitionAnimation.reset();
             }
-            
             this.score.animate();
 
             if (this.treasure.hit || this.transitionItems.hit) {
@@ -386,22 +348,26 @@ export default function(obj) {
                 }
 
             } else {
-                this.action = true;
+               // this.action = true;
             }
 
             if (this.action) {
-                if(this.rotateLeftBoolean)this.rotate('left');
-                if(this.rotateRightBoolean)this.rotate('right');
+
+                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+
+                if(this.rotateLeftBoolean)this.activeAction.rotate('left');
+                if(this.rotateRightBoolean)this.activeAction.rotate('right');
                 this.clock.animate();
                 this.filterAnimation.animate();
                 
                 this.gears.animate();
-                this.activeAction.animate();
+                
                 this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
                 this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
                 this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
                 this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
-                
+
+                this.activeAction.animate();
                 this[this.activeMode].animate();
             
             }

@@ -3,15 +3,15 @@ import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
 		cont: Assets.Container(),
-		background: Assets.Graphics(),
+		//background: Assets.Graphics(),
 		foreground: Assets.Graphics(),
-		orbsCont: Assets.Container(),
 		utils: Utils,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 		boltQ: 30,
 		timer: undefined,
 		flashCounter: 0,
 		flashLimits: 10,
+		gridIndex: 1,
 		init: function (parentCont) {
 			
 			this.app = this.utils.app;
@@ -22,19 +22,22 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 
 	
-
+			this.background = Assets.Graphics();
 			this.background.beginFill(0xFF00FF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 
+			// this.background = Assets.Sprite("redTile.png");
+			// this.background.width = this.utils.canvasWidth;
+			// this.background.height = this.utils.canvasHeight;
 			this.cont.addChild(this.background);
 
-			this.foreground.beginFill(0x000000).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
-			this.cont.addChild(this.foreground);
-			this.foreground.alpha = 0.5;
-			this.foreground.visible = false;
+			// this.foreground.beginFill(0x000000).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			// this.cont.addChild(this.foreground);
+			// this.foreground.alpha = 0.5;
+			// this.foreground.visible = false;
 
-			this.lightningBoltsBuild();
-			this.lightningStorm = this.lightningStorm.bind(this);
-			this.clearLightening = this.clearLightening.bind(this);
+			//this.lightningBoltsBuild();
+			// this.lightningStorm = this.lightningStorm.bind(this);
+			// this.clearLightening = this.clearLightening.bind(this);
 			//this.timer = setTimeout(this.lightningStorm, 1500)
 			
 		},
@@ -86,7 +89,7 @@ export default function () {
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
-			this.parentCont.removeChild(this.orbsCont);
+			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
 			this.background.clear();

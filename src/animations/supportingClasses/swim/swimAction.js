@@ -1,5 +1,6 @@
 import Utils from '../../utils/utils';
 import AirBubbles from '../swim/airBubbles';
+import Rotate from '../action/rotate';
 export default function () {
 	return {
 		radius: 0,
@@ -26,9 +27,10 @@ export default function () {
 		start: function() {
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
-		rotate: function (obj) {
+		rotate: function (str) {
+				let obj = Rotate.rotate(str, this);
 				this.vx = -obj.vx;
-				this.vy = -obj.vy;
+				this.vy = -obj.vy
 		},
 		resize: function () {
 			this.airBubbles.resize();

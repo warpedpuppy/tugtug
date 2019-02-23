@@ -1,5 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import { TweenMax } from 'gsap';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -92,7 +93,11 @@ export default function () {
 				this.legStyle = 1;
 				this.feet.texture = this.spritesheet.textures['bounceLegs1.png'];
 			}
+			TweenMax.to(this.cont, 0.5, {rotation: this.utils.deg2rad(360), onComplete: this.reset.bind(this), delay: 0.25})
 			this.bounceStart();
+		},
+		reset: function () {
+			this.cont.rotation = 0;
 		},
 		bounceStart: function () {
 			this.bounceAllow = true;
@@ -187,7 +192,6 @@ export default function () {
 		},
 		bounceStyle2: function () {
 
-			//console.log(this.blocks[0].y, this.blocks[0].bounceTop)
 
 			if (!this.bounceAllow) {
 				return;

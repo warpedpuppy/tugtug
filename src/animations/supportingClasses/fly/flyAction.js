@@ -1,5 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import Rotate from '../action/rotate';
 export default function () {
 	return {
 		radius: 0,
@@ -28,11 +29,12 @@ export default function () {
 			this.vx = this.utils.randomNumberBetween(1,2); 
             this.vy = this.utils.randomNumberBetween(1,2);
             //this.flameQ = (Assets.webgl)? 500 : 10;
+            this.flames = Assets.ParticleContainer(this.flameQ);
 		},
 		createPool: function () {
 			this.flameArray = Assets.returnObjectPool('star.png');
             this.flameQ = this.flameArray.length;
-            this.flames = Assets.ParticleContainer(this.flameQ);
+            
 			let item;
 			for (let i = 0; i < this.flameQ; i ++) {
 				item = this.flameArray[i];
@@ -69,7 +71,8 @@ export default function () {
 			this.mode = mode;
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
-		rotate: function (obj) {
+		rotate: function (str) {
+				let obj = Rotate.rotate(str, this);
 				this.vx = -obj.vx;
 				this.vy = -obj.vy
 		},

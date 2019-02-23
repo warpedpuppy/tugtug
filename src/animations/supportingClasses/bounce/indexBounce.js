@@ -8,11 +8,14 @@ export default function () {
 		bounceAction: BounceAction(),
 		bounceBackground: BounceBackground(),
 		init: function (cont) {
-
+			this.background = this.bounceBackground;
     		this.bouncePlatform.init(cont);
     		this.bouncePlatform.on(false); 
     		this.bounceAction.init(this.bouncePlatform);
     		this.bounceBackground.init(this.bounceAction);
+    		this.maskedItems = [
+				this.bounceBackground.cont
+			];
     		
 		},
 		addToStage: function () {

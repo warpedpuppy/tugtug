@@ -27,6 +27,11 @@ export default {
             canvasHeight: h
         }
     },
+    getWidthAndHeight: function () {
+        this.setWidthAndHeight(
+            this.returnCanvasWidth(),
+            this.returnCanvasHeight());
+    },
     setHero: function (hero) {
         this.hero = hero;
     },
