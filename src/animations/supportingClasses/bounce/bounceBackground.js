@@ -21,6 +21,7 @@ export default function () {
 		array4: [],
 		buffer: 500,
 		createCounter: 0,
+		gridIndex: 5,
 		init: function (action) {
 
 			this.hero = this.utils.hero;

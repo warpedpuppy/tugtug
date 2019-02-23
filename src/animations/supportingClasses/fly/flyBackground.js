@@ -11,6 +11,7 @@ export default function () {
 		timer: undefined,
 		flashCounter: 0,
 		flashLimits: 10,
+		gridIndex: 1,
 		init: function (parentCont) {
 			
 			this.app = this.utils.app;
@@ -83,6 +84,7 @@ export default function () {
 			this.boltCont = boltCont;
 		},
 		addToStage: function () {
+			
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {

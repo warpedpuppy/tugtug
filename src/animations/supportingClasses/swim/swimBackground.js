@@ -9,6 +9,7 @@ export default function () {
 		speed2: 0.75,
 		sizeIncrement: 2,
 		utils: Utils,
+		gridIndex: 5,
 		init: function () {
 			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;

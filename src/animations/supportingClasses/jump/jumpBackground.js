@@ -26,6 +26,7 @@ export default function () {
 		pauseCounter: 0,
 		delay: 10,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
+		gridIndex: 5,
 		init: function (parentCont, action) {
 
 			this.hero = this.utils.hero;

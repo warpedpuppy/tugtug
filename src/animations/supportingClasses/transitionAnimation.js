@@ -69,7 +69,7 @@ export default {
     resize: function (wh) {
         this.wh = wh;
     },
-    start: function (newActiveMode) {
+    start: function (newActiveMode, grid) {
         this.newActiveMode = newActiveMode;
         this.setUp();
         this.runAnimation = true;
@@ -93,6 +93,11 @@ export default {
         this.parent.action = true;
         this.parent.hero.switchPlayer(this.parent.activeMode);
         this.parent.activeAction = this.newActiveMode.addToStage();
+
+        let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
+            console.log("index = ", index)
+        this.parent.stage.setChildIndex(this.parent.grid.cont, index) 
+
     },
     startWithMasking: function (newBackground, oldBackground) {
         this.oldBackground = oldBackground;

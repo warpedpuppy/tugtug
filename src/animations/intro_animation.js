@@ -21,6 +21,7 @@ import LevelSlots from './supportingClasses/level/levelSlots';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/keyHandler';
+import Grid from './supportingClasses/grid/gridIndex';
 //import Animate from './supportingClasses/action/animate';
 export default function(obj) {
     return {
@@ -62,6 +63,7 @@ export default function(obj) {
         screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
         transitionAnimationPlaying: false,
+        grid: Grid,
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
@@ -197,7 +199,7 @@ export default function(obj) {
             }
         },
         startGame: function () {
-            this.mode = this.utils.shuffle(this.mode);
+            //this.mode = this.utils.shuffle(this.mode);
             //this.introScreen.removeFromStage();
             this.switchPlayer(this.mode[this.activeModeIndex]);
             this.app.ticker.add(this.animate.bind(this));
@@ -213,6 +215,11 @@ export default function(obj) {
 
 
             this.transitionAnimation.init(this);
+            this.grid.init(this.stage);
+            let index = this[this.activeMode].background.gridIndex + 1;
+            console.log("index = ", index)
+            this.grid.addToStage(index);
+
     
         },
         stop: function () {
@@ -267,7 +274,8 @@ export default function(obj) {
 
                 // this.hero.switchPlayer(this.activeMode);
                 // this.activeAction = this[this.activeMode].addToStage();
-                this.transitionAnimation.start(newActiveMode, oldActiveMode)
+                this.transitionAnimation.start(newActiveMode, Grid);
+
             }
             
 
@@ -343,6 +351,9 @@ export default function(obj) {
             }
 
             if (this.action) {
+
+                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+
                 if(this.rotateLeftBoolean)this.activeAction.rotate('left');
                 if(this.rotateRightBoolean)this.activeAction.rotate('right');
                 this.clock.animate();

@@ -13,7 +13,6 @@ export default function () {
 			];
 		},
 		addToStage: function () {
-
 			this.flyBackground.addToStage();
 			this.flyAction.createPool();
 			return this.flyAction;
