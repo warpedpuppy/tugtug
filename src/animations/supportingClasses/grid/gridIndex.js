@@ -21,10 +21,13 @@ export default {
 			//console.log(iStart, jStart);
 
 			this.parentCont = parentCont;
+			let counter = 0;
 			for (let i = 0; i < this.colQ; i ++) {
 				this.blocks[i] = [];
 				for (let j = 0; j < this.rowQ; j ++) {
-					let b = this.block();
+					let bool = (counter % 3)?false:true;
+					let b = this.block(bool);
+					b.covered = bool;
 					b.x = j * this.blockWidth;
 					b.y = i * this.blockHeight;
 					let text = Assets.BitmapText(`${i}, ${j}`)
@@ -33,18 +36,25 @@ export default {
 					this.cont.addChild(text);
 					this.cont.addChild(b);
 					this.blocks[i][j] = b;
+					counter ++;
 				}
 			}
 			//console.log(this.blocks)
 			this.setLimits();
+			this.c = Assets.Graphics();
+			this.utils.app.stage.addChild(this.c)
+			this.d = Assets.Graphics();
+			this.utils.app.stage.addChild(this.d)
 		},
 		setAction: function (action) {
 			this.action = action;
 		},
-		block: function () {
+		block: function (bool) {
 			let b = Assets.Graphics();
 			b.lineStyle(3, 0x000000, 1).moveTo(0,0).lineTo(this.blockWidth, 0).lineTo(this.blockWidth, this.blockHeight).lineTo(0,this.blockHeight).lineTo(0,0);
-			// b.beginFill(0xFFFFFF).drawRect(0,0,this.blockWidth,this.blockHeight).endFill();
+			if (bool) {
+				b.beginFill(0xFFFFFF).drawRect(0,0,this.blockWidth,this.blockHeight).endFill();
+			}
 			return b;
 		},
 		addToStage: function (index) {
@@ -67,12 +77,70 @@ export default {
 			    halfCanvasHeight = (this.utils.canvasHeight / 2),
 			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
 			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
-			console.log(iVal,jVal);
+			//console.log(iVal,jVal);
+			//console.log(this.blocks[iVal][jVal].covered)
+			//test if square is covered
+			return this.blocks[iVal][jVal]
 		},
 		animate: function (vx, vy) {
 			
 
-			this.currentSquare();
+			if (this.currentSquare().covered) {
+				//console.log('hit!');
+				let globalPoint = this.currentSquare().toGlobal(this.utils.app.stage, undefined, true);
+
+				// create a circle at hit point
+				let heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2}
+
+				this.c.clear();
+				this.c.beginFill(0x000000).drawCircle(-5,-5,10).endFill();
+				this.c.x = globalPoint.x + (this.blockWidth / 2);
+				this.c.y = globalPoint.y + (this.blockWidth / 2);
+
+				let cPoint = {x: this.c.x, y: this.c.y };
+let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0];
+				let halfDist = radius / 4 ;
+
+				this.c.clear();
+				this.c.alpha = 0.5;
+this.c.beginFill(0x000000).drawCircle(0,0,radius).endFill();
+
+				
+				//console.log(radius)
+				 this.d.clear();
+				 this.d.lineStyle(3, 0x000000, 1).moveTo(this.c.x, this.c.y).lineTo(heroPoint.x, heroPoint.y);
+
+
+				let heroCircle = {
+							x: heroPoint.x,
+							y: heroPoint.y,
+							radius: 10,
+							r: 10,
+							vx: 0,
+							vy: 0
+						}
+
+				let boxCircle = {
+							x: this.c.x,
+							y: this.c.y,
+							radius: radius,
+							r: radius,
+							vx: this.action.vx,
+							vy: this.action.vy
+						}
+				// let depth = this.utils.circleToCircleCollisionDetection(heroCircle, boxCircle)[1]
+				// console.log(this.utils.circleToCircleCollisionDetection(heroCircle, boxCircle))
+			   this.utils.adjustPositions(heroCircle, boxCircle, 10);
+
+		       //this.utils.resolveCollision(heroCircle, boxCircle);
+		       this.action.vx = boxCircle.vx;
+			   this.action.vy = boxCircle.vy;
+				console.log(heroCircle.vx, heroCircle.vy)
+			}
+
+
+			
+			
 			
 			//boundaries
 			//console.log(this.cont.x, hw);

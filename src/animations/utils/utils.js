@@ -338,7 +338,17 @@ export default {
             ball.vy *= -1;
         }
     },
+    adjustPositionCircleBox: function (circle, box) {
+        // let boxleft = box.x,
+        //     boxRight = box.x + box.width,
+        //     boxTop = box.y,
+        //     boxBottom = box.y + box.height;
+        // let circleX = circle.x + circle.radius,
+        //     circleY = circle.y + cir
+        // if(circle.x + circle)
+    },
     adjustPositions: function (ballA, ballB, depth){
+
         const percent = 0.2;
         const slop = 0.01;
         var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
