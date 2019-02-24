@@ -42,9 +42,13 @@ export default {
 			//console.log(this.blocks)
 			this.setLimits();
 			this.c = Assets.Graphics();
+			this.c.extant= false;
 			this.utils.app.stage.addChild(this.c)
 			this.d = Assets.Graphics();
 			this.utils.app.stage.addChild(this.d)
+			this.e = Assets.Graphics();
+			this.utils.app.stage.addChild(this.e)
+			this.boxCircles = [];
 		},
 		setAction: function (action) {
 			this.action = action;
@@ -82,29 +86,33 @@ export default {
 			//test if square is covered
 			return this.blocks[iVal][jVal]
 		},
-		animate: function (vx, vy) {
-			
-
-			if (this.currentSquare().covered) {
-				//console.log('hit!');
+		test1: function () {
+//console.log('hit!');
 				let globalPoint = this.currentSquare().toGlobal(this.utils.app.stage, undefined, true);
 
 				// create a circle at hit point
-				let heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2}
+				let heroPoint = { 
+					x: this.utils.canvasWidth / 2, 
+					y: this.utils.canvasHeight / 2
+				}
 
-				this.c.clear();
-				this.c.beginFill(0x000000).drawCircle(-5,-5,10).endFill();
+			
 				this.c.x = globalPoint.x + (this.blockWidth / 2);
 				this.c.y = globalPoint.y + (this.blockWidth / 2);
-
 				let cPoint = {x: this.c.x, y: this.c.y };
-let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0];
-				let halfDist = radius / 4 ;
 
+				let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0] - 50;
+				let halfDist = radius / 4 ;
+			
 				this.c.clear();
 				this.c.alpha = 0.5;
-this.c.beginFill(0x000000).drawCircle(0,0,radius).endFill();
+				this.c.beginFill(0x000000).drawCircle(0,0,radius).endFill();
 
+				this.e.clear();
+				this.e.alpha = 0.5;
+				this.e.beginFill(0xFF0000).drawCircle(0,0,50).endFill();
+				this.e.x = heroPoint.x;
+				this.e.y = heroPoint.y;
 				
 				//console.log(radius)
 				 this.d.clear();
@@ -114,30 +122,52 @@ this.c.beginFill(0x000000).drawCircle(0,0,radius).endFill();
 				let heroCircle = {
 							x: heroPoint.x,
 							y: heroPoint.y,
-							radius: 10,
-							r: 10,
+							radius: 50,
+							r: 50,
 							vx: 0,
 							vy: 0
 						}
 
 				let boxCircle = {
-							x: this.c.x,
-							y: this.c.y,
-							radius: radius,
-							r: radius,
-							vx: this.action.vx,
-							vy: this.action.vy
-						}
-				// let depth = this.utils.circleToCircleCollisionDetection(heroCircle, boxCircle)[1]
-				// console.log(this.utils.circleToCircleCollisionDetection(heroCircle, boxCircle))
-			   this.utils.adjustPositions(heroCircle, boxCircle, 10);
+								x: this.c.x,
+								y: this.c.y,
+								radius: radius,
+								r: radius,
+								vx: this.action.vx,
+								vy: this.action.vy
+							}
+				
+	
+				this.utils.adjustPositions(heroCircle, boxCircle, 10);
+	       		this.utils.resolveCollision(heroCircle, boxCircle);
+		
+		},
+		test2: function (){
+			let globalPoint = this.currentSquare().toGlobal(this.utils.app.stage, undefined, true);
+			this.c.x = globalPoint.x + (this.blockWidth / 2);
+			this.c.y = globalPoint.y + (this.blockWidth / 2);
+			let cPoint = {x: this.c.x, y: this.c.y };
+			let heroPoint = { 
+					x: this.utils.canvasWidth / 2, 
+					y: this.utils.canvasHeight / 2
+				}
+			let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0] - 50;
+			let circle = Assets.Graphics();
+			circle.beginFill(0x000000).drawCircle(0,0,radius).endFill();
+			circle.x = this.c.x;
+			circle.y = this.c.y;
+			this.cont.addChild(circle)
+		},
+		animate: function (vx, vy) {
+			
 
-		       //this.utils.resolveCollision(heroCircle, boxCircle);
-		       this.action.vx = boxCircle.vx;
-			   this.action.vy = boxCircle.vy;
-				console.log(heroCircle.vx, heroCircle.vy)
+			if (this.currentSquare().covered) {
+				this.test1();
+			} else {
+				this.boxCircle = undefined;
+				this.c.clear();
+				this.d.clear();
 			}
-
 
 			
 			
