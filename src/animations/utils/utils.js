@@ -338,7 +338,17 @@ export default {
             ball.vy *= -1;
         }
     },
+    adjustPositionCircleBox: function (circle, box) {
+        // let boxleft = box.x,
+        //     boxRight = box.x + box.width,
+        //     boxTop = box.y,
+        //     boxBottom = box.y + box.height;
+        // let circleX = circle.x + circle.radius,
+        //     circleY = circle.y + cir
+        // if(circle.x + circle)
+    },
     adjustPositions: function (ballA, ballB, depth){
+
         const percent = 0.2;
         const slop = 0.01;
         var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
@@ -351,6 +361,7 @@ export default {
         ballA.y -= 1/ballA.r * correction[1];
         ballB.x += 1/ballB.r * correction[0];
         ballB.y += 1/ballB.r * correction[1];
+        //console.log('adjust = ', 1/ballB.r * correction[1])
     },
     resolveCollision: function (ballA, ballB){
         var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
@@ -371,6 +382,7 @@ export default {
         ballA.vy -= 1/ballA.r * impulse[1];
         ballB.vx += 1/ballB.r * impulse[0];
         ballB.vy += 1/ballB.r * impulse[1];
+        return { aX:ballA.vx, aY: ballA.vy, bX:ballB.vx, bY:ballB.vy }
     },
     lineIntersectCircle: function (A, B, C, r) {
         this.intersects = false;
