@@ -361,6 +361,7 @@ export default {
         ballA.y -= 1/ballA.r * correction[1];
         ballB.x += 1/ballB.r * correction[0];
         ballB.y += 1/ballB.r * correction[1];
+        //console.log('adjust = ', 1/ballB.r * correction[1])
     },
     resolveCollision: function (ballA, ballB){
         var relVel = [ballB.vx - ballA.vx,ballB.vy - ballA.vy];
@@ -381,6 +382,7 @@ export default {
         ballA.vy -= 1/ballA.r * impulse[1];
         ballB.vx += 1/ballB.r * impulse[0];
         ballB.vy += 1/ballB.r * impulse[1];
+        return { aX:ballA.vx, aY: ballA.vy, bX:ballB.vx, bY:ballB.vy }
     },
     lineIntersectCircle: function (A, B, C, r) {
         this.intersects = false;

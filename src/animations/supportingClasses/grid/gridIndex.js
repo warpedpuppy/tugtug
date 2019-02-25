@@ -7,7 +7,7 @@ export default {
 		blockHeight: 500,
 		blocks: {},
 		utils: Utils,
-		colQ: 10,
+		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
 		init: function (parentCont) {
@@ -22,10 +22,10 @@ export default {
 
 			this.parentCont = parentCont;
 			let counter = 0;
-			for (let i = 0; i < this.colQ; i ++) {
+			for (let i = 0; i < this.rowQ; i ++) {
 				this.blocks[i] = [];
-				for (let j = 0; j < this.rowQ; j ++) {
-					let bool = (counter % 3)?false:true;
+				for (let j = 0; j < this.colQ; j ++) {
+					let bool = (counter % 6)?false:true;
 					let b = this.block(bool);
 					b.covered = bool;
 					b.x = j * this.blockWidth;
@@ -61,17 +61,30 @@ export default {
 			}
 			return b;
 		},
+		placeOnStage: function (i, j) {
+			//we know 1,1 is free, so place that beneath the hero
+			i++;
+			j++;
+			let halfWidth = this.utils.canvasWidth / 2;
+			let halfHeight = this.utils.canvasHeight / 2;
+			this.cont.x = halfWidth - (i * this.blockWidth) + (this.blockWidth /2);
+			this.cont.y = halfHeight - (j * this.blockHeight) + (this.blockHeight /2);
+		},
 		addToStage: function (index) {
+			
+			this.placeOnStage(1,1);
 			this.parentCont.addChildAt(this.cont, index)
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont)
 		},
 		setLimits: function () {
-			this.hw = (this.utils.canvasWidth / 2);
-			this.hh = (this.utils.canvasHeight / 2);
-			this.rightBorder = (this.colQ * this.blockWidth) - this.hw;
-			this.bottomBorder = (this.rowQ * this.blockHeight) - this.hh;
+			this.boardWidth = this.colQ * this.blockWidth;
+			this.boardHeight = this.rowQ * this.blockHeight;
+			this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
+			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
+this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
+			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
 		},
 		resize: function () {
 			this.setLimits();
@@ -84,7 +97,7 @@ export default {
 			//console.log(iVal,jVal);
 			//console.log(this.blocks[iVal][jVal].covered)
 			//test if square is covered
-			return this.blocks[iVal][jVal]
+			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		test1: function () {
 //console.log('hit!');
@@ -139,55 +152,132 @@ export default {
 				
 	
 				this.utils.adjustPositions(heroCircle, boxCircle, 10);
-	       		this.utils.resolveCollision(heroCircle, boxCircle);
+	       		let obj = this.utils.resolveCollision(heroCircle, boxCircle);
+	       		if(obj){
+	       			this.action.vx = obj.bX;
+	       			this.action.vy = obj.bY;
+	       		}
+	       		
 		
 		},
-		test2: function (){
-			let globalPoint = this.currentSquare().toGlobal(this.utils.app.stage, undefined, true);
-			this.c.x = globalPoint.x + (this.blockWidth / 2);
-			this.c.y = globalPoint.y + (this.blockWidth / 2);
-			let cPoint = {x: this.c.x, y: this.c.y };
-			let heroPoint = { 
-					x: this.utils.canvasWidth / 2, 
-					y: this.utils.canvasHeight / 2
-				}
-			let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0] - 50;
-			let circle = Assets.Graphics();
-			circle.beginFill(0x000000).drawCircle(0,0,radius).endFill();
-			circle.x = this.c.x;
-			circle.y = this.c.y;
-			this.cont.addChild(circle)
+		returnAbove: function (i,j) {
+			let newi = (i - 1 >= 0)?(i - 1):undefined;
+			let newj = j;
+			
+			if(newi !== undefined && newj !== undefined){
+				return this.blocks[newi][newj];
+			} else {
+				return undefined;
+			}
+			
+		},
+		returnBelow: function (i,j) {
+			let newi = (i + 1 < (this.rowQ))?(i + 1):undefined;
+			let newj = j;
+
+			if(newi !== undefined && newj !== undefined){
+				return this.blocks[newi][newj];
+			} else {
+				return undefined;
+			}
+		},
+		returnLeft: function (i,j) {
+			let newi = i;
+			let newj = (j - 1 >= 0)?(j - 1):undefined;
+			if(newi !== undefined && newj !== undefined){
+				return this.blocks[newi][newj];
+			} else {
+				return undefined;
+			}
+		},
+		returnRight: function (i,j) {
+			let newi = i;
+			let newj = (j + 1 < (this.colQ))?(j + 1):undefined;
+			
+			if(newi !== undefined && newj !== undefined){
+				return this.blocks[newi][newj];
+			} else {
+				return undefined;
+			}
+		},
+		createBoundaries: function (currentSquare){
+			let i = currentSquare.i;
+			let j = currentSquare.j;
+			
+			let above = this.returnAbove(i,j);
+			let right = this.returnRight(i,j);
+			let below =this.returnBelow(i,j);
+			let left = this.returnLeft(i,j);
+
+			
+
+if(!above || above.covered){
+	this.topBorder = this.topEdge - (this.blockHeight * i);
+} else {
+	this.topBorder = this.topEdge;
+
+}
+
+if(!below || below.covered){
+	this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
+} else {
+	this.bottomBorder = this.bottomEdge;
+}
+
+
+if (!right || right.covered) {
+	this.rightBorder = ((j+1) * this.blockWidth) - this.leftEdge;	
+} else {
+	this.rightBorder = this.rightEdge;
+}
+
+if (!left || left.covered) {
+	this.leftBorder = this.leftEdge - (j * this.blockWidth);
+} else {
+	this.leftBorder = this.leftEdge;
+}
+
+
+
+
+			// console.log(
+			// 	this.returnAbove(i,j).covered,
+			// 	this.returnRight(i,j).covered,
+			// 	this.returnBelow(i,j).covered,
+			// 	this.returnLeft(i,j).covered);
+
 		},
 		animate: function (vx, vy) {
 			
-
-			if (this.currentSquare().covered) {
-				this.test1();
-			} else {
-				this.boxCircle = undefined;
-				this.c.clear();
-				this.d.clear();
-			}
-
+			//this.action.vx = this.action.vy = 0;
+			let currentSquare = this.currentSquare();
+			this.createBoundaries(currentSquare);
+			
 			
 			
 			
 			//boundaries
-			//console.log(this.cont.x, hw);
+			//console.log(this.cont.x, -this.rightBorder);
 			this.cont.x -= vx;
-			if (this.cont.x > this.hw) {
-			 	this.cont.x = this.hw - this.buffer;
+
+			if (this.cont.x > this.leftBorder) {
+				console.log('1')
+			 	this.cont.x -= this.buffer;
 			 	this.action.vx *= -1;
-			} else if (this.cont.x < -this.rightBorder) {
-				this.cont.x = -this.rightBorder + this.buffer;
+			} 
+			if (this.cont.x < -this.rightBorder) {
+				//console.log('2')
+				this.cont.x += this.buffer;
 			 	this.action.vx *= -1;
 			}
 
 			this.cont.y -= vy;
-			if (this.cont.y > this.hh) {
-			 	this.cont.y = this.hh - this.buffer;
+			if (this.cont.y > this.topBorder) {
+			 	this.cont.y = this.topBorder - this.buffer;
 			 	this.action.vy *= -1;
-			} else if (this.cont.y < -this.bottomBorder) {
+			} 
+
+			if (this.cont.y < -this.bottomBorder) {
 				this.cont.y = -this.bottomBorder + this.buffer;
 			 	this.action.vy *= -1;
 			}
