@@ -6,6 +6,8 @@ import viewPortSize from '../animations/viewportSize';
 //import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 
+import axios from 'axios';
+import {API_BASE_URL} from '../config';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -16,14 +18,15 @@ export default class HomeCanvas extends React.Component {
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
-			loggedIn: false,
+			loggedIn: true,
 			showStartScreen: true
 		}
+		this.getUserData();
 	}
 	componentDidMount () {
 		// this.test = viewPortSize();
 		// this.test.init()
-
+		
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
 			this.home_page.init(isMobile, isMobileOnly);
@@ -32,6 +35,16 @@ export default class HomeCanvas extends React.Component {
 			// this.start_canvas.init(this.startGame);
 		}
 		
+	}
+	getUserData () {
+		let that = this;
+		return axios.get(`${API_BASE_URL}/api/users`)
+		  .then(function(response){
+		  	//that.startGame(response.data);
+		  })
+		  .catch((err) => {
+		  	//console.log(err)
+		  });  
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})

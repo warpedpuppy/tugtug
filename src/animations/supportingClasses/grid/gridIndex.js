@@ -1,8 +1,10 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import axios from 'axios';
+import { API_BASE_URL } from '../../../config';
 //import Config from './animationsConfig';
 export default {
-		cont: Assets.Container(),
+		cont: Assets.ParticleContainer(10000),
 		blockWidth: 500,
 		blockHeight: 500,
 		blocks: {},
@@ -10,6 +12,7 @@ export default {
 		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
+		pause: true,
 		init: function (parentCont) {
 			let hero = this.utils.hero;
 			//console.log(hero.cont.x, hero.cont.y)
@@ -21,44 +24,81 @@ export default {
 			//console.log(iStart, jStart);
 
 			this.parentCont = parentCont;
+		
+			//console.log(this.blocks)
+			this.setLimits();
+			// this.c = Assets.Graphics();
+			// this.c.extant= false;
+			// this.utils.app.stage.addChild(this.c)
+			// this.d = Assets.Graphics();
+			// this.utils.app.stage.addChild(this.d)
+			// this.e = Assets.Graphics();
+			// this.utils.app.stage.addChild(this.e)
+			this.boxCircles = [];
+			//, { headers: {"Authorization" : `Bearer ${lsToken}`} }
+			let that = this;
+			axios
+		      .get(`${API_BASE_URL}/admin/gameLoadGrids`)
+		      .then(function(response){
+		       	that.buildGrid(response.data.board)
+		      })
+		      .catch((err) => {
+		        console.error(err)
+		      });  
+
+
+		},
+		createObj: function (board) {
+			let obj = {};
+			for(let arr of board.grid){
+				obj[`${arr[0]}_${arr[1]}`] = 'covered';
+			}
+			// // add hero
+			// if (board.hero) {
+			// 	obj[`${board.hero.i}_${board.hero.j}`] = 'hero';
+			// }
+			
+			return obj
+		},
+		buildGrid: function (data) {
+			let obj = this.createObj(data);
 			let counter = 0;
-			for (let i = 0; i < this.rowQ; i ++) {
+			this.rowQ = data.rows;
+			this.colQ = data.cols;
+			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
-				for (let j = 0; j < this.colQ; j ++) {
-					let bool = (counter % 6)?false:true;
+				for (let j = 0; j < data.cols; j ++) {
+					//console.log(i,j,obj[`${i}_${j}`])
+					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
 					let b = this.block(bool);
 					b.covered = bool;
+					//console.log(b.covered)
 					b.x = j * this.blockWidth;
 					b.y = i * this.blockHeight;
 					let text = Assets.BitmapText(`${i}, ${j}`)
 					text.x = b.x;
 					text.y = b.y;
-					this.cont.addChild(text);
+					//this.cont.addChild(text);
 					this.cont.addChild(b);
 					this.blocks[i][j] = b;
 					counter ++;
 				}
 			}
-			//console.log(this.blocks)
+			this.placeOnStage(data.hero.j, data.hero.i);
 			this.setLimits();
-			this.c = Assets.Graphics();
-			this.c.extant= false;
-			this.utils.app.stage.addChild(this.c)
-			this.d = Assets.Graphics();
-			this.utils.app.stage.addChild(this.d)
-			this.e = Assets.Graphics();
-			this.utils.app.stage.addChild(this.e)
-			this.boxCircles = [];
+			this.pause = false;
 		},
 		setAction: function (action) {
 			this.action = action;
 		},
 		block: function (bool) {
-			let b = Assets.Graphics();
-			b.lineStyle(3, 0x000000, 1).moveTo(0,0).lineTo(this.blockWidth, 0).lineTo(this.blockWidth, this.blockHeight).lineTo(0,this.blockHeight).lineTo(0,0);
+			let b = Assets.Sprite('redTile.png');
+			b.width = this.blockWidth;
+			b.height = this.blockHeight;
+			b.alpha = 0;
 			if (bool) {
-				b.beginFill(0xFFFFFF).drawRect(0,0,this.blockWidth,this.blockHeight).endFill();
-			}
+				b.alpha = 1;
+			} 
 			return b;
 		},
 		placeOnStage: function (i, j) {
@@ -83,7 +123,7 @@ export default {
 			this.boardHeight = this.rowQ * this.blockHeight;
 			this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
 			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
-this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
+			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
 		},
 		resize: function () {
@@ -98,67 +138,6 @@ this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			//console.log(this.blocks[iVal][jVal].covered)
 			//test if square is covered
 			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
-		},
-		test1: function () {
-//console.log('hit!');
-				let globalPoint = this.currentSquare().toGlobal(this.utils.app.stage, undefined, true);
-
-				// create a circle at hit point
-				let heroPoint = { 
-					x: this.utils.canvasWidth / 2, 
-					y: this.utils.canvasHeight / 2
-				}
-
-			
-				this.c.x = globalPoint.x + (this.blockWidth / 2);
-				this.c.y = globalPoint.y + (this.blockWidth / 2);
-				let cPoint = {x: this.c.x, y: this.c.y };
-
-				let radius = this.utils.distanceAndAngle(heroPoint, cPoint)[0] - 50;
-				let halfDist = radius / 4 ;
-			
-				this.c.clear();
-				this.c.alpha = 0.5;
-				this.c.beginFill(0x000000).drawCircle(0,0,radius).endFill();
-
-				this.e.clear();
-				this.e.alpha = 0.5;
-				this.e.beginFill(0xFF0000).drawCircle(0,0,50).endFill();
-				this.e.x = heroPoint.x;
-				this.e.y = heroPoint.y;
-				
-				//console.log(radius)
-				 this.d.clear();
-				 this.d.lineStyle(3, 0x000000, 1).moveTo(this.c.x, this.c.y).lineTo(heroPoint.x, heroPoint.y);
-
-
-				let heroCircle = {
-							x: heroPoint.x,
-							y: heroPoint.y,
-							radius: 50,
-							r: 50,
-							vx: 0,
-							vy: 0
-						}
-
-				let boxCircle = {
-								x: this.c.x,
-								y: this.c.y,
-								radius: radius,
-								r: radius,
-								vx: this.action.vx,
-								vy: this.action.vy
-							}
-				
-	
-				this.utils.adjustPositions(heroCircle, boxCircle, 10);
-	       		let obj = this.utils.resolveCollision(heroCircle, boxCircle);
-	       		if(obj){
-	       			this.action.vx = obj.bX;
-	       			this.action.vy = obj.bY;
-	       		}
-	       		
-		
 		},
 		returnAbove: function (i,j) {
 			let newi = (i - 1 >= 0)?(i - 1):undefined;
@@ -178,7 +157,7 @@ this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			if(newi !== undefined && newj !== undefined){
 				return this.blocks[newi][newj];
 			} else {
-				return undefined;
+				return  undefined;
 			}
 		},
 		returnLeft: function (i,j) {
@@ -187,7 +166,7 @@ this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			if(newi !== undefined && newj !== undefined){
 				return this.blocks[newi][newj];
 			} else {
-				return undefined;
+				return  undefined;
 			}
 		},
 		returnRight: function (i,j) {
@@ -197,7 +176,7 @@ this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			if(newi !== undefined && newj !== undefined){
 				return this.blocks[newi][newj];
 			} else {
-				return undefined;
+				return  undefined;
 			}
 		},
 		createBoundaries: function (currentSquare){
@@ -211,45 +190,46 @@ this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 
 			
 
-if(!above || above.covered){
-	this.topBorder = this.topEdge - (this.blockHeight * i);
-} else {
-	this.topBorder = this.topEdge;
+			if(!above|| above.covered){
+				this.topBorder = this.topEdge - (this.blockHeight * i);
+			} else {
+				this.topBorder = this.topEdge;
 
-}
+			}
 
-if(!below || below.covered){
-	this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
-} else {
-	this.bottomBorder = this.bottomEdge;
-}
+			if(!below|| below.covered){
+				this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
+			} else {
+				this.bottomBorder = this.bottomEdge;
+			}
 
+			if (!right || right.covered) {
+				this.rightBorder = ((j+1) * this.blockWidth) - this.leftEdge;	
+			} else {
+				this.rightBorder = this.rightEdge;
+			}
 
-if (!right || right.covered) {
-	this.rightBorder = ((j+1) * this.blockWidth) - this.leftEdge;	
-} else {
-	this.rightBorder = this.rightEdge;
-}
-
-if (!left || left.covered) {
-	this.leftBorder = this.leftEdge - (j * this.blockWidth);
-} else {
-	this.leftBorder = this.leftEdge;
-}
+			if (!left || left.covered) {
+				this.leftBorder = this.leftEdge - (j * this.blockWidth);
+			} else {
+				this.leftBorder = this.leftEdge;
+			}
 
 
 
 
 			// console.log(
-			// 	this.returnAbove(i,j).covered,
-			// 	this.returnRight(i,j).covered,
-			// 	this.returnBelow(i,j).covered,
-			// 	this.returnLeft(i,j).covered);
+			// 	this.returnAbove(i,j),
+			// 	this.returnRight(i,j),
+			// 	this.returnBelow(i,j),
+			// 	this.returnLeft(i,j));
 
 		},
 		animate: function (vx, vy) {
 			
-			//this.action.vx = this.action.vy = 0;
+			// this.action.vx = this.action.vy = 0;
+			// return;
+			if(this.pause)return;
 			let currentSquare = this.currentSquare();
 			this.createBoundaries(currentSquare);
 			
@@ -261,7 +241,7 @@ if (!left || left.covered) {
 			this.cont.x -= vx;
 
 			if (this.cont.x > this.leftBorder) {
-				console.log('1')
+				//console.log('1')
 			 	this.cont.x -= this.buffer;
 			 	this.action.vx *= -1;
 			} 
