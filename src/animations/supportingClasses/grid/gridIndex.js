@@ -93,6 +93,7 @@ export default {
 					counter ++;
 				}
 			}
+			//this.cont.cacheAsBitmap = true;
 			this.placeOnStage(data.hero.j, data.hero.i);
 			this.setLimits();
 			this.pause = false;
@@ -266,10 +267,9 @@ export default {
 				}
 				let x = this.utils.circleToCircleCollisionDetection(ballA, ballB);
 
-				if (x[0] && t.alpha){
-					t.alpha = 0;
-					console.log('hit', t.num);
-					this.parent.levelSlots.fillSlot(t.num);
+				if (x[0] && t.parent === this.cont){
+					this.cont.removeChild(t)
+					this.parent.levelSlots.fillSlot(t);
 				}
 			}
 			

@@ -22,11 +22,9 @@ export default function () {
 			return this;
 			
 		},
-		fillSlot: function (num) {
-			console.log(num)
-			let token = Assets.Sprite(`token${num}.png`);
-			token.anchor.set(0.5);
-			let index = num - 1;
+		fillSlot: function (token) {
+			token.x = token.y = 0;
+			let index = token.num - 1;
 			this.slots[index].addChild(token);
 		},
 		addToStage: function () {
