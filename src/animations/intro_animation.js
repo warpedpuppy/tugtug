@@ -215,9 +215,8 @@ export default function(obj) {
 
 
             this.transitionAnimation.init(this);
-            this.grid.init(this.stage);
+            this.grid.init(this);
             let index = this[this.activeMode].background.gridIndex + 1;
-            console.log("index = ", index)
             this.grid.addToStage(index);
 
     

@@ -5,15 +5,16 @@ import { API_BASE_URL } from '../../../config';
 //import Config from './animationsConfig';
 export default {
 		cont: Assets.ParticleContainer(10000),
-		blockWidth: 500,
-		blockHeight: 500,
+		blockWidth: 150,
+		blockHeight: 150,
 		blocks: {},
 		utils: Utils,
 		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
 		pause: true,
-		init: function (parentCont) {
+		tokens: [],
+		init: function (parent) {
 			let hero = this.utils.hero;
 			//console.log(hero.cont.x, hero.cont.y)
 
@@ -22,8 +23,8 @@ export default {
 			let jStart = Math.ceil(hero.cont.y / this.blockWidth);
 
 			//console.log(iStart, jStart);
-
-			this.parentCont = parentCont;
+			this.parent = parent;
+			this.parentCont = parent.stage;
 		
 			//console.log(this.blocks)
 			this.setLimits();
@@ -53,11 +54,15 @@ export default {
 			for(let arr of board.grid){
 				obj[`${arr[0]}_${arr[1]}`] = 'covered';
 			}
+			console.log(board)
 			// // add hero
 			// if (board.hero) {
 			// 	obj[`${board.hero.i}_${board.hero.j}`] = 'hero';
 			// }
-			
+			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
+			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
+			obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
+			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
 			return obj
 		},
 		buildGrid: function (data) {
@@ -79,6 +84,10 @@ export default {
 					text.x = b.x;
 					text.y = b.y;
 					//this.cont.addChild(text);
+					if(obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
+						let num = obj[`${i}_${j}`].slice(-1);
+						this.placeToken(num, b.x, b.y)
+					}
 					this.cont.addChild(b);
 					this.blocks[i][j] = b;
 					counter ++;
@@ -88,14 +97,23 @@ export default {
 			this.setLimits();
 			this.pause = false;
 		},
+		placeToken: function (num, x, y) {
+			let t = Assets.Sprite(`token${num}.png`);
+			t.anchor.set(0.5)
+			t.num = num;
+			t.x = x + this.blockWidth / 2;
+			t.y = y + this.blockHeight / 2;
+			this.tokens.push(t);
+			this.cont.addChild(t);
+		},
 		setAction: function (action) {
 			this.action = action;
 		},
 		block: function (bool) {
-			let b = Assets.Sprite('redTile.png');
+			let b = Assets.Sprite('whiteTile.png');
 			b.width = this.blockWidth;
 			b.height = this.blockHeight;
-			b.alpha = 0;
+			b.alpha = 0.25;
 			if (bool) {
 				b.alpha = 1;
 			} 
@@ -233,7 +251,27 @@ export default {
 			let currentSquare = this.currentSquare();
 			this.createBoundaries(currentSquare);
 			
-			
+			for (let i = 0; i < this.tokens.length; i ++) {
+				let t = this.tokens[i];
+				let ballA = {
+					x: this.utils.canvasWidth / 2,
+					y: this.utils.canvasHeight / 2,
+					radius: 10
+				}
+				let globalPoint = this.cont.toGlobal(t);
+				let ballB = {
+					x: globalPoint.x,
+					y: globalPoint.y,
+					radius: 30
+				}
+				let x = this.utils.circleToCircleCollisionDetection(ballA, ballB);
+
+				if (x[0] && t.alpha){
+					t.alpha = 0;
+					console.log('hit', t.num);
+					this.parent.levelSlots.fillSlot(t.num);
+				}
+			}
 			
 			
 			//boundaries

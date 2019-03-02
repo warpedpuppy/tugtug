@@ -5,20 +5,32 @@ export default function () {
 	return {
 		cont: Assets.Container(),
 		utils: Utils,
+		slots: [],
 		init: function (parentCont) {
 			this.parentCont = parentCont;
 			let s;
 			for(let i = 0; i < 4; i ++){
+				let c = Assets.Container();
 				s = Assets.Sprite('slot.png');
+				s.anchor.set(0.5);
 				s.alpha = 0.25;
-				s.x = 50 * i;
-				this.cont.addChild(s);
+				c.x = 50 * i;
+				c.addChild(s);
+				this.slots.push(c);
+				this.cont.addChild(c);
 			}
 			return this;
 			
 		},
+		fillSlot: function (num) {
+			console.log(num)
+			let token = Assets.Sprite(`token${num}.png`);
+			token.anchor.set(0.5);
+			let index = num - 1;
+			this.slots[index].addChild(token);
+		},
 		addToStage: function () {
-			this.cont.x = (this.utils.canvasWidth - this.cont.width) /2;
+			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
 			this.cont.y = this.utils.canvasHeight - this.cont.height - 100;
 			this.parentCont.addChild(this.cont);
 		},
@@ -26,7 +38,7 @@ export default function () {
 			
 		},
 		resize: function () {
-			this.cont.x = (this.utils.canvasWidth - this.cont.width) /2;
+			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
 			this.cont.y = this.utils.canvasHeight - this.cont.height - 100;
 		},
 		animate: function () {

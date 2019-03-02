@@ -253,6 +253,11 @@
             <filename>../bmps/redGradient.png</filename>
             <filename>../bmps/pinkGradient.png</filename>
             <filename>../bmps/transparentRing.png</filename>
+            <filename>../bmps/whiteTile.png</filename>
+            <filename>../bmps/token1.png</filename>
+            <filename>../bmps/token2.png</filename>
+            <filename>../bmps/token3.png</filename>
+            <filename>../bmps/token4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
