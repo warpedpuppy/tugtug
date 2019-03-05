@@ -109,6 +109,7 @@ export default function(obj) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
+                    .add("grassSquare", "/bmps/grassSquare.png")
                     .load(this.start);
             } else {
                 this.start();
@@ -123,7 +124,7 @@ export default function(obj) {
 
         
             this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
-
+            this.grassSquare = this.loader.resources["grassSquare"];
             this.utils.setProperties({
                 spritesheet: this.spritesheet,
                 canvasWidth: this.utils.canvasWidth,
@@ -159,7 +160,7 @@ export default function(obj) {
 
             this.bounce.init(this.stage);
 
-            this.fly.init(this.stage);
+            this.fly.init(this);
 
             this.jump.init(this.stage);
             
@@ -215,7 +216,7 @@ export default function(obj) {
 
 
             this.transitionAnimation.init(this);
-            this.grid.init(this);
+            this.grid.init(this, this.grassSquare);
             let index = this[this.activeMode].background.gridIndex + 1;
             this.grid.addToStage(index);
 

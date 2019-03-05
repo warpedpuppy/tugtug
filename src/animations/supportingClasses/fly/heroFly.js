@@ -12,8 +12,10 @@ export default function () {
 			let head = Assets.Sprite('dragonHead.png');
 			this.dyeLot.push(head);
 			head.anchor.x = 0.5;
-	        head.anchor.y = 0.5;
-			this.cont.addChild(head);
+	        head.anchor.y = 1;
+	        this.headCont = Assets.Container();//putting this in a container so can put flames on it
+	        this.headCont.addChild(head);
+			this.cont.addChild(this.headCont);
 			this.dragon.push(head);
 			let i;
 			for (i = 0; i < this.segmentsQ; i++) {
@@ -33,7 +35,7 @@ export default function () {
                 	segment.y = i * (segment.height - 40);
                 }
                 segment.anchor.x = 0.5;
-                segment.anchor.y =  0;
+                segment.anchor.y =  0.2;
                	this.dyeLot.push(segment);
                 cont.addChild(segment);
                 this.dragon.push(cont);
@@ -49,7 +51,7 @@ export default function () {
 			this.dyeLot.push(this.rightWing1);
 
 			this.rightWing2 = Assets.Sprite('wingPart2.png');
-			this.rightWing2.x = 84;
+			this.rightWing2.x = 86;
 			this.rightWing2.y = -40;
 			this.rightWing2.anchor.x = 0;
 			this.rightWing2.pivot.y = 20;
@@ -58,7 +60,7 @@ export default function () {
 			this.rightWing3 = Assets.Sprite('dragonTriangle.png');
 			this.rightWing3.anchor.x = 0.5;
 			this.rightWing3.anchor.y = 0;
-			this.rightWing3.x = 84;
+			this.rightWing3.x = 86;
 			this.rightWing3.rotation = this.utils.deg2rad(-30);
 			this.rightWing3.y = -40;
 			this.dyeLot.push(this.rightWing3);
@@ -76,7 +78,7 @@ export default function () {
 
 			this.leftWing2 = Assets.Sprite('wingPart2.png');
 			this.leftWing2.scale.x = -1;
-			this.leftWing2.x = -84;
+			this.leftWing2.x = -88;
 			this.leftWing2.y = -40;
 			this.leftWing2.anchor.x = 0;
 			this.leftWing2.pivot.y = 20;
@@ -85,7 +87,7 @@ export default function () {
 			this.leftWing3 = Assets.Sprite('dragonTriangle.png');
 			this.leftWing3.anchor.x = 0.5;
 			this.leftWing3.anchor.y = 0;
-			this.leftWing3.x = -82;
+			this.leftWing3.x = -80;//-82;
 			this.leftWing3.rotation = this.utils.deg2rad(30);
 			this.leftWing3.y = -40;
 			this.dyeLot.push(this.leftWing3);
@@ -95,7 +97,7 @@ export default function () {
 			this.leftWing.addChild(this.leftWing3);
 
 			 this.wingCont = Assets.Container();
-			 this.wingCont.y = 30;
+			 //this.wingCont.y = 30;
 			 this.wingCont.addChild(this.leftWing);
 			 this.wingCont.addChild(this.rightWing);
 			
@@ -103,9 +105,11 @@ export default function () {
 			let rightEye = this.rightEye = Assets.Sprite('swimEye.png');
             rightEye.anchor.set(0.5);
             this.rightEye.x = 10;
+            this.rightEye.y = -30;
             this.eyeCont.addChild(rightEye)
             let leftEye = this.leftEye = Assets.Sprite('swimEye.png');
             this.leftEye.x = -10;
+            this.leftEye.y = -30;
             leftEye.anchor.set(0.5);
             this.eyeCont.addChild(leftEye);
             this.cont.addChild(this.eyeCont)

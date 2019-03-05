@@ -14,15 +14,15 @@ export default function () {
 			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;
 
-			let arr = [
-				[0,0,1,1],
-				[2000, 0, -1,1],
-				[0,1000,1,-1],
-				[2000,1000,-1,-1]
-			]
+			// let arr = [
+			// 	[0,0,1,1],
+			// 	[2000, 0, -1,1],
+			// 	[0,1000,1,-1],
+			// 	[2000,1000,-1,-1]
+			// ]
 
-			this.cont = this.build(arr);
-			this.cont2 = this.build(arr);
+			this.cont = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
+			this.cont2 = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
 			
 			this.cont.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.cont.height = this.wh.canvasHeight * this.sizeIncrement;
@@ -55,18 +55,19 @@ export default function () {
 			this.background.clear();
 			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
-		build: function (arr) {
-			let s, cont = Assets.Container();
-			for(let i = 0; i < 4; i ++){
-				s = Assets.Sprite(this.texture);
-				s.x = arr[i][0];
-				s.y = arr[i][1];
-				s.scale.x = arr[i][2];
-				s.scale.y = arr[i][3];
-				cont.addChild(s);
-			}
-			return cont;
-		},
+		// build: function (arr) {
+		// 	let s, cont = Assets.Container();
+		// 	for(let i = 0; i < 4; i ++){
+		// 		s = Assets.Sprite(this.texture);
+		// 		console.log(s.width, s.height)
+		// 		s.x = arr[i][0];
+		// 		s.y = arr[i][1];
+		// 		s.scale.x = arr[i][2];
+		// 		s.scale.y = arr[i][3];
+		// 		cont.addChild(s);
+		// 	}
+		// 	return cont;
+		// },
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
 			this.parentCont.addChildAt(this.background, 1);

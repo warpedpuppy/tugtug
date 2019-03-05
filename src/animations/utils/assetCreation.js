@@ -19,6 +19,25 @@ export default {
 		Application: function (w, h, transParentBoolean) {
 			return new PIXI.Application(w, h, {transparent: transParentBoolean});
 		},
+		quadrupleSpriteSize: function (texture) {
+			//texture should be 1000x500
+			let arr = [
+				[0,0,1,1],
+				[2000, 0, -1,1],
+				[0,1000,1,-1],
+				[2000,1000,-1,-1]
+			],s, cont = this.Container();
+			for(let i = 0; i < 4; i ++){
+				s = this.Sprite(texture);
+				s.x = arr[i][0];
+				s.y = arr[i][1];
+				s.scale.x = arr[i][2];
+				s.scale.y = arr[i][3];
+				cont.addChild(s);
+			}
+			return cont;
+
+		},
 		webgl: function () {
 			return this.utils.app.renderer instanceof PIXI.WebGLRenderer;
 		},

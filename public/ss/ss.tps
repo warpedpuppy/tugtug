@@ -258,6 +258,7 @@
             <filename>../bmps/token2.png</filename>
             <filename>../bmps/token3.png</filename>
             <filename>../bmps/token4.png</filename>
+            <filename>../bmps/grassSquareSmall.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -3,7 +3,7 @@ import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
 		cont: Assets.Container(),
-		//background: Assets.Graphics(),
+		grassTexture: 'grass.png',
 		foreground: Assets.Graphics(),
 		utils: Utils,
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
@@ -12,23 +12,26 @@ export default function () {
 		flashCounter: 0,
 		flashLimits: 10,
 		gridIndex: 1,
-		init: function (parentCont) {
+		sizeIncrement: 1,
+		init: function (parent) {
 			
 			this.app = this.utils.app;
-			this.parentCont = parentCont;
+			this.parentCont = parent.stage;
 
 			this.hero = this.utils.hero;
 			let wh = this.wh = this.utils.wh;
 			this.spritesheet = this.utils.spritesheet;
 
 	
-			this.background = Assets.Graphics();
-			this.background.beginFill(0xFF00FF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
+			// this.background = Assets.quadrupleSpriteSize(this.grassTexture);//Assets.Graphics();
+			// this.background.width = this.utils.canvasWidth * this.sizeIncrement;
+			// this.background.height = this.utils.canvasHeight * this.sizeIncrement;
+			//this.background.beginFill(0xFF00FF).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 
 			// this.background = Assets.Sprite("redTile.png");
 			// this.background.width = this.utils.canvasWidth;
 			// this.background.height = this.utils.canvasHeight;
-			this.cont.addChild(this.background);
+			//this.cont.addChild(this.background);
 
 			// this.foreground.beginFill(0x000000).drawRect(0,0,wh.canvasWidth, wh.canvasHeight).endFill();
 			// this.cont.addChild(this.foreground);

@@ -21,3 +21,6 @@ flappy bird
 tamagatchi
 dragon vale
 everybody edits
+
+
+long term:  convert all degrees to radians so no function call needed

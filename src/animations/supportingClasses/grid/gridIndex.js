@@ -5,8 +5,8 @@ import { API_BASE_URL } from '../../../config';
 //import Config from './animationsConfig';
 export default {
 		cont: Assets.ParticleContainer(10000),
-		blockWidth: 150,
-		blockHeight: 150,
+		blockWidth: 500,
+		blockHeight: 500,
 		blocks: {},
 		utils: Utils,
 		colQ: 4,
@@ -14,7 +14,8 @@ export default {
 		buffer: 10,
 		pause: true,
 		tokens: [],
-		init: function (parent) {
+		init: function (parent, grass) {
+			this.grass = grass;
 			let hero = this.utils.hero;
 			//console.log(hero.cont.x, hero.cont.y)
 
@@ -111,13 +112,10 @@ export default {
 			this.action = action;
 		},
 		block: function (bool) {
-			let b = Assets.Sprite('whiteTile.png');
+			let texture = (bool)?'whiteTile.png':'grassSquareSmall.png';
+			let b = Assets.Sprite(texture)
 			b.width = this.blockWidth;
 			b.height = this.blockHeight;
-			b.alpha = 0.25;
-			if (bool) {
-				b.alpha = 1;
-			} 
 			return b;
 		},
 		placeOnStage: function (i, j) {

@@ -4,10 +4,10 @@ export default function () {
 	return {
 		flyBackground: FlyBackground(),
 		flyAction: FlyAction(),
-		init: function (stage) {
+		init: function (parent, grassSquare) {
 			this.background = this.flyBackground;
-			this.flyBackground.init(stage);
-			this.flyAction.init();
+			this.flyBackground.init(parent);
+			this.flyAction.init(this.background);
 			this.maskedItems = [
 				this.flyBackground.cont
 			];
