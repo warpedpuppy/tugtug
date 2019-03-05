@@ -14,8 +14,13 @@ export default {
 		buffer: 10,
 		pause: true,
 		tokens: [],
+		tokenData: {},
 		init: function (parent, grass) {
 			this.grass = grass;
+			this.parent = parent;
+			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
+			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
+
 			let hero = this.utils.hero;
 			//console.log(hero.cont.x, hero.cont.y)
 
@@ -47,7 +52,7 @@ export default {
 		      .catch((err) => {
 		        console.error(err)
 		      });  
-
+		      this.setAction = this.setAction.bind(this);
 
 		},
 		createObj: function (board) {
@@ -55,7 +60,7 @@ export default {
 			for(let arr of board.grid){
 				obj[`${arr[0]}_${arr[1]}`] = 'covered';
 			}
-			console.log(board)
+		
 			// // add hero
 			// if (board.hero) {
 			// 	obj[`${board.hero.i}_${board.hero.j}`] = 'hero';
@@ -84,41 +89,69 @@ export default {
 					let text = Assets.BitmapText(`${i}, ${j}`)
 					text.x = b.x;
 					text.y = b.y;
+					this.cont.addChild(b);
 					//this.cont.addChild(text);
 					if(obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
 						let num = obj[`${i}_${j}`].slice(-1);
-						this.placeToken(num, b.x, b.y)
+						//this.placeToken(num, b.x, b.y)
+						this.tokenData[num] = {x: b.x, y:b.y};
 					}
-					this.cont.addChild(b);
+					
 					this.blocks[i][j] = b;
 					counter ++;
 				}
 			}
 			//this.cont.cacheAsBitmap = true;
-			this.placeOnStage(data.hero.j, data.hero.i);
+			this.placeTokens();
+			this.placeHero(data.hero.j, data.hero.i);
 			this.setLimits();
 			this.pause = false;
+			this.parent.startGame();
 		},
-		placeToken: function (num, x, y) {
-			let t = Assets.Sprite(`token${num}.png`);
-			t.anchor.set(0.5)
-			t.num = num;
-			t.x = x + this.blockWidth / 2;
-			t.y = y + this.blockHeight / 2;
-			this.tokens.push(t);
-			this.cont.addChild(t);
+		placeTokens: function () {
+			for(let key in this.tokenData){
+				let t = Assets.Sprite(`token${key}.png`);
+				t.anchor.set(0.5)
+				t.num = key;
+				t.x = this.tokenData[key].x + this.blockWidth / 2;
+				t.y = this.tokenData[key].y + this.blockHeight / 2;
+				this.tokens.push(t);
+				this.cont.addChild(t);
+			}
 		},
-		setAction: function (action) {
+		setAction: function (action, mode) {
 			this.action = action;
+			this.changeBackground(mode)
+		},
+		changeBackground: function (mode) {
+			let t;
+			if (mode === 'fly') {
+				t = this.flyTexture;
+			} else {
+				//t = this.whiteSquare;
+			}
+
+			for(let j in this.blocks){
+					for(let i = 0; i < this.blocks[j].length; i ++){
+						let b = this.blocks[j][i];
+						if(!b.covered){
+							b.texture = t;
+						} else {
+							b.texture = this.whiteSquare
+						}
+					}
+				}
 		},
 		block: function (bool) {
-			let texture = (bool)?'whiteTile.png':'grassSquareSmall.png';
-			let b = Assets.Sprite(texture)
+			//let texture = (bool)?'whiteTile.png':'whiteTile.png';
+			//let texture = (bool)?'whiteTile.png':'grassSquareSmall.png';
+			let b = Assets.Sprite()
+			//b.alpha = (bool)?1:0.25;
 			b.width = this.blockWidth;
 			b.height = this.blockHeight;
 			return b;
 		},
-		placeOnStage: function (i, j) {
+		placeHero: function (i, j) {
 			//we know 1,1 is free, so place that beneath the hero
 			i++;
 			j++;
@@ -129,7 +162,7 @@ export default {
 		},
 		addToStage: function (index) {
 			
-			this.placeOnStage(1,1);
+			
 			this.parentCont.addChildAt(this.cont, index)
 		},
 		removeFromStage: function () {

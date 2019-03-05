@@ -187,8 +187,8 @@ export default function(obj) {
                 this.stage.addChild(this.testButton)
             } 
            
-            this.startGame();
-            
+            //this.startGame();
+            this.loadAndBuildGrid();
             if(this.isMobileOnly){
                 //mobile
                 OrientationChange.init(this);
@@ -198,6 +198,9 @@ export default function(obj) {
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
+        },
+        loadAndBuildGrid: function () {
+            this.grid.init(this, this.grassSquare);
         },
         startGame: function () {
             //this.mode = this.utils.shuffle(this.mode);
@@ -216,9 +219,11 @@ export default function(obj) {
 
 
             this.transitionAnimation.init(this);
-            this.grid.init(this, this.grassSquare);
-            let index = this[this.activeMode].background.gridIndex + 1;
-            this.grid.addToStage(index);
+
+            //grid has to take a trip to the server to get the 
+            // this.grid.init(this, this.grassSquare);
+             let index = this[this.activeMode].background.gridIndex + 1;
+             this.grid.addToStage(index);
 
     
         },
@@ -244,7 +249,7 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             this.pellets.changeMode(this.activeMode);
-            this.grid.setAction(this.activeAction);
+            this.grid.setAction(this.activeAction, this.activeMode);
             
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
@@ -276,7 +281,6 @@ export default function(obj) {
                 // this.hero.switchPlayer(this.activeMode);
                 // this.activeAction = this[this.activeMode].addToStage();
                 this.transitionAnimation.start(newActiveMode, Grid);
-
             }
             
 
