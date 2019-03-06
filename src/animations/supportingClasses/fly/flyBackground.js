@@ -1,6 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import Castles from './castles';
+import Soldier from './soldiers';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -36,6 +37,7 @@ export default function () {
 			//console.log('free space array', freeSpaces, freeSpaces.length);
 
 			for (let i = 0; i < freeSpaces.length; i ++) {
+			//for (let i = 0; i < 1; i ++) {
 
 				let block = freeSpaces[i];
 				//console.log('block = ', block)
@@ -46,12 +48,10 @@ export default function () {
 				c.x = block[0] + this.parent.grid.blockWidth / 2;
 				c.y = block[1] + this.parent.grid.blockHeight / 2;
 				grid.cont.addChild(c);
-
-				for(let i = 0; i < 3; i ++){
-	
-					let s = (i < 2)?Assets.Sprite('soldier.png'):Assets.Sprite('horse.png');
-					s.anchor.set(0.5);
-					s.speed = this.utils.randomNumberBetween(0.01, 0.05);
+				
+				for (let i = 0; i < 1; i ++) {
+					let soldier = Soldier();
+					let s = (i < 1)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
 					s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;
 					s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
 					grid.cont.addChild(s);

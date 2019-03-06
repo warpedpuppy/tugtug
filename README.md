@@ -24,3 +24,4 @@ everybody edits
 
 
 long term:  convert all degrees to radians so no function call needed
+long term:  have each grid block contain the covered data for the surrounding blocks

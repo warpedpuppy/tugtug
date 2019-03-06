@@ -35,9 +35,7 @@ export default function () {
             //this.flameQ = (Assets.webgl)? 500 : 10;
             this.flames = Assets.ParticleContainer(this.flameQ);
 
-            this.test = Assets.Graphics();
-            this.test.beginFill(0xFF9900).drawCircle(0,0,20).endFill();
-            this.background.cont.addChild(this.test)
+ 
 
 		},
 		createPool: function () {
@@ -90,16 +88,11 @@ export default function () {
 		},
 		animate: function () {
 
-			for (let i = 0; i < this.soldierQ; i ++) {
+			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
-				let heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
-				let localPoint = this.parent.grid.cont.toLocal(heroPoint, this.stage)
-				let dx = localPoint.x - s.x;
-				let dy = localPoint.y - s.y;
-				let angle = Math.atan2(dy, dx);
-				s.x += Math.cos(angle) * s.speed;
-				s.y += Math.sin(angle) * s.speed;
-				s.rotation = angle + this.utils.deg2rad(90);
+				s.classRef.animate();
+			
+				
 			}
 
 			// this.background.background.x -= this.vx * 0.1;

@@ -16,6 +16,7 @@ export default {
 		tokens: [],
 		tokenData: {},
 		freeSpaces: [],
+		coveredSpaces: [],
 		init: function (parent) {
 			this.parent = parent;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
@@ -79,7 +80,11 @@ export default {
 
 					//store free ones
 					if(!bool && !token){
-						this.freeSpaces.push([b.x, b.y, b]);
+						this.freeSpaces.push([b.x, b.y, b, i, j]);
+					}
+
+					if(bool){
+						this.coveredSpaces.push(b)
 					}
 					
 					this.blocks[i][j] = b;
@@ -261,8 +266,7 @@ export default {
 		},
 		animate: function (vx, vy) {
 			
-			// this.action.vx = this.action.vy = 0;
-			// return;
+	
 			if(this.pause)return;
 			let currentSquare = this.currentSquare();
 			this.createBoundaries(currentSquare);
