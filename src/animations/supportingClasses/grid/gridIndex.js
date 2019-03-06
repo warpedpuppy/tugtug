@@ -5,8 +5,8 @@ import { API_BASE_URL } from '../../../config';
 //import Config from './animationsConfig';
 export default {
 		cont: Assets.ParticleContainer(10000),
-		blockWidth: 500,
-		blockHeight: 500,
+		blockWidth: 100,
+		blockHeight: 100,
 		blocks: {},
 		utils: Utils,
 		colQ: 4,
@@ -15,44 +15,22 @@ export default {
 		pause: true,
 		tokens: [],
 		tokenData: {},
-		init: function (parent, grass) {
-			this.grass = grass;
+		freeSpaces: [],
+		init: function (parent) {
 			this.parent = parent;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 
-			let hero = this.utils.hero;
-			//console.log(hero.cont.x, hero.cont.y)
-
-			//so the goal is the get from the x and y value the i and j value
-			let iStart = Math.ceil(hero.cont.x / this.blockHeight);
-			let jStart = Math.ceil(hero.cont.y / this.blockWidth);
-
-			//console.log(iStart, jStart);
 			this.parent = parent;
 			this.parentCont = parent.stage;
 		
-			//console.log(this.blocks)
+
 			this.setLimits();
-			// this.c = Assets.Graphics();
-			// this.c.extant= false;
-			// this.utils.app.stage.addChild(this.c)
-			// this.d = Assets.Graphics();
-			// this.utils.app.stage.addChild(this.d)
-			// this.e = Assets.Graphics();
-			// this.utils.app.stage.addChild(this.e)
+
 			this.boxCircles = [];
-			//, { headers: {"Authorization" : `Bearer ${lsToken}`} }
-			let that = this;
-			axios
-		      .get(`${API_BASE_URL}/admin/gameLoadGrids`)
-		      .then(function(response){
-		       	that.buildGrid(response.data.board)
-		      })
-		      .catch((err) => {
-		        console.error(err)
-		      });  
-		      this.setAction = this.setAction.bind(this);
+		
+		    this.setAction = this.setAction.bind(this);
+		    this.buildGrid(parent.dbData.board);
 
 		},
 		createObj: function (board) {
@@ -91,10 +69,17 @@ export default {
 					text.y = b.y;
 					this.cont.addChild(b);
 					//this.cont.addChild(text);
+					let token = false;
 					if(obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
 						let num = obj[`${i}_${j}`].slice(-1);
 						//this.placeToken(num, b.x, b.y)
+						token = true;
 						this.tokenData[num] = {x: b.x, y:b.y};
+					}
+
+					//store free ones
+					if(!bool && !token){
+						this.freeSpaces.push([b.x, b.y, b]);
 					}
 					
 					this.blocks[i][j] = b;
@@ -106,7 +91,6 @@ export default {
 			this.placeHero(data.hero.j, data.hero.i);
 			this.setLimits();
 			this.pause = false;
-			this.parent.startGame();
 		},
 		placeTokens: function () {
 			for(let key in this.tokenData){

@@ -23,6 +23,8 @@ import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 //import Animate from './supportingClasses/action/animate';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
 export default function(obj) {
     return {
         idle: true,
@@ -64,6 +66,7 @@ export default function(obj) {
         controlPanel: ControlPanel(),
         transitionAnimationPlaying: false,
         grid: Grid,
+        dbData: {},
         init: function (isMobile, isMobileOnly) {
             this.cropHeight = 100;
             this.isMobile = isMobile;
@@ -101,30 +104,36 @@ export default function(obj) {
             this.stage.addChild(this.filterContainer);
             this.stage.addChild(this.foregroundCont);
 
-
-           
-
-            this.start = this.start.bind(this);
+            this.getDataBaseData = this.getDataBaseData.bind(this);
+            this.buildGame = this.buildGame.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    .add("grassSquare", "/bmps/grassSquare.png")
-                    .load(this.start);
+                    //.load(this.start);
+                    .load(this.getDataBaseData)
             } else {
-                this.start();
+                //this.start();
+                this.getDataBaseData();
             }
 
- 
-
- 
-
         },
-        start: function () {
-
-        
+        getDataBaseData: function () {
+           let that = this;
+           axios
+           .get(`${API_BASE_URL}/admin/gameLoadGrids`)
+           .then(response => {
+                console.log('home canvas response = ', response)
+                //that.buildGrid(response.data.board)
+                this.dbData = response.data;
+                this.buildGame();
+            })
+            .catch(err => console.error(err));  
+        },
+        buildGame: function () {
+            
             this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
-            this.grassSquare = this.loader.resources["grassSquare"];
+
             this.utils.setProperties({
                 spritesheet: this.spritesheet,
                 canvasWidth: this.utils.canvasWidth,
@@ -134,11 +143,12 @@ export default function(obj) {
 
             Assets.init();
 
+            this.grid.init(this);
+
             this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
 
             this.utils.setHero(this.hero);
         
-
             this.gears.init(this.stage);
 
             this.clock.init(this.stage);
@@ -188,19 +198,15 @@ export default function(obj) {
             } 
            
             //this.startGame();
-            this.loadAndBuildGrid();
-            if(this.isMobileOnly){
+           
+            if (this.isMobileOnly) {
                 //mobile
                 OrientationChange.init(this);
-                // this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
-         
-                // window.addEventListener("orientationchange", this.orientationChangeHandler);
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
-        },
-        loadAndBuildGrid: function () {
-            this.grid.init(this, this.grassSquare);
+            console.log('end build game');
+            this.startGame();
         },
         startGame: function () {
             //this.mode = this.utils.shuffle(this.mode);
@@ -224,6 +230,7 @@ export default function(obj) {
             // this.grid.init(this, this.grassSquare);
              let index = this[this.activeMode].background.gridIndex + 1;
              this.grid.addToStage(index);
+
 
     
         },

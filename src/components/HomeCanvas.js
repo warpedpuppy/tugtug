@@ -21,7 +21,7 @@ export default class HomeCanvas extends React.Component {
 			loggedIn: true,
 			showStartScreen: true
 		}
-		this.getUserData();
+		
 	}
 	componentDidMount () {
 		// this.test = viewPortSize();
@@ -36,15 +36,30 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
-	getUserData () {
-		let that = this;
-		return axios.get(`${API_BASE_URL}/api/users`)
-		  .then(function(response){
-		  	//that.startGame(response.data);
-		  })
-		  .catch((err) => {
-		  	//console.log(err)
-		  });  
+	componentWillMount () {
+		
+		this.getGameData();
+	}
+	getGameData () {
+		// console.log('get game data')
+		// let that = this;
+		// axios
+	 //      .get(`${API_BASE_URL}/admin/gameLoadGrids`)
+	 //      .then(response => {
+	 //      	console.log('home canvas response = ', response)
+	 //       	//that.buildGrid(response.data.board)
+	 //      })
+	 //      .catch((err) => {
+	 //        console.error(err)
+	 //      });  
+		// let that = this;
+		// return axios.get(`${API_BASE_URL}/api/users`)
+		//   .then(function(response){
+		//   	//that.startGame(response.data);
+		//   })
+		//   .catch((err) => {
+		//   	//console.log(err)
+		//   });  
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})

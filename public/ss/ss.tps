@@ -194,12 +194,10 @@
             <filename>../bmps/swimTrans.png</filename>
             <filename>../bmps/bouncePlatformBall.png</filename>
             <filename>../bmps/bouncePlatformLine.png</filename>
-            <filename>../bmps/leftWing.png</filename>
             <filename>../bmps/LightRotate1.png</filename>
             <filename>../bmps/LightRotate2.png</filename>
             <filename>../bmps/line.png</filename>
             <filename>../bmps/pellet.png</filename>
-            <filename>../bmps/rightWing.png</filename>
             <filename>../bmps/star.png</filename>
             <filename>../bmps/treasureChest.png</filename>
             <filename>../bmps/treasureRing.png</filename>
@@ -259,6 +257,9 @@
             <filename>../bmps/token3.png</filename>
             <filename>../bmps/token4.png</filename>
             <filename>../bmps/grassSquareSmall.png</filename>
+            <filename>../bmps/castle.png</filename>
+            <filename>../bmps/horse.png</filename>
+            <filename>../bmps/soldier.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
