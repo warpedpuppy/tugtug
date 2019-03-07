@@ -2,6 +2,7 @@ import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import Castles from './castles';
 import Soldier from './soldiers';
+import Clouds from './clouds';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -17,6 +18,7 @@ export default function () {
 		sizeIncrement: 1,
 		soldiers: [],
 		spears: [],
+		clouds: Clouds(),
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;
@@ -32,6 +34,9 @@ export default function () {
 			//this.timer = setTimeout(this.lightningStorm, 1500)
 
 			this.placeCastles(parent.grid)
+			this.clouds.init(parent.stage)
+			
+
 		},
 		placeCastles: function (grid) {
 			let freeSpaces = grid.freeSpaces;

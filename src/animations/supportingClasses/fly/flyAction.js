@@ -29,7 +29,7 @@ export default function () {
 			this.spears = background.spears;
 			this.soldierQ = background.soldiers.length;
 			this.spearQ = background.spears.length;
-
+			this.clouds = background.clouds;
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
 			this.stage = this.utils.app.stage;
@@ -121,6 +121,9 @@ export default function () {
 			return x[0];
 		},
 		animate: function () {
+
+			this.clouds.animate();
+			
 			let onScreenSoldiers = [];
 			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
