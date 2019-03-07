@@ -54,7 +54,7 @@ export default {
 			return new PIXI.filters.ColorMatrixFilter();
 		},
 		BitmapText: function (str) {
-			return new PIXI.extras.BitmapText(str, {font: "38px Hobo Std"});
+			return new PIXI.extras.BitmapText(str, {font: "21px Hiragino Sans"});
 		},
 		Rope: function(texture, points) {
 			return new PIXI.mesh.Rope(texture, points);

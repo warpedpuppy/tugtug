@@ -145,6 +145,8 @@ export default function(obj) {
 
             this.grid.init(this);
 
+            this.score.init()
+
             this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
 
             this.utils.setHero(this.hero);

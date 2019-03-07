@@ -10,6 +10,10 @@ export default function () {
 		buffer: 3,
 		towardsDragon: true,
 		alreadyBeenToAWall: false,
+		spearThrowing: false,
+		throw: false,
+		spearCounter: 0,
+		health: 100,
 		init: function (str, root) {
 			this.destPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 			this.root = root;
@@ -17,12 +21,30 @@ export default function () {
 			this.body = Assets.Sprite(str);
 			this.body.anchor.set(0.5);
 			this.speed = this.utils.randomNumberBetween(0.1, 0.5);
+			this.spearSpeed = this.utils.randomNumberBetween(0.6, 0.8);
 			this.body.classRef = this;
 			this.startSquare = this.currentSquare();
+
+			//spears
+			this.spear = Assets.Sprite('bouncePlatformLine.png');
+			this.grid.cont.addChild(this.spear);
+			this.spear.anchor.set(0.5);
+			this.spear.width = 50;
+			this.spear.height = 4;
+			this.spear.vx = 0;
+			this.spear.vy = 0;
+			this.spear.reset = () => {
+				this.spearCounter = 0;
+				this.throw = false;
+				this.spearThrowing = false;
+			}
+			
+
 			return this.body;
 		},
-		addToStage: function () {
-
+		getModifiedHeroPoint: function () {
+			this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
+			return this.grid.cont.toLocal(this.heroPoint, this.utils.stage);
 		},
 		removeFromStage: function () {
 
@@ -57,33 +79,23 @@ export default function () {
 						freeBoxesArray.push(surrounding[key])
 					}
 				}
-
-				// let destX = block.x + this.grid.blockWidth / 2;
-				// this.destPoint = {x: destX, y: this.body.y};
-				//if(this.body.y > this.destPoint.y && )
-				// let block = this.utils.randomItemFromArray(freeBoxesArray);
-				// let destX = block.x + this.grid.blockWidth / 2;
-				// let destY = block.y + this.grid.blockHeight / 2;
-				// //console.log('clear block')
-				// //console.log(block)
-				// this.destPoint = {x: destX, y: destY};
-				// this.calcDest = false;
 			}
-			
-			//if any square is covered, you go to the open square
-			
-
-			//console.log(i,j,below)
-
-			//let destY = below.y + this.grid.blockHeight;
-			//this.destPoint = {x: this.body.startX, y: destY};
-			// console.log(
-			// 	this.grid.returnAbove(i,j).covered,
-			// 	this.grid.returnRight(i,j).covered,
-			// 	this.grid.returnBelow(i,j).covered,
-			// 	this.grid.returnLeft(i,j).covered);
+		
 
 		},
+		hit: function () {
+			
+			if(this.health < 0){ 
+				this.body.alpha = 0;
+				this.spear.alpha = 0;
+			} else {
+			  // this.body.scale.x * 0.99;
+			  // this.body.scale.y * 0.99;
+			  this.health --;
+			 }
+
+		},
+		
 		currentSquare: function () {
 			let globalPoint = this.grid.cont.toGlobal(this.body),
 			    iVal = Math.floor((globalPoint.y - this.grid.cont.y) / this.grid.blockHeight),
@@ -126,8 +138,7 @@ export default function () {
 			
 
 			if (this.towardsDragon) {
-				this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
-				return this.grid.cont.toLocal(this.heroPoint, this.utils.stage);
+				return this.getModifiedHeroPoint();
 			} else {
 				let xDiff = Math.floor(Math.abs(this.body.x - this.body.startX));
 				let yDiff = Math.floor(Math.abs(this.body.y - this.body.startY));
@@ -144,14 +155,14 @@ export default function () {
 			if(grid.x > -currentSquare.x && 
 				grid.x < this.utils.canvasWidth - currentSquare.x &&
 				grid.y > -currentSquare.y && 
-				 grid.y < this.utils.canvasHeight - currentSquare.y){
+				 grid.y < this.utils.canvasHeight - currentSquare.y &&
+				 this.body.alpha){
 				return true;
 			}
 			return false;
 
 		},
 		animate: function (vx, vy) {
-
 			if (this.onScreen()) {
 				this.destPoint = this.calculateDestPoint();
 			
@@ -164,7 +175,42 @@ export default function () {
 				//this only happen if it isn't touching a blocked box
 				this.body.x += this.vx;
 				this.body.y += this.vy;
+
+				
+				if(this.spearCounter < 10){
+					this.spearCounter ++;
+				} else {
+					this.spearThrowing = true;
+					if(!this.throw){
+						this.throw = true;
+						this.spear.originalTarget = this.getModifiedHeroPoint();
+						let dx2 = this.spear.dx2 = this.getModifiedHeroPoint().x - this.spear.x;
+						let dy2 = this.spear.dy2 = this.getModifiedHeroPoint().y - this.spear.y;
+						let angle2 = Math.atan2(dy2, dx2);
+						this.spear.angle = angle2;
+					}
+				}
+				if (!this.spearThrowing) {
+					this.spear.x = this.body.x;
+					this.spear.y = this.body.y;
+				} else {
+					this.spear.vx = Math.cos(this.spear.angle) * this.spearSpeed;
+					this.spear.vy = Math.sin(this.spear.angle) * this.spearSpeed;
+					this.spear.x += this.spear.vx;
+					this.spear.y += this.spear.vy;
+					this.spear.rotation = this.spear.angle;
+
+					let xDiff = Math.floor(Math.abs(this.spear.originalTarget.x - this.spear.x));
+					let yDiff = Math.floor(Math.abs(this.spear.originalTarget.y - this.spear.y));
+					if (xDiff < this.buffer && yDiff < this.buffer) {
+						this.spear.reset();
+						
+					}
+				}
+				
+				
 				this.body.rotation = angle + this.utils.deg2rad(90);
+				return this.body; //this is so we have a count of who is on screen
 			}
 		}
 	}

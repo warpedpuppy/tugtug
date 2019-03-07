@@ -81,9 +81,7 @@ export default {
 					//store free ones
 					if(!bool && !token){
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
-					}
-
-					if(bool){
+					} else if (bool) {
 						this.coveredSpaces.push(b)
 					}
 					

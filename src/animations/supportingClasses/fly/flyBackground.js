@@ -16,6 +16,7 @@ export default function () {
 		gridIndex: 1,
 		sizeIncrement: 1,
 		soldiers: [],
+		spears: [],
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;
@@ -56,9 +57,9 @@ export default function () {
 					s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
 					grid.cont.addChild(s);
 					this.soldiers.push(s);
+					this.spears.push(s.classRef.spear)
 				}
 			}
-
 		},
 		lightningStorm: function () {
 			this.foreground.visible = true;

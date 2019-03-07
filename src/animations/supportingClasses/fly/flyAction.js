@@ -23,9 +23,12 @@ export default function () {
 		utils: Utils,
 		init: function (parent, background) {
 			this.parent = parent;
+			this.grid = parent.grid;
 			this.background = background;
 			this.soldiers = background.soldiers;
+			this.spears = background.spears;
 			this.soldierQ = background.soldiers.length;
+			this.spearQ = background.spears.length;
 
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
@@ -86,18 +89,59 @@ export default function () {
 		fire: function (boolean) {
 			this.flameOn = this.flames.visible = boolean;
 		},
+		fireHit: function (soldier, flame){
+			let globalPoint1 = this.grid.cont.toGlobal(soldier);
+			let globalPoint2 = this.flames.toGlobal(flame);
+			let c1 = {
+				x: globalPoint1.x,
+				y: globalPoint1.y,
+				radius: 10
+			}
+			let c2 = {
+				x: globalPoint2.x,
+				y: globalPoint2.y,
+				radius: 10
+			}
+			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
+			return x[0];
+		},
+		spearHit: function (spear) {
+			let globalPoint1 = this.grid.cont.toGlobal(spear);
+			let c1 = {
+				x: globalPoint1.x,
+				y: globalPoint1.y,
+				radius: 10
+			}
+			let c2 = {
+				x: this.utils.canvasWidth / 2,
+				y: this.utils.canvasHeight / 2,
+				radius: 10
+			}
+			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
+			return x[0];
+		},
 		animate: function () {
-
+			let onScreenSoldiers = [];
 			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
-				s.classRef.animate();
-			
-				
+				let onScreen = s.classRef.animate();
+				if(onScreen){
+
+					onScreenSoldiers.push(onScreen);
+					let sp = this.spears[i];
+					if (this.spearHit(sp)) {
+						sp.reset();
+
+						//MAKE SCORE GO DOWN
+						this.parent.score.decrease(10);
+					};
+				}
+
 			}
 
 			// this.background.background.x -= this.vx * 0.1;
 			// this.background.background.y -= this.vy * 0.1;
-
+			//console.log(`there are ${onScreenSoldiers.length} soldiers on screen right now`)
 			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.headCont.rotation = this.radius;
 	        this.hero.pos.push(this.radius);
@@ -118,6 +162,16 @@ export default function () {
 		        	item.x += item.vx;
 		        	item.y += item.vy;
 		        	item.alpha -= item.fade;
+
+		        	for (let soldier of onScreenSoldiers) {
+		        		if (this.fireHit(soldier, item)) {
+
+		        			soldier.classRef.hit();
+		        			//MAKE SCORE GO UP
+		        			this.parent.score.increase(10);
+		        		}
+		        	}
+
 		        	if (Math.abs(item.y) > item.maxDistance) {
 		        		item.x = 0;
 		        		item.y = 0;
