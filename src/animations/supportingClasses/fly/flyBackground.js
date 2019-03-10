@@ -44,18 +44,22 @@ export default function () {
 
 			for (let i = 0; i < freeSpaces.length; i ++) {
 			//for (let i = 0; i < 1; i ++) {
+				let determineContinue = Math.floor(Math.random()*10);
+
+				if(determineContinue < 9) continue;
 
 				let block = freeSpaces[i];
 				//console.log('block = ', block)
 				let c = Assets.Sprite('castle.png');
-				c.alpha = 0;
+				//c.alpha = 0;
 				c.anchor.set(0.5);
+				c.scale.set(0.25);
 
 				c.x = block[0] + this.parent.grid.blockWidth / 2;
 				c.y = block[1] + this.parent.grid.blockHeight / 2;
 				grid.cont.addChild(c);
 				
-				for (let i = 0; i < 1; i ++) {
+				for (let i = 0; i < 3; i ++) {
 					let soldier = Soldier();
 					let s = (i < 1)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
 					s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;

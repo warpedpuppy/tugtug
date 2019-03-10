@@ -23,6 +23,7 @@ export default function () {
 			this.speed = this.utils.randomNumberBetween(0.1, 0.5);
 			this.spearSpeed = this.utils.randomNumberBetween(0.6, 0.8);
 			this.body.classRef = this;
+			this.body.radius = this.body.r = 11;
 			this.startSquare = this.currentSquare();
 
 			//spears

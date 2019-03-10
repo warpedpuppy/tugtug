@@ -134,10 +134,20 @@ export default function () {
 					let sp = this.spears[i];
 					if (this.spearHit(sp)) {
 						sp.reset();
-
-						//MAKE SCORE GO DOWN
 						this.parent.score.decrease(10);
 					};
+
+					//prevent overlap
+					// for (let j = 0; j < this.soldiers.length; j ++) {
+					// 	let s2 = this.soldiers[j];
+					// 	if (s2.classRef.onScreen()) {
+					// 		let hit = this.utils.circleToCircleCollisionDetection(s, s2);
+					// 		console.log(hit[0])
+					// 		// if(hit[0]){
+					// 		// 	this.utils.adjustPositions(s, s2, hit[1]);
+					// 		// }
+					// 	}
+					// }
 				}
 
 			}
