@@ -71,7 +71,7 @@ export default {
 					this.cont.addChild(b);
 					//this.cont.addChild(text);
 					let token = false;
-					if(obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
+					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
 						let num = obj[`${i}_${j}`].slice(-1);
 						//this.placeToken(num, b.x, b.y)
 						token = true;
@@ -89,6 +89,7 @@ export default {
 					counter ++;
 				}
 			}
+			this.assignAboveBelowRightLeftCovered();
 			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
 			this.placeHero(data.hero.j, data.hero.i);
@@ -166,16 +167,7 @@ export default {
 		resize: function () {
 			this.setLimits();
 		},
-		currentSquare: function () {
-			let halfCanvasWidth = (this.utils.canvasWidth / 2),
-			    halfCanvasHeight = (this.utils.canvasHeight / 2),
-			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
-			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
-			//console.log(iVal,jVal);
-			//console.log(this.blocks[iVal][jVal].covered)
-			//test if square is covered
-			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
-		},
+		
 		returnAbove: function (i,j) {
 			let newi = (i - 1 >= 0)?(i - 1):undefined;
 			let newj = j;
@@ -216,25 +208,65 @@ export default {
 				return  undefined;
 			}
 		},
+		currentSquare: function () {
+			let halfCanvasWidth = (this.utils.canvasWidth / 2),
+			    halfCanvasHeight = (this.utils.canvasHeight / 2),
+			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
+			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
+			//console.log(iVal,jVal);
+			//console.log(this.blocks[iVal][jVal].covered)
+			//test if square is covered
+			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
+		},
+		assignAboveBelowRightLeftCovered: function () {
+		
+	        for (let i = 0; i < this.rowQ; i ++) {
+	            for (let j = 0; j < this.colQ; j ++) {
+	                
+	                let above = this.returnAbove(i, j)
+	                if(!above)continue
+	                this.blocks[i][j].above = above;
+	                this.blocks[i][j].aboveCovered = above.covered;
+	               
+	                let below = this.returnBelow(i, j)
+	                if(!below)continue
+	                this.blocks[i][j].below = below;
+	                this.blocks[i][j].belowCovered = below.covered;
+	                
+	                let right = this.returnRight(i, j)
+	                if(!right)continue
+	                this.blocks[i][j].right = right;
+	                this.blocks[i][j].rightCovered = right.covered;
+	                
+	                let left = this.returnLeft(i, j)
+	                if(!left)continue
+	                this.blocks[i][j].left = left;
+	                this.blocks[i][j].leftCovered = left.covered;
+
+	               // console.log(above, right, left, below)
+	            }
+	        }
+		},
 		createBoundaries: function (currentSquare){
+
 			let i = currentSquare.i;
 			let j = currentSquare.j;
 			
-			let above = this.returnAbove(i,j);
-			let right = this.returnRight(i,j);
-			let below =this.returnBelow(i,j);
-			let left = this.returnLeft(i,j);
+			let above = currentSquare.block.above;//this.returnAbove(i,j);
+			let right = currentSquare.block.right;//this.returnRight(i,j);
+			let below = currentSquare.block.below;//this.returnBelow(i,j);
+			let left = currentSquare.block.left;//this.returnLeft(i,j);
 
-			
+			//console.log(above, right, left, below)
 
-			if(!above|| above.covered){
+			if(!above || above.covered){
 				this.topBorder = this.topEdge - (this.blockHeight * i);
 			} else {
 				this.topBorder = this.topEdge;
 
 			}
 
-			if(!below|| below.covered){
+			if(!below || below.covered){
 				this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
 			} else {
 				this.bottomBorder = this.bottomEdge;

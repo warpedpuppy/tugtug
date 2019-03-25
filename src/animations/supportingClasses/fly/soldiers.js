@@ -101,9 +101,10 @@ export default function () {
 			let globalPoint = this.grid.cont.toGlobal(this.body),
 			    iVal = Math.floor((globalPoint.y - this.grid.cont.y) / this.grid.blockHeight),
 			    jVal = Math.floor((globalPoint.x - this.grid.cont.x) / this.grid.blockWidth);
-			//console.log(iVal,jVal);
-			//console.log(this.blocks[iVal][jVal].covered)
+			//console.log(globalPoint)
 			//test if square is covered
+			if(isNaN(iVal) || isNaN(jVal))return {}
+
 			return { block: this.grid.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		calculateDestPoint: function () {
@@ -112,24 +113,18 @@ export default function () {
 			let i = currentSquare.i;
 			let j = currentSquare.j; 
 
-			//if the soldier hits a wall, reset the dest point to the starting point
-
-			let surrounding = {
-				above: this.grid.returnAbove(i,j),
-				right: this.grid.returnRight(i,j),
-				below: this.grid.returnBelow(i,j),
-				left: this.grid.returnLeft(i,j)
-			};
-			let rightEdge = surrounding.right.x - this.buffer;
-			let leftEdge = surrounding.left.x + this.grid.blockWidth + this.buffer;
-			let bottomEdge = surrounding.below.y - this.buffer;
-			let topEdge = surrounding.above.y + this.grid.blockHeight + this.buffer
+			
+			let rightEdge = currentSquare.block.x + this.grid.blockWidth - this.buffer; 
+			let leftEdge = currentSquare.block.x + this.buffer;
+			let bottomEdge = currentSquare.block.y + this.grid.blockHeight - this.buffer;
+			let topEdge = currentSquare.block.y + this.buffer;
+		
 			if (
-				surrounding.right.covered && this.body.x > rightEdge ||
-				surrounding.left.covered && this.body.x < leftEdge ||
-				surrounding.above.covered && this.body.y < topEdge ||
-				surrounding.below.covered && this.body.y > bottomEdge ) {
-				//console.log('RIGHT HIT');
+				(currentSquare.block.right && currentSquare.block.right.covered) && this.body.x > rightEdge ||
+				(currentSquare.block.left && currentSquare.block.left.covered) && this.body.x < leftEdge ||
+				(currentSquare.block.above && currentSquare.block.above.covered) && this.body.y < topEdge ||
+				(currentSquare.block.below && currentSquare.block.below.covered) && this.body.y > bottomEdge ) {
+				//console.log(' HIT');
 				this.towardsDragon = false;
 				this.alreadyBeenToAWall = true;
 			}
@@ -152,7 +147,7 @@ export default function () {
 		onScreen: function () {
 			let currentSquare = this.currentSquare().block;
 			let grid = this.grid.cont;
-			
+
 			if(grid.x > -currentSquare.x && 
 				grid.x < this.utils.canvasWidth - currentSquare.x &&
 				grid.y > -currentSquare.y && 
@@ -176,6 +171,8 @@ export default function () {
 				//this only happen if it isn't touching a blocked box
 				this.body.x += this.vx;
 				this.body.y += this.vy;
+
+
 
 				
 				if(this.spearCounter < 10){

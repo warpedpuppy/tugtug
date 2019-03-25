@@ -138,16 +138,18 @@ export default function () {
 					};
 
 					//prevent overlap
-					// for (let j = 0; j < this.soldiers.length; j ++) {
-					// 	let s2 = this.soldiers[j];
-					// 	if (s2.classRef.onScreen()) {
-					// 		let hit = this.utils.circleToCircleCollisionDetection(s, s2);
-					// 		console.log(hit[0])
-					// 		// if(hit[0]){
-					// 		// 	this.utils.adjustPositions(s, s2, hit[1]);
-					// 		// }
-					// 	}
-					// }
+					for (let j = 0; j < this.soldiers.length; j ++) {
+						let s2 = this.soldiers[j];
+						if (s2.classRef.onScreen()) {
+							let hit = this.utils.circleToCircleCollisionDetection(s, s2);
+							//console.log(hit[0])
+							if (hit[0]) {
+								//console.log('hit')
+								//console.log(s2.x, s2.y, s2.r)
+								this.utils.adjustPositions(s, s2, hit[1]);
+							}
+						}
+					}
 				}
 
 			}
@@ -157,6 +159,7 @@ export default function () {
 			//console.log(`there are ${onScreenSoldiers.length} soldiers on screen right now`)
 			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.headCont.rotation = this.radius;
+			//console.log(this.radius)
 	        this.hero.pos.push(this.radius);
 
 	        if (this.hero.pos.length > this.maxLength) {
@@ -172,6 +175,8 @@ export default function () {
 	        if (this.flameOn) {
 	        	for(let i = 0; i < this.flameQ; i ++) {
 		        	let item = this.flameArray[i];
+		        let determineContinue = Math.floor(Math.random()*10);
+				if(determineContinue < 9) continue;
 		        	item.x += item.vx;
 		        	item.y += item.vy;
 		        	item.alpha -= item.fade;
@@ -192,6 +197,7 @@ export default function () {
 		        	}
 	            }
 	        } else if (!this.spinning) {
+	        	//console.log(this.radius)
 	        	this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 	        }
 	       

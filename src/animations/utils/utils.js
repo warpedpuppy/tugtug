@@ -352,15 +352,21 @@ export default {
         const percent = 0.2;
         const slop = 0.01;
         var correction = (Math.max(depth - slop, 0) / (1/ballA.r + 1/ballB.r)) * percent;
-        
+        //console.log(correction)
         var norm = [ballB.x - ballA.x, ballB.y - ballA.y];
+        //console.log("norm", norm)
         var mag = Math.sqrt(norm[0]*norm[0] + norm[1]*norm[1]);
+        //console.log("mag", mag)
         norm = [norm[0]/mag,norm[1]/mag];
         correction = [correction*norm[0],correction*norm[1]];
-        ballA.x -= 1/ballA.r * correction[0];
-        ballA.y -= 1/ballA.r * correction[1];
-        ballB.x += 1/ballB.r * correction[0];
-        ballB.y += 1/ballB.r * correction[1];
+        //console.log(correction)
+        //console.log("here", correction[0])
+        if (!isNaN(correction[0]) && !isNaN(correction[1])) {
+            ballA.x -= 1/ballA.r * correction[0];
+            ballA.y -= 1/ballA.r * correction[1];
+            ballB.x += 1/ballB.r * correction[0];
+            ballB.y += 1/ballB.r * correction[1];
+        }
         //console.log('adjust = ', 1/ballB.r * correction[1])
     },
     resolveCollision: function (ballA, ballB){
