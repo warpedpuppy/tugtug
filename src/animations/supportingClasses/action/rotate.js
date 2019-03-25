@@ -15,9 +15,7 @@ export default {
             if (str === 'right') {
                 this.idle = false;
                 activeAction.radius += this.movementQ;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
+                this.velocity = this.config.flyVelocity;
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;
@@ -26,15 +24,16 @@ export default {
             } else if (str === 'left') {
                 this.idle = false;
                 activeAction.radius -= this.movementQ;
-                this.velocity = this.utils.randomNumberBetween(
-                    this.config.swimVelocities[0], 
-                    this.config.swimVelocities[1]);
+                this.velocity = this.config.flyVelocity;
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;
                 returnObj = {vx: -this.vx, vy: -this.vy};
                
             }
+            //console.log(activeAction.radius)
+
+            //console.log(returnObj)
             return returnObj;
         },
 		addToStage: function () {
