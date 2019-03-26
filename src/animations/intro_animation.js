@@ -124,8 +124,8 @@ export default function(obj) {
         getDataBaseData: function () {
            let indexToGet = this.grid.boards.length;
            //console.log(indexToGet) 
-
-           let requestBoardNumber = (indexToGet === 0)?1:this.grid.boards.length;
+           let next = indexToGet + 1;
+           let requestBoardNumber = (indexToGet === 0)?1:next;
            let that = this;
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})

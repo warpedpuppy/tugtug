@@ -70,7 +70,14 @@ export default {
 
 		},
 		addNewBoardData: function (newData) {
-			console.log("new data", newData)
+			if(newData.boards){
+				console.log("new data", newData)
+				this.boards.push(newData.boards);
+				console.log(this.boards)
+			} else {
+				console.log("just use old one")
+			}
+			
 		},
 		buildGrid: function (data) {
 			console.log('NEW GRID', data)
