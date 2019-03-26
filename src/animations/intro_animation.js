@@ -122,14 +122,23 @@ export default function(obj) {
 
         },
         getDataBaseData: function () {
+           let indexToGet = this.grid.boards.length;
+           //console.log(indexToGet) 
+
+           let requestBoardNumber = (indexToGet === 0)?1:this.grid.boards.length;
            let that = this;
            axios
-           .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: 1})
+           .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
                 console.log('home canvas response = ', response)
                 //that.buildGrid(response.data.board)
                 this.dbData = response.data;
-                this.buildGame();
+                if (indexToGet === 0) {
+                    this.buildGame();
+                 } else {
+                    this.grid.addNewBoardData(this.dbData)
+                 }
+               
             })
             .catch(err => console.error(err));  
         },
@@ -247,11 +256,7 @@ export default function(obj) {
             setTimeout(this.addButton, Config.boardCompleteButtonAppearDelay);
             // add button
 
-            // build board
-
-            // reset slots
-
-            // load new board
+            
 
             this.addButton = this.addButton.bind(this)
             this.uponNewBoardButtonPress = this.uponNewBoardButtonPress.bind(this)
@@ -269,7 +274,19 @@ export default function(obj) {
             this.stage.addChild(this.nextMazeButton)
         },
         uponNewBoardButtonPress: function (e) {
-            alert("click")
+             this.stage.removeChild(this.nextMazeButton)
+
+             // build board
+             this.grid.nextBoard();
+
+            // reset slots
+            this.levelSlots.reset();
+            // load new board
+
+            this.loadNewBoard();
+        },
+        loadNewBoard: function () {
+            this.getDataBaseData();
         },
         stop: function () {
             window.onresize = undefined;

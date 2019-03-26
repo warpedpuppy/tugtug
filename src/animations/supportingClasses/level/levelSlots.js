@@ -30,11 +30,19 @@ export default function () {
 			this.tokenCounter ++;
 			token.x = token.y = 0;
 			let index = token.num - 1;
+			token.name = "token";
 			this.slots[index].addChild(token);
 
 			if (this.tokenCounter === 4) {
 				this.parent.boardComplete();
 			}
+		},
+		reset: function () {
+			for(let i = 0; i < this.slotQ; i ++){
+				this.slots[i].removeChildAt(1)
+			}	
+			this.tokenCounter = 0;
+
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
