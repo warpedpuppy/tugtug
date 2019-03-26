@@ -31,8 +31,7 @@ export default function () {
             }
         },
         upHit: function () {
-            this.rotate('up');
-            this.parent.hero.heroJump.look('up');
+            //this.parent.hero.heroJump.look('up');
         },
         downHit: function () {
             //this.vy = 0;

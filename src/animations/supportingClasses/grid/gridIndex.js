@@ -17,7 +17,14 @@ export default {
 		tokenData: {},
 		freeSpaces: [],
 		coveredSpaces: [],
+		boards: [],
+		currentBoard: 0,
+		blockPool: [],
 		init: function (parent) {
+
+			for(let i = 0; i < 2500; i ++){
+				this.blockPool.push(Assets.Sprite())
+			}
 			this.parent = parent;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
@@ -31,7 +38,10 @@ export default {
 			this.boxCircles = [];
 		
 		    this.setAction = this.setAction.bind(this);
-		    this.buildGrid(parent.dbData.board);
+		    this.nextBoard = this.nextBoard.bind(this);
+		    this.boards = parent.dbData.boards;
+		    console.log(this.boards)
+		    this.buildGrid(this.boards[this.currentBoard]);
 
 		},
 		createObj: function (board) {
@@ -50,7 +60,27 @@ export default {
 			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
 			return obj
 		},
+		nextBoard: function () {
+			this.pause = true;
+			this.currentBoard = this.boards.length - 1;
+			this.cont.removeChildren();
+			this.blocks = {};
+			this.buildGrid(this.boards[this.currentBoard]);
+			this.setAction(this.parent.activeAction, this.parent.activeMode);
+
+		},
+		addNewBoardData: function (newData) {
+			if(newData.boards){
+				console.log("new data", newData)
+				this.boards.push(newData.boards);
+				console.log(this.boards)
+			} else {
+				console.log("just use old one")
+			}
+			
+		},
 		buildGrid: function (data) {
+			console.log('NEW GRID', data)
 			let obj = this.createObj(data);
 			let counter = 0;
 			this.rowQ = data.rows;
@@ -60,7 +90,10 @@ export default {
 				for (let j = 0; j < data.cols; j ++) {
 					//console.log(i,j,obj[`${i}_${j}`])
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
-					let b = this.block(bool);
+					//let b = this.block(bool);
+					let b = this.blockPool[counter];
+					b.width = this.blockWidth;
+					b.height = this.blockHeight;
 					b.covered = bool;
 					//console.log(b.covered)
 					b.x = j * this.blockWidth;
@@ -130,15 +163,15 @@ export default {
 					}
 				}
 		},
-		block: function (bool) {
-			//let texture = (bool)?'whiteTile.png':'whiteTile.png';
-			//let texture = (bool)?'whiteTile.png':'grassSquareSmall.png';
-			let b = Assets.Sprite()
-			//b.alpha = (bool)?1:0.25;
-			b.width = this.blockWidth;
-			b.height = this.blockHeight;
-			return b;
-		},
+		// block: function (bool) {
+		// 	//let texture = (bool)?'whiteTile.png':'whiteTile.png';
+		// 	//let texture = (bool)?'whiteTile.png':'grassSquareSmall.png';
+		// 	let b = Assets.Sprite()
+		// 	//b.alpha = (bool)?1:0.25;
+		// 	b.width = this.blockWidth;
+		// 	b.height = this.blockHeight;
+		// 	return b;
+		// },
 		placeHero: function (i, j) {
 			//we know 1,1 is free, so place that beneath the hero
 			i++;
