@@ -104,6 +104,9 @@ export default function(obj) {
             this.stage.addChild(this.filterContainer);
             this.stage.addChild(this.foregroundCont);
 
+            this.addButton = this.addButton.bind(this)
+            this.uponNewBoardButtonPress = this.uponNewBoardButtonPress.bind(this)
+
             this.getDataBaseData = this.getDataBaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
@@ -121,7 +124,7 @@ export default function(obj) {
         getDataBaseData: function () {
            let that = this;
            axios
-           .get(`${API_BASE_URL}/admin/gameLoadGrids`)
+           .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: 1})
            .then(response => {
                 console.log('home canvas response = ', response)
                 //that.buildGrid(response.data.board)
@@ -176,7 +179,8 @@ export default function(obj) {
 
             this.jump.init(this.stage);
             
-            this.levelSlots.init(this.stage).addToStage();
+            this.levelSlots.init(this).addToStage();
+
             this.startGame = this.startGame.bind(this);
             //this.introScreen.init(this.stage, this.startGame).addToStage();
 
@@ -207,7 +211,7 @@ export default function(obj) {
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
-            console.log('end build game');
+            
             this.startGame();
         },
         startGame: function () {
@@ -235,6 +239,37 @@ export default function(obj) {
 
 
     
+        },
+        boardComplete: function () {
+            //alert("board complete!");
+
+            //wait 10 seconds
+            setTimeout(this.addButton, Config.boardCompleteButtonAppearDelay);
+            // add button
+
+            // build board
+
+            // reset slots
+
+            // load new board
+
+            this.addButton = this.addButton.bind(this)
+            this.uponNewBoardButtonPress = this.uponNewBoardButtonPress.bind(this)
+        },
+        addButton: function () {
+            console.log('add button')
+            if(!this.nextMazeButton){
+                this.nextMazeButton = Assets.Sprite("nextMaze.png");
+                this.nextMazeButton.anchor.set(0.5)
+                this.nextMazeButton.x = this.utils.canvasWidth / 2;
+                this.nextMazeButton.y = this.utils.canvasHeight / 2;
+                this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = true;
+                this.nextMazeButton.on('pointerdown',this.uponNewBoardButtonPress);
+            }
+            this.stage.addChild(this.nextMazeButton)
+        },
+        uponNewBoardButtonPress: function (e) {
+            alert("click")
         },
         stop: function () {
             window.onresize = undefined;

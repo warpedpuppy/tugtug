@@ -6,10 +6,14 @@ export default function () {
 		cont: Assets.Container(),
 		utils: Utils,
 		slots: [],
-		init: function (parentCont) {
-			this.parentCont = parentCont;
+		slotQ: 4, 
+		tokenCounter: 0,
+		totalTokens: 4,
+		init: function (parent) {
+			this.parent = parent;
+			this.parentCont = this.utils.app.stage;//parentCont;
 			let s;
-			for(let i = 0; i < 4; i ++){
+			for(let i = 0; i < this.slotQ; i ++){
 				let c = Assets.Container();
 				s = Assets.Sprite('slot.png');
 				s.anchor.set(0.5);
@@ -23,9 +27,14 @@ export default function () {
 			
 		},
 		fillSlot: function (token) {
+			this.tokenCounter ++;
 			token.x = token.y = 0;
 			let index = token.num - 1;
 			this.slots[index].addChild(token);
+
+			if (this.tokenCounter === 4) {
+				this.parent.boardComplete();
+			}
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;

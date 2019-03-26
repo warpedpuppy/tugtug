@@ -17,6 +17,8 @@ export default {
 		tokenData: {},
 		freeSpaces: [],
 		coveredSpaces: [],
+		boards: [],
+		currentBoard: 0,
 		init: function (parent) {
 			this.parent = parent;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
@@ -31,7 +33,10 @@ export default {
 			this.boxCircles = [];
 		
 		    this.setAction = this.setAction.bind(this);
-		    this.buildGrid(parent.dbData.board);
+
+		    this.boards = parent.dbData.boards;
+		    console.log(this.boards)
+		    this.buildGrid(parent.dbData.boards[this.currentBoard]);
 
 		},
 		createObj: function (board) {

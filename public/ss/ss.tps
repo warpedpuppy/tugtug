@@ -261,6 +261,7 @@
             <filename>../bmps/horse.png</filename>
             <filename>../bmps/soldier.png</filename>
             <filename>../bmps/cloud.png</filename>
+            <filename>../bmps/nextMaze.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
