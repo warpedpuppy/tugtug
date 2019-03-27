@@ -44,6 +44,12 @@ export default {
 		    this.buildGrid(this.boards[this.currentBoard]);
 
 		},
+		changeGridSize: function(w, h){
+			this.blockWidth = w;
+			this.blockHeight = h;
+			this.cont.removeChildren();
+			this.buildGrid(this.boards[this.currentBoard]);
+		},
 		createObj: function (board) {
 			let obj = {};
 			for(let arr of board.grid){

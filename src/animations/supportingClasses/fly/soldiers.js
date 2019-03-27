@@ -28,7 +28,7 @@ export default function () {
 
 			//spears
 			this.spear = Assets.Sprite('bouncePlatformLine.png');
-			this.grid.cont.addChild(this.spear);
+			
 			this.spear.anchor.set(0.5);
 			this.spear.width = 50;
 			this.spear.height = 4;
@@ -47,8 +47,13 @@ export default function () {
 			this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 			return this.grid.cont.toLocal(this.heroPoint, this.utils.stage);
 		},
+		addToStage: function () {
+			this.grid.cont.addChild(this.body);
+			this.grid.cont.addChild(this.spear);
+		},
 		removeFromStage: function () {
-
+			this.grid.cont.removeChild(this.body);
+			this.grid.cont.removeChild(this.spear);
 		},
 		resize: function () {
 

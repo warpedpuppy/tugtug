@@ -20,8 +20,8 @@ export default function () {
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
 			this.stage = stage;
-			this.vx = this.utils.randomNumberBetween(1,2); 
-            this.vy = this.utils.randomNumberBetween(1,2);
+			// this.vx = this.utils.randomNumberBetween(1,2); 
+   //          this.vy = this.utils.randomNumberBetween(1,2);
             this.airBubbles.setupBubbles(stage);
 		},
 		start: function() {

@@ -45,7 +45,7 @@ export default function () {
            		f.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
            		f.vx = this.utils.randomNumberBetween(-3, 3);
 				f.vy = this.utils.randomNumberBetween(-3, 3);
-				f.alpha = 0.15;
+				f.alpha = 0.25;
 				f.rotation = Math.atan2(f.vy , f.vx);
 				f.scale.set(this.utils.randomNumberBetween(3, 5))
            		this.fishArray.push(f);

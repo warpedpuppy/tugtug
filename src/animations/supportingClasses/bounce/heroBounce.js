@@ -93,7 +93,7 @@ export default function () {
 				this.legStyle = 1;
 				this.feet.texture = this.spritesheet.textures['bounceLegs1.png'];
 			}
-			TweenMax.to(this.cont, 0.5, {rotation: this.utils.deg2rad(360), onComplete: this.reset.bind(this), delay: 0.25})
+			//TweenMax.to(this.cont, 0.5, {rotation: this.utils.deg2rad(360),onComplete: this.reset.bind(this)})
 			this.bounceStart();
 		},
 		reset: function () {
@@ -110,45 +110,6 @@ export default function () {
 				b.vy = b.storeVY;
 
 			}
-		},
-		buildHero: function () {
-
-			// let feet = [
-			// 	PIXI.Texture.fromFrame('walk1.png'),
-			// 	PIXI.Texture.fromFrame('walk2.png'),
-			// 	PIXI.Texture.fromFrame('walk3.png'),
-			// 	PIXI.Texture.fromFrame('walk2.png')
-			// ];
-			// let walking = new PIXI.extras.AnimatedSprite(feet);
-			// walking.animationSpeed = 0.1;
-			// walking.play();
-
-			this.feet = Assets.Sprite('bounceLegs1.png')
-
-			//this.feet = walking;
-			this.feet.anchor.set(0.5)
-			this.cont.addChild(this.feet);
-
-			let body = Assets.Sprite('jumpBody.png');
-			body.scale.set(0.75);
-			body.anchor.set(0.5)
-			body.y = -40;
-			this.body = body;
-			this.cont.addChild(body);
-
-
-			let leftEye = this.leftEye = this.smileyEye();
-			let rightEye = this.rightEye = this.smileyEye();
-			leftEye.x = -15;
-			leftEye.y = rightEye.y = -45;
-			rightEye.x = 15;
-			this.cont.addChild(leftEye);
-			this.cont.addChild(rightEye);
-
-			this.mouth = this.cont.mouth = this.smileyMouth();
-			this.mouth.y = -25;
-			this.cont.addChild(this.mouth);
-
 		},
 		buildReticulatedHero: function () {
 			this.type = 'reticulated';
@@ -174,7 +135,7 @@ export default function () {
 				b.vy = b.storeVY = vy;
 				this.blocks.push(b);
 				this.cont.addChildAt(b, 0);
-				this.cont.y = -b.y;
+				//this.cont.y = -b.y;
 			}
 			let leftEye = this.leftEye = this.smileyEye();
 			let rightEye = this.rightEye = this.smileyEye();
@@ -188,6 +149,8 @@ export default function () {
 			this.cont.addChild(this.mouth);
 			this.mouth.y = 35 ;
 			this.blocks[this.bounceBlockIndex].active = true;
+			this.cont.pivot = Assets.Point( 0, this.cont.height /2)
+			console.log(this.cont.y)
 
 		},
 		bounceStyle2: function () {

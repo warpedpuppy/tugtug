@@ -1,7 +1,8 @@
 import BouncePlatform from './bouncePlatform';
 import BounceBackground from './bounceBackground';
 import BounceAction from './bounceAction';
-
+import Utils from '../../utils/utils';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		bouncePlatform: BouncePlatform(),
@@ -19,6 +20,7 @@ export default function () {
     		
 		},
 		addToStage: function () {
+			Utils.root.grid.changeGridSize(Config.bounceBlockSize[0], Config.bounceBlockSize[1])
 			this.bouncePlatform.start();
 			this.bouncePlatform.on(true);
 			this.bounceBackground.addToStage();

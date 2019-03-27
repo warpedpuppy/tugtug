@@ -1,7 +1,7 @@
 import Utils from '../../utils/utils';
 export default function () {
 	return {
-		speedLimit: 7,
+		speedLimit: 3,
 		vx: 0,
 		vy: 0,
 		angle: 0,

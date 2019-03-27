@@ -1,5 +1,7 @@
 import FlyBackground from './flyBackground';
 import FlyAction from './flyAction';
+import Utils from '../../utils/utils';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		flyBackground: FlyBackground(),
@@ -13,6 +15,7 @@ export default function () {
 			];
 		},
 		addToStage: function () {
+			Utils.root.grid.changeGridSize(Config.flyBlockSize[0], Config.flyBlockSize[1])
 			this.flyBackground.addToStage();
 			this.flyAction.createPool();
 			return this.flyAction;

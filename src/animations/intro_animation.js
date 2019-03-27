@@ -22,7 +22,7 @@ import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
-//import Animate from './supportingClasses/action/animate';
+//import Animate from './supportingClasses/action/animate';'jump', 
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 export default function(obj) {
@@ -34,7 +34,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly', 'swim','jump', 'bounce'],
+        mode: ['bounce', 'swim','fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -150,7 +150,8 @@ export default function(obj) {
                 spritesheet: this.spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
-                app: this.app
+                app: this.app,
+                root: this
             })
 
             Assets.init();

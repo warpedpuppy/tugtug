@@ -17,8 +17,10 @@ export default function () {
 		gridIndex: 1,
 		sizeIncrement: 1,
 		soldiers: [],
+		castles: [],
 		spears: [],
 		clouds: Clouds(),
+		solderPerGridSquareQ: 3,
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;
@@ -33,12 +35,14 @@ export default function () {
 			// this.clearLightening = this.clearLightening.bind(this);
 			//this.timer = setTimeout(this.lightningStorm, 1500)
 
-			this.placeCastles(parent.grid)
+			this.buildCastlesAndSoldiers();
 			this.clouds.init(parent.stage)
 			
 
 		},
-		placeCastles: function (grid) {
+		buildCastlesAndSoldiers: function () {
+
+			let grid = this.parent.grid;
 			let freeSpaces = grid.freeSpaces;
 			//console.log('free space array', freeSpaces, freeSpaces.length);
 
@@ -47,7 +51,7 @@ export default function () {
 			//for (let i = 0; i < 1; i ++) {
 
 				let determineContinue = Math.floor(Math.random()*10);
-				if(determineContinue < 8) continue;
+				if(determineContinue < 9) continue;
 
 				let block = freeSpaces[i];
 				//console.log('block = ', block.i, block.j)
@@ -58,16 +62,50 @@ export default function () {
 
 				c.x = block[0] + this.parent.grid.blockWidth / 2;
 				c.y = block[1] + this.parent.grid.blockHeight / 2;
-				grid.cont.addChild(c);
+				this.castles.push(c);
+				//grid.cont.addChild(c);
 				
-				for (let i = 0; i < 3; i ++) {
+				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
 					let soldier = Soldier();
-					let s = (i < 3)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
+					let s = (j < 3)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
 					s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;
 					s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
-					grid.cont.addChild(s);
+					//grid.cont.addChild(s);
 					this.soldiers.push(s);
 					this.spears.push(s.classRef.spear)
+				}
+			}
+		},
+		placeCastlesAndSoldiers: function () {
+			let grid = this.parent.grid;
+			let freeSpaces = grid.freeSpaces;
+			//console.log('free space array', freeSpaces, freeSpaces.length);
+			let counter = 0;
+			for (let i = 0; i < this.castles.length; i ++) {
+				let c = this.castles[i];
+				
+				grid.cont.addChild(c);
+				
+				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+					let soldier = this.soldiers[counter];
+					soldier.classRef.addToStage();
+					
+					counter ++;
+				}
+			}
+		},
+		removeCastlesAndSoldiers: function () {
+			let fQ = this.parent.grid.freeSpaces.length;
+			let counter = 0;
+			for (let i = 0; i < this.castles.length; i ++) {
+				let c = this.castles[i];
+				this.parent.grid.cont.removeChild(c);
+				
+				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+					let soldier = this.soldiers[counter];
+					soldier.classRef.removeFromStage();
+					//this.parent.grid.cont.removeChild(soldier);
+					counter ++;
 				}
 			}
 		},
@@ -114,16 +152,19 @@ export default function () {
 			this.boltCont = boltCont;
 		},
 		addToStage: function () {
-			
+			this.placeCastlesAndSoldiers();
+			this.clouds.addToStage();
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
+			this.clouds.removeFromStage();
+			this.removeCastlesAndSoldiers();
 			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
-			this.background.clear();
-			this.background.beginFill(0xFF00FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+			// this.background.clear();
+			// this.background.beginFill(0xFF00FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
 		animate: function () {
 	

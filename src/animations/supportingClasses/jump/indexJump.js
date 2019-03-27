@@ -1,6 +1,7 @@
 import JumpAction from './jumpAction';
 import JumpBackground from './jumpBackground';
-
+import Utils from '../../utils/utils';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		jumpAction: JumpAction(),
@@ -14,6 +15,7 @@ export default function () {
 			];
 		},
 		addToStage: function () {
+			
 			this.jumpBackground.addToStage();
 			return this.jumpAction;
 		},

@@ -10,6 +10,9 @@ export default {
 				this.op.push(this.Sprite());
 			}
 		},
+		Point: function (x, y){
+			return new PIXI.Point(x, y)
+		},
 		Container: function () {
 			return new PIXI.Container();
 		},

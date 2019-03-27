@@ -6,7 +6,9 @@ export default {
     app: undefined,
     wh: {},
     lilypads: Object,
+    root: {},
     setLilypads: function (object) {
+        console.log('set lilypads', object)
         this.lilypads = object;
     },
     setProperties: function (obj) {
@@ -17,7 +19,8 @@ export default {
         this.wh = {
             canvasHeight: obj.canvasHeight,
             canvasWidth: obj.canvasWidth
-        }
+        };
+        this.root = obj.root;
     },
     setWidthAndHeight: function(w, h){
         this.canvasWidth = w;

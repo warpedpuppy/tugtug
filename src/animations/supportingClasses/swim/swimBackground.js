@@ -1,5 +1,7 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import FishSchool from './fishSchool';
+import LilypadsLotuses from './lilypadsLotuses';
 export default function () {
 	return {
 		texture: 'waterSmall.png',
@@ -10,16 +12,14 @@ export default function () {
 		sizeIncrement: 2,
 		utils: Utils,
 		gridIndex: 5,
+		lilypadLotuses: LilypadsLotuses(),
+		fishSchool: FishSchool(),
 		init: function () {
 			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;
-
-			// let arr = [
-			// 	[0,0,1,1],
-			// 	[2000, 0, -1,1],
-			// 	[0,1000,1,-1],
-			// 	[2000,1000,-1,-1]
-			// ]
+			this.lilypadLotuses.init(this.parentCont);
+			this.fishSchool.init(this.parentCont);
+			
 
 			this.cont = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
 			this.cont2 = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
@@ -70,16 +70,23 @@ export default function () {
 		// },
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
-			this.parentCont.addChildAt(this.background, 1);
+			this.fishSchool.addToStage();
+			this.lilypadLotuses.addToStage();
+			this.parentCont.addChildAt(this.background, 0);
 			this.parentCont.addChildAt(this.cont2, 2);
 			this.parentCont.addChildAt(this.cont, this.parentCont.children.length - 2);
 		},
 		removeFromStage: function () {
+			this.fishSchool.removeFromStage();
+			this.lilypadLotuses.removeFromStage();
 			this.parentCont.removeChild(this.background);
 			this.parentCont.removeChild(this.cont2);
 			this.parentCont.removeChild(this.cont);
 		},
 		animate: function () {
+			this.fishSchool.animate();
+			
+			this.lilypadLotuses.animate();
 
 
 			this.cont2.x += this.cont2.vx;
