@@ -262,6 +262,7 @@
             <filename>../bmps/soldier.png</filename>
             <filename>../bmps/cloud.png</filename>
             <filename>../bmps/nextMaze.png</filename>
+            <filename>../bmps/spaceShip.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

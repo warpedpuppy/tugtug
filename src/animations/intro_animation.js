@@ -34,7 +34,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['bounce', 'swim','fly'],
+        mode: ['fly', 'bounce', 'swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),

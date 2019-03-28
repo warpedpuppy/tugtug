@@ -2,6 +2,7 @@ import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
+import SpaceShip from '../jump/spaceShip.js';
 //import Config from './animationsConfig';
 export default {
 		cont: Assets.ParticleContainer(10000),
@@ -20,7 +21,10 @@ export default {
 		boards: [],
 		currentBoard: 0,
 		blockPool: [],
+		spaceShip: {},
 		init: function (parent) {
+
+			this.spaceShip = SpaceShip().init()
 
 			for(let i = 0; i < 2500; i ++){
 				this.blockPool.push(Assets.Sprite())
@@ -128,6 +132,11 @@ export default {
 					counter ++;
 				}
 			}
+
+			this.spaceShip.x = this.freeSpaces[0][0] + this.blockWidth / 2;
+			this.spaceShip.y = this.freeSpaces[0][1] + this.blockHeight / 2;
+			console.log(this.spaceShip.x, this.spaceShip.y)
+			this.cont.addChild(this.spaceShip)
 			this.assignAboveBelowRightLeftCovered();
 			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
