@@ -133,16 +133,21 @@ export default {
 				}
 			}
 
-			this.spaceShip.x = this.freeSpaces[0][0] + this.blockWidth / 2;
-			this.spaceShip.y = this.freeSpaces[0][1] + this.blockHeight / 2;
-			console.log(this.spaceShip.x, this.spaceShip.y)
-			this.cont.addChild(this.spaceShip)
+			this.placeShip();
+
+
 			this.assignAboveBelowRightLeftCovered();
 			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
 			this.placeHero(data.hero.j, data.hero.i);
 			this.setLimits();
 			this.pause = false;
+		},
+		placeShip: function () {
+			// for now just place space ship here
+			this.spaceShip.x = this.freeSpaces[0][0] + this.blockWidth / 2;
+			this.spaceShip.y = this.freeSpaces[0][1] + this.blockHeight / 2;
+			this.cont.addChild(this.spaceShip);
 		},
 		placeTokens: function () {
 			for(let key in this.tokenData){
@@ -348,16 +353,17 @@ export default {
 			if(this.pause)return;
 			let currentSquare = this.currentSquare();
 			this.createBoundaries(currentSquare);
-			
-			for (let i = 0; i < this.tokens.length; i ++) {
-				let t = this.tokens[i];
-				let ballA = {
+			let ballA = {
 					x: this.utils.canvasWidth / 2,
 					y: this.utils.canvasHeight / 2,
 					radius: 10
 				}
+			let ballB;
+			for (let i = 0; i < this.tokens.length; i ++) {
+				let t = this.tokens[i];
+				
 				let globalPoint = this.cont.toGlobal(t);
-				let ballB = {
+				ballB = {
 					x: globalPoint.x,
 					y: globalPoint.y,
 					radius: 30
@@ -369,7 +375,19 @@ export default {
 					this.parent.levelSlots.fillSlot(t);
 				}
 			}
+
+			let spaceShipGlobalPoint = this.cont.toGlobal(this.spaceShip);
+			ballB = {
+					x: spaceShipGlobalPoint.x,
+					y: spaceShipGlobalPoint.y,
+					radius: 30
+				}
 			
+			let rocketShipHit = this.utils.circleToCircleCollisionDetection(ballA, ballB);
+			 if (rocketShipHit[0]) {
+			 	this.pause = true;
+			 	this.spaceShip.classRef.blastOff();
+			 }
 			
 			//boundaries
 			//console.log(this.cont.x, -this.rightBorder);
