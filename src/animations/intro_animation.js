@@ -68,6 +68,8 @@ export default function(obj) {
         grid: Grid,
         dbData: {},
         init: function (isMobile, isMobileOnly) {
+
+            this.activeMode = this.mode[this.activeModeIndex];
             this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
@@ -130,8 +132,10 @@ export default function(obj) {
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
-                console.log('home canvas response = ', response)
-                //that.buildGrid(response.data.board)
+                //console.log('home canvas response = ', response)
+                //that.
+
+                (response.data.board)
                 this.dbData = response.data;
                 if (indexToGet === 0) {
                     this.buildGame();

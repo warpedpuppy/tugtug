@@ -3,6 +3,7 @@ import Assets from '../../utils/assetCreation';
 import Castles from './castles';
 import Soldier from './soldiers';
 import Clouds from './clouds';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -59,7 +60,11 @@ export default function () {
 				//c.alpha = 0;
 				c.anchor.set(0.5);
 				c.scale.set(0.25);
+				let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
+				let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
+				this.parent.grid.blockWidth = bw;
+				this.parent.grid.blockHeight = bh;
 				c.x = block[0] + this.parent.grid.blockWidth / 2;
 				c.y = block[1] + this.parent.grid.blockHeight / 2;
 				this.castles.push(c);

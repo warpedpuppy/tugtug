@@ -150,7 +150,7 @@ export default function () {
 			this.mouth.y = 35 ;
 			this.blocks[this.bounceBlockIndex].active = true;
 			this.cont.pivot = Assets.Point( 0, this.cont.height /2)
-			console.log(this.cont.y)
+			console.log("this cont height",this.cont.height)
 
 		},
 		bounceStyle2: function () {

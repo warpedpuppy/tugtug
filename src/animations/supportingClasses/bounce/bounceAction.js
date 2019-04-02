@@ -1,7 +1,7 @@
 import Utils from '../../utils/utils';
 export default function () {
 	return {
-		speedLimit: 3,
+		speedLimit: 5,
 		vx: 0,
 		vy: 0,
 		angle: 0,
@@ -9,6 +9,7 @@ export default function () {
 		legCounter: 0,
 		legCounterLimit: 10,
 		utils: Utils,
+		gravity: 0.5,
 		init: function (bouncePlatform) {
 			this.hero = this.utils.hero;
 			this.bouncePlatform = bouncePlatform;
@@ -39,14 +40,14 @@ export default function () {
 				}
 
 				if (this.vy < this.speedLimit) {
-		            this.vy += 0.5;
+		            this.vy += this.gravity;
 		        } 
 				
-
+		        
 		        if(this.vy > 0) {
 		        	//console.log('up');
 		        	if (this.vy > this.speedLimit) {
-		                this.vy -= 0.5;
+		                this.vy -= this.gravity;
 		            }
 		        } else {
 		        	//console.log('down')

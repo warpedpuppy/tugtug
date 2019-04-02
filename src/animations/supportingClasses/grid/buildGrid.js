@@ -3,11 +3,11 @@ import Utils from '../../utils/utils';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
 import SpaceShip from '../jump/spaceShip.js';
-import Config from '../../animationsConfig';
+//import Config from './animationsConfig';
 export default {
 		cont: Assets.ParticleContainer(10000),
-		blockWidth: 0,
-		blockHeight: 0,
+		blockWidth: 100,
+		blockHeight: 100,
 		blocks: {},
 		utils: Utils,
 		colQ: 4,
@@ -22,15 +22,11 @@ export default {
 		currentBoard: 0,
 		blockPool: [],
 		spaceShip: {},
-		wallHit: 0,
 		init: function (parent) {
-
-			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
-			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
 			this.spaceShip = SpaceShip().init()
 
-			for (let i = 0; i < 900; i ++) {
+			for (let i = 0; i < 2500; i ++) {
 				this.blockPool.push(Assets.Sprite())
 			}
 			this.parent = parent;
@@ -48,17 +44,14 @@ export default {
 		    this.setAction = this.setAction.bind(this);
 		    this.nextBoard = this.nextBoard.bind(this);
 		    this.boards = parent.dbData.boards;
-		    console.log("grid init called")
-
+		    console.log(this.boards)
 		    this.buildGrid(this.boards[this.currentBoard]);
 
 		},
 		changeGridSize: function(w, h){
-			if(w === this.blockWidth && h === this.blockHeight)return
 			this.blockWidth = w;
 			this.blockHeight = h;
 			this.cont.removeChildren();
-			console.log("change grid size")
 			this.buildGrid(this.boards[this.currentBoard]);
 		},
 		createObj: function (board) {
@@ -82,7 +75,6 @@ export default {
 			this.currentBoard = this.boards.length - 1;
 			this.cont.removeChildren();
 			this.blocks = {};
-			console.log("next board")
 			this.buildGrid(this.boards[this.currentBoard]);
 			this.setAction(this.parent.activeAction, this.parent.activeMode);
 
@@ -102,8 +94,6 @@ export default {
 			let counter = 0;
 			this.rowQ = data.rows;
 			this.colQ = data.cols;
-			console.log('start build grid')
-			this.freeSpaces = [];
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
 				for (let j = 0; j < data.cols; j ++) {
@@ -117,10 +107,9 @@ export default {
 					//console.log(b.covered)
 					b.x = j * this.blockWidth;
 					b.y = i * this.blockHeight;
-					//console.log(b.x, b.y)
-					// let text = Assets.BitmapText(`${i}, ${j}`)
-					// text.x = b.x;
-					// text.y = b.y;
+					let text = Assets.BitmapText(`${i}, ${j}`)
+					text.x = b.x;
+					text.y = b.y;
 					this.cont.addChild(b);
 					//this.cont.addChild(text);
 					let token = false;
@@ -133,7 +122,6 @@ export default {
 
 					//store free ones
 					if(!bool && !token){
-						//console.log([b.x, b.y, b, i, j])
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
 					} else if (bool) {
 						this.coveredSpaces.push(b)
@@ -171,21 +159,14 @@ export default {
 				this.cont.addChild(t);
 			}
 		},
-		setAction: function (action, mode) {
-			this.action = action;
-			this.changeBackground(mode)
-		},
 		changeBackground: function (mode) {
-		
-
-			this.wallHit = Config[`${mode}WallHit`];
-			this.buffer = Config[`${mode}Buffer`];
-
 			let t;
 			if (mode === 'fly') {
 				t = this.flyTexture;
-				
-			} 
+			} else {
+				//t = this.whiteSquare;
+			}
+
 			for(let j in this.blocks){
 					for(let i = 0; i < this.blocks[j].length; i ++){
 						let b = this.blocks[j][i];
@@ -197,23 +178,6 @@ export default {
 					}
 				}
 		},
-		placeHero: function (i, j) {
-			//we know 1,1 is free, so place that beneath the hero
-			i++;
-			j++;
-			let halfWidth = this.utils.canvasWidth / 2;
-			let halfHeight = this.utils.canvasHeight / 2;
-			this.cont.x = halfWidth - (i * this.blockWidth) + (this.blockWidth /2);
-			this.cont.y = halfHeight - (j * this.blockHeight) + (this.blockHeight /2);
-		},
-		addToStage: function (index) {
-			
-			
-			this.parentCont.addChildAt(this.cont, index)
-		},
-		removeFromStage: function () {
-			this.parentCont.removeChild(this.cont)
-		},
 		setLimits: function () {
 			this.boardWidth = this.colQ * this.blockWidth;
 			this.boardHeight = this.rowQ * this.blockHeight;
@@ -221,9 +185,6 @@ export default {
 			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
 			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
-		},
-		resize: function () {
-			this.setLimits();
 		},
 		returnAbove: function (i,j) {
 			let newi = (i - 1 >= 0)?(i - 1):undefined;
@@ -265,13 +226,6 @@ export default {
 				return  undefined;
 			}
 		},
-		currentSquare: function () {
-			let halfCanvasWidth = (this.utils.canvasWidth / 2),
-			    halfCanvasHeight = (this.utils.canvasHeight / 2),
-			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
-			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
-			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
-		},
 		assignAboveBelowRightLeftCovered: function () {
 		
 	        for (let i = 0; i < this.rowQ; i ++) {
@@ -300,139 +254,5 @@ export default {
 	               // console.log(above, right, left, below)
 	            }
 	        }
-		},
-		createBoundaries: function (currentSquare){
-
-			let i = currentSquare.i;
-			let j = currentSquare.j;
-			
-			let above = currentSquare.block.above;//this.returnAbove(i,j);
-			let right = currentSquare.block.right;//this.returnRight(i,j);
-			let below = currentSquare.block.below;//this.returnBelow(i,j);
-			let left = currentSquare.block.left;//this.returnLeft(i,j);
-
-			//console.log(above, right, left, below)
-
-			if(!above || above.covered){
-				this.topBorder = this.topEdge - (this.blockHeight * i);
-			} else {
-				this.topBorder = this.topEdge;
-
-			}
-
-			if(!below || below.covered){
-				this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
-			} else {
-				this.bottomBorder = this.bottomEdge;
-			}
-
-			if (!right || right.covered) {
-				this.rightBorder = ((j+1) * this.blockWidth) - this.leftEdge;	
-			} else {
-				this.rightBorder = this.rightEdge;
-			}
-
-			if (!left || left.covered) {
-				this.leftBorder = this.leftEdge - (j * this.blockWidth);
-			} else {
-				this.leftBorder = this.leftEdge;
-			}
-
-
-
-
-			// console.log(
-			// 	this.returnAbove(i,j),
-			// 	this.returnRight(i,j),
-			// 	this.returnBelow(i,j),
-			// 	this.returnLeft(i,j));
-
-		},
-		animate: function (vx, vy) {
-			
-	
-			if(this.pause)return;
-			let currentSquare = this.currentSquare();
-			this.createBoundaries(currentSquare);
-			let ballA = {
-					x: this.utils.canvasWidth / 2,
-					y: this.utils.canvasHeight / 2,
-					radius: 10
-				}
-			let ballB;
-			for (let i = 0; i < this.tokens.length; i ++) {
-				let t = this.tokens[i];
-				
-				let globalPoint = this.cont.toGlobal(t);
-				ballB = {
-					x: globalPoint.x,
-					y: globalPoint.y,
-					radius: 30
-				}
-				let x = this.utils.circleToCircleCollisionDetection(ballA, ballB);
-
-				if (x[0] && t.parent === this.cont){
-					this.cont.removeChild(t)
-					this.parent.levelSlots.fillSlot(t);
-				}
-			}
-
-			let spaceShipGlobalPoint = this.cont.toGlobal(this.spaceShip);
-			ballB = {
-					x: spaceShipGlobalPoint.x,
-					y: spaceShipGlobalPoint.y,
-					radius: 30
-				}
-			
-			let rocketShipHit = this.utils.circleToCircleCollisionDetection(ballA, ballB);
-			 if (rocketShipHit[0]) {
-			 	this.pause = true;
-			 	this.spaceShip.classRef.blastOff();
-			 }
-			
-			//boundaries
-			//console.log(this.cont.x, -this.rightBorder);
-			this.cont.x -= vx;
-
-			if (this.cont.x > this.leftBorder) {
-				//console.log('1')
-			 	this.cont.x -= this.buffer;
-
-			 	this.action.vx = 5;
-			 	//this.action.vx *= this.wallHit;
-			} 
-			if (this.cont.x < -this.rightBorder) {
-				//console.log('2')
-				this.cont.x += this.buffer;
-
-				this.action.vx = -5;
-			 	//this.action.vx *= this.wallHit;
-			}
-
-			this.cont.y -= vy;
-			if (this.cont.y > this.topBorder) {
-			 	this.cont.y = this.topBorder - this.buffer;
-			 	this.action.vy *= this.wallHit;
-			} 
-
-			if (this.cont.y < -this.bottomBorder + this.buffer) {
-
-				 this.cont.y = - this.bottomBorder + this.buffer;
-			
-			 	if(this.utils.root.activeMode === "bounce"){
-			 		this.utils.hero.activeHero.bounce(true);
-		        	this.action.vy  = 10 * this.wallHit;
-			    } else {
-			        this.action.vy *= this.wallHit;
-			    }
-			 	
-		        
-
-
-			}
-			
-
-
 		}
-	
 }
