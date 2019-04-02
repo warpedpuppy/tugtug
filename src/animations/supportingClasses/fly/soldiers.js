@@ -1,6 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-//import Config from './animationsConfig';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		utils:Utils,
@@ -103,12 +103,15 @@ export default function () {
 		},
 		
 		currentSquare: function () {
-			let globalPoint = this.grid.cont.toGlobal(this.body),
-			    iVal = Math.floor((globalPoint.y - this.grid.cont.y) / this.grid.blockHeight),
-			    jVal = Math.floor((globalPoint.x - this.grid.cont.x) / this.grid.blockWidth);
-			//console.log(globalPoint)
-			//test if square is covered
-			if(isNaN(iVal) || isNaN(jVal))return {}
+		
+			let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
+			let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
+
+			let globalPoint = this.grid.cont.toGlobal(this.body);
+			
+			let iVal = Math.floor((globalPoint.y - this.grid.cont.y) / bh);
+			let jVal = Math.floor((globalPoint.x - this.grid.cont.x) / bw);
+			
 
 			return { block: this.grid.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
@@ -151,6 +154,7 @@ export default function () {
 		},
 		onScreen: function () {
 			let currentSquare = this.currentSquare().block;
+
 			let grid = this.grid.cont;
 
 			if(grid.x > -currentSquare.x && 
