@@ -51,6 +51,7 @@ export default function () {
 			c.name = this.itemStrings[this.textureCounter];
 			//c.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			c.anchor.set(0.5);
+			c.hit = false;
 			// c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
 			// c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
 			this.items.push(c);

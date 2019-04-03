@@ -29,6 +29,7 @@ export default {
         return this;
     },
     setUp: function () {
+        
         this.lines = Assets.returnFirstHalfObjectPool('line.png');
         this.dots = Assets.returnSecondHalfObjectPool('pellet.png');
         this.loopingQ = this.dots.length;
@@ -65,14 +66,17 @@ export default {
         if(this.colorCounter === this.colors.length){
             this.colorCounter = 0;
         }
+        console.log("end set up")
     },
     resize: function (wh) {
         this.wh = wh;
     },
     start: function (newActiveMode, grid) {
+
         this.newActiveMode = newActiveMode;
         this.setUp();
         this.runAnimation = true;
+
     },
     reset: function () {
 
@@ -97,46 +101,45 @@ export default {
         this.parent.grid.setAction(this.parent.activeAction, this.parent.activeMode);
 
         let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
-            console.log("index = ", index)
         this.parent.stage.setChildIndex(this.parent.grid.cont, index) 
 
     },
-    startWithMasking: function (newBackground, oldBackground) {
-        this.oldBackground = oldBackground;
-        this.newBackground = newBackground;
-        console.log(newBackground.maskedItems);
+    // startWithMasking: function (newBackground, oldBackground) {
+    //     this.oldBackground = oldBackground;
+    //     this.newBackground = newBackground;
+    //     console.log(newBackground.maskedItems);
        
-        newBackground.maskedItems.forEach(item => {
-            item.mask = this.circle;
-        })
+    //     newBackground.maskedItems.forEach(item => {
+    //         item.mask = this.circle;
+    //     })
        
-        // this.cont.visible = true;
-        this.runAnimation = true;
-    },
-    resetWithMasking: function () {
-        console.log("RESET")
-        this.radialGrow = 0.01;
-        this.radialCont.scale.set(0);
-        this.animationCounter = 0;
-        this.done = false;
-        //this.cont.visible = false;
-        this.circle.scale.set(0);
-        this.newBackground.maskedItems.forEach(item => {
-            item.mask = null;
-        })
-        for (let i = 0; i < this.explosionQ; i ++) {
-            //fade out
-            let e = this.explosions[i];
-            e.radius = 0;
-        }
-        this.parent.transitionAnimationPlaying = false;
-        //this.oldBackground.removeFromStage();
-        //console.log('remove old background')
-    },
+    //     // this.cont.visible = true;
+    //     this.runAnimation = true;
+    // },
+    // resetWithMasking: function () {
+    //     console.log("RESET")
+    //     this.radialGrow = 0.01;
+    //     this.radialCont.scale.set(0);
+    //     this.animationCounter = 0;
+    //     this.done = false;
+    //     //this.cont.visible = false;
+    //     this.circle.scale.set(0);
+    //     this.newBackground.maskedItems.forEach(item => {
+    //         item.mask = null;
+    //     })
+    //     for (let i = 0; i < this.explosionQ; i ++) {
+    //         //fade out
+    //         let e = this.explosions[i];
+    //         e.radius = 0;
+    //     }
+    //     this.parent.transitionAnimationPlaying = false;
+    //     //this.oldBackground.removeFromStage();
+    //     //console.log('remove old background')
+    // },
     animate: function () {
 
         if(!this.runAnimation)return;
-
+        
         this.animationCounter ++;
         if(this.animationCounter >= this.animationLength){
             this.done = true;

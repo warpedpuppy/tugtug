@@ -85,7 +85,6 @@ export default {
 			this.blockWidth = w;
 			this.blockHeight = h;
 			this.cont.removeChildren();
-			console.log("change grid size")
 			this.buildGrid(this.boards[this.currentBoard]);
 		},
 		createObj: function (board) {
@@ -423,15 +422,24 @@ export default {
 		},
 		animate: function (vx, vy) {
 			
-	
+			if (this.treasure.animationHappening) {
+				this.treasure.animateSpecial();			
+			}
+
 			if(this.pause)return;
 
 
 			for(let i = 0; i < this.itemLoopingQ; i ++){
 				if(this.transitionItemsArray[i]){
 				
-					if(this.itemHitDetect(this.transitionItemsArray[i])){
-						console.log("trans hit");
+					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
+						// console.log("trans hit");
+						// this.transitionItemsArray[i].hit = true;
+						// console.log("1")
+						// this.utils.root.filterAnimation.shutOff();
+						// console.log("2")
+						this.utils.root.switchPlayerMaskedAction();
+						//console.log("3")
 
 					}
 				}
@@ -441,7 +449,8 @@ export default {
 						this.treasure.activeChest = this.treasureChests[i];
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation();
-					}
+						this.treasureChests.splice(i, 1)
+					}  
 				}
 				if(this.magicPillsArray[i]){
 					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
@@ -451,25 +460,7 @@ export default {
 				}
 			}
 
-			// if (this.treasure.hit || this.transitionItems.hit) {
-   //              if(this.action){
-   //                  this.filterAnimation.shutOff();
-   //                  this.action = false;
-   //              }
-   //              if (this.treasure.hit) {
-   //                  this.score.increase(100);
-   //                  this.treasure.animateSpecial();
-   //              } else {
-   //                  this.transitionItems.animateSpecial();
-   //              }
-
-   //          } else {
-   //             // this.action = true;
-   //          }
-
-            // this.treasure.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
-            // this.transitionItems.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
-            // this.magicPills.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
+	
 
 
 			let currentSquare = this.currentSquare();

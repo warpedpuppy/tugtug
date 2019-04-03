@@ -17,7 +17,7 @@ export default function () {
 	gravity: 0.3,
 	counter: 0,
 	bounce: 0.8,
-	animationLimit: 120,
+	animationLimit: 200,
 	vys: [-10, -1],
 	vxs: [-8, 8],
 	fallSpeeds: [2, 4],
@@ -97,6 +97,8 @@ export default function () {
 	},
 	playAnimation: function () {
 		//place chest in center and rock it back and forth;
+		this.utils.root.grid.pause = true;
+		//this.utils.root.action = false;
 		this.animationHappening = true;
 		this.storeObject = {
 			scale: this.activeChest.scale.x,
@@ -104,15 +106,17 @@ export default function () {
 			y: 0
 		}
 		this.activeChest.scale.set(1);
-		this.activeChest.x = this.radialCont.x = this.wh.canvasWidth / 2;
-		this.activeChest.y = this.radialCont.y = this.wh.canvasHeight / 2;
+		
+		this.activeChest.x = this.radialCont.x = this.utils.canvasWidth / 2;
+		this.activeChest.y = this.radialCont.y = this.utils.canvasHeight / 2;
 
-		this.utils.app.stage.addChildAt(this.radialCont, this.activeChest._zIndex - 1)
+		this.utils.app.stage.addChild(this.radialCont)
 
 		//explode coins
-		this.ringCont.x = this.wh.canvasWidth / 2;
-		this.ringCont.y = this.wh.canvasHeight / 2;
+		this.ringCont.x = this.utils.canvasWidth / 2;
+		this.ringCont.y = this.utils.canvasHeight / 2;
 		this.utils.app.stage.addChild(this.ringCont);
+		this.utils.app.stage.addChild(this.activeChest)
 	},
 	animateSpecial: function () {
 		for (let i = 0; i < this.ringQ; i ++) {
@@ -130,6 +134,7 @@ export default function () {
 				r.vx *= -this.bounce;
 			}
 		}
+		
 		this.counter ++;
 		if(this.counter === this.animationLimit) {
 			this.reset();
@@ -157,12 +162,15 @@ export default function () {
 		}
 		this.counter = 0;
 		this.hit = false;
-		this.parent.removeChild(this.ringCont);
+		this.utils.app.stage.removeChild(this.ringCont);
 		this.activeChest.scale.set(this.storeObject.scale);
 		this.activeChest.x = this.storeObject.x;
 		this.activeChest.y = this.storeObject.y;
 		this.radialCont.scale.set(0);
-		this.radialCont.parent.removeChild(this.radialCont);
+		this.utils.app.stage.removeChild(this.radialCont);
+		this.animationHappening = false;
+		this.utils.root.grid.pause = false;
+		this.utils.app.stage.removeChild(this.activeChest)
 	},
 	animate: function (vx, vy) {
 		for (let i = 0; i < this.chestQ; i ++) {

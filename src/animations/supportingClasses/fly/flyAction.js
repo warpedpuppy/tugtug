@@ -154,12 +154,10 @@ export default function () {
 
 			}
 
-			// this.background.background.x -= this.vx * 0.1;
-			// this.background.background.y -= this.vy * 0.1;
-			//console.log(`there are ${onScreenSoldiers.length} soldiers on screen right now`)
+		
 			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.headCont.rotation = this.radius;
-			//console.log(this.radius)
+		
 	        this.hero.pos.push(this.radius);
 
 	        if (this.hero.pos.length > this.maxLength) {

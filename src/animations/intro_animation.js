@@ -34,7 +34,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly', 'bounce', 'swim'],
+        mode: ['swim', 'fly', 'bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -64,6 +64,7 @@ export default function(obj) {
         transitionAnimationPlaying: false,
         grid: Grid,
         dbData: {},
+        storeAction: true,
         init: function (isMobile, isMobileOnly) {
 
             this.activeMode = this.mode[this.activeModeIndex];
@@ -71,6 +72,8 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
+            //this.switchPlayerMaskedAction = this.switchPlayerMaskedAction.bind(this)
+  
 
             if (!this.isMobileOnly) {
                 this.utils.getWidthAndHeight();
@@ -321,25 +324,22 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];
         },
         switchPlayerMaskedAction: function () {
-            //this[this.activeMode].background.cont.alpha = 0.5;
+            //alert("switchPlayerMaskedAction",String(this.transitionAnimationPlaying.toString())
             if (!this.transitionAnimationPlaying) {
+               
                 this.action = false;
+                
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
                 oldActiveMode.removeFromStage();
-                // this.stage.setChildIndex(oldBackground.background.cont, 0);
-
                 this.increaseIndex();
-          
-
                 let newActiveMode = this[this.activeMode];
-
-                // this.hero.switchPlayer(this.activeMode);
-                // this.activeAction = this[this.activeMode].addToStage();
+               
                 this.transitionAnimation.start(newActiveMode, Grid);
+                
             }
-            
-
+            console.log("this.action", this.action)
+            //alert("outside")
         },
         resizeBundle: function () {
             this.clock.resize();
@@ -410,6 +410,11 @@ export default function(obj) {
             // } else {
             //    // this.action = true;
             // }
+            //console.log(this.action, this.storeAction)
+            if(this.action !== this.storeAction){
+                alert("CHANGE")
+                this.storeAction = this.action
+            }
 
             if (this.action) {
 
@@ -423,10 +428,8 @@ export default function(obj) {
                 this.gears.animate();
                 
                 this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-                // this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
-                // this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
-                // this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
-
+               
+                //console.log('animate active action')
                 this.activeAction.animate();
                 this[this.activeMode].animate();
             

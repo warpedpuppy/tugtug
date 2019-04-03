@@ -75,9 +75,7 @@ export default function () {
                     break;
                 case 67:
                     // the letter c for switch player
-                    //this.parent.switchPlayer();
                     this.parent.switchPlayerMaskedAction();
-                    //this.parent.transitionAnimation.start();
                 case 40:
                     break;
                 default:
