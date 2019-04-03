@@ -1,5 +1,5 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
+import Assets from '../../../utils/assetCreation';
+import Utils from '../../../utils/utils';
 export default function () {
 	return {
 	ringQ: 0,
@@ -22,12 +22,14 @@ export default function () {
 	vxs: [-8, 8],
 	fallSpeeds: [2, 4],
 	edgeBuffer: 200,
-	init: function (parent) {
-		this.parent = parent;
+	animationHappening: false,
+	init: function () {
+
+		this.parent = this.utils.root;
 		this.wh = this.utils.wh;
-		this.hero = this.utils.hero.cont;
+		//this.hero = this.utils.hero.cont;
 		this.ringQ = Assets.webgl ? 500 : 10;
-		this.chestQ = Assets.webgl ? 1 : 1;
+		this.chestQ = Assets.webgl ? 100 : 1;
 		this.radialQ = this.pelletQ = Assets.webgl ? 1000 : 10;
 		this.halfWidth = this.wh.canvasWidth / 2;
 		this.halfHeight = this.wh.canvasHeight / 2;
@@ -36,6 +38,7 @@ export default function () {
 		this.ringCont.addChild(ringsPC);
 
 		for (let i = 0; i < this.ringQ; i ++) {
+
 			let r = Assets.Sprite('treasureRing.png');
 			r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
@@ -47,21 +50,22 @@ export default function () {
 			this.rings.push(r);
 
 			if (!(i >= this.chestQ)) {
+
 				let c = Assets.Sprite('treasureChest.png');
-				c.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
+				c.scale.set(this.utils.randomNumberBetween(0.75, 0.85));
 				c.anchor.set(0.5);
+				c.name = "treasureChest";
 				c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
-				c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
-				c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
-				c.vx = this.utils.randomNumberBetween(1,5); 
-            	c.vy = this.utils.randomNumberBetween(1,5);
+			
             	c.variance = this.utils.randomNumberBetween(5, 20);
             	c.rotateSpeed = this.utils.randomNumberBetween(0.01, 0.025);
-				this.parent.addChild(c);
+				
 				this.chests.push(c);
 			}
 			this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
+		
+			
 		}
 		this.radialCont.scale.set(0);
 		for(let i = 0; i < this.radialQ; i ++){
@@ -79,7 +83,7 @@ export default function () {
 			this.radials.push(r);
 			this.radialCont.addChild(r);
 		}
-
+		return this.chests
 	},
 	resize: function (wh) {
 		this.wh = wh;
@@ -93,6 +97,7 @@ export default function () {
 	},
 	playAnimation: function () {
 		//place chest in center and rock it back and forth;
+		this.animationHappening = true;
 		this.storeObject = {
 			scale: this.activeChest.scale.x,
 			x: this.activeChest.x,
@@ -102,12 +107,12 @@ export default function () {
 		this.activeChest.x = this.radialCont.x = this.wh.canvasWidth / 2;
 		this.activeChest.y = this.radialCont.y = this.wh.canvasHeight / 2;
 
-		this.parent.addChildAt(this.radialCont, this.activeChest._zIndex - 1)
+		this.utils.app.stage.addChildAt(this.radialCont, this.activeChest._zIndex - 1)
 
 		//explode coins
 		this.ringCont.x = this.wh.canvasWidth / 2;
 		this.ringCont.y = this.wh.canvasHeight / 2;
-		this.parent.addChild(this.ringCont);
+		this.utils.app.stage.addChild(this.ringCont);
 	},
 	animateSpecial: function () {
 		for (let i = 0; i < this.ringQ; i ++) {

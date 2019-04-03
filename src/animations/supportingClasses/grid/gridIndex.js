@@ -4,6 +4,9 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
 import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
+import TransitionItems from './items/transitionItems';
+import Treasure from './items/treasure';
+import MagicPills from './items/magicPills';
 export default {
 		cont: Assets.ParticleContainer(10000),
 		blockWidth: 0,
@@ -23,6 +26,13 @@ export default {
 		blockPool: [],
 		spaceShip: {},
 		wallHit: 0,
+		transitionItems: TransitionItems(),
+		magicPills: MagicPills(),
+		treasure: Treasure(),
+		transitionItemsArray: [],
+		treasureChests: [],
+		magicPillsArray: [],
+		itemLoopingQ: 0,
 		init: function (parent) {
 
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
@@ -48,10 +58,27 @@ export default {
 		    this.setAction = this.setAction.bind(this);
 		    this.nextBoard = this.nextBoard.bind(this);
 		    this.boards = parent.dbData.boards;
-		    console.log("grid init called")
+		    
+
+		   this.magicPillsArray = this.magicPills.init();
+
+            this.treasureChests = this.treasure.init();
+
+            this.transitionItemsArray = this.transitionItems.init(
+                this.utils.root.mode, 
+                this.utils.root.stage, 
+                this.utils.root.switchPlayer.bind(this.utils.root)).build();
 
 		    this.buildGrid(this.boards[this.currentBoard]);
 
+		    this.itemLoopingQ = Math.max(this.magicPillsArray.length, this.transitionItemsArray.length, this.treasureChests.length)
+		
+
+		    this.heroCollisionDetector = {
+					x: this.utils.canvasWidth / 2,
+					y: this.utils.canvasHeight / 2,
+					radius: 10
+				}
 		},
 		changeGridSize: function(w, h){
 			if(w === this.blockWidth && h === this.blockHeight)return
@@ -102,8 +129,9 @@ export default {
 			let counter = 0;
 			this.rowQ = data.rows;
 			this.colQ = data.cols;
-			console.log('start build grid')
+			//console.log('start build grid')
 			this.freeSpaces = [];
+			this.coveredSpaces = [];
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
 				for (let j = 0; j < data.cols; j ++) {
@@ -132,7 +160,8 @@ export default {
 					}
 
 					//store free ones
-					if(!bool && !token){
+					
+					if(!bool && !token && (String(i) !== data.hero.i && String(j) !== data.hero.j)){
 						//console.log([b.x, b.y, b, i, j])
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
 					} else if (bool) {
@@ -145,8 +174,9 @@ export default {
 			}
 
 			this.placeShip();
-
-
+			this.placeTransitionItems();
+			this.placeChests();
+			this.placeMagicPills();
 			this.assignAboveBelowRightLeftCovered();
 			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
@@ -156,9 +186,42 @@ export default {
 		},
 		placeShip: function () {
 			// for now just place space ship here
-			this.spaceShip.x = this.freeSpaces[0][0] + this.blockWidth / 2;
-			this.spaceShip.y = this.freeSpaces[0][1] + this.blockHeight / 2;
+
+			let index = Math.floor(Math.random()*this.freeSpaces.length)
+			this.spaceShip.x = this.freeSpaces[index][0] + this.blockWidth / 2;
+			this.spaceShip.y = this.freeSpaces[index][1] + this.blockHeight / 2;
+			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
+		},
+		placeTransitionItems: function () {
+			this.transitionItemsArray.forEach((item, index) => {
+				if(!this.freeSpaces.length)return;
+				let i = Math.floor(Math.random()*this.freeSpaces.length);
+				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
+				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				this.freeSpaces.splice(i, 1);
+				this.cont.addChild(item);
+			})
+		},
+		placeChests: function () {
+			this.treasureChests.forEach((item, index) => {
+				if(!this.freeSpaces.length)return;
+				let i = Math.floor(Math.random()*this.freeSpaces.length);
+				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
+				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				this.freeSpaces.splice(i, 1);
+				this.cont.addChild(item);
+			})
+		},
+		placeMagicPills: function () {
+			this.magicPillsArray.forEach((item, index) => {
+				if(!this.freeSpaces.length)return;
+				let i = Math.floor(Math.random()*this.freeSpaces.length);
+				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
+				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				this.freeSpaces.splice(i, 1);
+				this.cont.addChild(item);
+			})
 		},
 		placeTokens: function () {
 			for(let key in this.tokenData){
@@ -348,17 +411,70 @@ export default {
 			// 	this.returnLeft(i,j));
 
 		},
+		itemHitDetect: function (item) {
+			let globalPoint = this.cont.toGlobal(item);
+			let ballB = {
+				x: globalPoint.x,
+				y: globalPoint.y,
+				radius: 30
+			}
+			let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
+			return x[0];
+		},
 		animate: function (vx, vy) {
 			
 	
 			if(this.pause)return;
+
+
+			for(let i = 0; i < this.itemLoopingQ; i ++){
+				if(this.transitionItemsArray[i]){
+				
+					if(this.itemHitDetect(this.transitionItemsArray[i])){
+						console.log("trans hit");
+
+					}
+				}
+				if(this.treasureChests[i]){
+					if(this.itemHitDetect(this.treasureChests[i]) && !this.treasure.animationHappening){
+						console.log("chest hit");
+						this.treasure.activeChest = this.treasureChests[i];
+						this.utils.root.filterAnimation.shutOff();
+						this.treasure.playAnimation();
+					}
+				}
+				if(this.magicPillsArray[i]){
+					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
+						console.log("pills hit")
+						this.utils.root.filterTest();
+					}
+				}
+			}
+
+			// if (this.treasure.hit || this.transitionItems.hit) {
+   //              if(this.action){
+   //                  this.filterAnimation.shutOff();
+   //                  this.action = false;
+   //              }
+   //              if (this.treasure.hit) {
+   //                  this.score.increase(100);
+   //                  this.treasure.animateSpecial();
+   //              } else {
+   //                  this.transitionItems.animateSpecial();
+   //              }
+
+   //          } else {
+   //             // this.action = true;
+   //          }
+
+            // this.treasure.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
+            // this.transitionItems.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
+            // this.magicPills.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy);
+
+
 			let currentSquare = this.currentSquare();
 			this.createBoundaries(currentSquare);
-			let ballA = {
-					x: this.utils.canvasWidth / 2,
-					y: this.utils.canvasHeight / 2,
-					radius: 10
-				}
+			
 			let ballB;
 			for (let i = 0; i < this.tokens.length; i ++) {
 				let t = this.tokens[i];
@@ -369,7 +485,7 @@ export default {
 					y: globalPoint.y,
 					radius: 30
 				}
-				let x = this.utils.circleToCircleCollisionDetection(ballA, ballB);
+				let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
 
 				if (x[0] && t.parent === this.cont){
 					this.cont.removeChild(t)
@@ -384,7 +500,7 @@ export default {
 					radius: 30
 				}
 			
-			let rocketShipHit = this.utils.circleToCircleCollisionDetection(ballA, ballB);
+			let rocketShipHit = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
 			 if (rocketShipHit[0]) {
 			 	this.pause = true;
 			 	this.spaceShip.classRef.blastOff();

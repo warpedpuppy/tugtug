@@ -2,7 +2,7 @@ export default {
 	swimVelocities: [1, 2],
 	flyVelocity: 1,
 	bounceBlockSize: [400, 400],
-	flyBlockSize: [100, 100],
+	flyBlockSize: [200, 200],
 	swimBlockSize: [200, 200],
 	flyWallHit: -1,
 	swimWallHit: -1,
@@ -12,5 +12,6 @@ export default {
 	bounceBuffer: 30,
 	boardCompleteButtonAppearDelay: 1000,
 	treasureShakeSpeeds: [0.01, 0.025],
-	rainbowColors: []
+	rainbowColors: [],
+	testing: true
 }

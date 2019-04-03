@@ -1,5 +1,5 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
+import Assets from '../../../utils/assetCreation';
+import Utils from '../../../utils/utils';
 export default function () {
 	return {
 		pills: [],
@@ -8,13 +8,13 @@ export default function () {
 		lifeSpan: 100,
 		counter: 0,
 		utils: Utils,
-		init: function (effectFunction, cont) {
-			this.effectFunction = effectFunction;
-			this.pillQ = Assets.webgl? 1 : 1;
-			var pills = Assets.ParticleContainer(this.pillQ);
+		init: function () {
+			
+			this.pillQ = Assets.webgl? 100 : 1;
+			// var pills = Assets.ParticleContainer(this.pillQ);
 			
 	
-			cont.addChild(pills);
+			// cont.addChild(pills);
 			
 			this.vx = this.utils.randomNumberBetween(1,5); 
             this.vy = this.utils.randomNumberBetween(1,5);
@@ -24,26 +24,19 @@ export default function () {
 			 for(let i = 0; i < this.pillQ; i ++ ){
             	let s = Assets.Sprite('star.png');
             	s.anchor.set(0.5);
+            	s.name = "magicPill";
             	s.tint = Math.random() * 0xFFFFFF;
-            	s.vx = 0;
-            	s.vy = this.utils.randomNumberBetween(1,5); 
-            	s.x = this.utils.randomNumberBetween(0, this.utils.wh.canvasWidth);
-            	s.y = this.utils.randomNumberBetween(0, this.utils.wh.canvasHeight);
-            	s.scale.set(this.utils.randomNumberBetween(0.05, 0.15));
+            	
+            	s.scale.set(this.utils.randomNumberBetween(0.5, 0.6));
             	s.rotate = this.utils.randomNumberBetween(-4, 4);
             	s.radius = s.width;
-            	pills.addChild(s);
             	this.pills.push(s);
             }
             this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
 			this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
 			this.wh =this.utils.wh;
-		},
-		playEffect: function () {
-			if(!this.effect) {
-				this.effect = true;
-				this.effectFunction();
-			}
+
+			return this.pills;
 		},
 		rotate: function (obj) {
 				this.vx = obj.vx;

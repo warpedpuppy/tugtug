@@ -2,7 +2,7 @@ import React from 'react';
 import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/intro_animation';
-import viewPortSize from '../animations/viewportSize';
+//import viewPortSize from '../animations/viewportSize';
 //import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 

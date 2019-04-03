@@ -1,6 +1,6 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
-import TransitionAnimation from './transitionAnimation';
+import Assets from '../../../utils/assetCreation';
+import Utils from '../../../utils/utils';
+import TransitionAnimation from '../../transitionAnimation';
 export default function () {
 	return {
 	textures: [],
@@ -15,7 +15,7 @@ export default function () {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, switchPlayer) {
-		this.itemQ = Assets.webgl ? 1 : 1;
+		this.itemQ = Assets.webgl ? 100 : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = this.utils.app;
 		this.itemStrings = arr;
@@ -49,17 +49,17 @@ export default function () {
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = Assets.Sprite(this.textures[this.textureCounter]);
 			c.name = this.itemStrings[this.textureCounter];
-			c.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+			//c.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			c.anchor.set(0.5);
-			c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
-			c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
-			this.cont.addChild(c);
+			// c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
+			// c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
 			this.items.push(c);
 			this.textureCounter ++;
 			if (this.textureCounter >= this.textures.length) {
 				this.textureCounter = 0;
 			}
 		}
+		return this.items;
 		
 	},
 	rotate: function (obj) {

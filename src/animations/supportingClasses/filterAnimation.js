@@ -54,6 +54,7 @@ export default function () {
             this.light1.visible = false;
             this.light2.visible = false;
             this.light3.visible = false;
+            this.count = 0;
         },
         animate: function () {
             if(this.enabled){
@@ -71,6 +72,9 @@ export default function () {
                 matrix[4] = Math.sin(this.count / 3) * 2;
                 matrix[5] = Math.sin(this.count / 2);
                 matrix[6] = Math.sin(this.count / 4);
+                if(this.count > 20){
+                    this.shutOff();
+                }
             }
            
 

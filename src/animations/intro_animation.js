@@ -7,9 +7,9 @@ import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
 import Pellets from './supportingClasses/pellets';
-import Treasure from '../animations/supportingClasses/treasure';
-import MagicPills from './supportingClasses/magicPills';
-import TransitionItems from './supportingClasses/transitionItems';
+// import Treasure from '../animations/supportingClasses/treasure';
+// import MagicPills from './supportingClasses/magicPills';
+// import TransitionItems from './supportingClasses/transitionItems';
 import TransitionAnimation from './supportingClasses/transitionAnimation';
 import FilterAnimation from './supportingClasses/filterAnimation';
 import Gears from './supportingClasses/gears';
@@ -46,13 +46,10 @@ export default function(obj) {
         gears: Gears,
         clock: Clock,
         pellets: Pellets(),
-        magicPills: MagicPills(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionItems: TransitionItems(),
         transitionAnimation: TransitionAnimation,
         utils: Utils,
-        treasure: Treasure(),
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
@@ -174,16 +171,9 @@ export default function(obj) {
 
             //this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
 
-            this.magicPills.init(this.filterTest.bind(this), this.backgroundCont);
+           
 
             this.filterAnimation.init(this.filterContainer);
-
-            this.transitionItems.init(
-                this.mode, 
-                this.stage, 
-                this.switchPlayer.bind(this)).build();
-
-            this.treasure.init(this.stage);
             
             this.swim.init(this.stage);
 
@@ -405,21 +395,21 @@ export default function(obj) {
             }
             this.score.animate();
 
-            if (this.treasure.hit || this.transitionItems.hit) {
-                if(this.action){
-                    this.filterAnimation.shutOff();
-                    this.action = false;
-                }
-                if (this.treasure.hit) {
-                    this.score.increase(100);
-                    this.treasure.animateSpecial();
-                } else {
-                    this.transitionItems.animateSpecial();
-                }
+            // if (this.treasure.hit || this.transitionItems.hit) {
+            //     if(this.action){
+            //         this.filterAnimation.shutOff();
+            //         this.action = false;
+            //     }
+            //     if (this.treasure.hit) {
+            //         this.score.increase(100);
+            //         this.treasure.animateSpecial();
+            //     } else {
+            //         this.transitionItems.animateSpecial();
+            //     }
 
-            } else {
-               // this.action = true;
-            }
+            // } else {
+            //    // this.action = true;
+            // }
 
             if (this.action) {
 
@@ -433,9 +423,9 @@ export default function(obj) {
                 this.gears.animate();
                 
                 this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-                this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
-                this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
-                this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
+                // this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
+                // this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
+                // this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
 
                 this.activeAction.animate();
                 this[this.activeMode].animate();
