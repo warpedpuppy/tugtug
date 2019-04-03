@@ -434,9 +434,9 @@ export default {
 				
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
 						// console.log("trans hit");
-						// this.transitionItemsArray[i].hit = true;
+						this.transitionItemsArray[i].hit = true;
 						// console.log("1")
-						// this.utils.root.filterAnimation.shutOff();
+						this.utils.root.filterAnimation.shutOff();
 						// console.log("2")
 						this.utils.root.switchPlayerMaskedAction();
 						//console.log("3")

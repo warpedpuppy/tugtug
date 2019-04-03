@@ -328,7 +328,6 @@ export default function(obj) {
             if (!this.transitionAnimationPlaying) {
                
                 this.action = false;
-                
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
                 oldActiveMode.removeFromStage();
@@ -338,8 +337,7 @@ export default function(obj) {
                 this.transitionAnimation.start(newActiveMode, Grid);
                 
             }
-            console.log("this.action", this.action)
-            //alert("outside")
+
         },
         resizeBundle: function () {
             this.clock.resize();
@@ -394,34 +392,17 @@ export default function(obj) {
                 this.transitionAnimation.reset();
             }
             this.score.animate();
-
-            // if (this.treasure.hit || this.transitionItems.hit) {
-            //     if(this.action){
-            //         this.filterAnimation.shutOff();
-            //         this.action = false;
-            //     }
-            //     if (this.treasure.hit) {
-            //         this.score.increase(100);
-            //         this.treasure.animateSpecial();
-            //     } else {
-            //         this.transitionItems.animateSpecial();
-            //     }
-
-            // } else {
-            //    // this.action = true;
-            // }
-            //console.log(this.action, this.storeAction)
-            if(this.action !== this.storeAction){
-                alert("CHANGE")
-                this.storeAction = this.action
-            }
+          
 
             if (this.action) {
 
-                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+                
 
-                if(this.rotateLeftBoolean)this.activeAction.rotate('left');
-                if(this.rotateRightBoolean)this.activeAction.rotate('right');
+                if(this.rotateLeftBoolean) {
+                    this.activeAction.rotate('left');
+                } else if(this.rotateRightBoolean) {
+                    this.activeAction.rotate('right');
+                }
                 this.clock.animate();
                 this.filterAnimation.animate();
                 
@@ -432,6 +413,8 @@ export default function(obj) {
                 //console.log('animate active action')
                 this.activeAction.animate();
                 this[this.activeMode].animate();
+
+                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
             
             }
             
