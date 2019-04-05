@@ -25,10 +25,10 @@ export default function () {
 			this.parent = parent;
 			this.grid = parent.grid;
 			this.background = background;
-			this.soldiers = background.soldiers;
-			this.spears = background.spears;
-			this.soldierQ = background.soldiers.length;
-			this.spearQ = background.spears.length;
+			// this.soldiers = background.soldiers;
+			// this.spears = background.spears;
+			// this.soldierQ = background.soldiers.length;
+			// this.spearQ = background.spears.length;
 			this.clouds = background.clouds;
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
@@ -105,54 +105,40 @@ export default function () {
 			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
 			return x[0];
 		},
-		spearHit: function (spear) {
-			let globalPoint1 = this.grid.cont.toGlobal(spear);
-			let c1 = {
-				x: globalPoint1.x,
-				y: globalPoint1.y,
-				radius: 10
-			}
-			let c2 = {
-				x: this.utils.canvasWidth / 2,
-				y: this.utils.canvasHeight / 2,
-				radius: 10
-			}
-			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
-			return x[0];
-		},
+		
 		animate: function () {
 
 			this.clouds.animate();
 			
-			let onScreenSoldiers = [];
-			for (let i = 0; i < this.soldiers.length; i ++) {
-				let s = this.soldiers[i];
-				let onScreen = s.classRef.animate();
-				if(onScreen){
+			// let onScreenSoldiers = [];
+			// for (let i = 0; i < this.soldiers.length; i ++) {
+			// 	let s = this.soldiers[i];
+			// 	let onScreen = s.classRef.animate();
+			// 	if(onScreen){
 
-					onScreenSoldiers.push(onScreen);
-					let sp = this.spears[i];
-					if (this.spearHit(sp)) {
-						sp.reset();
-						this.parent.score.decrease(10);
-					};
+			// 		onScreenSoldiers.push(onScreen);
+			// 		let sp = this.spears[i];
+			// 		if (this.spearHit(sp)) {
+			// 			sp.reset();
+			// 			this.parent.score.decrease(10);
+			// 		};
 
-					//prevent overlap
-					for (let j = 0; j < this.soldiers.length; j ++) {
-						let s2 = this.soldiers[j];
-						if (s2.classRef.onScreen()) {
-							let hit = this.utils.circleToCircleCollisionDetection(s, s2);
-							//console.log(hit[0])
-							if (hit[0]) {
-								//console.log('hit')
-								//console.log(s2.x, s2.y, s2.r)
-								this.utils.adjustPositions(s, s2, hit[1]);
-							}
-						}
-					}
-				}
+			// 		//prevent overlap
+			// 		for (let j = 0; j < this.soldiers.length; j ++) {
+			// 			let s2 = this.soldiers[j];
+			// 			if (s2.classRef.onScreen()) {
+			// 				let hit = this.utils.circleToCircleCollisionDetection(s, s2);
+			// 				//console.log(hit[0])
+			// 				if (hit[0]) {
+			// 					//console.log('hit')
+			// 					//console.log(s2.x, s2.y, s2.r)
+			// 					this.utils.adjustPositions(s, s2, hit[1]);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
 
-			}
+			// }
 
 		
 			this.hero.activeHero.eyeCont.rotation = this.radius;
@@ -179,14 +165,14 @@ export default function () {
 		        	item.y += item.vy;
 		        	item.alpha -= item.fade;
 
-		        	for (let soldier of onScreenSoldiers) {
-		        		if (this.fireHit(soldier, item)) {
+		        	// for (let soldier of onScreenSoldiers) {
+		        	// 	if (this.fireHit(soldier, item)) {
 
-		        			soldier.classRef.hit();
-		        			//MAKE SCORE GO UP
-		        			this.parent.score.increase(10);
-		        		}
-		        	}
+		        	// 		soldier.classRef.hit();
+		        	// 		//MAKE SCORE GO UP
+		        	// 		this.parent.score.increase(10);
+		        	// 	}
+		        	// }
 
 		        	if (Math.abs(item.y) > item.maxDistance) {
 		        		item.x = 0;
