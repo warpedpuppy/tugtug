@@ -196,7 +196,7 @@ export default {
 			this.baddies.animate();
 
 			for(let i = 0; i < this.itemLoopingQ; i ++){
-				if(this.transitionItemsArray[i]){
+				if (this.transitionItemsArray[i]) {
 				
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
 						this.transitionItemsArray[i].hit = true;
@@ -206,7 +206,7 @@ export default {
 				}
 				if(this.treasureChests[i]){
 					if(this.itemHitDetect(this.treasureChests[i]) && !this.treasure.animationHappening){
-						//console.log("chest hit");
+						console.log("chest hit");
 						this.treasure.activeChest = this.treasureChests[i];
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation();

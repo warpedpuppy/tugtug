@@ -92,7 +92,7 @@ export default {
 
 			this.setAction = this.setAction.bind(this);
 		    this.nextBoard = this.nextBoard.bind(this);
-		    console.log("grid index init", this.gridBuild)
+		    this.cont = this.gridBuild.cont;
 		    GridAction.pause = false;
 
 		},
@@ -101,7 +101,7 @@ export default {
 			this.blockWidth = w;
 			this.blockHeight = h;
 			this.cont.removeChildren();
-			this.buildGrid(this.boards[this.currentBoard]);
+			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
 		},
 		nextBoard: function () {
 			this.pause = true;
