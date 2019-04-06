@@ -96,11 +96,14 @@ export default {
 					radius: 10
 				}
 
+			this.gridBuild = this.utils.root.grid.gridBuild;
+
 		},
-	
+		
 		setAction: function (action, mode) {
 			this.action = action;
-			this.changeBackground(mode)
+			this.utils.root.grid.gridBuild.changeBackground(mode)
+			this.setLimits();
 		},
 		
 		addToStage: function (index) {
@@ -129,7 +132,7 @@ export default {
 			let below = currentSquare.block.below;//this.returnBelow(i,j);
 			let left = currentSquare.block.left;//this.returnLeft(i,j);
 
-			console.log(above.covered, right.covered, left.covered, below.covered)
+			//console.log(above.covered, right.covered, left.covered, below.covered)
 
 			if(!above || above.covered){
 				this.topBorder = this.topEdge - (this.blockHeight * i);
@@ -167,10 +170,15 @@ export default {
 
 		},
 		setLimits: function () {
+
+			this.colQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].cols;
+			this.rowQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].rows;
+
 			this.boardWidth = this.colQ * this.blockWidth;
 			this.boardHeight = this.rowQ * this.blockHeight;
 			this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
 			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
+			console.log("board width = ", this.colQ, this.blockWidth, this.boardWidth)
 			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
 		},
@@ -197,8 +205,9 @@ export default {
 
 			for(let i = 0; i < this.itemLoopingQ; i ++){
 				if (this.transitionItemsArray[i]) {
-				
+					
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
+						//console.log("transition item hit")
 						this.transitionItemsArray[i].hit = true;
 						this.utils.root.filterAnimation.shutOff();
 						this.utils.root.switchPlayerMaskedAction();
@@ -206,7 +215,7 @@ export default {
 				}
 				if(this.treasureChests[i]){
 					if(this.itemHitDetect(this.treasureChests[i]) && !this.treasure.animationHappening){
-						console.log("chest hit");
+						//console.log("chest hit");
 						this.treasure.activeChest = this.treasureChests[i];
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation();
@@ -215,24 +224,26 @@ export default {
 				}
 				if(this.magicPillsArray[i]){
 					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
-						//console.log("pills hit")
+						//console.log("magic pills hit")
 						this.utils.root.filterTest();
 					}
 				}
-				if(this.tokens[i]){
-					let t = this.tokens[i];
+				if(this.utils.root.grid.gridBuild.tokens[i]){
+					let t = this.gridBuild.tokens[i];
 				
-					let globalPoint = this.cont.toGlobal(t);
+					let globalPoint = this.gridBuild.cont.toGlobal(t);
 					ballB = {
 						x: globalPoint.x,
 						y: globalPoint.y,
 						radius: 30
 					}
+
 					let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
 
-					if (x[0] && t.parent === this.cont){
+					if (x[0] && t.parent === this.gridBuild.cont) {
+						//console.log("token hit")
 						this.cont.removeChild(t)
-						this.parent.levelSlots.fillSlot(t);
+						this.utils.root.levelSlots.fillSlot(t);
 					}
 				}
 			}
@@ -258,37 +269,36 @@ export default {
 
 
 			this.cont.x -= vx;
-
+			//console.log(this.cont.x, this.leftBorder, this.rightBorder)
 			if (this.cont.x > this.leftBorder) {
 				//console.log('1')
 			 	this.cont.x -= this.buffer;
 
-			 	this.utils.root.activeAction.vx = 5;
-			 	//this.action.vx *= this.wallHit;
+			 	//this.utils.root.activeAction.vx = 5;
+			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 			} 
 			if (this.cont.x < -this.rightBorder) {
-				//console.log('2')
 				this.cont.x += this.buffer;
 
-				this.utils.root.activeAction.vx = -5;
-			 	//this.action.vx *= this.wallHit;
+				//this.utils.root.activeAction.vx = -5;
+			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 			}
 
 			this.cont.y -= vy;
 			if (this.cont.y > this.topBorder) {
 			 	this.cont.y = this.topBorder - this.buffer;
-			 	this.utils.root.activeAction.y *= this.wallHit;
+			 	this.utils.root.activeAction.y *= this.gridBuild.wallHit;
 			} 
 
 			if (this.cont.y < -this.bottomBorder + this.buffer) {
 
-				 this.cont.y = - this.bottomBorder + this.buffer;
+				 this.cont.y = -this.bottomBorder + this.buffer;
 			
-			 	if(this.utils.root.activeMode === "bounce"){
+			 	if (this.utils.root.activeMode === "bounce") {
 			 		this.utils.hero.activeHero.bounce(true);
-		        	this.utils.root.activeAction.vy  = 10 * this.wallHit;
+		        	this.utils.root.activeAction.vy  = 10 * this.gridBuild.wallHit;
 			    } else {
-			        this.utils.root.activeAction.vy *= this.wallHit;
+			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 			    }
 			 	
 		        

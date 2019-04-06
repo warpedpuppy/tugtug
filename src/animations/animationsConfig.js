@@ -1,6 +1,6 @@
 export default {
 	swimVelocities: [1, 2],
-	flyVelocity: 1,
+	flyVelocity: 3,
 	bounceBlockSize: [400, 400],
 	flyBlockSize: [200, 200],
 	swimBlockSize: [200, 200],

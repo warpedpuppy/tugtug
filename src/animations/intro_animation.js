@@ -34,7 +34,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly', 'bounce', 'swim', ],
+        mode: ['bounce','fly',  'swim', ],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -270,6 +270,9 @@ export default function(obj) {
                 this.nextMazeButton.on('pointerdown',this.uponNewBoardButtonPress);
             }
             this.stage.addChild(this.nextMazeButton)
+
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.keyHandler.removeFromStage();
         },
         uponNewBoardButtonPress: function (e) {
              this.stage.removeChild(this.nextMazeButton)
@@ -280,7 +283,8 @@ export default function(obj) {
             // reset slots
             this.levelSlots.reset();
             // load new board
-
+            this.keyHandler.addToStage();
+            
             this.loadNewBoard();
         },
         loadNewBoard: function () {

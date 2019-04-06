@@ -97,6 +97,9 @@ export default {
 			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
 			return obj
 		},
+		buildNextGrid: function () {
+
+		},
 		buildGrid: function (data) {
 			//alert("build grid")
 			let mode = this.utils.root.activeMode;

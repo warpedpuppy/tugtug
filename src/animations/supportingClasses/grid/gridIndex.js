@@ -87,8 +87,12 @@ export default {
 				// 	radius: 10
 				// }
 
-			this.gridBuild = GridBuild.init(this.magicPillsArray,this.treasureChests,this.transitionItemsArray, this.spaceShip)
-			GridAction.init(this.magicPillsArray,this.treasureChests,this.transitionItemsArray)
+			this.gridBuild = GridBuild.init(
+				this.magicPillsArray,
+				this.treasureChests,
+				this.transitionItemsArray, 
+				this.spaceShip)
+			GridAction.init(this.magicPillsArray,this.transitionItemsArray,this.treasureChests)
 
 			this.setAction = this.setAction.bind(this);
 		    this.nextBoard = this.nextBoard.bind(this);
@@ -104,13 +108,13 @@ export default {
 			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
 		},
 		nextBoard: function () {
-			this.pause = true;
-			this.currentBoard = this.boards.length - 1;
+			//GridAction.pause = true;
+			this.gridBuild.currentBoard = this.gridBuild.boards.length - 1;
 			this.cont.removeChildren();
-			this.blocks = {};
+			this.gridBuild.blocks = {};
 			console.log("next board")
-			this.buildGrid(this.boards[this.currentBoard]);
-			this.setAction(this.parent.activeAction, this.parent.activeMode);
+			this.gridBuild.buildGrid(this.gridBuild.boards[this.gridBuild.currentBoard]);
+			GridAction.setAction(this.parent.activeAction, this.parent.activeMode);
 
 		},
 		addNewBoardData: function (newData) {
