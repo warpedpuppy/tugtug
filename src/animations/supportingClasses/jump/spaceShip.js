@@ -23,20 +23,14 @@ export default function () {
 			this.ship.x = this.utils.canvasWidth / 2;
 			this.ship.y = this.utils.canvasHeight / 2;
 			// // rush maze backwards
-			 let maze = this.utils.root.grid.cont;
+			let maze = this.utils.root.grid.cont;
 
 			// // add jump background to stage
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
 			background.scale.set(0)
 			jump.addToStage();
-
-			this.storeX = maze.x;
-			this.storeShipScale = this.ship.scale.x;
-
 			Tweens.spaceShipBlastOff(this.ship, maze, background, this.makeJumpActive.bind(this));
-		
-
 
 
 		},
@@ -54,16 +48,27 @@ export default function () {
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
 
-			Tweens.spaceShipReturnHome(background, maze, this.ship, this.completeReturnHomeHandler.bind(this), this.storeX, this.storeShipScale)
+			Tweens.spaceShipReturnHome(
+				background, 
+				maze, 
+				this.ship, 
+				this.completeReturnHomeHandler.bind(this))
 		
 		},
 		completeReturnHomeHandler: function () {
-			console.log("complete");
-
+			
+			this.utils.hero.activeHero.cont.y = 0;
+			
 			this.utils.root.switchPlayer(this.storeActiveMode);
-
-			//place ship back on tile
-			this.utils.root.grid.gridBuild.placeShip();
+			
+			this.utils.root.grid.gridBuild.placeHero();
+			//this.utils.root.grid.gridBuild.placeShip();
+			this.ship.x = this.ship.storeX;
+			this.ship.y = this.ship.storeY;
+			this.utils.root.grid.gridBuild.cont.addChild(this.ship);
+			this.utils.root.grid.gridAction.pause = false;
+			this.utils.root.activeAction.vx = this.utils.root.activeAction.vy = 0;
+			this.utils.root.activeAction.radius = this.utils.root.activeAction.storeRadius = 0;
 		},
 		addToStage: function () {
 

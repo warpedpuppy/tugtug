@@ -173,19 +173,22 @@ export default {
 		
 			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
-			this.placeHero(data.hero.j, data.hero.i);
+			this.heroJ = data.hero.j;
+			this.heroI = data.hero.i;
+			this.placeHero();
 			//this.setLimits();
 			//this.pause = false;
 			// console.log('free spaces established', this.freeSpaces.length)
 			// alert("end build grid")
 
+			this.initialPoint = {x: this.cont.x, y: this.cont.y};
 
 		},
 		placeShip: function () {
 			// for now just place space ship here
 			let index = (!Config.testing)?Math.floor(Math.random()*this.freeSpaces.length):0;
-			this.spaceShip.x = this.freeSpaces[index][0] + this.blockWidth / 2;
-			this.spaceShip.y = this.freeSpaces[index][1] + this.blockHeight / 2;
+			this.spaceShip.x = this.spaceShip.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
+			this.spaceShip.y = this.spaceShip.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
 		},
@@ -200,7 +203,7 @@ export default {
 			})
 		},
 		placeTokens: function () {
-			for(let key in this.tokenData){
+			for (let key in this.tokenData) {
 				let index = key - 1;
 				let t = this.tokens[index];//Assets.Sprite(`token${key}.png`);
 				t.anchor.set(0.5)
@@ -236,14 +239,17 @@ export default {
 					}
 				}
 		},
-		placeHero: function (i, j) {
+		placeHero: function () {
+
+			let i = this.heroI;
+			let j = this.heroJ;
 			//we know 1,1 is free, so place that beneath the hero
 			i++;
 			j++;
 			let halfWidth = this.utils.canvasWidth / 2;
 			let halfHeight = this.utils.canvasHeight / 2;
-			this.cont.x = halfWidth - (i * this.blockWidth) + (this.blockWidth /2);
-			this.cont.y = halfHeight - (j * this.blockHeight) + (this.blockHeight /2);
+			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth /2);
+			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
 		},
 		// setLimits: function () {
 		// 	this.boardWidth = this.colQ * this.blockWidth;

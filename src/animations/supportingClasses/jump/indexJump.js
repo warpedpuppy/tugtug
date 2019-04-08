@@ -7,6 +7,7 @@ export default function () {
 		jumpAction: JumpAction(),
 		jumpBackground: JumpBackground(),
 		init: function (stage) {
+			this.removeFromStage = this.removeFromStage.bind(this);
 			this.background = this.jumpBackground;
             this.jumpAction.init(stage);
             this.jumpBackground.init(stage, this.jumpAction);
@@ -15,7 +16,6 @@ export default function () {
 			];
 		},
 		addToStage: function () {
-			
 			this.jumpBackground.addToStage();
 			return this.jumpAction;
 		},

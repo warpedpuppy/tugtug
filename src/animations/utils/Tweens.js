@@ -16,19 +16,23 @@ export default {
 			TweenMax.to(hero, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
 		},
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
+			this.storeX = maze.x;
+			this.storeY = maze.y;
+			this.storeShipScale = ship.scale.x;
 			this.animation.to(ship, 1, {rotation: this.utils.deg2rad(90)})
 			.to(ship.scale, 1, {x: 1, y: 1})
 			.to(maze.scale, 1, {x: 0.15, y: 0.15})
 			.to(maze, 1, {x: -maze.width})
 			.to(background.scale, 1, {x: 1, y: 1, onComplete: onCompleteHandler})
 		},
-		spaceShipReturnHome: function (background, maze, ship, onCompleteHandler, storeX, storeShipScale) {
+		spaceShipReturnHome: function (background, maze, ship, onCompleteHandler) {
+
 			this.animation
 			.to(background.scale, 1, {x: 0, y: 0})
-			.to(maze, 1, {x: storeX})
+			.to(maze, 1, {x: this.utils.root.grid.gridBuild.initialPoint.x, y:  this.utils.root.grid.gridBuild.initialPoint.y})
 			.to(maze.scale, 1, {x: 1, y: 1})
 			.to(ship, 1, {rotation: this.utils.deg2rad(0)})
-			.to(ship.scale, 1, {x: storeShipScale, y: storeShipScale, onComplete: onCompleteHandler})
+			.to(ship.scale, 1, {x: this.storeShipScale, y: this.storeShipScale, onComplete: onCompleteHandler})
 		},
 		animate: function () {
 

@@ -6,25 +6,20 @@ import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
-//import Pellets from './supportingClasses/pellets';
-// import Treasure from '../animations/supportingClasses/treasure';
-// import MagicPills from './supportingClasses/magicPills';
-// import TransitionItems from './supportingClasses/transitionItems';
 import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
 import Score from '../animations/supportingClasses/universal/score';
 import ControlPanel from './supportingClasses/universal/controlPanel';
-import LevelSlots from './supportingClasses/level/levelSlots';
-//import IntroScreen from './supportingClasses/introScreen';
+import LevelSlots from './supportingClasses/tokens/levelSlots';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
-//import Animate from './supportingClasses/action/animate';'jump', 
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+
 export default function(obj) {
     return {
         idle: true,
@@ -34,7 +29,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['fly',  'bounce','swim', ],
+        mode: ['fly','bounce','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -411,10 +406,7 @@ export default function(obj) {
                 this.filterAnimation.animate();
                 
                 this.gears.animate();
-                
-               // this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-               
-                //console.log('animate active action')
+              
                 this.activeAction.animate();
                 this[this.activeMode].animate();
 

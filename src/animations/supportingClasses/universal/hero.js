@@ -66,6 +66,7 @@ export default function () {
 			//this.cont.removeChildren();
 			if(this.activeHero)this.activeHero.removeFromStage();
 			this.cont.x = this.cont.y = 0;
+			if(this.activeHero)this.activeHero.cont.x = this.activeHero.cont.y = 0;
 			this.mode = string;
 			this.cont.rotation = 0;
 			this.cont.y = this.canvasHeight / 2;
