@@ -1,5 +1,5 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
+import Assets from '../../utils/assetCreation';
+import Utils from '../../utils/utils';
 export default {
 		hourToRadians: (1/12) * (2 * Math.PI),
 		minutesToRadians: (1/60) * (2 * Math.PI),

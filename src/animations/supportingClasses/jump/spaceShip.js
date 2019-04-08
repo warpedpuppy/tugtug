@@ -1,12 +1,12 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Config from '../../animationsConfig';
-import { TweenMax, TimelineMax, Elastic } from 'gsap';
+import Tweens from '../../utils/tweens';
 export default function () {
 	return {
 		utils: Utils,
 		init: function () {
-			this.animation = new TimelineMax();
+			
 			this.ship = Assets.Sprite("spaceShip.png")
 			this.ship.anchor.set(0.5)
 			this.ship.scale.set(0.25)
@@ -17,7 +17,7 @@ export default function () {
 		blastOff: function () {
 			// //PAUSE KEY LISTENERS
 			this.storeActiveMode = this.utils.root.activeMode;
-			console.log('storing = ')
+
 			// //zoom ship in and tilt 90 degrees.
 			this.utils.app.stage.addChild(this.ship);
 			this.ship.x = this.utils.canvasWidth / 2;
@@ -34,17 +34,8 @@ export default function () {
 			this.storeX = maze.x;
 			this.storeShipScale = this.ship.scale.x;
 
-			this.animation.to(this.ship, 1, {rotation: this.utils.deg2rad(90)})
-			.to(this.ship.scale, 1, {x: 1, y: 1})
-			.to(maze.scale, 1, {x: 0.15, y: 0.15})
-			.to(maze, 1, {x: -maze.width})
-			.to(background.scale, 1, {x: 1, y: 1, onComplete: this.makeJumpActive.bind(this)})
-
-
-			// TESTING
-			// let maze = this.utils.root.grid.cont;
-			// maze.visible = false;
-			// this.makeJumpActive();
+			Tweens.spaceShipBlastOff(this.ship, maze, background, this.makeJumpActive.bind(this));
+		
 
 
 
@@ -63,12 +54,8 @@ export default function () {
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
 
-			this.animation
-			.to(background.scale, 1, {x: 0, y: 0})
-			.to(maze, 1, {x: this.storeX})
-			.to(maze.scale, 1, {x: 1, y: 1})
-			.to(this.ship, 1, {rotation: this.utils.deg2rad(0)})
-			.to(this.ship.scale, 1, {x: this.storeShipScale, y: this.storeShipScale, onComplete: this.completeReturnHomeHandler.bind(this)})
+			Tweens.spaceShipReturnHome(background, maze, this.ship, this.completeReturnHomeHandler.bind(this), this.storeX, this.storeShipScale)
+		
 		},
 		completeReturnHomeHandler: function () {
 			console.log("complete");
@@ -76,7 +63,7 @@ export default function () {
 			this.utils.root.switchPlayer(this.storeActiveMode);
 
 			//place ship back on tile
-			this.utils.root.grid.placeShip();
+			this.utils.root.grid.gridBuild.placeShip();
 		},
 		addToStage: function () {
 

@@ -1,9 +1,9 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
-import HeroSwim from './swim/heroSwim';
-import HeroJump from './jump/heroJump';
-import HeroFly from './fly/heroFly';
-import HeroBounce from './bounce/heroBounce';
+import Assets from '../../utils/assetCreation';
+import Utils from '../../utils/utils';
+import HeroSwim from '../swim/heroSwim';
+import HeroJump from '../jump/heroJump';
+import HeroFly from '../fly/heroFly';
+import HeroBounce from '../bounce/heroBounce';
 export default function () {
 	return {
 		cont: Assets.Container(),

@@ -1,7 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import RainbowSwirls from './rainbowSwirls';
-import { TweenMax, Elastic } from 'gsap';
+import Tweens from '../../utils/tweens';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -133,7 +133,7 @@ export default function () {
 			this.spaceShipOrb.addChild(spaceShip)
 		},
 		removeFromStage: function () {
-			TweenMax.killAll();
+			Tweens.killAll();
 			this.parentCont.removeChild(this.cont);
 			//this.parentCont.removeChild(this.orbsCont);
 		},
@@ -146,13 +146,14 @@ export default function () {
 		},
 		switchPlanets: function (newPlanet) {
 			//this.orbsCont.pivot = Assets.Point(newPlanet.x, newPlanet.y)
-			let newX = (this.wh.canvasWidth / 2);
-			let newY = (this.wh.canvasHeight / 2);
+			let newX = (this.utils.canvasWidth / 2);
+			let newY = (this.utils.canvasHeight / 2);
 			this.hero.activeHero.floor = -newPlanet.radius;
 			this.currentOrb = newPlanet;
-			TweenMax.to(this.orbsCont.pivot, 1.5, {x: newPlanet.x, y: newPlanet.y, ease: Elastic.easeOut})
-			TweenMax.to(this.orbsCont, 1.5, {x: newX, y: newY, ease: Elastic.easeOut, onComplete: this.makeTransitionComplete})
-			TweenMax.to(this.hero.activeHero.cont, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
+			Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete);
+			// TweenMax.to(this.orbsCont.pivot, 1.5, {x: newPlanet.x, y: newPlanet.y, ease: Elastic.easeOut})
+			// TweenMax.to(this.orbsCont, 1.5, {x: newX, y: newY, ease: Elastic.easeOut, onComplete: this.makeTransitionComplete})
+			// TweenMax.to(this.hero.activeHero.cont, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
 
 			if (newPlanet === this.spaceShipOrb) {
 				this.pause = true;

@@ -1,5 +1,6 @@
-import Assets from '../../../utils/assetCreation';
-import Utils from '../../../utils/utils';
+import Assets from '../../../../utils/assetCreation';
+import Utils from '../../../../utils/utils';
+import Config from '../../../../animationsConfig';
 export default function () {
 	return {
 		pills: [],
@@ -10,7 +11,7 @@ export default function () {
 		utils: Utils,
 		init: function () {
 			
-			this.pillQ = Assets.webgl? 100 : 1;
+			this.pillQ = Assets.webgl? Config.magicPillsQ : 1;
 			// var pills = Assets.ParticleContainer(this.pillQ);
 			
 	

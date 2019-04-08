@@ -1,7 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import Castles from './castles';
-import Soldier from './soldiers';
+// import Castles from './castles';
+// import Soldier from './soldiers';
 import Clouds from './clouds';
 import Config from '../../animationsConfig';
 export default function () {
@@ -17,11 +17,8 @@ export default function () {
 		flashLimits: 10,
 		gridIndex: 1,
 		sizeIncrement: 1,
-		soldiers: [],
-		castles: [],
-		spears: [],
 		clouds: Clouds(),
-		solderPerGridSquareQ: 3,
+		
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;
@@ -36,84 +33,84 @@ export default function () {
 			// this.clearLightening = this.clearLightening.bind(this);
 			//this.timer = setTimeout(this.lightningStorm, 1500)
 
-			this.buildCastlesAndSoldiers();
+			//this.buildCastlesAndSoldiers();
 			this.clouds.init(parent.stage)
 			
 
 		},
-		buildCastlesAndSoldiers: function () {
+		// buildCastlesAndSoldiers: function () {
 
-			let grid = this.parent.grid;
-			let freeSpaces = grid.freeSpaces;
-			//console.log('free space array', freeSpaces, freeSpaces.length);
+		// 	let grid = this.parent.grid;
+		// 	let freeSpaces = grid.freeSpaces;
+		// 	//console.log('free space array', freeSpaces, freeSpaces.length);
 
-			for (let i = 0; i < freeSpaces.length; i ++) {
+		// 	for (let i = 0; i < freeSpaces.length; i ++) {
 
-			//for (let i = 0; i < 1; i ++) {
+		// 	//for (let i = 0; i < 1; i ++) {
 
-				let determineContinue = Math.floor(Math.random()*10);
-				if(determineContinue < 9) continue;
+		// 		// let determineContinue = Math.floor(Math.random()*10);
+		// 		// if(determineContinue < 9) continue;
 
-				let block = freeSpaces[i];
-				//console.log('block = ', block.i, block.j)
-				let c = Assets.Sprite('castle.png');
-				//c.alpha = 0;
-				c.anchor.set(0.5);
-				c.scale.set(0.25);
-				let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
-				let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
+		// 		let block = freeSpaces[i];
+		// 		//console.log('block = ', block.i, block.j)
+		// 		let c = Assets.Sprite('castle.png');
+		// 		//c.alpha = 0;
+		// 		c.anchor.set(0.5);
+		// 		c.scale.set(0.25);
+		// 		let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
+		// 		let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-				this.parent.grid.blockWidth = bw;
-				this.parent.grid.blockHeight = bh;
-				c.x = block[0] + this.parent.grid.blockWidth / 2;
-				c.y = block[1] + this.parent.grid.blockHeight / 2;
-				this.castles.push(c);
-				//grid.cont.addChild(c);
+		// 		this.parent.grid.blockWidth = bw;
+		// 		this.parent.grid.blockHeight = bh;
+		// 		c.x = block[0] + this.parent.grid.blockWidth / 2;
+		// 		c.y = block[1] + this.parent.grid.blockHeight / 2;
+		// 		this.castles.push(c);
+		// 		//grid.cont.addChild(c);
 				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-					let soldier = Soldier();
-					let s = (j < 3)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
-					s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;
-					s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
-					//grid.cont.addChild(s);
-					this.soldiers.push(s);
-					this.spears.push(s.classRef.spear)
-				}
-			}
-		},
-		placeCastlesAndSoldiers: function () {
-			let grid = this.parent.grid;
-			let freeSpaces = grid.freeSpaces;
-			//console.log('free space array', freeSpaces, freeSpaces.length);
-			let counter = 0;
-			for (let i = 0; i < this.castles.length; i ++) {
-				let c = this.castles[i];
+		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+		// 			let soldier = Soldier();
+		// 			let s = (j < 3)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
+		// 			s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;
+		// 			s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
+		// 			//grid.cont.addChild(s);
+		// 			this.soldiers.push(s);
+		// 			this.spears.push(s.classRef.spear)
+		// 		}
+		// 	}
+		// },
+		// placeCastlesAndSoldiers: function () {
+		// 	let grid = this.parent.grid;
+		// 	let freeSpaces = grid.freeSpaces;
+		// 	//console.log('free space array', freeSpaces, freeSpaces.length);
+		// 	let counter = 0;
+		// 	for (let i = 0; i < this.castles.length; i ++) {
+		// 		let c = this.castles[i];
 				
-				grid.cont.addChild(c);
+		// 		grid.cont.addChild(c);
 				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-					let soldier = this.soldiers[counter];
-					soldier.classRef.addToStage();
+		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+		// 			let soldier = this.soldiers[counter];
+		// 			soldier.classRef.addToStage();
 					
-					counter ++;
-				}
-			}
-		},
-		removeCastlesAndSoldiers: function () {
-			let fQ = this.parent.grid.freeSpaces.length;
-			let counter = 0;
-			for (let i = 0; i < this.castles.length; i ++) {
-				let c = this.castles[i];
-				this.parent.grid.cont.removeChild(c);
+		// 			counter ++;
+		// 		}
+		// 	}
+		// },
+		// removeCastlesAndSoldiers: function () {
+		// 	let fQ = this.parent.grid.freeSpaces.length;
+		// 	let counter = 0;
+		// 	for (let i = 0; i < this.castles.length; i ++) {
+		// 		let c = this.castles[i];
+		// 		this.parent.grid.cont.removeChild(c);
 				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-					let soldier = this.soldiers[counter];
-					soldier.classRef.removeFromStage();
-					//this.parent.grid.cont.removeChild(soldier);
-					counter ++;
-				}
-			}
-		},
+		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+		// 			let soldier = this.soldiers[counter];
+		// 			soldier.classRef.removeFromStage();
+		// 			//this.parent.grid.cont.removeChild(soldier);
+		// 			counter ++;
+		// 		}
+		// 	}
+		// },
 		lightningStorm: function () {
 			this.foreground.visible = true;
 			this.boltCont.visible = true;
@@ -157,14 +154,14 @@ export default function () {
 			this.boltCont = boltCont;
 		},
 		addToStage: function () {
-			this.placeCastlesAndSoldiers();
+			//this.placeCastlesAndSoldiers();
 			this.clouds.addToStage();
 			this.parentCont.addChildAt(this.cont, 0);
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
 			this.clouds.removeFromStage();
-			this.removeCastlesAndSoldiers();
+			//this.removeCastlesAndSoldiers();
 			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
