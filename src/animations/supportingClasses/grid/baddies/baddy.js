@@ -66,21 +66,21 @@ export default function () {
 			let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-			let globalPoint = this.utils.root.grid.cont.toGlobal(this.body);
+			let globalPoint = this.utils.root.grid.gridBuild.cont.toGlobal(this.body);
 			
-			let iVal = Math.floor((globalPoint.y - this.utils.root.grid.cont.y) / bh);
-			let jVal = Math.floor((globalPoint.x - this.utils.root.grid.cont.x) / bw);
+			let iVal = Math.floor((globalPoint.y - this.utils.root.grid.gridBuild.cont.y) / bh);
+			let jVal = Math.floor((globalPoint.x - this.utils.root.grid.gridBuild.cont.x) / bw);
 			
 
-			return { block: this.utils.root.grid.blocks[iVal][jVal], i: iVal, j: jVal }
+			return { block: this.utils.root.grid.gridBuild.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		getModifiedHeroPoint: function () {
 			this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
-			return this.grid.cont.toLocal(this.heroPoint, this.utils.stage);
+			return this.utils.root.grid.gridBuild.cont.toLocal(this.heroPoint, this.utils.stage);
 		},
 		calculateDestPoint: function () {
 			//dest point should be the dragon]
-			this.grid = this.utils.root.grid;
+			this.grid = this.utils.root.grid.gridBuild;
 			let currentSquare = this.currentSquare();
 			let i = currentSquare.i;
 			let j = currentSquare.j; 
@@ -117,12 +117,12 @@ export default function () {
 			}
 		},
 		addToStage: function () {
-			this.utils.root.grid.cont.addChild(this.body);
-			this.utils.root.grid.cont.addChild(this.spear);
+			this.utils.root.grid.gridBuild.cont.addChild(this.body);
+			this.utils.root.grid.gridBuild.cont.addChild(this.spear);
 		},
 		removeFromStage: function () {
-			this.utils.root.grid.cont.removeChild(this.body);
-			this.utils.root.grid.cont.removeChild(this.spear);
+			this.utils.root.grid.gridBuild.cont.removeChild(this.body);
+			this.utils.root.grid.gridBuild.cont.removeChild(this.spear);
 		},
 		resize: function () {
 

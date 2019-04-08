@@ -4,9 +4,9 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
 import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
-import TransitionItems from './items/transitionItems';
-import Treasure from './items/treasure';
-import MagicPills from './items/magicPills';
+// import TransitionItems from './items/transitionItems';
+// import Treasure from './items/treasure';
+// import MagicPills from './items/magicPills';
 import Baddies from './baddies/baddies';
 export default {
 		cont: Assets.ParticleContainer(10000),
@@ -27,9 +27,9 @@ export default {
 		blockPool: [],
 		spaceShip: {},
 		wallHit: 0,
-		transitionItems: TransitionItems(),
-		magicPills: MagicPills(),
-		treasure: Treasure(),
+		// transitionItems: TransitionItems(),
+		// magicPills: MagicPills(),
+		// treasure: Treasure(),
 		transitionItemsArray: [],
 		treasureChests: [],
 		magicPillsArray: [],
@@ -163,7 +163,7 @@ export default {
 			// this.placeMagicPills();
 
 			//this.baddies.buildCastlesAndSoldiers();
-			this.baddies.placeCastlesAndSoldiers();
+			this.baddies.placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
 			

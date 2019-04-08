@@ -15,22 +15,22 @@ export default function () {
 		init: function () {
 		
 		},
-		placeCastlesAndSoldiers: function () {
-
+		placeCastlesAndSoldiers: function (gridBuild) {
 			this.animate = this.animate.bind(this)
 
 			let grid = this.utils.root.grid;
-			let freeSpaces = grid.freeSpaces;
+			let freeSpaces = gridBuild.freeSpaces;
 
 			let soldierCounter = 0;
 			for (let i = 0; i < freeSpaces.length; i ++) {
-		
+			
 			//for (let i = 0; i < 1; i ++) {
 
 				// let determineContinue = Math.floor(Math.random()*10);
 				// if(determineContinue < 9) continue;
 
 				let block = freeSpaces[i];
+
 				
 				let c;
 
@@ -52,7 +52,7 @@ export default function () {
 				c.x = block[0] + bw / 2;
 				c.y = block[1] + bh / 2;
 
-				grid.cont.addChild(c);
+				gridBuild.cont.addChild(c);
 				
 				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
 					

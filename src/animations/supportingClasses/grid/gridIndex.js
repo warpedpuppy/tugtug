@@ -4,9 +4,9 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
 import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
-import TransitionItems from './items/transitionItems';
-import Treasure from './items/treasure';
-import MagicPills from './items/magicPills';
+import TransitionItems from './items/transition/transitionItems';
+import Treasure from './items/treasure/treasure';
+import MagicPills from './items/magic/magicPills';
 import GridBuild from './gridBuild';
 import GridAction from './gridAction';
 export default {
@@ -39,6 +39,8 @@ export default {
 		castles: [],
 		spears: [],
 		solderPerGridSquareQ: 1,
+		gridAction: GridAction,
+		gridBuild: GridBuild,
 		init: function (parent) {
 
 

@@ -1,26 +1,26 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import OrientationChange from './utils/orientationChange';
-import Clock from './supportingClasses/clock';
+import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
-import Pellets from './supportingClasses/pellets';
+//import Pellets from './supportingClasses/pellets';
 // import Treasure from '../animations/supportingClasses/treasure';
 // import MagicPills from './supportingClasses/magicPills';
 // import TransitionItems from './supportingClasses/transitionItems';
-import TransitionAnimation from './supportingClasses/transitionAnimation';
-import FilterAnimation from './supportingClasses/filterAnimation';
-import Gears from './supportingClasses/gears';
-import Hero from './supportingClasses/hero';
-import Score from '../animations/supportingClasses/score';
-import ControlPanel from './supportingClasses/controlPanel';
+import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
+import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
+import Gears from './supportingClasses/universal/gears';
+import Hero from './supportingClasses/universal/hero';
+import Score from '../animations/supportingClasses/universal/score';
+import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelSlots from './supportingClasses/level/levelSlots';
 //import IntroScreen from './supportingClasses/introScreen';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
-import KeyHandler from './supportingClasses/keyHandler';
+import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 //import Animate from './supportingClasses/action/animate';'jump', 
 import axios from 'axios';
@@ -34,7 +34,7 @@ export default function(obj) {
         rotateRightBoolean: false,
         renderTextureTestBoolean: false,
         inc: 90,
-        mode: ['bounce','fly',  'swim', ],
+        mode: ['fly',  'bounce','swim', ],
         activeModeIndex: 0,
         activeMode: undefined,
         backgroundCont: Assets.Container(),
@@ -45,7 +45,7 @@ export default function(obj) {
         spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
-        pellets: Pellets(),
+        //pellets: Pellets(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
         transitionAnimation: TransitionAnimation,
@@ -311,7 +311,7 @@ export default function(obj) {
 
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
-            this.pellets.changeMode(this.activeMode);
+           // this.pellets.changeMode(this.activeMode);
             this.grid.setAction(this.activeAction, this.activeMode);
             
             if (this.isMobile) {
@@ -375,7 +375,7 @@ export default function(obj) {
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
         nightMode: function () {
-            this.pellets.change();
+           // this.pellets.change();
             this.app._options.backgroundColor = '0x000000';
            // console.log(this.app._options.backgroundColor)
         },
@@ -412,7 +412,7 @@ export default function(obj) {
                 
                 this.gears.animate();
                 
-                this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
+               // this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
                
                 //console.log('animate active action')
                 this.activeAction.animate();

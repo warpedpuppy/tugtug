@@ -4,9 +4,9 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../config';
 import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
-import TransitionItems from './items/transitionItems';
-import Treasure from './items/treasure';
-import MagicPills from './items/magicPills';
+// import TransitionItems from './items/transitionItems';
+// import Treasure from './items/treasure';
+// import MagicPills from './items/magicPills';
 import Baddies from './baddies/baddies';
 export default {
 		// cont: Assets.ParticleContainer(10000),
@@ -195,7 +195,11 @@ export default {
 		animate: function (vx, vy) {
 			
 			if (this.treasure.animationHappening) {
+				//console.log("animate special")
 				this.treasure.animateSpecial();			
+			} else {
+				//console.log("animate")
+				this.treasure.animate();
 			}
 
 			if(this.pause)return;
@@ -203,7 +207,9 @@ export default {
 			let ballB;
 			this.baddies.animate();
 
-			for(let i = 0; i < this.itemLoopingQ; i ++){
+
+			for (let i = 0; i < this.itemLoopingQ; i ++) {
+				//MUST ADD ON SCREEN DETECTION
 				if (this.transitionItemsArray[i]) {
 					
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
@@ -213,13 +219,14 @@ export default {
 						this.utils.root.switchPlayerMaskedAction();
 					}
 				}
-				if(this.treasureChests[i]){
-					if(this.itemHitDetect(this.treasureChests[i]) && !this.treasure.animationHappening){
+				if(this.treasure.chests[i]){
+					if(this.itemHitDetect(this.treasure.chests[i]) && !this.treasure.animationHappening){
 						//console.log("chest hit");
-						this.treasure.activeChest = this.treasureChests[i];
+
+						this.treasure.activeChest = this.treasure.chests[i];
 						this.utils.root.filterAnimation.shutOff();
-						this.treasure.playAnimation();
-						this.treasureChests.splice(i, 1)
+						this.treasure.playAnimation(this.treasure.activeChest);
+						this.treasure.removeChest(i);
 					}  
 				}
 				if(this.magicPillsArray[i]){

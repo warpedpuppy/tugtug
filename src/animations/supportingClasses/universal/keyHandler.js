@@ -1,5 +1,5 @@
-import Assets from '../utils/assetCreation';
-import Utils from '../utils/utils';
+import Assets from '../../utils/assetCreation';
+import Utils from '../../utils/utils';
 // import Config from './animationsConfig';
 export default function () {
 	return {

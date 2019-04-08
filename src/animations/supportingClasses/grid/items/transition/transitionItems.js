@@ -1,6 +1,6 @@
-import Assets from '../../../utils/assetCreation';
-import Utils from '../../../utils/utils';
-import TransitionAnimation from '../../transitionAnimation';
+import Assets from '../../../../utils/assetCreation';
+import Utils from '../../../../utils/utils';
+import TransitionAnimation from './transitionAnimation';
 export default function () {
 	return {
 	textures: [],
