@@ -1,6 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import { TweenMax } from 'gsap';
+import Tweens from '../../utils/tweens';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -204,7 +204,7 @@ export default function () {
 			this.parentCont.addChildAt(this.cont, 1);
 		},
 		removeFromStage: function () {
-			TweenMax.killAll();
+			Tweens.killAll();
 			this.cont.removeChild(this.level1);
 			this.cont.removeChild(this.level2);
 			this.cont.removeChild(this.level3);

@@ -26,11 +26,11 @@ export default function () {
 			
 			//for (let i = 0; i < 1; i ++) {
 
-				// let determineContinue = Math.floor(Math.random()*10);
-				// if(determineContinue < 9) continue;
+				let determineContinue = Math.floor(Math.random()*10);
+				if(determineContinue < 9) continue;
 
 				let block = freeSpaces[i];
-
+	
 				
 				let c;
 

@@ -8,6 +8,7 @@ import Config from '../../animationsConfig';
 // import Treasure from './items/treasure';
 // import MagicPills from './items/magicPills';
 import Baddies from './baddies/baddies';
+import Tokens from '../tokens/levelTokens';
 export default {
 		cont: Assets.ParticleContainer(10000),
 		blockWidth: 0,
@@ -41,6 +42,7 @@ export default {
 		baddies: Baddies(),
 		init: function (chests, pills, transitionItems, spaceShip) {
 
+			this.tokens = Tokens.init();
 
 			for (let i = 0; i < 900; i ++) {
 				this.blockPool.push(Assets.Sprite())
@@ -141,8 +143,9 @@ export default {
 					}
 
 					//store free ones
+					let heroSpace = (String(i) === data.hero.i && String(j) === data.hero.j)?true:false;
 					
-					if(!bool && !token && (String(i) !== data.hero.i && String(j) !== data.hero.j)){
+					if (!bool && !token && !heroSpace) {
 						//console.log([b.x, b.y, b, i, j])
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
 					} else if (bool) {
@@ -180,8 +183,7 @@ export default {
 		},
 		placeShip: function () {
 			// for now just place space ship here
-			console.log(this.spaceShip)
-			let index = Math.floor(Math.random()*this.freeSpaces.length)
+			let index = (!Config.testing)?Math.floor(Math.random()*this.freeSpaces.length):0;
 			this.spaceShip.x = this.freeSpaces[index][0] + this.blockWidth / 2;
 			this.spaceShip.y = this.freeSpaces[index][1] + this.blockHeight / 2;
 			this.freeSpaces.splice(index, 1)
@@ -199,7 +201,8 @@ export default {
 		},
 		placeTokens: function () {
 			for(let key in this.tokenData){
-				let t = Assets.Sprite(`token${key}.png`);
+				let index = key - 1;
+				let t = this.tokens[index];//Assets.Sprite(`token${key}.png`);
 				t.anchor.set(0.5)
 				t.num = key;
 				t.x = this.tokenData[key].x + this.blockWidth / 2;

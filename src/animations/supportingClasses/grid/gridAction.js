@@ -97,6 +97,7 @@ export default {
 				}
 
 			this.gridBuild = this.utils.root.grid.gridBuild;
+			this.spaceShip = this.utils.root.grid.spaceShip;
 
 		},
 		
@@ -255,8 +256,8 @@ export default {
 				}
 			}
 
-	
-			let spaceShipGlobalPoint = this.cont.toGlobal(this.spaceShip);
+
+			let spaceShipGlobalPoint = this.gridBuild.cont.toGlobal(this.spaceShip);
 			ballB = {
 					x: spaceShipGlobalPoint.x,
 					y: spaceShipGlobalPoint.y,

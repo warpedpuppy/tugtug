@@ -1,6 +1,5 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import { TweenMax } from 'gsap';
 export default function () {
 	return {
 		cont: Assets.Container(),

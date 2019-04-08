@@ -1,6 +1,7 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import TransitionAnimation from './transitionAnimation';
+import Config from '../../../../animationsConfig';
 export default function () {
 	return {
 	textures: [],
@@ -15,7 +16,7 @@ export default function () {
 	items: [],
 	edgeBuffer: 200,
 	init: function (arr, cont, switchPlayer) {
-		this.itemQ = Assets.webgl ? 50 : 1;
+		this.itemQ = Assets.webgl ? Config.transitionItemsQ : 1;
 		this.switchPlayer = switchPlayer;
 		this.app = this.utils.app;
 		this.itemStrings = arr;

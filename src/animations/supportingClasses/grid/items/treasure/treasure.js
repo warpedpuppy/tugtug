@@ -1,6 +1,7 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import TreasureAnimation from './treasureAnimation';
+import Config from '../../../../animationsConfig';
 export default function () {
 	return {
 	chests: [],
@@ -23,7 +24,7 @@ export default function () {
 	animationHappening: false,
 	treasureAnimation: TreasureAnimation,
 	init: function () {
-		this.chestQ = Assets.webgl ? 100 : 1;
+		this.chestQ = Assets.webgl ? Config.treasureChestQ : 1;
 		for (let i = 0; i < this.chestQ; i ++) {
 			let c = Assets.Sprite('treasureChest.png');
 			c.scale.set(this.utils.randomNumberBetween(0.75, 0.85));
