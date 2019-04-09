@@ -10,8 +10,6 @@ import GridBuild from './gridBuild';
 import GridAction from './gridAction';
 import GridComplete from './gridComplete';
 export default {
-		blockWidth: 0,
-		blockHeight: 0,
 		blocks: {},
 		utils: Utils,
 		boards: [],
@@ -27,13 +25,8 @@ export default {
 		init: function () {
 
 			this.parent = this.utils.root;
+
 			this.parentCont = this.parent.stage;
-
-			this.blockWidth = Config[`${this.parent.activeMode}BlockSize`][0];
-			this.blockHeight = Config[`${this.parent.activeMode}BlockSize`][1];
-
-			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
-			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 
 		    this.boards = this.parent.dbData.boards;
 		    
@@ -43,17 +36,13 @@ export default {
 
             this.transitionItemsArray = this.transitionItems.init().build();
 
-			this.gridBuild = GridBuild.init();
-
+			this.gridBuild.init();
 
 			this.gridAction.init(this.magicPillsArray,this.transitionItemsArray,this.treasureChests)
 
 			this.gridComplete = GridComplete.init();
 
-			//this.setAction = this.setAction.bind(this);
 		    this.nextBoard = this.nextBoard.bind(this);
-		    this.cont = this.gridBuild.cont;
-		    GridAction.pause = false;
 
 		},
 		changeGridSize: function(){
@@ -61,17 +50,17 @@ export default {
 			let w = Config[`${this.parent.activeMode}BlockSize`][0];
 			let h = Config[`${this.parent.activeMode}BlockSize`][1];
 
-			if(w === this.blockWidth && h === this.blockHeight)return
-			this.blockWidth = w;
-			this.blockHeight = h;
+			if(w === this.gridBuild.blockWidth && h === this.gridBuild.blockHeight)return;
+			this.gridBuild.blockWidth = w;
+			this.gridBuild.blockHeight = h;
 
-			
-			this.cont.removeChildren();
+			this.gridBuild.cont.removeChildren();
+
 			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
 		},
 		nextBoard: function () {
 			this.gridBuild.currentBoard = this.boards.length - 1;
-			this.cont.removeChildren();
+			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 			this.gridAction.setAction();
@@ -96,6 +85,6 @@ export default {
 			this.gridAction.setLimits();
 		},
 		animate: function () {
-			GridAction.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy)
+			this.gridAction.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy)
 		}
 }

@@ -220,7 +220,7 @@ export default function(obj) {
             
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
-            
+
             if(this.activeMode !== 'jump')this.grid.changeGridSize()
             //this.grid.setAction(this.activeAction, this.activeMode);
             
@@ -235,6 +235,7 @@ export default function(obj) {
         switchPlayerWithAnimation: function () {
             
             if (!this.transitionAnimationPlaying) {
+                this.grid.gridBuild.baddies.removeCastlesAndSoldiers();
                 this.action = false;
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];

@@ -18,7 +18,7 @@ export default function (soldiers, spears) {
 
 		},
 		spearHit: function (spear) {
-			let globalPoint1 = this.utils.root.grid.cont.toGlobal(spear);
+			let globalPoint1 = this.utils.root.grid.gridBuild.cont.toGlobal(spear);
 			let c1 = {
 				x: globalPoint1.x,
 				y: globalPoint1.y,

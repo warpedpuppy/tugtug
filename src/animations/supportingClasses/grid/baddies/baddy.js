@@ -44,12 +44,10 @@ export default function () {
 			return this.body;
 		},
 		onScreen: function () {
-			//temp
-			//return true;
-
+				
 			let currentSquare = this.currentSquare().block;
 
-			let grid = this.utils.root.grid.cont;
+			let grid = this.utils.root.grid.gridBuild.cont;
 
 			if(grid.x > -currentSquare.x && 
 				grid.x < this.utils.canvasWidth - currentSquare.x &&
@@ -71,6 +69,13 @@ export default function () {
 			let iVal = Math.floor((globalPoint.y - this.utils.root.grid.gridBuild.cont.y) / bh);
 			let jVal = Math.floor((globalPoint.x - this.utils.root.grid.gridBuild.cont.x) / bw);
 			
+			if(!this.utils.root.grid.gridBuild.blocks[iVal]){
+				
+				console.log(globalPoint.x, this.utils.root.grid.gridBuild.cont.x, bw)
+				console.log(globalPoint.y, this.utils.root.grid.gridBuild.cont.y, bh)
+				console.log(iVal, jVal)
+				alert("BREAK")
+			}
 
 			return { block: this.utils.root.grid.gridBuild.blocks[iVal][jVal], i: iVal, j: jVal }
 		},

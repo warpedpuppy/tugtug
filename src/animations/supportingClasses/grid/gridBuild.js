@@ -1,8 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import axios from 'axios';
 import SpaceShip from './items/spaceShip/spaceShip';
-import { API_BASE_URL } from '../../../config';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddies';
 import Tokens from '../tokens/levelTokens';
@@ -15,7 +13,6 @@ export default {
 		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
-		pause: true,
 		tokens: [],
 		tokenData: {},
 		freeSpaces: [],
@@ -36,11 +33,9 @@ export default {
 		baddies: Baddies(),
 		init: function () {
 
-			this.parent = this.utils.root;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
-			this.parentCont = this.utils.app.stage;
-		
+			
 		  	//items to be distributed around board
 			this.spaceShip = SpaceShip().init()
 			this.tokens = Tokens.init();
@@ -48,12 +43,10 @@ export default {
 			this.treasureChests = this.utils.root.grid.treasureChests;
 			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
-			
   			this.boards = this.utils.root.dbData.boards;
 			this.buildGrid(this.boards[this.currentBoard]);
 
 			return this;
-
 		},
 		createObj: function (board) {
 			let obj = {};
@@ -71,14 +64,22 @@ export default {
 			let mode = this.utils.root.activeMode,
 			    obj = this.createObj(data),
 			    counter = 0,
-			    b;
+			    b,
+			    texture;
 
+			this.baddies.removeCastlesAndSoldiers(); 
+			this.wallHit = Config[`${mode}WallHit`];
+			this.buffer = Config[`${mode}Buffer`];    
 			this.blockWidth = Config[`${mode}BlockSize`][0];
 			this.blockHeight = Config[`${mode}BlockSize`][1];
 			this.rowQ = data.rows;
 			this.colQ = data.cols;
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
+
+			if (mode === 'fly') {
+				texture = this.flyTexture;
+			} 
 			
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
@@ -113,8 +114,13 @@ export default {
 					
 					if (!bool && !token && !heroSpace) {
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
-					} else if (bool) {
+					}
+
+					if (bool) {
+						b.texture = this.whiteSquare;
 						this.coveredSpaces.push(b)
+					} else {
+						b.texture = texture;
 					}
 					
 					this.blocks[i][j] = b;
@@ -136,7 +142,7 @@ export default {
 			this.placeHero();
 			
 			this.initialPoint = {x: this.cont.x, y: this.cont.y};
-			this.changeBackground(this.utils.root.activeMode)
+			//this.changeBackground(this.utils.root.activeMode)
 
 		},
 		placeShip: function () {
@@ -168,27 +174,6 @@ export default {
 				this.tokens.push(t);
 				this.cont.addChild(t);
 			}
-		},
-		changeBackground: function (mode) {
-
-			this.wallHit = Config[`${mode}WallHit`];
-			this.buffer = Config[`${mode}Buffer`];
-
-			let t;
-			if (mode === 'fly') {
-				t = this.flyTexture;
-				
-			} 
-			for(let j in this.blocks){
-					for(let i = 0; i < this.blocks[j].length; i ++){
-						let b = this.blocks[j][i];
-						if(!b.covered){
-							b.texture = t;
-						} else {
-							b.texture = this.whiteSquare
-						}
-					}
-				}
 		},
 		placeHero: function () {
 

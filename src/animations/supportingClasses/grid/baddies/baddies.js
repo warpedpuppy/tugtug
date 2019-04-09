@@ -18,10 +18,9 @@ export default function () {
 		placeCastlesAndSoldiers: function (gridBuild) {
 			this.animate = this.animate.bind(this)
 
-			let grid = this.utils.root.grid;
-			let freeSpaces = gridBuild.freeSpaces;
-
-			let soldierCounter = 0;
+			let grid = this.utils.root.grid,
+			    freeSpaces = gridBuild.freeSpaces,
+			    soldierCounter = 0;
 			for (let i = 0; i < freeSpaces.length; i ++) {
 			
 			//for (let i = 0; i < 1; i ++) {
@@ -86,19 +85,23 @@ export default function () {
 		// 	// }
 		// },
 		removeCastlesAndSoldiers: function () {
-			let fQ = this.parent.grid.freeSpaces.length;
-			let counter = 0;
-			for (let i = 0; i < this.castles.length; i ++) {
-				let c = this.castles[i];
-				this.parent.grid.cont.removeChild(c);
+			//let fQ = this.utils.root.grid.gridBuild.freeSpaces.length;
+			// let counter = 0;
+			// for (let i = 0; i < this.castles.length; i ++) {
+			// 	let c = this.castles[i];
+			// 	this.utils.root.grid.gridBuild.cont.removeChild(c);
 				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-					let soldier = this.soldiers[counter];
-					soldier.classRef.removeFromStage();
-					//this.parent.grid.cont.removeChild(soldier);
-					counter ++;
-				}
-			}
+			// 	for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+			// 		let soldier = this.soldiers[counter];
+			// 		soldier.classRef.removeFromStage();
+			// 		//this.parent.grid.cont.removeChild(soldier);
+			// 		counter ++;
+			// 	}
+			// }
+			this.soldiers.forEach(s => {
+				s.classRef.removeFromStage();
+			})
+			this.soldiers.length = 0;
 		},
 		addToStage: function () {
 			this.grid.cont.addChild(this.body);

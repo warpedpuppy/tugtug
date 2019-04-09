@@ -67,7 +67,7 @@ export default {
         if(this.colorCounter === this.colors.length){
             this.colorCounter = 0;
         }
-        console.log("end set up")
+       
     },
     resize: function (wh) {
         this.wh = wh;
@@ -95,15 +95,15 @@ export default {
         this.parent.transitionAnimationPlaying = false;
         this.utils.app.stage.removeChild(this.cont);
 
-        this.parent.action = true;
+        
         this.parent.hero.switchPlayer(this.parent.activeMode);
         this.parent.activeAction = this.newActiveMode.addToStage();
         this.parent.grid.changeGridSize()
         this.parent.grid.gridAction.setAction();
 
         let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
-        this.parent.stage.setChildIndex(this.parent.grid.cont, index) 
-
+        this.parent.stage.setChildIndex(this.parent.grid.gridBuild.cont, index) 
+        this.parent.action = true;
     },
     // startWithMasking: function (newBackground, oldBackground) {
     //     this.oldBackground = oldBackground;

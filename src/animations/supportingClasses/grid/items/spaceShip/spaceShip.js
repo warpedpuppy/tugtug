@@ -15,6 +15,8 @@ export default function () {
 
 		},
 		blastOff: function () {
+
+			this.utils.hero.cont.visible = false;
 			// //PAUSE KEY LISTENERS
 			this.storeActiveMode = this.utils.root.activeMode;
 
@@ -23,7 +25,7 @@ export default function () {
 			this.ship.x = this.utils.canvasWidth / 2;
 			this.ship.y = this.utils.canvasHeight / 2;
 			// // rush maze backwards
-			let maze = this.utils.root.grid.cont;
+			let maze = this.utils.root.grid.gridBuild.cont;
 
 			// // add jump background to stage
 			let jump = this.utils.root.jump;
@@ -35,16 +37,18 @@ export default function () {
 
 		},
 		makeJumpActive: function () {
+			this.utils.hero.cont.visible = true;
 			console.log("make jump active");
 			//this.ship.parent.removeChild(this.ship);
 			let jump = this.utils.root.jump.jumpBackground.addSpaceShip();
 			this.utils.root.switchPlayer("jump");
 		},
 		returnHome: function () {
+			this.utils.hero.cont.visible = false;
 			this.utils.app.stage.addChild(this.ship);
 			this.ship.x = this.utils.canvasWidth / 2;
 			this.ship.y = this.utils.canvasHeight / 2;
-			let maze = this.utils.root.grid.cont;
+			let maze = this.utils.root.grid.gridBuild.cont;
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
 
@@ -56,7 +60,7 @@ export default function () {
 		
 		},
 		completeReturnHomeHandler: function () {
-			
+			this.utils.hero.cont.visible = true;
 			this.utils.hero.activeHero.cont.y = 0;
 			
 			this.utils.root.switchPlayer(this.storeActiveMode);
