@@ -220,7 +220,8 @@ export default function(obj) {
             
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
-            this.grid.changeGridSize()
+            
+            if(this.activeMode !== 'jump')this.grid.changeGridSize()
             //this.grid.setAction(this.activeAction, this.activeMode);
             
             if (this.isMobile) {

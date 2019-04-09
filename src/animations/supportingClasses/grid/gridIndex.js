@@ -86,11 +86,6 @@ export default {
 			}
 			
 		},
-		// setAction: function (action, mode) {
-		// 	this.action = action;
-		// 	this.gridBuild.changeBackground(mode)
-		// 	this.gridAction.setLimits();
-		// },
 		addToStage: function (index) {
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 		},

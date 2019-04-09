@@ -25,9 +25,6 @@ export default {
 		blockPool: [],
 		spaceShip: {},
 		wallHit: 0,
-		// transitionItems: TransitionItems(),
-		// magicPills: MagicPills(),
-		// treasure: Treasure(),
 		transitionItemsArray: [],
 		treasureChests: [],
 		magicPillsArray: [],
@@ -163,7 +160,7 @@ export default {
 		placeTokens: function () {
 			for (let key in this.tokenData) {
 				let index = key - 1;
-				let t = this.tokens[index];//Assets.Sprite(`token${key}.png`);
+				let t = this.tokens[index];
 				t.anchor.set(0.5)
 				t.num = key;
 				t.x = this.tokenData[key].x + this.blockWidth / 2;
@@ -172,10 +169,6 @@ export default {
 				this.cont.addChild(t);
 			}
 		},
-		// setAction: function (action, mode) {
-		// 	this.action = action;
-		// 	this.changeBackground(mode)
-		// },
 		changeBackground: function (mode) {
 
 			this.wallHit = Config[`${mode}WallHit`];
@@ -209,14 +202,6 @@ export default {
 			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth /2);
 			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
 		},
-		// setLimits: function () {
-		// 	this.boardWidth = this.colQ * this.blockWidth;
-		// 	this.boardHeight = this.rowQ * this.blockHeight;
-		// 	this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
-		// 	this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
-		// 	this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
-		// 	this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
-		// },
 		returnAbove: function (i,j) {
 			let newi = (i - 1 >= 0)?(i - 1):undefined;
 			let newj = j;

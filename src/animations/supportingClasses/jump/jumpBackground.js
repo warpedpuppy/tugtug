@@ -128,7 +128,7 @@ export default function () {
 			//this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
 		},
 		addSpaceShip: function () {
-			let spaceShip = this.utils.root.grid.spaceShip;
+			let spaceShip = this.utils.root.grid.gridBuild.spaceShip;
 			spaceShip.x = spaceShip.y = 0;
 			this.spaceShipOrb.addChild(spaceShip)
 		},
@@ -157,7 +157,7 @@ export default function () {
 
 			if (newPlanet === this.spaceShipOrb) {
 				this.pause = true;
-				this.utils.root.grid.spaceShip.classRef.returnHome();
+				this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
 			}
 		},
 		makeTransitionComplete: function () {
