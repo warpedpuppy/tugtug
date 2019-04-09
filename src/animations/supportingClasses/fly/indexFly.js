@@ -15,7 +15,7 @@ export default function () {
 			];
 		},
 		addToStage: function () {
-			Utils.root.grid.changeGridSize(Config.flyBlockSize[0], Config.flyBlockSize[1])
+			//Utils.root.grid.changeGridSize(Config.flyBlockSize[0], Config.flyBlockSize[1])
 			this.flyBackground.addToStage();
 			this.flyAction.createPool();
 			return this.flyAction;

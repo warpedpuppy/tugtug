@@ -74,11 +74,17 @@ export default function () {
 			}
 			this.baddyAction = BaddyAction(this.soldiers, this.spears);
 		},
-		returnBaddiesToZero: function () {
-			for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-				this.soldiers[j].x = this.soldiers[j].startX;
-			}
-		},
+		// returnBaddiesToZero: function () {
+		// 	let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
+		// 	let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
+		// 	this.soldiers.forEach(soldier => {
+		// 		soldier.x = soldier.block[0] + bw / 2;
+		// 		soldier.x = soldier.block[1] + bh / 2;
+		// 	})
+		// 	// for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+		// 	// 	this.soldiers[j].x = this.soldiers[j].startX;
+		// 	// }
+		// },
 		removeCastlesAndSoldiers: function () {
 			let fQ = this.parent.grid.freeSpaces.length;
 			let counter = 0;

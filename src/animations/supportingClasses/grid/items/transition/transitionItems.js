@@ -15,13 +15,13 @@ export default function () {
 	itemQ: 0,
 	items: [],
 	edgeBuffer: 200,
-	init: function (arr, cont, switchPlayer) {
+	init: function () {
 		this.itemQ = Assets.webgl ? Config.transitionItemsQ : 1;
-		this.switchPlayer = switchPlayer;
+		this.switchPlayer = this.utils.root.switchPlayer;
 		this.app = this.utils.app;
-		this.itemStrings = arr;
+		this.itemStrings = this.utils.root.mode;
 		this.wh = this.utils.wh;
-		this.cont = cont;
+		this.cont = this.utils.app.stage;
 		this.spritesheet = this.utils.spritesheet;
 		this.hero = this.utils.hero;
 		//this.transitionAnimation = this.transitionAnimation.init();
@@ -50,11 +50,8 @@ export default function () {
 		for (let i = 0; i < this.itemQ; i ++) {
 			let c = Assets.Sprite(this.textures[this.textureCounter]);
 			c.name = this.itemStrings[this.textureCounter];
-			//c.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 			c.anchor.set(0.5);
 			c.hit = false;
-			// c.x = this.utils.randomNumberBetween(0, this.wh.canvasWidth);
-			// c.y = this.utils.randomNumberBetween(0, this.wh.canvasHeight);
 			this.items.push(c);
 			this.textureCounter ++;
 			if (this.textureCounter >= this.textures.length) {

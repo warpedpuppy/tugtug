@@ -8,8 +8,8 @@ export default {
 		counter: 0,
 		demo: false,
 		utils: Utils,
-		init: function (parentCont) {
-			this.parentCont = parentCont;
+		init: function () {
+			this.parentCont = this.utils.app.stage;
 			let hourhand = this.hourhand = Assets.Sprite('/hourhand.png');
 			hourhand.anchor.set(0.5);
 			hourhand.tint = 0xFF0000;
@@ -45,14 +45,17 @@ export default {
          	this.cont.x = this.utils.wh.canvasWidth / 2;
          	this.cont.y = this.utils.wh.canvasHeight / 2;
 
-         	
+         	return this;
 		},
 		addToStage: function () {
-			this.parentCont.addChildAt(this.cont, 0);
+			this.parentCont.addChild(this.cont);
+		},
+		removeFromStage: function () {
+			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
-			this.cont.x = this.utils.wh.canvasWidth / 2;
-         	this.cont.y = this.utils.wh.canvasHeight / 2;
+			this.cont.x = this.utils.canvasWidth / 2;
+         	this.cont.y = this.utils.canvasHeight / 2;
 		},
 		animate: function () {
 			if(!this.demo) {

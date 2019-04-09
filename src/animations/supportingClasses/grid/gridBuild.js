@@ -1,12 +1,9 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import axios from 'axios';
+import SpaceShip from './items/spaceShip/spaceShip';
 import { API_BASE_URL } from '../../../config';
-import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
-// import TransitionItems from './items/transitionItems';
-// import Treasure from './items/treasure';
-// import MagicPills from './items/magicPills';
 import Baddies from './baddies/baddies';
 import Tokens from '../tokens/levelTokens';
 export default {
@@ -40,46 +37,24 @@ export default {
 		spears: [],
 		solderPerGridSquareQ: 1,
 		baddies: Baddies(),
-		init: function (chests, pills, transitionItems, spaceShip) {
-
-			this.tokens = Tokens.init();
-
-			for (let i = 0; i < 900; i ++) {
-				this.blockPool.push(Assets.Sprite())
-			}
+		init: function () {
 
 			this.parent = this.utils.root;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
-
 			this.parentCont = this.utils.app.stage;
 		
+		  	//items to be distributed around board
+			this.spaceShip = SpaceShip().init()
+			this.tokens = Tokens.init();
+			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
+			this.treasureChests = this.utils.root.grid.treasureChests;
+			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
-			//this.setLimits();
-
-		
-		   // this.setAction = this.setAction.bind(this);
-		    //this.nextBoard = this.nextBoard.bind(this);
-		    this.boards = this.utils.root.dbData.boards;
-		    
-
-			this.magicPillsArray = pills;
-
-			this.treasureChests = chests;
-
-			this.transitionItemsArray = transitionItems;
-			this.spaceShip = spaceShip;
-
+			
+  			this.boards = this.utils.root.dbData.boards;
 			this.buildGrid(this.boards[this.currentBoard]);
 
-		   // this.itemLoopingQ = Math.max(this.magicPillsArray.length, this.transitionItemsArray.length, this.treasureChests.length)
-		
-
-		  //   this.heroCollisionDetector = {
-				// 	x: this.utils.canvasWidth / 2,
-				// 	y: this.utils.canvasHeight / 2,
-				// 	radius: 10
-				// }
 			return this;
 
 		},
@@ -88,56 +63,50 @@ export default {
 			for(let arr of board.grid){
 				obj[`${arr[0]}_${arr[1]}`] = 'covered';
 			}
-		
-			// // add hero
-			// if (board.hero) {
-			// 	obj[`${board.hero.i}_${board.hero.j}`] = 'hero';
-			// }
 			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
 			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
 			obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
 			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
-			return obj
-		},
-		buildNextGrid: function () {
-
+			return obj;
 		},
 		buildGrid: function (data) {
-			//alert("build grid")
-			let mode = this.utils.root.activeMode;
+			
+			let mode = this.utils.root.activeMode,
+			    obj = this.createObj(data),
+			    counter = 0,
+			    b;
+
 			this.blockWidth = Config[`${mode}BlockSize`][0];
 			this.blockHeight = Config[`${mode}BlockSize`][1];
-
-			let obj = this.createObj(data);
-			let counter = 0;
 			this.rowQ = data.rows;
 			this.colQ = data.cols;
-			//console.log('start build grid')
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
-
+			
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
 				for (let j = 0; j < data.cols; j ++) {
-					//console.log(i,j,obj[`${i}_${j}`])
+
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
-					//let b = this.block(bool);
-					let b = this.blockPool[counter];
+
+					if (!this.blockPool[counter]) {
+						b = Assets.Sprite()
+						this.blockPool.push(b)	
+					} else {
+						b = this.blockPool[counter];
+					}
+
 					b.width = this.blockWidth;
 					b.height = this.blockHeight;
 					b.covered = bool;
-					//console.log(b.covered)
 					b.x = j * this.blockWidth;
 					b.y = i * this.blockHeight;
-					// let text = Assets.BitmapText(`${i}, ${j}`)
-					// text.x = b.x;
-					// text.y = b.y;
+					
 					this.cont.addChild(b);
-					//this.cont.addChild(text);
+
 					let token = false;
 					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
 						let num = obj[`${i}_${j}`].slice(-1);
-						//this.placeToken(num, b.x, b.y)
 						token = true;
 						this.tokenData[num] = {x: b.x, y:b.y};
 					}
@@ -146,7 +115,6 @@ export default {
 					let heroSpace = (String(i) === data.hero.i && String(j) === data.hero.j)?true:false;
 					
 					if (!bool && !token && !heroSpace) {
-						//console.log([b.x, b.y, b, i, j])
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
 					} else if (bool) {
 						this.coveredSpaces.push(b)
@@ -161,27 +129,17 @@ export default {
 			this.placeItems(this.transitionItemsArray);
 			this.placeItems(this.treasureChests);
 			this.placeItems(this.magicPillsArray);
-			// this.placeTransitionItems();
-			// this.placeChests();
-			// this.placeMagicPills();
-
-			//this.baddies.buildCastlesAndSoldiers();
 			this.baddies.placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
 			
-		
-			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
 			this.heroJ = data.hero.j;
 			this.heroI = data.hero.i;
 			this.placeHero();
-			//this.setLimits();
-			//this.pause = false;
-			// console.log('free spaces established', this.freeSpaces.length)
-			// alert("end build grid")
-
+			
 			this.initialPoint = {x: this.cont.x, y: this.cont.y};
+			this.changeBackground(this.utils.root.activeMode)
 
 		},
 		placeShip: function () {
@@ -214,12 +172,12 @@ export default {
 				this.cont.addChild(t);
 			}
 		},
-		setAction: function (action, mode) {
-			this.action = action;
-			this.changeBackground(mode)
-		},
+		// setAction: function (action, mode) {
+		// 	this.action = action;
+		// 	this.changeBackground(mode)
+		// },
 		changeBackground: function (mode) {
-			console.log("CHANGE BACKGROUND")
+
 			this.wallHit = Config[`${mode}WallHit`];
 			this.buffer = Config[`${mode}Buffer`];
 

@@ -9,8 +9,8 @@ export default function () {
 		slotQ: 4, 
 		tokenCounter: 0,
 		totalTokens: 4,
-		init: function (parent) {
-			this.parent = parent;
+		init: function () {
+			this.parent = this.utils.root;
 			this.parentCont = this.utils.app.stage;//parentCont;
 			let s;
 			for(let i = 0; i < this.slotQ; i ++){
@@ -34,15 +34,11 @@ export default function () {
 			this.slots[index].addChild(token);
 
 			if (this.tokenCounter === 4) {
-				this.parent.boardComplete();
+				this.parent.grid.gridComplete.boardComplete();
 			}
 		},
 		reset: function () {
-			for(let i = 0; i < this.slotQ; i ++){
-				this.slots[i].removeChildAt(1)
-			}	
 			this.tokenCounter = 0;
-
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;

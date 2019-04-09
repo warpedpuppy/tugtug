@@ -23,7 +23,7 @@ export default function () {
 			];
 		},
 		addToStage: function () {
-			Utils.root.grid.changeGridSize(Config.swimBlockSize[0], Config.swimBlockSize[1])
+			//Utils.root.grid.changeGridSize(Config.swimBlockSize[0], Config.swimBlockSize[1])
 			this.ripples.on(true);
 			this.swimBackground.addToStage();
 			this.swimAction.start();

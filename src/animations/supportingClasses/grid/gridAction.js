@@ -45,39 +45,6 @@ export default {
 
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
-
-			// this.spaceShip = SpaceShip().init()
-
-			// for (let i = 0; i < 900; i ++) {
-			// 	this.blockPool.push(Assets.Sprite())
-			// }
-			// this.parent = parent;
-			// this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
-			// this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
-
-			// this.parent = parent;
-			// this.parentCont = parent.stage;
-		
-
-			// this.setLimits();
-
-			// this.boxCircles = [];
-		
-		 //    this.setAction = this.setAction.bind(this);
-		 //    this.nextBoard = this.nextBoard.bind(this);
-		 //    this.boards = parent.dbData.boards;
-		    
-
-		 //   this.magicPillsArray = this.magicPills.init();
-
-   //          this.treasureChests = this.treasure.init();
-
-   //          this.transitionItemsArray = this.transitionItems.init(
-   //              this.utils.root.mode, 
-   //              this.utils.root.stage, 
-   //              this.utils.root.switchPlayer.bind(this.utils.root)).build();
-
-		 //    this.buildGrid(this.boards[this.currentBoard]);
 		 	this.setLimits();
 		 	this.magicPillsArray = magicPillsArray;
 		 	this.transitionItemsArray = transitionItemsArray;
@@ -97,13 +64,13 @@ export default {
 				}
 
 			this.gridBuild = this.utils.root.grid.gridBuild;
-			this.spaceShip = this.utils.root.grid.spaceShip;
+			this.spaceShip = this.gridBuild.spaceShip;
 
 		},
 		
-		setAction: function (action, mode) {
-			this.action = action;
-			this.utils.root.grid.gridBuild.changeBackground(mode)
+		setAction: function () {
+			this.action = this.utils.root.activeAction;
+			this.utils.root.grid.gridBuild.changeBackground(this.utils.root.activeMode)
 			this.setLimits();
 		},
 		
@@ -172,6 +139,9 @@ export default {
 		},
 		setLimits: function () {
 
+			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
+			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
+
 			this.colQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].cols;
 			this.rowQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].rows;
 
@@ -179,7 +149,7 @@ export default {
 			this.boardHeight = this.rowQ * this.blockHeight;
 			this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
 			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
-			console.log("board width = ", this.colQ, this.blockWidth, this.boardWidth)
+		
 			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
 		},
@@ -217,7 +187,7 @@ export default {
 						//console.log("transition item hit")
 						this.transitionItemsArray[i].hit = true;
 						this.utils.root.filterAnimation.shutOff();
-						this.utils.root.switchPlayerMaskedAction();
+						this.utils.root.switchPlayerWithAnimation();
 					}
 				}
 				if(this.treasure.chests[i]){

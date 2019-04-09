@@ -7,7 +7,7 @@ export default function () {
 		vx: 0,
 		vy: 0,
 		calcDest: true,
-		buffer: 3,
+		buffer: 10,
 		towardsDragon: true,
 		alreadyBeenToAWall: false,
 		spearThrowing: false,

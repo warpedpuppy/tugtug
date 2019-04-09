@@ -3,7 +3,7 @@ import Utils from '../../utils/utils';
 export default {
 	gears: [],
 	utils: Utils,
-	init: function (cont) {
+	init: function () {
 		let gear;
 		let corners = this.corners = [
 		[0,0],
@@ -18,8 +18,19 @@ export default {
 		    gear.y = corners[i][1];
 		    gear.alpha = 0.15;
 		    gear.rotate = (Math.random()*0.01)+0.01;
-		    cont.addChild(gear);
+		    
 		    this.gears.push(gear);
+		}
+		return this;
+	},
+	addToStage: function () {
+		for(let i = 0; i < 4;i++){
+			this.utils.app.stage.addChild(this.gears[i]);
+		}
+	},
+	removeFromStage: function () {
+		for(let i = 0; i < 4;i++){
+			this.utils.app.stage.removeChild(this.gears[i]);
 		}
 	},
 	resize: function () {

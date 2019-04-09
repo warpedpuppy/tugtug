@@ -1,5 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
+import Config from '../../../../animationsConfig';
 export default {
     line: undefined,
     cont: Assets.Container(),
@@ -13,8 +14,8 @@ export default {
     runAnimation: false,
     colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
     colorCounter: 0,
-    init: function (parent) {
-        this.parent = parent;
+    init: function () {
+        this.parent = this.utils.root;
         this.particleContainer = Assets.ParticleContainer();
         this.cont.addChild(this.particleContainer);
         this.circle = Assets.Sprite('circleMask.png');
@@ -59,8 +60,8 @@ export default {
         this.cont.x = this.utils.canvasWidth / 2;
         this.cont.y = this.utils.canvasHeight / 2;
         let contIndex = this.utils.app.stage.getChildIndex(this.utils.hero.cont);
-        this.utils.app.stage.addChildAt(this.cont, contIndex - 3);
-
+        this.utils.app.stage.addChildAt(this.cont, contIndex - 1);
+       // this.utils.app.stage.addChildAt(this.cont, contIndex - 3);
         this.circle.tint = this.colors[this.colorCounter];
         this.colorCounter ++;
         if(this.colorCounter === this.colors.length){
@@ -97,8 +98,8 @@ export default {
         this.parent.action = true;
         this.parent.hero.switchPlayer(this.parent.activeMode);
         this.parent.activeAction = this.newActiveMode.addToStage();
-
-        this.parent.grid.setAction(this.parent.activeAction, this.parent.activeMode);
+        this.parent.grid.changeGridSize()
+        this.parent.grid.gridAction.setAction();
 
         let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
         this.parent.stage.setChildIndex(this.parent.grid.cont, index) 
