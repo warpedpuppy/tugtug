@@ -1,7 +1,7 @@
 import FlyBackground from './flyBackground';
 import FlyAction from './flyAction';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+// import Utils from '../../utils/utils';
+// import Config from '../../animationsConfig';
 export default function () {
 	return {
 		flyBackground: FlyBackground(),

@@ -174,7 +174,7 @@ export default {
 				t.x = this.tokenData[key].x + this.blockWidth / 2;
 				t.y = this.tokenData[key].y + this.blockHeight / 2;
 				this.tokens.push(t);
-				this.cont.addChild(t);
+				if(t.num < 4)this.cont.addChild(t);
 			}
 		},
 		placeHero: function () {

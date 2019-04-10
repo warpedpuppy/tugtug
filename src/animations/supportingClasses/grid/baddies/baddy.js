@@ -78,8 +78,8 @@ export default function (gridBuild) {
 		calculateDestPoint: function () {
 			//dest point should be the dragon]
 			let currentSquare = this.currentSquare();
-			let i = currentSquare.i;
-			let j = currentSquare.j; 
+			// let i = currentSquare.i;
+			// let j = currentSquare.j; 
 
 			let rightEdge = currentSquare.block.x + this.blockWidth - this.buffer; 
 			let leftEdge = currentSquare.block.x + this.buffer;
@@ -87,10 +87,10 @@ export default function (gridBuild) {
 			let topEdge = currentSquare.block.y + this.buffer;
 		
 			if (
-				(currentSquare.block.right && currentSquare.block.right.covered) && this.body.x > rightEdge ||
-				(currentSquare.block.left && currentSquare.block.left.covered) && this.body.x < leftEdge ||
-				(currentSquare.block.above && currentSquare.block.above.covered) && this.body.y < topEdge ||
-				(currentSquare.block.below && currentSquare.block.below.covered) && this.body.y > bottomEdge ) {
+				(currentSquare.block.right && currentSquare.block.right.covered && this.body.x > rightEdge) ||
+				(currentSquare.block.left && currentSquare.block.left.covered && this.body.x < leftEdge) ||
+				(currentSquare.block.above && currentSquare.block.above.covered && this.body.y < topEdge) ||
+				(currentSquare.block.below && currentSquare.block.below.covered && this.body.y > bottomEdge )) {
 				//console.log(' HIT');
 				this.towardsDragon = false;
 				this.alreadyBeenToAWall = true;

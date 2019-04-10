@@ -73,6 +73,7 @@ export default function () {
 			this.cont.x = this.canvasWidth / 2;
 			if (string === 'jump') {
 				this.activeHero = this.heroJump;
+
 			} else if (string === 'bounce') {
 				this.activeHero = this.heroBounce;
 			} else if (string === 'swim') {
@@ -80,7 +81,7 @@ export default function () {
 			} else {
 				this.activeHero = this.heroFly;
 			}
-			
+			this.activeHero.name = string;
 			this.activeHero.addToStage();
 		}
 	}

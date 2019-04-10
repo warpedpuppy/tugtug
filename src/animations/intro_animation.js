@@ -22,7 +22,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['bounce','swim','fly'],
+        mode: ['fly','swim','bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -219,10 +219,15 @@ export default function(obj) {
             }
             
             this.hero.switchPlayer(this.activeMode);
-            this.activeAction = this[this.activeMode].addToStage();
+            
 
-            if(this.activeMode !== 'jump')this.grid.changeGridSize()
-            //this.grid.setAction(this.activeAction, this.activeMode);
+            if (this.activeMode !== 'jump') {
+                this.grid.changeGridSize();
+                this.activeAction = this[this.activeMode].addToStage();
+            } else {
+                this.activeAction = this.jump.jumpAction;
+            }
+
             
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
@@ -232,6 +237,7 @@ export default function(obj) {
                 }
             }
         },
+       
         switchPlayerWithAnimation: function () {
             
             if (!this.transitionAnimationPlaying) {
@@ -274,6 +280,10 @@ export default function(obj) {
             this.resizeBundle();
            
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+        },
+        reset: function () {
+            this.jump.reset();
+            this.levelSlots.reset();
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();

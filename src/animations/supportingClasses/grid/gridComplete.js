@@ -19,18 +19,26 @@ export default {
             this.nextMazeButton.anchor.set(0.5)
             this.nextMazeButton.x = this.utils.canvasWidth / 2;
             this.nextMazeButton.y = this.utils.canvasHeight / 2;
-            this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = true;
+           
             this.nextMazeButton.on('pointerdown',this.uponNewBoardButtonPress);
         }
+        this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = true;
         this.root.stage.addChild(this.nextMazeButton)
 
         this.root.activeAction.vx = this.root.activeAction.vy = 0;
         this.root.keyHandler.removeFromStage();
     },
     uponNewBoardButtonPress: function (e) {
-        this.root.stage.removeChild(this.nextMazeButton)
+        this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = false;
+        this.root.stage.removeChild(this.nextMazeButton);
+
+        if (this.root.activeMode === "jump") {
+            this.root.grid.gridBuild.spaceShip.classRef.completeReturnHomeHandler();
+        }
+
+        this.root.reset();
         this.root.grid.nextBoard();
-        this.root.levelSlots.reset();
+        
         this.root.keyHandler.addToStage();  
         this.loadNewBoard();
     },

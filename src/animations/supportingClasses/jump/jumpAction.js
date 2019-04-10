@@ -9,6 +9,7 @@ export default function () {
 		jumpTimer: 0,
 		jumpTimeLimit: 21,
 		utils: Utils,
+		pause: false,
 		init: function (stage) {
 			this.hero = this.utils.hero;
 			this.canvasWidth = this.utils.canvasWidth;
@@ -20,7 +21,6 @@ export default function () {
 			this.move(str);
 		},
 		jump: function () {
-			console.log('jump')
 			this.vy = -6;
 			this.jumpTimer = 1;
 			//this.hero.heroJump.bounce();
@@ -42,6 +42,9 @@ export default function () {
 			}
 		},
 		animate: function () {
+
+			if(this.pause)return;
+			
 			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {

@@ -3,7 +3,7 @@ import Assets from '../../utils/assetCreation';
 // import Castles from './castles';
 // import Soldier from './soldiers';
 import Clouds from './clouds';
-import Config from '../../animationsConfig';
+//import Config from '../../animationsConfig';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -25,7 +25,7 @@ export default function () {
 			this.parentCont = parent.stage;
 
 			this.hero = this.utils.hero;
-			let wh = this.wh = this.utils.wh;
+			//let wh = this.wh = this.utils.wh;
 			this.spritesheet = this.utils.spritesheet;
 
 			//this.lightningBoltsBuild();
@@ -60,12 +60,12 @@ export default function () {
 			let boltCont = Assets.Container();
 			for(let i = 0; i < this.boltQ; i ++){
 				let widthStore = 0, 
-				    startX = this.utils.randomNumberBetween(0, this.wh.canvasWidth),
+				    startX = this.utils.randomNumberBetween(0, this.utils.canvasWidth),
 				    storeRot, 
 				    storeHeight, 
 				    storeX, 
 				    storeY;
-				while (widthStore < this.wh.canvasHeight) {
+				while (widthStore < this.utils.canvasHeight) {
 					let bolt = Assets.Sprite(this.spritesheet.textures['line.png']);
 					bolt.height = 5;
 					bolt.x = storeX = (widthStore === 0)?startX:storeX + (Math.cos(storeRot) * storeHeight);

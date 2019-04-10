@@ -8,6 +8,9 @@ export default {
 		killAll: function () {
 			TweenMax.killAll()
 		},
+		isTweening: function (item) {
+			return TweenMax.isTweening(item);
+		},
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
 			let newX = (this.utils.canvasWidth / 2);
 			let newY = (this.utils.canvasHeight / 2);
