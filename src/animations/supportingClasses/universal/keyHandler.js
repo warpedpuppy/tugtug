@@ -75,7 +75,7 @@ export default function () {
                     break;
                 case 67:
                     // the letter c for switch player
-                    this.parent.switchPlayerWithAnimation();
+                    if(Utils.root.activeMode !== 'jump')this.parent.switchPlayerWithAnimation();
                 case 40:
                     break;
                 default:

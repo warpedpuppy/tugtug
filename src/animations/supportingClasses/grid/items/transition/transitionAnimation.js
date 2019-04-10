@@ -92,62 +92,23 @@ export default {
             let e = this.explosions[i];
             e.radius = 0;
         }
-        this.parent.transitionAnimationPlaying = false;
+        
         this.utils.app.stage.removeChild(this.cont);
 
         
-        this.parent.hero.switchPlayer(this.parent.activeMode);
-        this.parent.activeAction = this.newActiveMode.addToStage();
-        this.parent.grid.changeGridSize()
-        this.parent.grid.gridAction.setAction();
-
-        let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
-        this.parent.stage.setChildIndex(this.parent.grid.gridBuild.cont, index) 
-        this.parent.action = true;
+        this.utils.root.completeSwitchPlayerAnimation();
     },
-    // startWithMasking: function (newBackground, oldBackground) {
-    //     this.oldBackground = oldBackground;
-    //     this.newBackground = newBackground;
-    //     console.log(newBackground.maskedItems);
-       
-    //     newBackground.maskedItems.forEach(item => {
-    //         item.mask = this.circle;
-    //     })
-       
-    //     // this.cont.visible = true;
-    //     this.runAnimation = true;
-    // },
-    // resetWithMasking: function () {
-    //     console.log("RESET")
-    //     this.radialGrow = 0.01;
-    //     this.radialCont.scale.set(0);
-    //     this.animationCounter = 0;
-    //     this.done = false;
-    //     //this.cont.visible = false;
-    //     this.circle.scale.set(0);
-    //     this.newBackground.maskedItems.forEach(item => {
-    //         item.mask = null;
-    //     })
-    //     for (let i = 0; i < this.explosionQ; i ++) {
-    //         //fade out
-    //         let e = this.explosions[i];
-    //         e.radius = 0;
-    //     }
-    //     this.parent.transitionAnimationPlaying = false;
-    //     //this.oldBackground.removeFromStage();
-    //     //console.log('remove old background')
-    // },
     animate: function () {
 
-        if(!this.runAnimation)return;
+        if (!this.runAnimation) return;
         
         this.animationCounter ++;
-        if(this.animationCounter >= this.animationLength){
+        if (this.animationCounter >= this.animationLength) {
             this.done = true;
             this.runAnimation = false;
         }
 
-        if(!this.done){
+        if (!this.done) {
 
             this.circle.scale.x += 0.01;
             this.circle.scale.y += 0.01;

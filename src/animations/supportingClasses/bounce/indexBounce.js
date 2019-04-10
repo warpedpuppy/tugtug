@@ -20,7 +20,6 @@ export default function () {
     		
 		},
 		addToStage: function () {
-			//Utils.root.grid.changeGridSize(Config.bounceBlockSize[0], Config.bounceBlockSize[1])
 			this.bouncePlatform.start();
 			this.bouncePlatform.on(true);
 			this.bounceBackground.addToStage();

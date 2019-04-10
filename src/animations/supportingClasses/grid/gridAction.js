@@ -9,30 +9,31 @@ export default {
 		pause: false,
 		wallHit: 0,
 		itemLoopingQ: 0,
-		init: function (magicPillsArray, transitionItemsArray, treasureChests) {
+		init: function () {
 
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
-		 	this.setLimits();
-		 	this.magicPillsArray = magicPillsArray;
-		 	this.transitionItemsArray = transitionItemsArray;
-		 	this.treasureChests = treasureChests;
+		 	
+		 	this.magicPillsArray = this.utils.root.grid.magicPillsArray;
+		 	this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
+		 	this.treasureChests = this.utils.root.grid.treasureChests;
 		 	this.treasure = this.utils.root.grid.treasure;
 		 	this.baddies = this.utils.root.grid.gridBuild.baddies;
 		 	this.blocks = this.utils.root.grid.gridBuild.blocks;
-		    this.itemLoopingQ = Math.max(this.magicPillsArray.length, this.transitionItemsArray.length, this.treasureChests.length)
+		 	this.gridBuild = this.utils.root.grid.gridBuild;
+			this.spaceShip = this.gridBuild.spaceShip;
+
+		    this.itemLoopingQ = Math.max(
+		    	this.magicPillsArray.length, 
+		    	this.transitionItemsArray.length, 
+		    	this.treasureChests.length)
 		
 		    this.heroCollisionDetector = {
-					x: this.utils.canvasWidth / 2,
-					y: this.utils.canvasHeight / 2,
-					radius: 10
-				}
+				x: this.utils.canvasWidth / 2,
+				y: this.utils.canvasHeight / 2,
+				radius: 10
+			}
 
-			this.gridBuild = this.utils.root.grid.gridBuild;
-			this.spaceShip = this.gridBuild.spaceShip;
-		},
-		setAction: function () {
-			this.action = this.utils.root.activeAction;
 			this.setLimits();
 		},
 		currentSquare: function () {
@@ -42,7 +43,7 @@ export default {
 			    jVal = Math.floor((halfCanvasWidth - this.gridBuild.cont.x) / this.blockWidth);
 			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
-		createBoundaries: function (currentSquare){
+		createBoundaries: function (currentSquare) {
 
 			let i = currentSquare.i;
 			let j = currentSquare.j;

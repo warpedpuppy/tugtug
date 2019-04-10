@@ -2,7 +2,7 @@ import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
-import Baddies from './baddies/baddies';
+import Baddies from './baddies/baddyIndex';
 import Tokens from '../tokens/levelTokens';
 export default {
 		cont: Assets.ParticleContainer(10000),
@@ -46,6 +46,8 @@ export default {
   			this.boards = this.utils.root.dbData.boards;
 			this.buildGrid(this.boards[this.currentBoard]);
 
+			this.baddies.init();
+			
 			return this;
 		},
 		createObj: function (board) {

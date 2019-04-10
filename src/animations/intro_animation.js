@@ -235,7 +235,7 @@ export default function(obj) {
         switchPlayerWithAnimation: function () {
             
             if (!this.transitionAnimationPlaying) {
-                this.grid.gridBuild.baddies.removeCastlesAndSoldiers();
+                this.grid.clearGrid();
                 this.action = false;
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
@@ -244,6 +244,13 @@ export default function(obj) {
                 let newActiveMode = this[this.activeMode];
                 this.transitionAnimation.start(newActiveMode, Grid); 
             }
+        },
+        completeSwitchPlayerAnimation: function () {
+            this.transitionAnimationPlaying = false;
+            this.hero.switchPlayer(this.activeMode);
+            this.activeAction = this[this.activeMode].addToStage();
+            this.grid.changeGridSize()
+            this.action = true;
         },
         resizeBundle: function () {
             this.clock.resize();

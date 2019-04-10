@@ -1,7 +1,8 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
-export default function () {
+import Weapon from './baddyWeapon';
+export default function (gridBuild) {
 	return {
 		utils:Utils,
 		vx: 0,
@@ -10,14 +11,11 @@ export default function () {
 		buffer: 10,
 		towardsDragon: true,
 		alreadyBeenToAWall: false,
-		spearThrowing: false,
-		throw: false,
-		spearCounter: 0,
 		health: 100,
 		init: function (str) {
+			this.cont = gridBuild.cont;
 			this.destPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 			this.root = this.utils.root;
-			this.grid = root.grid;
 			this.body = Assets.Sprite(str);
 			this.body.anchor.set(0.5);
 			this.speed = this.utils.randomNumberBetween(0.1, 0.5);
@@ -27,27 +25,15 @@ export default function () {
 			this.startSquare = this.currentSquare();
 
 			//spears
-			this.spear = Assets.Sprite('bouncePlatformLine.png');
-			
-			this.spear.anchor.set(0.5);
-			this.spear.width = 50;
-			this.spear.height = 4;
-			this.spear.vx = 0;
-			this.spear.vy = 0;
-			this.spear.reset = () => {
-				this.spearCounter = 0;
-				this.throw = false;
-				this.spearThrowing = false;
-			}
-			
-
+			this.spear = Weapon(gridBuild).init();
+		
 			return this.body;
 		},
 		onScreen: function () {
 				
 			let currentSquare = this.currentSquare().block;
 
-			let grid = this.utils.root.grid.gridBuild.cont;
+			let grid = gridBuild.cont;
 
 			if(grid.x > -currentSquare.x && 
 				grid.x < this.utils.canvasWidth - currentSquare.x &&
@@ -61,39 +47,29 @@ export default function () {
 		},
 		currentSquare: function () {
 		
-			let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
-			let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
+			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
+			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-			let globalPoint = this.utils.root.grid.gridBuild.cont.toGlobal(this.body);
+			let globalPoint = this.cont.toGlobal(this.body);
 			
-			let iVal = Math.floor((globalPoint.y - this.utils.root.grid.gridBuild.cont.y) / bh);
-			let jVal = Math.floor((globalPoint.x - this.utils.root.grid.gridBuild.cont.x) / bw);
+			let iVal = Math.floor((globalPoint.y - gridBuild.cont.y) / this.blockHeight);
+			let jVal = Math.floor((globalPoint.x - gridBuild.cont.x) / this.blockWidth);
 			
-			if(!this.utils.root.grid.gridBuild.blocks[iVal]){
-				
-				console.log(globalPoint.x, this.utils.root.grid.gridBuild.cont.x, bw)
-				console.log(globalPoint.y, this.utils.root.grid.gridBuild.cont.y, bh)
-				console.log(iVal, jVal)
-				alert("BREAK")
-			}
-
-			return { block: this.utils.root.grid.gridBuild.blocks[iVal][jVal], i: iVal, j: jVal }
+			return { block: gridBuild.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		getModifiedHeroPoint: function () {
 			this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
-			return this.utils.root.grid.gridBuild.cont.toLocal(this.heroPoint, this.utils.stage);
+			return gridBuild.cont.toLocal(this.heroPoint, this.utils.stage);
 		},
 		calculateDestPoint: function () {
 			//dest point should be the dragon]
-			this.grid = this.utils.root.grid.gridBuild;
 			let currentSquare = this.currentSquare();
 			let i = currentSquare.i;
 			let j = currentSquare.j; 
 
-			
-			let rightEdge = currentSquare.block.x + this.grid.blockWidth - this.buffer; 
+			let rightEdge = currentSquare.block.x + this.blockWidth - this.buffer; 
 			let leftEdge = currentSquare.block.x + this.buffer;
-			let bottomEdge = currentSquare.block.y + this.grid.blockHeight - this.buffer;
+			let bottomEdge = currentSquare.block.y + this.blockHeight - this.buffer;
 			let topEdge = currentSquare.block.y + this.buffer;
 		
 			if (
@@ -105,10 +81,6 @@ export default function () {
 				this.towardsDragon = false;
 				this.alreadyBeenToAWall = true;
 			}
-
-
-
-			
 
 			if (this.towardsDragon) {
 				return this.getModifiedHeroPoint();
@@ -122,12 +94,12 @@ export default function () {
 			}
 		},
 		addToStage: function () {
-			this.utils.root.grid.gridBuild.cont.addChild(this.body);
-			this.utils.root.grid.gridBuild.cont.addChild(this.spear);
+			this.cont.addChild(this.body);
+			this.cont.addChild(this.spear);
 		},
 		removeFromStage: function () {
-			this.utils.root.grid.gridBuild.cont.removeChild(this.body);
-			this.utils.root.grid.gridBuild.cont.removeChild(this.spear);
+			this.cont.removeChild(this.body);
+			this.cont.removeChild(this.spear);
 		},
 		resize: function () {
 
@@ -147,15 +119,12 @@ export default function () {
 				this.body.x += this.vx;
 				this.body.y += this.vy;
 
-
-
-				
-				if(this.spearCounter < 10){
+				if (this.spearCounter < 10) {
 					this.spearCounter ++;
 				} else {
-					this.spearThrowing = true;
-					if(!this.throw){
-						this.throw = true;
+					this.spear.classRef.spearThrowing = true;
+					if (!this.spear.classRef.throw) {
+						this.spear.classRef.throw = true;
 						this.spear.originalTarget = this.getModifiedHeroPoint();
 						let dx2 = this.spear.dx2 = this.getModifiedHeroPoint().x - this.spear.x;
 						let dy2 = this.spear.dy2 = this.getModifiedHeroPoint().y - this.spear.y;
@@ -163,7 +132,7 @@ export default function () {
 						this.spear.angle = angle2;
 					}
 				}
-				if (!this.spearThrowing) {
+				if (!this.spear.classRef.spearThrowing) {
 					this.spear.x = this.body.x;
 					this.spear.y = this.body.y;
 				} else {
@@ -176,11 +145,9 @@ export default function () {
 					let xDiff = Math.floor(Math.abs(this.spear.originalTarget.x - this.spear.x));
 					let yDiff = Math.floor(Math.abs(this.spear.originalTarget.y - this.spear.y));
 					if (xDiff < this.buffer && yDiff < this.buffer) {
-						this.spear.reset();
-						
+						this.spear.classRef.reset();
 					}
 				}
-				
 				
 				this.body.rotation = angle + this.utils.deg2rad(90);
 				return this.body; //this is so we have a count of who is on screen

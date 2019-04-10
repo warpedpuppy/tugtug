@@ -38,12 +38,15 @@ export default {
 
 			this.gridBuild.init();
 
-			this.gridAction.init(this.magicPillsArray,this.transitionItemsArray,this.treasureChests)
+			this.gridAction.init()
 
 			this.gridComplete = GridComplete.init();
 
 		    this.nextBoard = this.nextBoard.bind(this);
 
+		},
+		clearGrid: function () {
+			this.gridBuild.baddies.removeCastlesAndSoldiers();
 		},
 		changeGridSize: function(){
 
@@ -57,13 +60,15 @@ export default {
 			this.gridBuild.cont.removeChildren();
 
 			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
+
+			this.gridAction.setLimits();
 		},
 		nextBoard: function () {
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
-			this.gridAction.setAction();
+			this.gridAction.setLimits();
 		},
 		addNewBoardData: function (newData) {
 			if(newData.boards){
@@ -75,6 +80,7 @@ export default {
 			}
 			
 		},
+
 		addToStage: function (index) {
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 		},

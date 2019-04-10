@@ -1,24 +1,13 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
-export default function (soldiers, spears) {
+export default function (soldiers, spears, gridBuild) {
 	return {
 		soldiers: soldiers,
 		spears: spears,
 		utils: Utils,
-		init: function (parentCont) {
-		},
-		addToStage: function () {
-
-		},
-		removeFromStage: function () {
-
-		},
-		resize: function () {
-
-		},
 		spearHit: function (spear) {
-			let globalPoint1 = this.utils.root.grid.gridBuild.cont.toGlobal(spear);
+			let globalPoint1 = gridBuild.cont.toGlobal(spear);
 			let c1 = {
 				x: globalPoint1.x,
 				y: globalPoint1.y,
@@ -33,16 +22,12 @@ export default function (soldiers, spears) {
 			return x[0];
 		},
 		hit: function () {
-			
-			if(this.health < 0){ 
+			if (this.health < 0) { 
 				this.body.alpha = 0;
 				this.spear.alpha = 0;
 			} else {
-			  // this.body.scale.x * 0.99;
-			  // this.body.scale.y * 0.99;
 			  this.health --;
-			 }
-
+			}
 		},
 		animate: function () {
 		
@@ -56,8 +41,7 @@ export default function (soldiers, spears) {
 					onScreenSoldiers.push(onScreen);
 					let sp = this.spears[i];
 					if (this.spearHit(sp)) {
-						sp.reset();
-						//this.parent.score.decrease(10);
+						sp.classRef.reset();
 					};
 
 					//prevent overlap
