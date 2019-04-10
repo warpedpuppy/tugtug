@@ -54,7 +54,7 @@ export default function () {
 		},
 		createCircles: function () {
 			this.circleArray = Assets.returnObjectPool('transparentRing.png');
-			this.circleQ = this.circleArray.length;
+			this.circleQ = this.circleArray.length * 0.1;
             this.circles = Assets.ParticleContainer(this.circleQ);
 			for (let i = 0; i < this.circleQ; i ++) {
 				let item = this.circleArray[i];

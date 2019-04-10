@@ -31,18 +31,19 @@ export default function (soldiers, spears, gridBuild) {
 		},
 		animate: function () {
 		
-			let onScreenSoldiers = [];
+			//let onScreenSoldiers = [];
 			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
 				
 				let onScreen = s.classRef.animate();
 				if (onScreen) {
 
-					onScreenSoldiers.push(onScreen);
-					let sp = this.spears[i];
-					if (this.spearHit(sp)) {
-						sp.classRef.reset();
-					};
+					//onScreenSoldiers.push(onScreen);
+					// let sp = this.spears[i];
+					// if (this.spearHit(sp)) {
+					// 	sp.classRef.reset();
+					// 	alert("2")
+					// };
 
 					//prevent overlap
 					for (let j = 0; j < this.soldiers.length; j ++) {

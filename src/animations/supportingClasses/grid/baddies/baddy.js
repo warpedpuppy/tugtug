@@ -11,6 +11,9 @@ export default function (gridBuild) {
 		buffer: 10,
 		towardsDragon: true,
 		alreadyBeenToAWall: false,
+		spearThrowing: false,
+		throw: false,
+		spearCounter: 0,
 		health: 100,
 		init: function (str) {
 			this.cont = gridBuild.cont;
@@ -26,7 +29,18 @@ export default function (gridBuild) {
 
 			//spears
 			this.spear = Weapon(gridBuild).init();
-		
+			// this.spear = Assets.Sprite('bouncePlatformLine.png');
+			// this.spear.anchor.set(0.5);
+			// this.spear.width = 50;
+			// this.spear.height = 4;
+			// this.spear.vx = 0;
+			// this.spear.vy = 0;
+			// this.spear.reset = () => {
+			// 	this.spearCounter = 0;
+			// 	this.throw = false;
+			// 	this.spearThrowing = false;
+			// }
+			
 			return this.body;
 		},
 		onScreen: function () {
@@ -104,6 +118,11 @@ export default function (gridBuild) {
 		resize: function () {
 
 		},
+		resetSpear: function () {
+			this.spearCounter = 0;
+			this.throw = false;
+			this.spearThrowing = false;
+		},
 		animate: function () {
 
 			if (this.onScreen()) {
@@ -122,9 +141,9 @@ export default function (gridBuild) {
 				if (this.spearCounter < 10) {
 					this.spearCounter ++;
 				} else {
-					this.spear.classRef.spearThrowing = true;
-					if (!this.spear.classRef.throw) {
-						this.spear.classRef.throw = true;
+					this.spearThrowing = true;
+					if (!this.throw) {
+						this.throw = true;
 						this.spear.originalTarget = this.getModifiedHeroPoint();
 						let dx2 = this.spear.dx2 = this.getModifiedHeroPoint().x - this.spear.x;
 						let dy2 = this.spear.dy2 = this.getModifiedHeroPoint().y - this.spear.y;
@@ -132,7 +151,7 @@ export default function (gridBuild) {
 						this.spear.angle = angle2;
 					}
 				}
-				if (!this.spear.classRef.spearThrowing) {
+				if (!this.spearThrowing) {
 					this.spear.x = this.body.x;
 					this.spear.y = this.body.y;
 				} else {
@@ -144,8 +163,9 @@ export default function (gridBuild) {
 
 					let xDiff = Math.floor(Math.abs(this.spear.originalTarget.x - this.spear.x));
 					let yDiff = Math.floor(Math.abs(this.spear.originalTarget.y - this.spear.y));
+
 					if (xDiff < this.buffer && yDiff < this.buffer) {
-						this.spear.classRef.reset();
+						this.resetSpear();
 					}
 				}
 				

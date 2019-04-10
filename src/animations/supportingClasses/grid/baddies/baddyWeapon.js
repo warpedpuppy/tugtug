@@ -3,9 +3,7 @@ import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
 export default function (gridBuild) {
 	return {
-		spearThrowing: false,
-		throw: false,
-		spearCounter: 0,
+
 		init: function () {
 			this.spear = Assets.Sprite('bouncePlatformLine.png');
 			this.spear.anchor.set(0.5);
@@ -16,11 +14,7 @@ export default function (gridBuild) {
 			this.spear.classRef = this;
 			return this.spear;
 		},
-		reset: function () {
-			this.spearCounter = 0;
-			this.throw = false;
-			this.spearThrowing = false;
-		},
+	
 		addToStage: function () {
 			gridBuild.cont.addChild(this.spear);
 		},

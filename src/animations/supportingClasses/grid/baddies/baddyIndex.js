@@ -20,12 +20,12 @@ export default function () {
 			
 			let freeSpaces = gridBuild.freeSpaces,
 			    soldierCounter = 0,
-			    loopingQ = freeSpaces.length;
+			    loopingQ = 1;//freeSpaces.length;
 
 			for (let i = 0; i < loopingQ; i ++) {
 			
-				let determineContinue = Math.floor(Math.random()*10);
-				if(determineContinue < 9) continue;
+				// let determineContinue = Math.floor(Math.random()*10);
+				// if(determineContinue < 9) continue;
 
 				let block = freeSpaces[i],
 				    c;

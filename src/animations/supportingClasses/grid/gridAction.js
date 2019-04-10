@@ -179,17 +179,41 @@ export default {
 			this.gridBuild.cont.x -= vx;
 			if (this.gridBuild.cont.x > this.leftBorder) {
 			 	this.gridBuild.cont.x -= this.buffer;
-			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vx  = -5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			    }
+
 			} 
 			if (this.gridBuild.cont.x < -this.rightBorder) {
 				this.gridBuild.cont.x += this.buffer;
-			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vx  = 5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			    }
+
 			}
 
 			this.gridBuild.cont.y -= vy;
 			if (this.gridBuild.cont.y > this.topBorder) {
 			 	this.gridBuild.cont.y = this.topBorder - this.buffer;
-			 	this.utils.root.activeAction.y *= this.gridBuild.wallHit;
+			 	//this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
+
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vy  = -5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
+			    }
+
 			} 
 
 			if (this.gridBuild.cont.y < -this.bottomBorder + this.buffer) {
