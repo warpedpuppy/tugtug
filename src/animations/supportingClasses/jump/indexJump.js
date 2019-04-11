@@ -11,9 +11,6 @@ export default function () {
 			this.background = this.jumpBackground;
             this.jumpAction.init(stage);
             this.jumpBackground.init(stage, this.jumpAction);
-            this.maskedItems = [
-				this.jumpBackground.cont
-			];
 		},
 		reset: function () {
 			this.jumpBackground.tokenTaken = false;

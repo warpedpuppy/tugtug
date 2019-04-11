@@ -30,6 +30,14 @@ export default function () {
 			this.swimAction.resize();
 			this.swimBackground.resize();
 		},
+		startSpaceShipJourney: function () {
+			this.ripples.on(false);
+            this.swimBackground.startSpaceShipJourney();
+        },
+        endSpaceShipJourney: function () {
+        	this.ripples.on(true);
+            this.swimBackground.endSpaceShipJourney();
+        },
 		animate: function () {
 			this.ripples.animate();
 			this.swimBackground.animate();

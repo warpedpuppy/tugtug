@@ -218,6 +218,7 @@ export default function(obj) {
                 this.increaseIndex();
             }
             
+            this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
             
 
@@ -237,7 +238,6 @@ export default function(obj) {
                 }
             }
         },
-       
         switchPlayerWithAnimation: function () {
             
             if (!this.transitionAnimationPlaying) {
@@ -259,6 +259,7 @@ export default function(obj) {
             this.action = true;
         },
         resizeBundle: function () {
+            this.grid.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
@@ -280,6 +281,15 @@ export default function(obj) {
             this.resizeBundle();
            
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+        },
+        startSpaceShipJourney: function () {
+            this.hero.cont.visible = false;
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.grid.gridAction.pause = true;
+            this[this.activeMode].startSpaceShipJourney();
+        },
+        endSpaceShipJourney: function () {
+            this[this.activeMode].endSpaceShipJourney();
         },
         reset: function () {
             this.jump.reset();

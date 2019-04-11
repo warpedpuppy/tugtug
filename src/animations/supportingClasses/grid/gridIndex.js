@@ -88,6 +88,7 @@ export default {
 			this.parentCont.removeChild(this.gridBuild.cont)
 		},
 		resize: function () {
+			this.gridBuild.resize();
 			this.gridAction.setLimits();
 		},
 		animate: function () {

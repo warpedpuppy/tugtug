@@ -10,9 +10,6 @@ export default function () {
 			this.background = this.flyBackground;
 			this.flyBackground.init(parent);
 			this.flyAction.init(parent, this.background);
-			this.maskedItems = [
-				this.flyBackground.cont
-			];
 		},
 		addToStage: function () {
 			this.flyBackground.addToStage();
@@ -26,6 +23,12 @@ export default function () {
 			this.flyBackground.resize();
 			this.flyAction.resize();
 		},
+		startSpaceShipJourney: function () {
+            
+        },
+        endSpaceShipJourney: function () {
+            
+        },
 		animate: function () {
 			this.flyAction.animate();
 		}

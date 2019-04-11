@@ -103,8 +103,8 @@ export default function () {
 				this.columns.push(this.tileColumn);
 			}
 
-			this.test = Assets.Graphics();
-			this.cont.addChild(this.test)
+			// this.test = Assets.Graphics();
+			// this.cont.addChild(this.test)
 		},
 		addToStage: function () {
 
@@ -112,27 +112,14 @@ export default function () {
 			this.orbsCont.pivot = Assets.Point(this.landingOrb.x, this.landingOrb.y)
 			this.orbsCont.x = (this.wh.canvasWidth / 2);
 			this.orbsCont.y = (this.wh.canvasHeight / 2);
-
-
-
 			this.hero.cont.y = this.utils.canvasHeight / 2;
-			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
-
-
-			//console.log(this.hero.activeHero.body.y);
-
-			
-			
 			this.pause = false;
-		
-			
 			this.parentCont.addChildAt(this.cont, 1);
+		},
+		setUp: function () {
+			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
+			this.addSpaceShip();
 			this.addToken();
-
-			//this.writeItOut = true;
-			//this.switchPlanetsAllow = true;
-			//this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
-
 		},
 		addSpaceShip: function () {
 			let spaceShipOrbIndex = this.currentOrb.index + 1;
@@ -171,7 +158,6 @@ export default function () {
 				this.currentOrb = newPlanet;
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete);
 			
-
 				if (newPlanet === this.spaceShipOrb) {
 					this.hero.activeHero.cont.y = 0;
 					//this.animate();
@@ -202,17 +188,6 @@ export default function () {
 			
 			let globalPoint = this.hero.activeHero.body.toGlobal(this.app.stage);
  
-			// if(this.writeItOut){
-			// 	console.log(this.utils.root.jump.jumpAction.vy)
-			// 	console.log("this.hero.activeHero.body", this.hero.activeHero.body.x, this.hero.activeHero.body.y);
-			// 	console.log("this.hero.activeHero.cont", this.hero.activeHero.cont.x, this.hero.activeHero.cont.y);
-			// 	this.hero.activeHero.cont.y = 0;
-			// 	console.log("this.hero.activeHero.cont", this.hero.activeHero.cont.x, this.hero.activeHero.cont.y);
-			// 	globalPoint = this.hero.activeHero.body.toGlobal(this.app.stage);
-			// 	console.log("globalPoint", globalPoint);
-			// 	this.writeItOut = false;
-			// }
-
 			this.tempCircle = {
 				x: globalPoint.x,
 				y: globalPoint.y,

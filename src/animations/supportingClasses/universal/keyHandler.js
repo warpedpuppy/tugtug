@@ -3,6 +3,7 @@ import Utils from '../../utils/utils';
 // import Config from './animationsConfig';
 export default function () {
 	return {
+        utils: Utils,
 		init: function (parent) {
 			this.parent = parent;
 			this.upHit = this.upHit.bind(this);
@@ -55,7 +56,7 @@ export default function () {
         },
 		keyDown: function (e) {
             //e.preventDefault();
-            // console.log(e.keyCode)
+            console.log(e.keyCode)
             switch (e.keyCode) {
                 case 32:
                 // space
@@ -76,6 +77,10 @@ export default function () {
                 case 67:
                     // the letter c for switch player
                     if(Utils.root.activeMode !== 'jump')this.parent.switchPlayerWithAnimation();
+                    break;
+                case 83:
+                    this.utils.root.grid.gridBuild.spaceShip.classRef.blastOff();
+                    break;
                 case 40:
                     break;
                 default:

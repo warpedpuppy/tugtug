@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 import FishSchool from './fishSchool';
 import LilypadsLotuses from './lilypadsLotuses';
 export default function () {
@@ -83,6 +84,20 @@ export default function () {
 			this.parentCont.removeChild(this.cont2);
 			this.parentCont.removeChild(this.cont);
 		},
+		startSpaceShipJourney: function () {
+			Tweens.fadeTo(this.fishSchool.fishCont, 1, 0);
+			Tweens.fadeTo(this.fishSchool.sharkCont, 1, 0);
+            Tweens.fadeTo(this.lilypadLotuses.cont, 1, 0);
+            Tweens.fadeTo(this.cont, 1, 0);
+            Tweens.fadeTo(this.cont2, 1, 0)
+        },
+        endSpaceShipJourney: function () {
+        	Tweens.fadeTo(this.fishSchool.fishCont, 1, 1);
+		   Tweens.fadeTo(this.fishSchool.sharkCont, 1, 1);
+           Tweens.fadeTo(this.lilypadLotuses.cont, 1, 1);
+           Tweens.fadeTo(this.cont, 1, 0.15)
+           Tweens.fadeTo(this.cont2, 1, 0.5)
+        },
 		animate: function () {
 			this.fishSchool.animate();
 			

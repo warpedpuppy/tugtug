@@ -14,10 +14,6 @@ export default function () {
     		this.bouncePlatform.on(false); 
     		this.bounceAction.init(this.bouncePlatform);
     		this.bounceBackground.init(this.bounceAction);
-    		this.maskedItems = [
-				this.bounceBackground.cont
-			];
-    		
 		},
 		addToStage: function () {
 			this.bouncePlatform.start();
@@ -32,6 +28,14 @@ export default function () {
 		resize: function () {
 			this.bounceBackground.resize();
 		},
+		startSpaceShipJourney: function () {
+		   this.bounceBackground.startSpaceShipJourney();
+           this.bouncePlatform.on(false);
+        },
+        endSpaceShipJourney: function () {
+        	this.bounceBackground.endSpaceShipJourney();
+            this.bouncePlatform.on(true);
+        },
 		animate: function () {
 			this.bouncePlatform.animate();
 			this.bounceBackground.animate();

@@ -144,6 +144,9 @@ export default {
 			this.placeHero();
 			
 			this.initialPoint = {x: this.cont.x, y: this.cont.y};
+
+			this.cont.calculatedWidth = data.cols * this.blockWidth;
+			this.cont.calculatedHeight = data.rows * this.blockHeight;
 			//this.changeBackground(this.utils.root.activeMode)
 
 		},
@@ -228,6 +231,44 @@ export default {
 			} else {
 				return  undefined;
 			}
+		},
+		resize: function () {
+			//console.log(this.cont.x, this.cont.y);
+			// let halfWidth = (this.utils.canvasWidth / 2);// - this.cont.x;
+			// let differential = halfWidth - this.cont.x;
+			// //this.cont.x -= differential;
+			// let xVal = halfWidth - differential;
+			// console.log(halfWidth, this.cont.x, differential, xVal);
+			// this.utils.root.grid.gridAction.pause = true;
+			// this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
+			// let localPoint = this.cont.toLocal(this.heroPoint, this.utils.stage);
+			// console.log(localPoint)
+			// this.cont.pivot = localPoint;
+			// this.cont.x = this.utils.canvasWidth / 2
+			// this.cont.y = this.utils.canvasHeight / 2
+			this.utils.root.grid.gridAction.pause = true;
+
+			let pixelsOnScreen = this.utils.canvasWidth - this.cont.x;
+			
+
+			if(!this.startWidth){
+				this.startWidth = this.utils.canvasWidth;
+				console.log("start = ", this.utils.canvasWidth)
+			}
+
+
+			//this.cont.x = x;
+			//getting the global midpoint on the local board
+			
+			window.clearTimeout(this.test);
+			this.test = setTimeout(this.resized.bind(this), 100)
+
+		},
+		resized: function () {
+			//console.log('done')
+			let pixelsOnScreen = this.utils.canvasWidth - this.cont.x;
+			console.log("end = ", this.utils.canvasWidth)
+			this.startWidth = undefined;
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		
