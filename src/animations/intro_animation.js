@@ -1,5 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import Tweens from './utils/tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
@@ -22,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['fly','swim','bounce'],
+        mode: ['swim','fly','bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -325,6 +326,7 @@ export default function(obj) {
                 this.activeAction.animate();
                 this[this.activeMode].animate();
                 this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+                Tweens.animate();
             }
         }
     }

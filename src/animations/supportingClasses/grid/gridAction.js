@@ -173,8 +173,8 @@ export default {
 			 	this.spaceShip.classRef.blastOff();
 			 }
 
-			let currentSquare = this.currentSquare();
-			this.createBoundaries(currentSquare);
+			this.storeCurrent = this.currentSquare();
+			this.createBoundaries(this.storeCurrent);
 
 			this.gridBuild.cont.x -= vx;
 			if (this.gridBuild.cont.x > this.leftBorder) {

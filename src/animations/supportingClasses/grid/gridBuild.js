@@ -189,7 +189,7 @@ export default {
 			j++;
 			let halfWidth = this.utils.canvasWidth / 2;
 			let halfHeight = this.utils.canvasHeight / 2;
-			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth /2);
+			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth / 2);
 			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
 		},
 		returnAbove: function (i,j) {
@@ -233,42 +233,35 @@ export default {
 			}
 		},
 		resize: function () {
-			//console.log(this.cont.x, this.cont.y);
-			// let halfWidth = (this.utils.canvasWidth / 2);// - this.cont.x;
-			// let differential = halfWidth - this.cont.x;
-			// //this.cont.x -= differential;
-			// let xVal = halfWidth - differential;
-			// console.log(halfWidth, this.cont.x, differential, xVal);
-			// this.utils.root.grid.gridAction.pause = true;
-			// this.heroPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
-			// let localPoint = this.cont.toLocal(this.heroPoint, this.utils.stage);
-			// console.log(localPoint)
-			// this.cont.pivot = localPoint;
-			// this.cont.x = this.utils.canvasWidth / 2
-			// this.cont.y = this.utils.canvasHeight / 2
-			this.utils.root.grid.gridAction.pause = true;
-
-			let pixelsOnScreen = this.utils.canvasWidth - this.cont.x;
 			
-
-			if(!this.startWidth){
-				this.startWidth = this.utils.canvasWidth;
-				console.log("start = ", this.utils.canvasWidth)
+			 this.utils.root.grid.gridAction.pause = true;
+			 this.utils.root.action = false;
+		
+			if (!this.calcResize) {
+				this.calcResize = true;
+				let block = this.utils.root.grid.gridAction.storeCurrent;
+				this.saveI = block.i;
+				this.saveJ = block.j;
 			}
 
-
-			//this.cont.x = x;
-			//getting the global midpoint on the local board
-			
+			this.cont.alpha = 0;
 			window.clearTimeout(this.test);
-			this.test = setTimeout(this.resized.bind(this), 100)
+			this.test = setTimeout(this.resized.bind(this), 200)
 
 		},
 		resized: function () {
-			//console.log('done')
-			let pixelsOnScreen = this.utils.canvasWidth - this.cont.x;
-			console.log("end = ", this.utils.canvasWidth)
-			this.startWidth = undefined;
+	
+			this.calcResize = false;
+			this.cont.alpha = 1;
+			this.saveI++;
+			this.saveJ++;
+			let halfWidth = this.utils.canvasWidth / 2;
+			let halfHeight = this.utils.canvasHeight / 2;
+			this.cont.x = halfWidth - (this.saveJ * this.blockWidth) + (this.blockWidth / 2);
+			this.cont.y = halfHeight - (this.saveI * this.blockHeight) + (this.blockHeight /2);
+
+			this.utils.root.grid.gridAction.pause = false;
+			this.utils.root.action = true;
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		

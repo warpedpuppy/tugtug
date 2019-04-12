@@ -152,6 +152,7 @@ export default function () {
 		},
 		switchPlanets: function (newPlanet) {
 				//this.orbsCont.pivot = Assets.Point(newPlanet.x, newPlanet.y)
+				this.pause = true;
 				let newX = (this.utils.canvasWidth / 2);
 				let newY = (this.utils.canvasHeight / 2);
 				this.hero.activeHero.floor = -newPlanet.radius;
@@ -171,7 +172,8 @@ export default function () {
 				}
 		},
 		makeTransitionComplete: function () {
-
+			
+			this.pause = false;
 			this.transition = false;
 		},
 		animate: function () {
