@@ -1,8 +1,8 @@
 import BouncePlatform from './bouncePlatform';
 import BounceBackground from './bounceBackground';
 import BounceAction from './bounceAction';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+// import Utils from '../../utils/utils';
+// import Config from '../../animationsConfig';
 export default function () {
 	return {
 		bouncePlatform: BouncePlatform(),
@@ -14,13 +14,8 @@ export default function () {
     		this.bouncePlatform.on(false); 
     		this.bounceAction.init(this.bouncePlatform);
     		this.bounceBackground.init(this.bounceAction);
-    		this.maskedItems = [
-				this.bounceBackground.cont
-			];
-    		
 		},
 		addToStage: function () {
-			Utils.root.grid.changeGridSize(Config.bounceBlockSize[0], Config.bounceBlockSize[1])
 			this.bouncePlatform.start();
 			this.bouncePlatform.on(true);
 			this.bounceBackground.addToStage();
@@ -33,6 +28,14 @@ export default function () {
 		resize: function () {
 			this.bounceBackground.resize();
 		},
+		startSpaceShipJourney: function () {
+		   this.bounceBackground.startSpaceShipJourney();
+           this.bouncePlatform.on(false);
+        },
+        endSpaceShipJourney: function () {
+        	this.bounceBackground.endSpaceShipJourney();
+            this.bouncePlatform.on(true);
+        },
 		animate: function () {
 			this.bouncePlatform.animate();
 			this.bounceBackground.animate();

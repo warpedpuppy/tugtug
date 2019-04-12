@@ -45,7 +45,7 @@ export default function () {
 			this.createBars(this.level3Object);
 			this.createBars(this.level4Object);
 
-			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
+			this.loopingQ = this.storeLoopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
 
 
 			
@@ -54,7 +54,7 @@ export default function () {
 		},
 		createCircles: function () {
 			this.circleArray = Assets.returnObjectPool('transparentRing.png');
-			this.circleQ = this.circleArray.length;
+			this.circleQ = this.circleArray.length * 0.1;
             this.circles = Assets.ParticleContainer(this.circleQ);
 			for (let i = 0; i < this.circleQ; i ++) {
 				let item = this.circleArray[i];
@@ -213,6 +213,24 @@ export default function () {
 			// this.parentCont.removeChild(this.level4);
 			this.parentCont.removeChild(this.cont);
 		},
+		startSpaceShipJourney: function () {
+			this.loopingQ = 0;
+			Tweens.fadeTo(this.level1, 1, 0);
+			Tweens.fadeTo(this.level2, 1, 0);
+			Tweens.fadeTo(this.level3, 1, 0);
+			Tweens.fadeTo(this.level4, 1, 0);
+			Tweens.fadeTo(this.circles, 1, 0);
+			Tweens.fadeTo(this.background, 1, 0);
+        },
+        endSpaceShipJourney: function () {
+        	this.loopingQ = this.storeLoopingQ;
+        	Tweens.fadeTo(this.level1, 1, 1);
+			Tweens.fadeTo(this.level2, 1, 1);
+			Tweens.fadeTo(this.level3, 1, 1);
+			Tweens.fadeTo(this.level4, 1, 1);
+			Tweens.fadeTo(this.circles, 1, 1);
+			Tweens.fadeTo(this.background, 1, 1);
+        },
 		resize: function () {
 			// this.background.clear();
 			// this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();

@@ -1,8 +1,8 @@
 import SwimAction from './swimAction';
 import SwimBackground from './swimBackground';
 import Ripples from './ripples';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+// import Utils from '../../utils/utils';
+// import Config from '../../animationsConfig';
 export default function () {
 	return {
 		ripples: Ripples(),
@@ -14,16 +14,8 @@ export default function () {
 			this.ripples.init();
 			this.swimAction.init(cont);
 			
-			this.maskedItems = [
-				// this.swimBackground.cont, 
-				// this.swimBackground.cont2, 
-				// this.swimBackground.background,
-				// this.fishSchool.cont,
-				// this.lilypadLotuses.cont
-			];
 		},
 		addToStage: function () {
-			Utils.root.grid.changeGridSize(Config.swimBlockSize[0], Config.swimBlockSize[1])
 			this.ripples.on(true);
 			this.swimBackground.addToStage();
 			this.swimAction.start();
@@ -38,6 +30,14 @@ export default function () {
 			this.swimAction.resize();
 			this.swimBackground.resize();
 		},
+		startSpaceShipJourney: function () {
+			this.ripples.on(false);
+            this.swimBackground.startSpaceShipJourney();
+        },
+        endSpaceShipJourney: function () {
+        	this.ripples.on(true);
+            this.swimBackground.endSpaceShipJourney();
+        },
 		animate: function () {
 			this.ripples.animate();
 			this.swimBackground.animate();

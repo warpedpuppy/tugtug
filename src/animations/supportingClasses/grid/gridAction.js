@@ -1,137 +1,57 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import axios from 'axios';
-import { API_BASE_URL } from '../../../config';
-import SpaceShip from '../jump/spaceShip.js';
 import Config from '../../animationsConfig';
-// import TransitionItems from './items/transitionItems';
-// import Treasure from './items/treasure';
-// import MagicPills from './items/magicPills';
-import Baddies from './baddies/baddies';
 export default {
-		// cont: Assets.ParticleContainer(10000),
-		// blockWidth: 0,
-		// blockHeight: 0,
-		// blocks: {},
 		utils: Utils,
 		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
-		pause: true,
-		tokens: [],
-		tokenData: {},
-		freeSpaces: [],
-		coveredSpaces: [],
-		boards: [],
-		currentBoard: 0,
-		blockPool: [],
-		spaceShip: {},
+		pause: false,
 		wallHit: 0,
-		// transitionItems: TransitionItems(),
-		// magicPills: MagicPills(),
-		// treasure: Treasure(),
-		// transitionItemsArray: [],
-		// treasureChests: [],
-		// magicPillsArray: [],
 		itemLoopingQ: 0,
-		soldiers: [],
-		castles: [],
-		spears: [],
-		solderPerGridSquareQ: 1,
-		baddies: Baddies(),
-		init: function (magicPillsArray, transitionItemsArray, treasureChests) {
-
-
+		init: function () {
 
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
-
-			// this.spaceShip = SpaceShip().init()
-
-			// for (let i = 0; i < 900; i ++) {
-			// 	this.blockPool.push(Assets.Sprite())
-			// }
-			// this.parent = parent;
-			// this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
-			// this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
-
-			// this.parent = parent;
-			// this.parentCont = parent.stage;
-		
-
-			// this.setLimits();
-
-			// this.boxCircles = [];
-		
-		 //    this.setAction = this.setAction.bind(this);
-		 //    this.nextBoard = this.nextBoard.bind(this);
-		 //    this.boards = parent.dbData.boards;
-		    
-
-		 //   this.magicPillsArray = this.magicPills.init();
-
-   //          this.treasureChests = this.treasure.init();
-
-   //          this.transitionItemsArray = this.transitionItems.init(
-   //              this.utils.root.mode, 
-   //              this.utils.root.stage, 
-   //              this.utils.root.switchPlayer.bind(this.utils.root)).build();
-
-		 //    this.buildGrid(this.boards[this.currentBoard]);
-		 	this.setLimits();
-		 	this.magicPillsArray = magicPillsArray;
-		 	this.transitionItemsArray = transitionItemsArray;
-		 	this.treasureChests = treasureChests;
+		 	
+		 	this.magicPillsArray = this.utils.root.grid.magicPillsArray;
+		 	this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
+		 	this.treasureChests = this.utils.root.grid.treasureChests;
 		 	this.treasure = this.utils.root.grid.treasure;
 		 	this.baddies = this.utils.root.grid.gridBuild.baddies;
-		 	this.cont = this.utils.root.grid.gridBuild.cont;
 		 	this.blocks = this.utils.root.grid.gridBuild.blocks;
-		 	//this.baddyAction = this.utils.root.grid.baddyAction;
-		    this.itemLoopingQ = Math.max(this.magicPillsArray.length, this.transitionItemsArray.length, this.treasureChests.length)
-		
+		 	this.gridBuild = this.utils.root.grid.gridBuild;
+			this.spaceShip = this.gridBuild.spaceShip;
 
+		    this.itemLoopingQ = Math.max(
+		    	this.magicPillsArray.length, 
+		    	this.transitionItemsArray.length, 
+		    	this.treasureChests.length)
+		
 		    this.heroCollisionDetector = {
-					x: this.utils.canvasWidth / 2,
-					y: this.utils.canvasHeight / 2,
-					radius: 10
-				}
+				x: this.utils.canvasWidth / 2,
+				y: this.utils.canvasHeight / 2,
+				radius: 10
+			}
 
-			this.gridBuild = this.utils.root.grid.gridBuild;
-			this.spaceShip = this.utils.root.grid.spaceShip;
-
-		},
-		
-		setAction: function (action, mode) {
-			this.action = action;
-			this.utils.root.grid.gridBuild.changeBackground(mode)
 			this.setLimits();
 		},
-		
-		addToStage: function (index) {
-			
-			
-			this.parentCont.addChildAt(this.cont, index)
-		},
-		removeFromStage: function () {
-			this.parentCont.removeChild(this.cont)
-		},
-		
 		currentSquare: function () {
 			let halfCanvasWidth = (this.utils.canvasWidth / 2),
 			    halfCanvasHeight = (this.utils.canvasHeight / 2),
-			    iVal = Math.floor((halfCanvasHeight - this.cont.y) / this.blockHeight),
-			    jVal = Math.floor((halfCanvasWidth - this.cont.x) / this.blockWidth);
+			    iVal = Math.floor((halfCanvasHeight - this.gridBuild.cont.y) / this.blockHeight),
+			    jVal = Math.floor((halfCanvasWidth - this.gridBuild.cont.x) / this.blockWidth);
 			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
-		createBoundaries: function (currentSquare){
+		createBoundaries: function (currentSquare) {
 
 			let i = currentSquare.i;
 			let j = currentSquare.j;
 			
-			let above = currentSquare.block.above;//this.returnAbove(i,j);
-			let right = currentSquare.block.right;//this.returnRight(i,j);
-			let below = currentSquare.block.below;//this.returnBelow(i,j);
-			let left = currentSquare.block.left;//this.returnLeft(i,j);
+			let above = currentSquare.block.above;
+			let right = currentSquare.block.right;
+			let below = currentSquare.block.below;
+			let left = currentSquare.block.left;
 
 			//console.log(above.covered, right.covered, left.covered, below.covered)
 
@@ -141,36 +61,27 @@ export default {
 				this.topBorder = this.topEdge;
 
 			}
-
 			if(!below || below.covered){
 				this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
 			} else {
 				this.bottomBorder = this.bottomEdge;
 			}
-
 			if (!right || right.covered) {
 				this.rightBorder = ((j+1) * this.blockWidth) - this.leftEdge;	
 			} else {
 				this.rightBorder = this.rightEdge;
 			}
-
 			if (!left || left.covered) {
 				this.leftBorder = this.leftEdge - (j * this.blockWidth);
 			} else {
 				this.leftBorder = this.leftEdge;
 			}
 
-
-
-
-			// console.log(
-			// 	this.returnAbove(i,j),
-			// 	this.returnRight(i,j),
-			// 	this.returnBelow(i,j),
-			// 	this.returnLeft(i,j));
-
 		},
 		setLimits: function () {
+
+			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
+			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
 			this.colQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].cols;
 			this.rowQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].rows;
@@ -179,12 +90,12 @@ export default {
 			this.boardHeight = this.rowQ * this.blockHeight;
 			this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
 			this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
-			console.log("board width = ", this.colQ, this.blockWidth, this.boardWidth)
+		
 			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
 		},
 		itemHitDetect: function (item) {
-			let globalPoint = this.cont.toGlobal(item);
+			let globalPoint = this.gridBuild.cont.toGlobal(item);
 			let ballB = {
 				x: globalPoint.x,
 				y: globalPoint.y,
@@ -196,10 +107,8 @@ export default {
 		animate: function (vx, vy) {
 			
 			if (this.treasure.animationHappening) {
-				//console.log("animate special")
 				this.treasure.animateSpecial();			
 			} else {
-				//console.log("animate")
 				this.treasure.animate();
 			}
 
@@ -210,20 +119,16 @@ export default {
 
 
 			for (let i = 0; i < this.itemLoopingQ; i ++) {
-				//MUST ADD ON SCREEN DETECTION
+
 				if (this.transitionItemsArray[i]) {
-					
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
-						//console.log("transition item hit")
 						this.transitionItemsArray[i].hit = true;
 						this.utils.root.filterAnimation.shutOff();
-						this.utils.root.switchPlayerMaskedAction();
+						this.utils.root.switchPlayerWithAnimation();
 					}
 				}
 				if(this.treasure.chests[i]){
 					if(this.itemHitDetect(this.treasure.chests[i]) && !this.treasure.animationHappening){
-						//console.log("chest hit");
-
 						this.treasure.activeChest = this.treasure.chests[i];
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation(this.treasure.activeChest);
@@ -232,7 +137,6 @@ export default {
 				}
 				if(this.magicPillsArray[i]){
 					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
-						//console.log("magic pills hit")
 						this.utils.root.filterTest();
 					}
 				}
@@ -249,8 +153,7 @@ export default {
 					let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
 
 					if (x[0] && t.parent === this.gridBuild.cont) {
-						//console.log("token hit")
-						this.cont.removeChild(t)
+						this.gridBuild.cont.removeChild(t)
 						this.utils.root.levelSlots.fillSlot(t);
 					}
 				}
@@ -269,38 +172,53 @@ export default {
 			 	this.pause = true;
 			 	this.spaceShip.classRef.blastOff();
 			 }
-			
 
+			this.storeCurrent = this.currentSquare();
+			this.createBoundaries(this.storeCurrent);
 
-			let currentSquare = this.currentSquare();
-			this.createBoundaries(currentSquare);
+			this.gridBuild.cont.x -= vx;
+			if (this.gridBuild.cont.x > this.leftBorder) {
+			 	this.gridBuild.cont.x -= this.buffer;
+			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vx  = -5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			    }
 
-			this.cont.x -= vx;
-			//console.log(this.cont.x, this.leftBorder, this.rightBorder)
-			if (this.cont.x > this.leftBorder) {
-				//console.log('1')
-			 	this.cont.x -= this.buffer;
-
-			 	//this.utils.root.activeAction.vx = 5;
-			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 			} 
-			if (this.cont.x < -this.rightBorder) {
-				this.cont.x += this.buffer;
+			if (this.gridBuild.cont.x < -this.rightBorder) {
+				this.gridBuild.cont.x += this.buffer;
+			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 
-				//this.utils.root.activeAction.vx = -5;
-			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vx  = 5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
+			    }
+
 			}
 
-			this.cont.y -= vy;
-			if (this.cont.y > this.topBorder) {
-			 	this.cont.y = this.topBorder - this.buffer;
-			 	this.utils.root.activeAction.y *= this.gridBuild.wallHit;
+			this.gridBuild.cont.y -= vy;
+			if (this.gridBuild.cont.y > this.topBorder) {
+			 	this.gridBuild.cont.y = this.topBorder - this.buffer;
+			 	//this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
+
+			 	if (this.utils.root.activeMode === "bounce") {
+			 		this.utils.hero.activeHero.bounce(true);
+		        	this.utils.root.activeAction.vy  = -5 * this.gridBuild.wallHit;
+			    } else {
+			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
+			    }
+
 			} 
 
-			if (this.cont.y < -this.bottomBorder + this.buffer) {
+			if (this.gridBuild.cont.y < -this.bottomBorder + this.buffer) {
 
-				 this.cont.y = -this.bottomBorder + this.buffer;
+				 this.gridBuild.cont.y = -this.bottomBorder + this.buffer;
 			
 			 	if (this.utils.root.activeMode === "bounce") {
 			 		this.utils.hero.activeHero.bounce(true);
@@ -308,14 +226,6 @@ export default {
 			    } else {
 			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 			    }
-			 	
-		        
-
-
 			}
-			
-
-
 		}
-	
 }

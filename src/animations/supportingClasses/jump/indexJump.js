@@ -1,7 +1,7 @@
 import JumpAction from './jumpAction';
 import JumpBackground from './jumpBackground';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+// import Utils from '../../utils/utils';
+// import Config from '../../animationsConfig';
 export default function () {
 	return {
 		jumpAction: JumpAction(),
@@ -11,9 +11,9 @@ export default function () {
 			this.background = this.jumpBackground;
             this.jumpAction.init(stage);
             this.jumpBackground.init(stage, this.jumpAction);
-            this.maskedItems = [
-				this.jumpBackground.cont
-			];
+		},
+		reset: function () {
+			this.jumpBackground.tokenTaken = false;
 		},
 		addToStage: function () {
 			this.jumpBackground.addToStage();

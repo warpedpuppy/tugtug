@@ -1,40 +1,130 @@
 import Assets from './assetCreation';
 import Utils from './utils';
 import Config from '../animationsConfig';
+import BlastOff from './tweens/spaceShipBlastOff';
+import ReturnHome from './tweens/spaceShipReturnHome';
 import { TweenMax, TimelineMax, Elastic } from 'gsap';
 export default {
 		animation: new TimelineMax(),
 		utils: Utils,
+		allowTween: false,
+		fadeOutBoolean: false,
+		fadeInBoolean: false,
+		tweenArray: [],
+		blastOff: BlastOff,
 		killAll: function () {
-			TweenMax.killAll()
+			//TweenMax.killAll();
+			let clone = this.tweens.slice();
+			this.tweens.length = 0;
+
+			clone.forEach((item, index) => {
+
+				item.changeProperties.forEach((changeObject, index2) => {
+					let changeObjectProperties = changeObject.changePropertiesObject;
+					for(let property in changeObjectProperties) {
+
+							let startValue = changeObjectProperties[property][0];
+							let endValue = changeObjectProperties[property][1];
+							item[property] = endValue;
+							clone.splice(index, 1);
+							break;
+					}
+
+				})
+			})
+		},
+		isTweening: function (item) {
+			return TweenMax.isTweening(item);
 		},
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
 			let newX = (this.utils.canvasWidth / 2);
 			let newY = (this.utils.canvasHeight / 2);
-			TweenMax.to(orbsCont.pivot, 1.5, {x: newPlanet.x, y: newPlanet.y, ease: Elastic.easeOut})
-			TweenMax.to(orbsCont, 1.5, {x: newX, y: newY, ease: Elastic.easeOut, onComplete: onCompleteFunction})
-			TweenMax.to(hero, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
+			this.tween(orbsCont.pivot, 1.5, {x: [orbsCont.pivot.x, newPlanet.x], y: [orbsCont.pivot.y, newPlanet.y], onComplete: onCompleteFunction});
+			this.tween(hero, 1.5, {y:  [hero.y, -newPlanet.radius]});
 		},
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
-			this.storeX = maze.x;
-			this.storeY = maze.y;
-			this.storeShipScale = ship.scale.x;
-			this.animation.to(ship, 1, {rotation: this.utils.deg2rad(90)})
-			.to(ship.scale, 1, {x: 1, y: 1})
-			.to(maze.scale, 1, {x: 0.15, y: 0.15})
-			.to(maze, 1, {x: -maze.width})
-			.to(background.scale, 1, {x: 1, y: 1, onComplete: onCompleteHandler})
+			BlastOff.spaceShipBlastOff(ship, maze, background, onCompleteHandler);
 		},
 		spaceShipReturnHome: function (background, maze, ship, onCompleteHandler) {
+			ReturnHome.spaceShipReturnHome(background, maze, ship, onCompleteHandler);
+		},
+		tween: function (item, seconds, changePropertiesObject) {
 
-			this.animation
-			.to(background.scale, 1, {x: 0, y: 0})
-			.to(maze, 1, {x: this.utils.root.grid.gridBuild.initialPoint.x, y:  this.utils.root.grid.gridBuild.initialPoint.y})
-			.to(maze.scale, 1, {x: 1, y: 1})
-			.to(ship, 1, {rotation: this.utils.deg2rad(0)})
-			.to(ship.scale, 1, {x: this.storeShipScale, y: this.storeShipScale, onComplete: onCompleteHandler})
+			let changeIncrement = (1 / this.utils.app._ticker.FPS) / seconds
+			let obj = {
+				changePropertiesObject,changeIncrement 
+			}
+
+			if (Array.isArray(item.changeProperties)) {
+				item.changeProperties.push(obj);
+			} else {
+				item.changeProperties = [obj];
+			}
+			//console.log(obj)
+			this.tweenArray.push(item);
+
+			
 		},
 		animate: function () {
 
+		
+
+			if (this.tweenArray.length) {
+
+				this.tweenArray.forEach((item, index) => {
+
+					if(!item.changeProperties.length){
+						this.tweenArray.splice(index, 1)
+					}
+
+					item.changeProperties.forEach((changeObject, index2) => {
+					
+						let changeObjectProperties = changeObject.changePropertiesObject;
+
+						for(let property in changeObjectProperties) {
+
+							let startValue = changeObjectProperties[property][0];
+							let endValue = changeObjectProperties[property][1];
+							let changeIncrement = -(endValue - startValue) * changeObject.changeIncrement;
+							//console.log(property, startValue, endValue, Math.round(item[property]),  changeIncrement)
+							//console.log(property, changeIncrement)
+	
+							if (startValue < endValue) {
+								if (item[property] < endValue) {
+									item[property] -= changeIncrement;
+								} else {
+									item[property] = endValue;
+									if(changeObjectProperties["onComplete"]) {
+										changeObjectProperties["onComplete"]();
+										changeObjectProperties["onComplete"] = function(){};
+									}
+									item.changeProperties.splice(index2, 1)
+								}
+							}
+
+							if (startValue > endValue) {
+								if (item[property] > endValue) {
+									item[property] -= changeIncrement;
+								} else {
+									item[property] = endValue;
+									if(changeObjectProperties["onComplete"]) {
+										changeObjectProperties["onComplete"]();
+										changeObjectProperties["onComplete"] = function(){};
+									}
+									item.changeProperties.splice(index2, 1)
+								}
+							}
+
+						}
+
+					})
+
+					
+
+				})
+
+			}
+			
+			
 		}
 }

@@ -119,6 +119,8 @@ export default function () {
 			this.mouth.y = -25;
 			this.cont.addChild(this.mouth);
 
+			this.grimaceMouth();
+
 		},
 		addToStage: function () {
 			console.log('add hero jump to stage')

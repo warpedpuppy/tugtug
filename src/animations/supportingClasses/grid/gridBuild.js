@@ -1,13 +1,8 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import axios from 'axios';
-import { API_BASE_URL } from '../../../config';
-import SpaceShip from '../jump/spaceShip.js';
+import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
-// import TransitionItems from './items/transitionItems';
-// import Treasure from './items/treasure';
-// import MagicPills from './items/magicPills';
-import Baddies from './baddies/baddies';
+import Baddies from './baddies/baddyIndex';
 import Tokens from '../tokens/levelTokens';
 export default {
 		cont: Assets.ParticleContainer(10000),
@@ -18,7 +13,6 @@ export default {
 		colQ: 4,
 		rowQ: 10,
 		buffer: 10,
-		pause: true,
 		tokens: [],
 		tokenData: {},
 		freeSpaces: [],
@@ -28,9 +22,6 @@ export default {
 		blockPool: [],
 		spaceShip: {},
 		wallHit: 0,
-		// transitionItems: TransitionItems(),
-		// magicPills: MagicPills(),
-		// treasure: Treasure(),
 		transitionItemsArray: [],
 		treasureChests: [],
 		magicPillsArray: [],
@@ -40,104 +31,82 @@ export default {
 		spears: [],
 		solderPerGridSquareQ: 1,
 		baddies: Baddies(),
-		init: function (chests, pills, transitionItems, spaceShip) {
+		init: function () {
 
-			this.tokens = Tokens.init();
-
-			for (let i = 0; i < 900; i ++) {
-				this.blockPool.push(Assets.Sprite())
-			}
-
-			this.parent = this.utils.root;
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
+			
+		  	//items to be distributed around board
+			this.spaceShip = SpaceShip().init()
+			this.tokens = Tokens.init();
+			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
+			this.treasureChests = this.utils.root.grid.treasureChests;
+			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
-			this.parentCont = this.utils.app.stage;
-		
-
-			//this.setLimits();
-
-		
-		   // this.setAction = this.setAction.bind(this);
-		    //this.nextBoard = this.nextBoard.bind(this);
-		    this.boards = this.utils.root.dbData.boards;
-		    
-
-			this.magicPillsArray = pills;
-
-			this.treasureChests = chests;
-
-			this.transitionItemsArray = transitionItems;
-			this.spaceShip = spaceShip;
-
+  			this.boards = this.utils.root.dbData.boards;
 			this.buildGrid(this.boards[this.currentBoard]);
 
-		   // this.itemLoopingQ = Math.max(this.magicPillsArray.length, this.transitionItemsArray.length, this.treasureChests.length)
-		
-
-		  //   this.heroCollisionDetector = {
-				// 	x: this.utils.canvasWidth / 2,
-				// 	y: this.utils.canvasHeight / 2,
-				// 	radius: 10
-				// }
+			this.baddies.init();
+			
 			return this;
-
 		},
 		createObj: function (board) {
 			let obj = {};
 			for(let arr of board.grid){
 				obj[`${arr[0]}_${arr[1]}`] = 'covered';
 			}
-		
-			// // add hero
-			// if (board.hero) {
-			// 	obj[`${board.hero.i}_${board.hero.j}`] = 'hero';
-			// }
 			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
 			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
 			obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
 			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
-			return obj
-		},
-		buildNextGrid: function () {
-
+			return obj;
 		},
 		buildGrid: function (data) {
-			//alert("build grid")
-			let mode = this.utils.root.activeMode;
+			
+			let mode = this.utils.root.activeMode,
+			    obj = this.createObj(data),
+			    counter = 0,
+			    b,
+			    texture;
+
+			this.baddies.removeCastlesAndSoldiers(); 
+			this.wallHit = Config[`${mode}WallHit`];
+			this.buffer = Config[`${mode}Buffer`];    
 			this.blockWidth = Config[`${mode}BlockSize`][0];
 			this.blockHeight = Config[`${mode}BlockSize`][1];
-
-			let obj = this.createObj(data);
-			let counter = 0;
 			this.rowQ = data.rows;
 			this.colQ = data.cols;
-			//console.log('start build grid')
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
 
+			if (mode === 'fly') {
+				texture = this.flyTexture;
+			} 
+			
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
 				for (let j = 0; j < data.cols; j ++) {
-					//console.log(i,j,obj[`${i}_${j}`])
+
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
-					//let b = this.block(bool);
-					let b = this.blockPool[counter];
+
+					if (!this.blockPool[counter]) {
+						b = Assets.Sprite()
+						this.blockPool.push(b)	
+					} else {
+						b = this.blockPool[counter];
+					}
+
 					b.width = this.blockWidth;
 					b.height = this.blockHeight;
 					b.covered = bool;
-					//console.log(b.covered)
 					b.x = j * this.blockWidth;
 					b.y = i * this.blockHeight;
-					// let text = Assets.BitmapText(`${i}, ${j}`)
-					// text.x = b.x;
-					// text.y = b.y;
+					
 					this.cont.addChild(b);
-					//this.cont.addChild(text);
+
 					let token = false;
 					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
 						let num = obj[`${i}_${j}`].slice(-1);
-						//this.placeToken(num, b.x, b.y)
 						token = true;
 						this.tokenData[num] = {x: b.x, y:b.y};
 					}
@@ -146,10 +115,14 @@ export default {
 					let heroSpace = (String(i) === data.hero.i && String(j) === data.hero.j)?true:false;
 					
 					if (!bool && !token && !heroSpace) {
-						//console.log([b.x, b.y, b, i, j])
 						this.freeSpaces.push([b.x, b.y, b, i, j]);
-					} else if (bool) {
+					}
+
+					if (bool) {
+						b.texture = this.whiteSquare;
 						this.coveredSpaces.push(b)
+					} else {
+						b.texture = texture;
 					}
 					
 					this.blocks[i][j] = b;
@@ -161,27 +134,20 @@ export default {
 			this.placeItems(this.transitionItemsArray);
 			this.placeItems(this.treasureChests);
 			this.placeItems(this.magicPillsArray);
-			// this.placeTransitionItems();
-			// this.placeChests();
-			// this.placeMagicPills();
-
-			//this.baddies.buildCastlesAndSoldiers();
 			this.baddies.placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
 			
-		
-			//this.cont.cacheAsBitmap = true;
 			this.placeTokens();
 			this.heroJ = data.hero.j;
 			this.heroI = data.hero.i;
 			this.placeHero();
-			//this.setLimits();
-			//this.pause = false;
-			// console.log('free spaces established', this.freeSpaces.length)
-			// alert("end build grid")
-
+			
 			this.initialPoint = {x: this.cont.x, y: this.cont.y};
+
+			this.cont.calculatedWidth = data.cols * this.blockWidth;
+			this.cont.calculatedHeight = data.rows * this.blockHeight;
+			//this.changeBackground(this.utils.root.activeMode)
 
 		},
 		placeShip: function () {
@@ -205,39 +171,14 @@ export default {
 		placeTokens: function () {
 			for (let key in this.tokenData) {
 				let index = key - 1;
-				let t = this.tokens[index];//Assets.Sprite(`token${key}.png`);
+				let t = this.tokens[index];
 				t.anchor.set(0.5)
 				t.num = key;
 				t.x = this.tokenData[key].x + this.blockWidth / 2;
 				t.y = this.tokenData[key].y + this.blockHeight / 2;
 				this.tokens.push(t);
-				this.cont.addChild(t);
+				if(t.num < 4)this.cont.addChild(t);
 			}
-		},
-		setAction: function (action, mode) {
-			this.action = action;
-			this.changeBackground(mode)
-		},
-		changeBackground: function (mode) {
-			console.log("CHANGE BACKGROUND")
-			this.wallHit = Config[`${mode}WallHit`];
-			this.buffer = Config[`${mode}Buffer`];
-
-			let t;
-			if (mode === 'fly') {
-				t = this.flyTexture;
-				
-			} 
-			for(let j in this.blocks){
-					for(let i = 0; i < this.blocks[j].length; i ++){
-						let b = this.blocks[j][i];
-						if(!b.covered){
-							b.texture = t;
-						} else {
-							b.texture = this.whiteSquare
-						}
-					}
-				}
 		},
 		placeHero: function () {
 
@@ -248,17 +189,9 @@ export default {
 			j++;
 			let halfWidth = this.utils.canvasWidth / 2;
 			let halfHeight = this.utils.canvasHeight / 2;
-			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth /2);
+			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth / 2);
 			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
 		},
-		// setLimits: function () {
-		// 	this.boardWidth = this.colQ * this.blockWidth;
-		// 	this.boardHeight = this.rowQ * this.blockHeight;
-		// 	this.leftBorder = this.leftEdge = (this.utils.canvasWidth / 2);
-		// 	this.topBorder = this.topEdge = (this.utils.canvasHeight / 2);
-		// 	this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
-		// 	this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
-		// },
 		returnAbove: function (i,j) {
 			let newi = (i - 1 >= 0)?(i - 1):undefined;
 			let newj = j;
@@ -298,6 +231,37 @@ export default {
 			} else {
 				return  undefined;
 			}
+		},
+		resize: function () {
+			
+			 this.utils.root.grid.gridAction.pause = true;
+			 this.utils.root.action = false;
+		
+			if (!this.calcResize) {
+				this.calcResize = true;
+				let block = this.utils.root.grid.gridAction.storeCurrent;
+				this.saveI = block.i;
+				this.saveJ = block.j;
+			}
+
+			this.cont.alpha = 0;
+			window.clearTimeout(this.test);
+			this.test = setTimeout(this.resized.bind(this), 200)
+
+		},
+		resized: function () {
+	
+			this.calcResize = false;
+			this.cont.alpha = 1;
+			this.saveI++;
+			this.saveJ++;
+			let halfWidth = this.utils.canvasWidth / 2;
+			let halfHeight = this.utils.canvasHeight / 2;
+			this.cont.x = halfWidth - (this.saveJ * this.blockWidth) + (this.blockWidth / 2);
+			this.cont.y = halfHeight - (this.saveI * this.blockHeight) + (this.blockHeight /2);
+
+			this.utils.root.grid.gridAction.pause = false;
+			this.utils.root.action = true;
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		

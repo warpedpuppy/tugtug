@@ -3,7 +3,7 @@ import Assets from '../../utils/assetCreation';
 // import Castles from './castles';
 // import Soldier from './soldiers';
 import Clouds from './clouds';
-import Config from '../../animationsConfig';
+//import Config from '../../animationsConfig';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -25,7 +25,7 @@ export default function () {
 			this.parentCont = parent.stage;
 
 			this.hero = this.utils.hero;
-			let wh = this.wh = this.utils.wh;
+			//let wh = this.wh = this.utils.wh;
 			this.spritesheet = this.utils.spritesheet;
 
 			//this.lightningBoltsBuild();
@@ -38,79 +38,6 @@ export default function () {
 			
 
 		},
-		// buildCastlesAndSoldiers: function () {
-
-		// 	let grid = this.parent.grid;
-		// 	let freeSpaces = grid.freeSpaces;
-		// 	//console.log('free space array', freeSpaces, freeSpaces.length);
-
-		// 	for (let i = 0; i < freeSpaces.length; i ++) {
-
-		// 	//for (let i = 0; i < 1; i ++) {
-
-		// 		// let determineContinue = Math.floor(Math.random()*10);
-		// 		// if(determineContinue < 9) continue;
-
-		// 		let block = freeSpaces[i];
-		// 		//console.log('block = ', block.i, block.j)
-		// 		let c = Assets.Sprite('castle.png');
-		// 		//c.alpha = 0;
-		// 		c.anchor.set(0.5);
-		// 		c.scale.set(0.25);
-		// 		let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
-		// 		let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
-
-		// 		this.parent.grid.blockWidth = bw;
-		// 		this.parent.grid.blockHeight = bh;
-		// 		c.x = block[0] + this.parent.grid.blockWidth / 2;
-		// 		c.y = block[1] + this.parent.grid.blockHeight / 2;
-		// 		this.castles.push(c);
-		// 		//grid.cont.addChild(c);
-				
-		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-		// 			let soldier = Soldier();
-		// 			let s = (j < 3)?soldier.init('soldier.png', this.parent):soldier.init('horse.png', this.parent);
-		// 			s.x = s.startX = block[0] + this.parent.grid.blockWidth / 2;
-		// 			s.y = s.startY = block[1] + this.parent.grid.blockHeight / 2;
-		// 			//grid.cont.addChild(s);
-		// 			this.soldiers.push(s);
-		// 			this.spears.push(s.classRef.spear)
-		// 		}
-		// 	}
-		// },
-		// placeCastlesAndSoldiers: function () {
-		// 	let grid = this.parent.grid;
-		// 	let freeSpaces = grid.freeSpaces;
-		// 	//console.log('free space array', freeSpaces, freeSpaces.length);
-		// 	let counter = 0;
-		// 	for (let i = 0; i < this.castles.length; i ++) {
-		// 		let c = this.castles[i];
-				
-		// 		grid.cont.addChild(c);
-				
-		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-		// 			let soldier = this.soldiers[counter];
-		// 			soldier.classRef.addToStage();
-					
-		// 			counter ++;
-		// 		}
-		// 	}
-		// },
-		// removeCastlesAndSoldiers: function () {
-		// 	let fQ = this.parent.grid.freeSpaces.length;
-		// 	let counter = 0;
-		// 	for (let i = 0; i < this.castles.length; i ++) {
-		// 		let c = this.castles[i];
-		// 		this.parent.grid.cont.removeChild(c);
-				
-		// 		for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-		// 			let soldier = this.soldiers[counter];
-		// 			soldier.classRef.removeFromStage();
-		// 			//this.parent.grid.cont.removeChild(soldier);
-		// 			counter ++;
-		// 		}
-		// 	}
-		// },
 		lightningStorm: function () {
 			this.foreground.visible = true;
 			this.boltCont.visible = true;
@@ -133,12 +60,12 @@ export default function () {
 			let boltCont = Assets.Container();
 			for(let i = 0; i < this.boltQ; i ++){
 				let widthStore = 0, 
-				    startX = this.utils.randomNumberBetween(0, this.wh.canvasWidth),
+				    startX = this.utils.randomNumberBetween(0, this.utils.canvasWidth),
 				    storeRot, 
 				    storeHeight, 
 				    storeX, 
 				    storeY;
-				while (widthStore < this.wh.canvasHeight) {
+				while (widthStore < this.utils.canvasHeight) {
 					let bolt = Assets.Sprite(this.spritesheet.textures['line.png']);
 					bolt.height = 5;
 					bolt.x = storeX = (widthStore === 0)?startX:storeX + (Math.cos(storeRot) * storeHeight);

@@ -1,5 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
+// import Config from '../../../../animationsConfig';
 export default {
     line: undefined,
     cont: Assets.Container(),
@@ -13,8 +14,8 @@ export default {
     runAnimation: false,
     colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
     colorCounter: 0,
-    init: function (parent) {
-        this.parent = parent;
+    init: function () {
+        this.parent = this.utils.root;
         this.particleContainer = Assets.ParticleContainer();
         this.cont.addChild(this.particleContainer);
         this.circle = Assets.Sprite('circleMask.png');
@@ -59,14 +60,14 @@ export default {
         this.cont.x = this.utils.canvasWidth / 2;
         this.cont.y = this.utils.canvasHeight / 2;
         let contIndex = this.utils.app.stage.getChildIndex(this.utils.hero.cont);
-        this.utils.app.stage.addChildAt(this.cont, contIndex - 3);
-
+        this.utils.app.stage.addChildAt(this.cont, contIndex - 1);
+       // this.utils.app.stage.addChildAt(this.cont, contIndex - 3);
         this.circle.tint = this.colors[this.colorCounter];
         this.colorCounter ++;
         if(this.colorCounter === this.colors.length){
             this.colorCounter = 0;
         }
-        console.log("end set up")
+       
     },
     resize: function (wh) {
         this.wh = wh;
@@ -91,62 +92,23 @@ export default {
             let e = this.explosions[i];
             e.radius = 0;
         }
-        this.parent.transitionAnimationPlaying = false;
+        
         this.utils.app.stage.removeChild(this.cont);
 
-        this.parent.action = true;
-        this.parent.hero.switchPlayer(this.parent.activeMode);
-        this.parent.activeAction = this.newActiveMode.addToStage();
-
-        this.parent.grid.setAction(this.parent.activeAction, this.parent.activeMode);
-
-        let index = this.parent[this.parent.activeMode].background.gridIndex + 1;
-        this.parent.stage.setChildIndex(this.parent.grid.cont, index) 
-
+        
+        this.utils.root.completeSwitchPlayerAnimation();
     },
-    // startWithMasking: function (newBackground, oldBackground) {
-    //     this.oldBackground = oldBackground;
-    //     this.newBackground = newBackground;
-    //     console.log(newBackground.maskedItems);
-       
-    //     newBackground.maskedItems.forEach(item => {
-    //         item.mask = this.circle;
-    //     })
-       
-    //     // this.cont.visible = true;
-    //     this.runAnimation = true;
-    // },
-    // resetWithMasking: function () {
-    //     console.log("RESET")
-    //     this.radialGrow = 0.01;
-    //     this.radialCont.scale.set(0);
-    //     this.animationCounter = 0;
-    //     this.done = false;
-    //     //this.cont.visible = false;
-    //     this.circle.scale.set(0);
-    //     this.newBackground.maskedItems.forEach(item => {
-    //         item.mask = null;
-    //     })
-    //     for (let i = 0; i < this.explosionQ; i ++) {
-    //         //fade out
-    //         let e = this.explosions[i];
-    //         e.radius = 0;
-    //     }
-    //     this.parent.transitionAnimationPlaying = false;
-    //     //this.oldBackground.removeFromStage();
-    //     //console.log('remove old background')
-    // },
     animate: function () {
 
-        if(!this.runAnimation)return;
+        if (!this.runAnimation) return;
         
         this.animationCounter ++;
-        if(this.animationCounter >= this.animationLength){
+        if (this.animationCounter >= this.animationLength) {
             this.done = true;
             this.runAnimation = false;
         }
 
-        if(!this.done){
+        if (!this.done) {
 
             this.circle.scale.x += 0.01;
             this.circle.scale.y += 0.01;

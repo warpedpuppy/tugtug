@@ -31,7 +31,6 @@ export default function (spritesheet) {
 				this.cont.addChild(s1);
 				this.array.push(s1);
 			}
-			console.log(this)
 			this.utils.setLilypads(this);
 		},
 		addToStage: function () {

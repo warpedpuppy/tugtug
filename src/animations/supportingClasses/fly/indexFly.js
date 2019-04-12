@@ -1,7 +1,7 @@
 import FlyBackground from './flyBackground';
 import FlyAction from './flyAction';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
+// import Utils from '../../utils/utils';
+// import Config from '../../animationsConfig';
 export default function () {
 	return {
 		flyBackground: FlyBackground(),
@@ -10,12 +10,8 @@ export default function () {
 			this.background = this.flyBackground;
 			this.flyBackground.init(parent);
 			this.flyAction.init(parent, this.background);
-			this.maskedItems = [
-				this.flyBackground.cont
-			];
 		},
 		addToStage: function () {
-			Utils.root.grid.changeGridSize(Config.flyBlockSize[0], Config.flyBlockSize[1])
 			this.flyBackground.addToStage();
 			this.flyAction.createPool();
 			return this.flyAction;
@@ -27,6 +23,12 @@ export default function () {
 			this.flyBackground.resize();
 			this.flyAction.resize();
 		},
+		startSpaceShipJourney: function () {
+            
+        },
+        endSpaceShipJourney: function () {
+            
+        },
 		animate: function () {
 			this.flyAction.animate();
 		}

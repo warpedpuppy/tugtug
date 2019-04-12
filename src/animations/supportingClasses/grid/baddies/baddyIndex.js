@@ -3,6 +3,7 @@ import Assets from '../../../utils/assetCreation';
 import Config from '../../../animationsConfig';
 import Baddy from './baddy';
 import BaddyAction from './baddyAction';
+import BaddyHouse from './baddyHouse';
 export default function () {
 	return {
 		utils:Utils,
@@ -13,31 +14,27 @@ export default function () {
 		baddiesPool: [],
 		baddy: Baddy(),
 		init: function () {
-		
+			this.animate = this.animate.bind(this);
 		},
 		placeCastlesAndSoldiers: function (gridBuild) {
-			this.animate = this.animate.bind(this)
-
-			let grid = this.utils.root.grid;
-			let freeSpaces = gridBuild.freeSpaces;
-
-			let soldierCounter = 0;
-			for (let i = 0; i < freeSpaces.length; i ++) {
 			
-			//for (let i = 0; i < 1; i ++) {
+			let freeSpaces = gridBuild.freeSpaces,
+			    soldierCounter = 0,
+			    loopingQ = freeSpaces.length;
 
+			for (let i = 0; i < loopingQ; i ++) {
+			
 				let determineContinue = Math.floor(Math.random()*10);
 				if(determineContinue < 9) continue;
 
-				let block = freeSpaces[i];
-	
-				
-				let c;
+				let block = freeSpaces[i],
+				    c;
 
 				if (!this.castles[i]) {
-					c = Assets.Sprite('castle.png');
-					c.anchor.set(0.5);
-					c.scale.set(0.25);
+					c = BaddyHouse(gridBuild).init();
+					// c = Assets.Sprite('castle.png');
+					// c.anchor.set(0.5);
+					// c.scale.set(0.25);
 					this.castles.push(c);
 				} else {
 					c = this.castles[i];
@@ -47,18 +44,16 @@ export default function () {
 				let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
 				let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-				// this.utils.root.grid.blockWidth = bw;
-				// this.utils.root.grid.blockHeight = bh;
 				c.x = block[0] + bw / 2;
 				c.y = block[1] + bh / 2;
 
-				gridBuild.cont.addChild(c);
+				c.classRef.addToStage();
 				
 				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
 					
 					let s;
 					if (!this.soldiers[soldierCounter]) {
-						s = Baddy().init('soldier.png');
+						s = Baddy(gridBuild).init('soldier.png');
 						this.spears.push(s.classRef.spear)
 						this.soldiers.push(s);
 					} else {
@@ -72,38 +67,18 @@ export default function () {
 					soldierCounter ++;
 				}
 			}
-			this.baddyAction = BaddyAction(this.soldiers, this.spears);
-		},
-		returnBaddiesToZero: function () {
-			for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-				this.soldiers[j].x = this.soldiers[j].startX;
-			}
+			this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
 		},
 		removeCastlesAndSoldiers: function () {
-			let fQ = this.parent.grid.freeSpaces.length;
-			let counter = 0;
-			for (let i = 0; i < this.castles.length; i ++) {
-				let c = this.castles[i];
-				this.parent.grid.cont.removeChild(c);
-				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
-					let soldier = this.soldiers[counter];
-					soldier.classRef.removeFromStage();
-					//this.parent.grid.cont.removeChild(soldier);
-					counter ++;
+			
+			this.soldiers.forEach((s, i) => {
+				s.classRef.removeFromStage();
+				if (this.castles[i]) {
+					this.castles[i].classRef.removeFromStage();
 				}
-			}
-		},
-		addToStage: function () {
-			this.grid.cont.addChild(this.body);
-			this.grid.cont.addChild(this.spear);
-		},
-		removeFromStage: function () {
-			this.grid.cont.removeChild(this.body);
-			this.grid.cont.removeChild(this.spear);
-		},
-		resize: function () {
-
+			})
+			this.castles.length = 0;
+			this.soldiers.length = 0;
 		},
 		animate: function () {
 			if(this.pause)return;

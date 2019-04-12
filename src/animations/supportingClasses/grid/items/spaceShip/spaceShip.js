@@ -1,12 +1,13 @@
-import Assets from '../../utils/assetCreation';
-import Utils from '../../utils/utils';
-import Config from '../../animationsConfig';
-import Tweens from '../../utils/tweens';
+import Assets from '../../../../utils/assetCreation';
+import Utils from '../../../../utils/utils';
+// import Config from '../../../../animationsConfig';
+import Tweens from '../../../../utils/tweens';
 export default function () {
 	return {
 		utils: Utils,
 		init: function () {
-			
+			this.makeJumpActive = this.makeJumpActive.bind(this);
+			this.completeReturnHomeHandler = this.completeReturnHomeHandler.bind(this);
 			this.ship = Assets.Sprite("spaceShip.png")
 			this.ship.anchor.set(0.5)
 			this.ship.scale.set(0.25)
@@ -15,50 +16,68 @@ export default function () {
 
 		},
 		blastOff: function () {
-			// //PAUSE KEY LISTENERS
+			this.utils.root.startSpaceShipJourney();
+
 			this.storeActiveMode = this.utils.root.activeMode;
 
-			// //zoom ship in and tilt 90 degrees.
 			this.utils.app.stage.addChild(this.ship);
 			this.ship.x = this.utils.canvasWidth / 2;
 			this.ship.y = this.utils.canvasHeight / 2;
-			// // rush maze backwards
-			let maze = this.utils.root.grid.cont;
-
-			// // add jump background to stage
+	
+			let maze = this.utils.root.grid.gridBuild.cont;
 			let jump = this.utils.root.jump;
-			let background = jump.jumpBackground.orbsCont;
+			let background = this.utils.root.jump.jumpBackground.orbsCont;
 			background.scale.set(0)
 			jump.addToStage();
-			Tweens.spaceShipBlastOff(this.ship, maze, background, this.makeJumpActive.bind(this));
 
+			Tweens.spaceShipBlastOff(this.ship, maze, background, this.makeJumpActive);
 
 		},
 		makeJumpActive: function () {
-			console.log("make jump active");
+			Tweens.killAll();
+			this.utils.root.jump.jumpBackground.pause = false;
+			this.utils.root.jump.jumpAction.pause = false;
+			this.utils.hero.cont.visible = true;
 			//this.ship.parent.removeChild(this.ship);
-			let jump = this.utils.root.jump.jumpBackground.addSpaceShip();
+			
 			this.utils.root.switchPlayer("jump");
+			this.utils.root.jump.jumpBackground.setUp();
 		},
 		returnHome: function () {
+
+			this.utils.hero.cont.visible = false;
 			this.utils.app.stage.addChild(this.ship);
 			this.ship.x = this.utils.canvasWidth / 2;
 			this.ship.y = this.utils.canvasHeight / 2;
-			let maze = this.utils.root.grid.cont;
+			let maze = this.utils.root.grid.gridBuild.cont;
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
-
+			console.log(this)
 			Tweens.spaceShipReturnHome(
 				background, 
 				maze, 
 				this.ship, 
-				this.completeReturnHomeHandler.bind(this))
+				this.completeReturnHomeHandler)
 		
 		},
 		completeReturnHomeHandler: function () {
+			//in case coming back from jump 
+			if (this.utils.root.activeMode === 'jump') {
+				let jump = this.utils.root.jump;
+				let background = jump.jumpBackground.orbsCont;
+				background.scale.set(1);
+				let maze = this.utils.root.grid.gridBuild.cont;
+				maze.scale.set(1);
+				maze.x = this.storeX;
+				this.ship.scale.set(0.25);
+				this.ship.rotation = 0;
+			}
 			
+			this.utils.hero.cont.visible = true;
 			this.utils.hero.activeHero.cont.y = 0;
-			
+
+			this.utils.root.jump.removeFromStage();
+
 			this.utils.root.switchPlayer(this.storeActiveMode);
 			
 			this.utils.root.grid.gridBuild.placeHero();
@@ -69,6 +88,8 @@ export default function () {
 			this.utils.root.grid.gridAction.pause = false;
 			this.utils.root.activeAction.vx = this.utils.root.activeAction.vy = 0;
 			this.utils.root.activeAction.radius = this.utils.root.activeAction.storeRadius = 0;
+
+			this.utils.root.endSpaceShipJourney();
 		},
 		addToStage: function () {
 

@@ -8,7 +8,6 @@ export default {
     lilypads: Object,
     root: {},
     setLilypads: function (object) {
-        console.log('set lilypads', object)
         this.lilypads = object;
     },
     setProperties: function (obj) {

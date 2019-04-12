@@ -1,5 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import Tweens from './utils/tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
@@ -22,54 +23,37 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        idle: true,
-        vx: 0,
-        vy: 5,
-        rotateLeftBoolean: false,
-        rotateRightBoolean: false,
-        renderTextureTestBoolean: false,
-        inc: 90,
-        mode: ['fly','bounce','swim'],
+        mode: ['swim','fly','bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
-        backgroundCont: Assets.Container(),
-        foregroundCont: Assets.Container(),
         filterContainer: Assets.Container(),
-        ripples: undefined,
         action: true,
-        spriteSheet: undefined,
         gears: Gears,
         clock: Clock,
-        //pellets: Pellets(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
         transitionAnimation: TransitionAnimation,
+        transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
-        config: Config,
         swim: Swim(),
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
         levelSlots: LevelSlots(),
-        screen: Assets.Graphics(),
         controlPanel: ControlPanel(),
-        transitionAnimationPlaying: false,
         grid: Grid,
         dbData: {},
         storeAction: true,
         init: function (isMobile, isMobileOnly) {
 
             this.activeMode = this.mode[this.activeModeIndex];
-            this.cropHeight = 100;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            //this.switchPlayerMaskedAction = this.switchPlayerMaskedAction.bind(this)
-  
-
+         
             if (!this.isMobileOnly) {
                 this.utils.getWidthAndHeight();
             } else {
@@ -85,52 +69,46 @@ export default function(obj) {
                     OrientationChange.makePortrait();
                 }
             }
+
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
                 false
             );
             document.getElementById('homeCanvas').appendChild(app.view);
-
             this.stage = app.stage;
         
             const fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
-            this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.filterContainer);
-            this.stage.addChild(this.foregroundCont);
 
-            this.addButton = this.addButton.bind(this)
-            this.uponNewBoardButtonPress = this.uponNewBoardButtonPress.bind(this)
-
-            this.getDataBaseData = this.getDataBaseData.bind(this);
+            this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
+            this.startGame = this.startGame.bind(this);
+            this.switchPlayer = this.switchPlayer.bind(this);
+            this.animate = this.animate.bind(this);
+            this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
+            this.animateMobile = this.animateMobile.bind(this)
+
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    //.load(this.start);
-                    .load(this.getDataBaseData)
+                    .load(this.getDatabaseData)
             } else {
-                //this.start();
-                this.getDataBaseData();
+                this.getDatabaseData();
             }
 
         },
-        getDataBaseData: function () {
+        getDatabaseData: function () {
            let indexToGet = this.grid.boards.length;
-           //console.log(indexToGet) 
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
            let that = this;
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
-                //console.log('home canvas response = ', response)
-                //that.
-
-                (response.data.board)
                 this.dbData = response.data;
                 if (indexToGet === 0) {
                     this.buildGame();
@@ -143,10 +121,10 @@ export default function(obj) {
         },
         buildGame: function () {
             
-            this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
+            let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
             this.utils.setProperties({
-                spritesheet: this.spritesheet,
+                spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
                 app: this.app,
@@ -155,21 +133,17 @@ export default function(obj) {
 
             Assets.init();
 
-            this.grid.init(this);
+            this.gears.init().addToStage();
+
+            this.clock.init().addToStage();
+
+            this.grid.init();
 
             this.score.init()
 
             this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
 
             this.utils.setHero(this.hero);
-        
-            this.gears.init(this.stage);
-
-            this.clock.init(this.stage);
-
-            //this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
-
-           
 
             this.filterAnimation.init(this.filterContainer);
             
@@ -183,14 +157,8 @@ export default function(obj) {
             
             this.levelSlots.init(this).addToStage();
 
-            this.startGame = this.startGame.bind(this);
-            //this.introScreen.init(this.stage, this.startGame).addToStage();
-
-            this.switchPlayer = this.switchPlayer.bind(this);
-
-            this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
-            this.stage.addChild(this.screen);
-
+            this.transitionAnimation.init(this);
+           
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
             if (this.isMobile) {
@@ -204,9 +172,7 @@ export default function(obj) {
                 this.testButton.pointerdown = function(){that.switchPlayer()};
                 this.stage.addChild(this.testButton)
             } 
-           
-            //this.startGame();
-           
+               
             if (this.isMobileOnly) {
                 //mobile
                 OrientationChange.init(this);
@@ -217,73 +183,19 @@ export default function(obj) {
             this.startGame();
         },
         startGame: function () {
-            //this.mode = this.utils.shuffle(this.mode);
-            //this.introScreen.removeFromStage();
+
             this.switchPlayer(this.mode[this.activeModeIndex]);
-            this.app.ticker.add(this.animate.bind(this));
-            this.stage.removeChild(this.screen);
-            this.clock.addToStage();
 
             if (!this.isMobile) {
-                this.app.ticker.add(this.animateDesktopIpad.bind(this));
+                this.app.ticker.add(this.animateDesktopIpad);
                 this.keyHandler.addToStage();
             } else {
-                this.app.ticker.add(this.animateMobile.bind(this)); 
+                this.app.ticker.add(this.animateMobile); 
             }
 
+            let index = this.stage.getChildIndex(this.clock.cont) + 1;
+            this.grid.addToStage(index);
 
-            this.transitionAnimation.init(this);
-
-            //grid has to take a trip to the server to get the 
-            // this.grid.init(this, this.grassSquare);
-             let index = this[this.activeMode].background.gridIndex + 1;
-             this.grid.addToStage(index);
-
-
-    
-        },
-        boardComplete: function () {
-            //alert("board complete!");
-
-            //wait 10 seconds
-            setTimeout(this.addButton, Config.boardCompleteButtonAppearDelay);
-            // add button
-
-            
-
-            this.addButton = this.addButton.bind(this)
-            this.uponNewBoardButtonPress = this.uponNewBoardButtonPress.bind(this)
-        },
-        addButton: function () {
-            console.log('add button')
-            if(!this.nextMazeButton){
-                this.nextMazeButton = Assets.Sprite("nextMaze.png");
-                this.nextMazeButton.anchor.set(0.5)
-                this.nextMazeButton.x = this.utils.canvasWidth / 2;
-                this.nextMazeButton.y = this.utils.canvasHeight / 2;
-                this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = true;
-                this.nextMazeButton.on('pointerdown',this.uponNewBoardButtonPress);
-            }
-            this.stage.addChild(this.nextMazeButton)
-
-            this.activeAction.vx = this.activeAction.vy = 0;
-            this.keyHandler.removeFromStage();
-        },
-        uponNewBoardButtonPress: function (e) {
-             this.stage.removeChild(this.nextMazeButton)
-
-             // build board
-             this.grid.nextBoard();
-
-            // reset slots
-            this.levelSlots.reset();
-            // load new board
-            this.keyHandler.addToStage();
-            
-            this.loadNewBoard();
-        },
-        loadNewBoard: function () {
-            this.getDataBaseData();
         },
         stop: function () {
             window.onresize = undefined;
@@ -291,6 +203,11 @@ export default function(obj) {
              if (!this.isMobile) {
                 this.keyHandler.removeFromStage();
             }
+        },
+        increaseIndex: function() {
+            this.activeModeIndex ++;
+            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+            this.activeMode = this.mode[this.activeModeIndex];
         },
         switchPlayer: function (str) {
 
@@ -302,12 +219,17 @@ export default function(obj) {
                 this.increaseIndex();
             }
             
-
-
+            this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
-            this.activeAction = this[this.activeMode].addToStage();
-           // this.pellets.changeMode(this.activeMode);
-            this.grid.setAction(this.activeAction, this.activeMode);
+            
+
+            if (this.activeMode !== 'jump') {
+                this.grid.changeGridSize();
+                this.activeAction = this[this.activeMode].addToStage();
+            } else {
+                this.activeAction = this.jump.jumpAction;
+            }
+
             
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
@@ -317,28 +239,28 @@ export default function(obj) {
                 }
             }
         },
-        increaseIndex: function() {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];
-        },
-        switchPlayerMaskedAction: function () {
-            //alert("switchPlayerMaskedAction",String(this.transitionAnimationPlaying.toString())
+        switchPlayerWithAnimation: function () {
+            
             if (!this.transitionAnimationPlaying) {
-               
+                this.grid.clearGrid();
                 this.action = false;
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
                 oldActiveMode.removeFromStage();
                 this.increaseIndex();
                 let newActiveMode = this[this.activeMode];
-               
-                this.transitionAnimation.start(newActiveMode, Grid);
-                
+                this.transitionAnimation.start(newActiveMode, Grid); 
             }
-
+        },
+        completeSwitchPlayerAnimation: function () {
+            this.transitionAnimationPlaying = false;
+            this.hero.switchPlayer(this.activeMode);
+            this.activeAction = this[this.activeMode].addToStage();
+            this.grid.changeGridSize()
+            this.action = true;
         },
         resizeBundle: function () {
+            this.grid.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
@@ -347,16 +269,9 @@ export default function(obj) {
             this.fly.resize();
             this.jump.resize();
             this.levelSlots.resize();
-            if(this.isMobile){
+            if (this.isMobile) {
                 this.controlPanel.resize();
-            }
-            // this.magicPills.resize(wh);
-            // this.treasure.resize(wh);
-            // this.transitionItems.resize(wh);
-            // this.filterAnimation.resize(wh);
-            // this.pellets.resize(wh);
-            // this.hero.resize(wh);
-            // if(this.bouncePlatform)this.bouncePlatform.resize(wh);            
+            }    
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
@@ -366,13 +281,20 @@ export default function(obj) {
 
             this.resizeBundle();
            
-         
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
         },
-        nightMode: function () {
-           // this.pellets.change();
-            this.app._options.backgroundColor = '0x000000';
-           // console.log(this.app._options.backgroundColor)
+        startSpaceShipJourney: function () {
+            this.hero.cont.visible = false;
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.grid.gridAction.pause = true;
+            this[this.activeMode].startSpaceShipJourney();
+        },
+        endSpaceShipJourney: function () {
+            this[this.activeMode].endSpaceShipJourney();
+        },
+        reset: function () {
+            this.jump.reset();
+            this.levelSlots.reset();
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();
@@ -392,11 +314,7 @@ export default function(obj) {
             }
             this.score.animate();
           
-
             if (this.action) {
-
-                
-
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');
                 } else if(this.rotateRightBoolean) {
@@ -404,19 +322,12 @@ export default function(obj) {
                 }
                 this.clock.animate();
                 this.filterAnimation.animate();
-                
                 this.gears.animate();
-              
                 this.activeAction.animate();
                 this[this.activeMode].animate();
-
                 this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-            
+                Tweens.animate();
             }
-            
-            
-
-
         }
     }
 }
