@@ -263,6 +263,7 @@
             <filename>../bmps/cloud.png</filename>
             <filename>../bmps/nextMaze.png</filename>
             <filename>../bmps/spaceShip.png</filename>
+            <filename>../bmps/swipeScreen.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

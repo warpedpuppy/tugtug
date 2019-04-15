@@ -56,7 +56,7 @@ export default function () {
         },
 		keyDown: function (e) {
             //e.preventDefault();
-            console.log(e.keyCode)
+            //console.log(e.keyCode)
             switch (e.keyCode) {
                 case 32:
                 // space

@@ -45,10 +45,34 @@ export default function () {
 			this.createBars(this.level3Object);
 			this.createBars(this.level4Object);
 
-			this.loopingQ = this.storeLoopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
-
-
+			this.loopingQ = this.storeLoopingQ = Math.max(
+				this.dots.length, 
+				this.array1.length, 
+				this.array2.length, 
+				this.array3.length, 
+				this.array4.length, 
+				this.circleQ,
+				Assets.ringQ)
 			
+
+			this.ringsPC = Assets.ParticleContainer(Assets.ringQ);
+			
+
+			// for (let i = 0; i < Assets.ringQ; i ++) {
+
+			// 	let r = Assets.rings[i];//Assets.Sprite('treasureRing.png');
+			// 	//r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+			// 	r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+			// 	r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+			// 	r.rotate = this.utils.randomNumberBetween(-4, 4);
+			// 	this.ringsPC.addChild(r);
+				
+			// }
+			this.cont.addChild(this.level1);
+			this.cont.addChild(this.level2);
+			this.cont.addChild(this.level3);
+			this.cont.addChild(this.level4)
+			this.cont.addChild(this.ringsPC);
 			//this.level3.alpha = this.level4.alpha = 0.75;
 
 		},
@@ -191,24 +215,27 @@ export default function () {
 			this.createBars(this.level3Object);
 			this.createBars(this.level4Object);
 
-			this.loopingQ = Math.max(this.dots.length, this.array1.length, this.array2.length, this.array3.length, this.array4.length)
+			this.loopingQ = Math.max(
+				this.dots.length, 
+				this.array1.length, 
+				this.array2.length, 
+				this.array3.length, 
+				this.array4.length)
 		},
 		addToStage: function () {
-			this.createCircles();
-			this.cont.addChild(this.level1);
-			this.cont.addChild(this.level2);
-			this.cont.addChild(this.level3);
-			this.cont.addChild(this.level4)
+			//this.createCircles();
+			
 			// this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
 			// this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
 			this.parentCont.addChildAt(this.cont, 1);
 		},
 		removeFromStage: function () {
 			Tweens.killAll();
-			this.cont.removeChild(this.level1);
-			this.cont.removeChild(this.level2);
-			this.cont.removeChild(this.level3);
-			this.cont.removeChild(this.level4);
+			// this.cont.removeChild(this.level1);
+			// this.cont.removeChild(this.level2);
+			// this.cont.removeChild(this.level3);
+			// this.cont.removeChild(this.level4);
+			// this.cont.removeChild(this.ringsPC);
 			// this.parentCont.removeChild(this.level3);
 			// this.parentCont.removeChild(this.level4);
 			this.parentCont.removeChild(this.cont);
@@ -259,7 +286,7 @@ export default function () {
 			}
 		},
 		animate: function () {
-			for(let i = 0; i < this.loopingQ; i ++){
+			for (let i = 0; i < this.loopingQ; i ++) {
 				if(this.array1[i]){
 					this.move(this.array1[i]);
 				}
@@ -272,7 +299,19 @@ export default function () {
 				if(this.array4[i]){
 					this.move(this.array4[i]);
 				}
-				if(this.dots[i]){
+				//console.log(Assets.rings[0])
+				if (Assets.rings[i]) {
+					let ring = Assets.rings[i];
+					//ring.x = ring.x;
+					ring.y -= this.action.vy;
+					if (ring.y < -100) {
+						ring.y = this.utils.canvasHeight + ring.height;
+					} else if (ring.y > this.utils.canvasHeight + 100) {
+						ring.y = -ring.height;
+					}
+				}
+
+				if (this.dots[i]) {
 					let dot = this.dots[i];
 					dot.x = dot.bar.x;
 					dot.y -= this.action.vy;
@@ -282,25 +321,46 @@ export default function () {
 						dot.y = -dot.height;
 					}
 				}
+			
+				// if (Assets.rings[i]) {
+				// 	let item = Assets.rings[i];
+				// 	item.x -= this.action.vx * item.speedAdjust;
+				// 	item.y -= this.action.vy * item.speedAdjust;	
 
-				for (let i = 0; i < this.circleQ; i ++) {
+				// 	if (item.x < -item.width) {
+				// 		item.x = this.utils.canvasWidth + item.width
+				// 	} else if (item.x > this.utils.canvasWidth + item.width){
+				// 		item.x = -item.width
+				// 	}
+
+				// 	if (item.y < -item.width) {
+				// 		item.y = this.utils.canvasHeight + item.width
+				// 	} else if (item.y > this.utils.canvasHeight + item.width){
+				// 		item.y = -item.width
+				// 	}
+				// }
+
+
+				if(this.circleArray[i]){
+
 					let item = this.circleArray[i];
 					item.x -= this.action.vx * item.speedAdjust;
 					item.y -= this.action.vy * item.speedAdjust;	
 
-					if(item.x < -item.width){
+					if (item.x < -item.width) {
 						item.x = this.utils.canvasWidth + item.width
 					} else if (item.x > this.utils.canvasWidth + item.width){
 						item.x = -item.width
 					}
 
-					if(item.y < -item.width){
+					if (item.y < -item.width) {
 						item.y = this.utils.canvasHeight + item.width
 					} else if (item.y > this.utils.canvasHeight + item.width){
 						item.y = -item.width
 					}
 				}
 			}
+			
 		}
 	}
 }

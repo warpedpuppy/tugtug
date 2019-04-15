@@ -68,7 +68,8 @@ export default {
 			    counter = 0,
 			    b,
 			    texture;
-
+			this.cont.scale.set(1);
+			this.cont.pivot = Assets.Point(0, 0);
 			this.baddies.removeCastlesAndSoldiers(); 
 			this.wallHit = Config[`${mode}WallHit`];
 			this.buffer = Config[`${mode}Buffer`];    
@@ -131,9 +132,10 @@ export default {
 			}
 
 			this.placeShip();
-			this.placeItems(this.transitionItemsArray);
+			this.placeItems(this.transitionItemsArray, true);
 			this.placeItems(this.treasureChests);
 			this.placeItems(this.magicPillsArray);
+			console.log("boom boom")
 			this.baddies.placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
@@ -152,15 +154,30 @@ export default {
 		},
 		placeShip: function () {
 			// for now just place space ship here
-			let index = (!Config.testing)?Math.floor(Math.random()*this.freeSpaces.length):0;
+			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 0;
 			this.spaceShip.x = this.spaceShip.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
 			this.spaceShip.y = this.spaceShip.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
 		},
-		placeItems: function (array) {
+		placeItems: function (array, isTransitionItem) {
+
 			array.forEach((item, index) => {
-				if(!this.freeSpaces.length)return;
+				if (!this.freeSpaces.length) return;
+
+				if (isTransitionItem) {
+
+					if (item.name === this.utils.root.activeMode) {
+						if (this.utils.root.activeMode === "fly") {
+							item.texture = this.utils.spritesheet.textures["swimTrans.png"];
+							item.name = "swim";
+						} else if (this.utils.root.activeMode === "swim") {
+							item.texture = this.utils.spritesheet.textures["flyTrans.png"];
+							item.name = "fly";
+						}
+					}
+				}
+
 				let i = Math.floor(Math.random()*this.freeSpaces.length);
 				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
 				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
@@ -262,6 +279,7 @@ export default {
 
 			this.utils.root.grid.gridAction.pause = false;
 			this.utils.root.action = true;
+			window.clearTimeout(this.test);
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		

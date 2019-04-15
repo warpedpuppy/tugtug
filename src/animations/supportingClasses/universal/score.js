@@ -14,14 +14,14 @@ export default function () {
 		this.cont = this.utils.app.stage;
 
 		if(optionalStartScore)this.startScore = optionalStartScore;
-		this.scoreText = Assets.BitmapText(`score: 0`);
+		this.scoreText = Assets.BitmapText(`score: 0 / 10,000`);
 		this.makeScore(this.startScore);
 		//this.cont.addChild(this.scoreText);
 	},
 	makeScore: function (score) {
 		this.cont.removeChild(this.scoreText)
 		score = this.utils.numberWithCommas(score);
-		this.scoreText.text = `score: ${score}`;
+		this.scoreText.text = `score: ${score} / 10,000`;
 		this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
 		this.cont.addChild(this.scoreText);
 	},

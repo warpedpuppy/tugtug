@@ -3,7 +3,7 @@ export default {
 	flyVelocity: 3,
 	treasureChestQ: 10,
 	magicPillsQ: 10,
-	transitionItemsQ: 10,
+	transitionItemsQ: 200,
 	bounceBlockSize: [400, 400],
 	flyBlockSize: [100, 100],
 	swimBlockSize: [200, 200],

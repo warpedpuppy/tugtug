@@ -41,6 +41,7 @@ export default function () {
 		animate: function () {
 			this.ripples.animate();
 			this.swimBackground.animate();
+			this.swimAction.animate();
 			
 		}
 	}

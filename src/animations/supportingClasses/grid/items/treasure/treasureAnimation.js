@@ -37,7 +37,7 @@ export default {
 
 			for (let i = 0; i < this.ringQ; i ++) {
 
-				let r = Assets.Sprite('treasureRing.png');
+				let r = Assets.rings[i];//Assets.Sprite('treasureRing.png');
 				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
 				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);

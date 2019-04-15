@@ -12,9 +12,10 @@ export default {
 		fadeInBoolean: false,
 		tweenArray: [],
 		blastOff: BlastOff,
+		tweens: [],
 		killAll: function () {
 			//TweenMax.killAll();
-			let clone = this.tweens.slice();
+			let clone = (this.tweens)?this.tweens.slice():[];
 			this.tweens.length = 0;
 
 			clone.forEach((item, index) => {
@@ -86,8 +87,8 @@ export default {
 							let startValue = changeObjectProperties[property][0];
 							let endValue = changeObjectProperties[property][1];
 							let changeIncrement = -(endValue - startValue) * changeObject.changeIncrement;
-							//console.log(property, startValue, endValue, Math.round(item[property]),  changeIncrement)
-							//console.log(property, changeIncrement)
+							// console.log(property, startValue, endValue, Math.round(item[property]),  changeIncrement)
+							// console.log(property, changeIncrement)
 	
 							if (startValue < endValue) {
 								if (item[property] < endValue) {

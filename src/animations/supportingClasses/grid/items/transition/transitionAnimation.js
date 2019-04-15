@@ -1,6 +1,7 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
-// import Config from '../../../../animationsConfig';
+import Tweens from '../../../../utils/tweens';
+import Config from '../../../../animationsConfig';
 export default {
     line: undefined,
     cont: Assets.Container(),
@@ -74,10 +75,39 @@ export default {
     },
     start: function (newActiveMode, grid) {
 
+        console.log(this.utils.root.activeMode);
+
+        //set pivot point to the current tile
+        if (this.utils.root.activeMode !== 'bounce') {
+            let block = this.utils.root.grid.gridAction.storeCurrent;
+            let xPos = block.block.x + this.utils.root.grid.gridBuild.blockWidth / 2;
+
+            let yPos = block.block.y + this.utils.root.grid.gridBuild.blockHeight / 2;
+
+
+            this.utils.root.grid.gridBuild.cont.pivot = Assets.Point(xPos, yPos);
+
+            this.utils.root.grid.gridBuild.cont.x = this.utils.canvasWidth / 2;
+            this.utils.root.grid.gridBuild.cont.y = this.utils.canvasHeight / 2;
+            let currentScale = this.utils.root.grid.gridBuild.cont.scale.x;
+            let newScale = (this.utils.root.activeMode === 'swim')?Config.swimBlockSize[0]/Config.flyBlockSize[0]:Config.flyBlockSize[0]/Config.swimBlockSize[0];
+            Tweens.tween(this.utils.root.grid.gridBuild.cont.scale, 0.5, {x: [currentScale, newScale], y: [currentScale, newScale], onComplete: this.continueAnimation.bind(this)})
+        } else {
+            this.continueAnimation();
+        }
+       
+
+        //tween the proportions
         this.newActiveMode = newActiveMode;
+        // this.newActiveMode = newActiveMode;
+        // this.setUp();
+        // this.runAnimation = true;
+
+    },
+    continueAnimation: function () {
+        
         this.setUp();
         this.runAnimation = true;
-
     },
     reset: function () {
 

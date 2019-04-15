@@ -23,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['swim','fly','bounce'],
+        mode: ['fly','swim','bounce'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -207,7 +207,8 @@ export default function(obj) {
         increaseIndex: function() {
             this.activeModeIndex ++;
             if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];
+            this.activeMode = this.mode[this.activeModeIndex];    
+            return this.activeMode;  
         },
         switchPlayer: function (str) {
 
@@ -239,7 +240,7 @@ export default function(obj) {
                 }
             }
         },
-        switchPlayerWithAnimation: function () {
+        switchPlayerWithAnimation: function (mode) {
             
             if (!this.transitionAnimationPlaying) {
                 this.grid.clearGrid();
@@ -247,7 +248,9 @@ export default function(obj) {
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
                 oldActiveMode.removeFromStage();
-                this.increaseIndex();
+
+                this.activeMode = (mode)?mode:this.increaseIndex();
+
                 let newActiveMode = this[this.activeMode];
                 this.transitionAnimation.start(newActiveMode, Grid); 
             }
@@ -256,7 +259,13 @@ export default function(obj) {
             this.transitionAnimationPlaying = false;
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
-            this.grid.changeGridSize()
+            if (this.activeMode !== 'bounce') {
+                this.grid.changeGridSize()
+            } else {
+                this.grid.gridAction.pause = true;
+                this.grid.gridBuild.cont.visible = false;
+            }
+           
             this.action = true;
         },
         resizeBundle: function () {
@@ -313,6 +322,8 @@ export default function(obj) {
                 this.transitionAnimation.reset();
             }
             this.score.animate();
+
+            Tweens.animate();
           
             if (this.action) {
                 if(this.rotateLeftBoolean) {
@@ -323,10 +334,12 @@ export default function(obj) {
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-                this.activeAction.animate();
+               // this.activeAction.animate();
                 this[this.activeMode].animate();
-                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-                Tweens.animate();
+                if (this.activeMode === 'swim' || this.activeMode === 'fly') {
+                    this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+                }
+               
             }
         }
     }

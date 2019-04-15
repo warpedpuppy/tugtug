@@ -4,7 +4,15 @@ export default {
 		utils: Utils,
 		opQ: 0,
 		op: [],
+		rings: [],
 		init: function () {
+
+			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?1000:100;
+			for (let i = 0; i < this.ringQ; i ++) {
+				this.rings.push(this.Sprite('treasureRing.png'));
+			}
+
+
 			this.opQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?1000:100;
 			for (let i = 0; i < this.opQ; i ++) {
 				this.op.push(this.Sprite());

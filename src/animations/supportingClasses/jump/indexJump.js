@@ -27,6 +27,7 @@ export default function () {
 		},
 		animate: function () {
 			this.jumpBackground.animate();
+			this.jumpAction.animate();
 		}
 			
 	}

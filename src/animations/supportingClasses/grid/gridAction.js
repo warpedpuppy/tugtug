@@ -124,20 +124,23 @@ export default {
 					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
 						this.transitionItemsArray[i].hit = true;
 						this.utils.root.filterAnimation.shutOff();
-						this.utils.root.switchPlayerWithAnimation();
+						this.utils.root.switchPlayerWithAnimation(this.transitionItemsArray[i].name);
+					
 					}
 				}
-				if(this.treasure.chests[i]){
+				if (this.treasure.chests[i]) {
 					if(this.itemHitDetect(this.treasure.chests[i]) && !this.treasure.animationHappening){
 						this.treasure.activeChest = this.treasure.chests[i];
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation(this.treasure.activeChest);
 						this.treasure.removeChest(i);
+						
 					}  
 				}
 				if(this.magicPillsArray[i]){
 					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
 						this.utils.root.filterTest();
+						
 					}
 				}
 				if(this.utils.root.grid.gridBuild.tokens[i]){
@@ -156,6 +159,7 @@ export default {
 						this.gridBuild.cont.removeChild(t)
 						this.utils.root.levelSlots.fillSlot(t);
 					}
+					
 				}
 			}
 
@@ -181,24 +185,24 @@ export default {
 			 	this.gridBuild.cont.x -= this.buffer;
 			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 
-			 	if (this.utils.root.activeMode === "bounce") {
-			 		this.utils.hero.activeHero.bounce(true);
-		        	this.utils.root.activeAction.vx  = -5 * this.gridBuild.wallHit;
-			    } else {
+			 	//if (this.utils.root.activeMode === "bounce") {
+			 	//	this.utils.hero.activeHero.bounce(true);
+		     //    	this.utils.root.activeAction.vx  = -5 * this.gridBuild.wallHit;
+			    // } else {
 			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-			    }
+			   // }
 
 			} 
 			if (this.gridBuild.cont.x < -this.rightBorder) {
 				this.gridBuild.cont.x += this.buffer;
 			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 
-			 	if (this.utils.root.activeMode === "bounce") {
-			 		this.utils.hero.activeHero.bounce(true);
-		        	this.utils.root.activeAction.vx  = 5 * this.gridBuild.wallHit;
-			    } else {
+			 	// if (this.utils.root.activeMode === "bounce") {
+			 	// 	this.utils.hero.activeHero.bounce(true);
+		   //      	this.utils.root.activeAction.vx  = 5 * this.gridBuild.wallHit;
+			  //   } else {
 			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-			    }
+			   // }
 
 			}
 
@@ -207,12 +211,12 @@ export default {
 			 	this.gridBuild.cont.y = this.topBorder - this.buffer;
 			 	//this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 
-			 	if (this.utils.root.activeMode === "bounce") {
-			 		this.utils.hero.activeHero.bounce(true);
-		        	this.utils.root.activeAction.vy  = -5 * this.gridBuild.wallHit;
-			    } else {
+			 	// if (this.utils.root.activeMode === "bounce") {
+			 	// 	this.utils.hero.activeHero.bounce(true);
+		   //      	this.utils.root.activeAction.vy  = -5 * this.gridBuild.wallHit;
+			  //   } else {
 			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
-			    }
+			   // }
 
 			} 
 
@@ -220,12 +224,12 @@ export default {
 
 				 this.gridBuild.cont.y = -this.bottomBorder + this.buffer;
 			
-			 	if (this.utils.root.activeMode === "bounce") {
-			 		this.utils.hero.activeHero.bounce(true);
-		        	this.utils.root.activeAction.vy  = 10 * this.gridBuild.wallHit;
-			    } else {
+			 	// if (this.utils.root.activeMode === "bounce") {
+			 	// 	this.utils.hero.activeHero.bounce(true);
+		   //      	this.utils.root.activeAction.vy  = 10 * this.gridBuild.wallHit;
+			  //   } else {
 			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
-			    }
+			  //  }
 			}
 		}
 }
