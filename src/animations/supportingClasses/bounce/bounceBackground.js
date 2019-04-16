@@ -1,6 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import Tweens from '../../utils/tweens';
+import BounceExplosion from './bounceMiniExplosion';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -9,6 +10,7 @@ export default function () {
 		level2: Assets.Container(),
 		level3: Assets.Container(),
 		level4: Assets.Container(),
+		transCont: Assets.Container(),
 		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 		colorCounter: 0,
 		utils: Utils,
@@ -22,8 +24,15 @@ export default function () {
 		buffer: 500,
 		createCounter: 0,
 		gridIndex: 5,
-		init: function (action) {
+		transitionItems: [], 
+		transitionItemsQ: 10,
+		mines: [], 
+		mineQ: 10,
+		init: function (action, points) {
 
+			BounceExplosion.init();
+
+			this.points = points;
 			this.hero = this.utils.hero;
 			this.app = this.utils.app;
 			this.parentCont = this.app.stage;
@@ -35,11 +44,14 @@ export default function () {
 
 			this.cont.addChild(this.background);
 
-			this.createCircles();
-
-			this.createResources();
+			this.ringsPC = Assets.ParticleContainer(Assets.ringQ);
 
 			
+		
+			this.createResources();
+
+			this.createRings();
+			this.createTransitionItems();
 			this.createBars(this.level1Object);
 			this.createBars(this.level2Object);
 			this.createBars(this.level3Object);
@@ -50,53 +62,66 @@ export default function () {
 				this.array1.length, 
 				this.array2.length, 
 				this.array3.length, 
-				this.array4.length, 
-				this.circleQ,
+				this.array4.length,
 				Assets.ringQ)
+
+
+			
 			
 
-			this.ringsPC = Assets.ParticleContainer(Assets.ringQ);
-			
-
-			// for (let i = 0; i < Assets.ringQ; i ++) {
-
-			// 	let r = Assets.rings[i];//Assets.Sprite('treasureRing.png');
-			// 	//r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
-			// 	r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
-			// 	r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
-			// 	r.rotate = this.utils.randomNumberBetween(-4, 4);
-			// 	this.ringsPC.addChild(r);
-				
-			// }
+		
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
 			this.cont.addChild(this.level3);
 			this.cont.addChild(this.level4)
 			this.cont.addChild(this.ringsPC);
+			this.cont.addChild(this.transCont);
 			//this.level3.alpha = this.level4.alpha = 0.75;
 
-		},
-		createCircles: function () {
-			this.circleArray = Assets.returnObjectPool('transparentRing.png');
-			this.circleQ = this.circleArray.length * 0.1;
-            this.circles = Assets.ParticleContainer(this.circleQ);
-			for (let i = 0; i < this.circleQ; i ++) {
-				let item = this.circleArray[i];
-				item.anchor.set(0.5);
-				item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
-				item.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
-				item.speedAdjust = this.utils.randomNumberBetween(0.0001, 0.0065);
-				item.scale.set(this.utils.randomNumberBetween(0.05, 0.35));
-				item.alpha = this.utils.randomNumberBetween(0.5, 0.8);
-				item.tint = this.colors[this.colorCounter];
-				this.colorCounter ++;
-				if (this.colorCounter > this.colors.length - 1) {
-					this.colorCounter = 0;
-				}
-				this.circles.addChild(item);
+			 this.heroCollisionDetector = {
+				x: this.utils.canvasWidth / 2,
+				y: this.utils.canvasHeight / 2,
+				radius: 10
 			}
-			this.cont.addChild(this.circles);
 
+		},
+		createRings: function () {
+
+			this.rings = Assets.rings.slice();
+
+			for (let i = 0; i < Assets.ringQ; i ++) {
+
+				let r = this.rings[i];//Assets.Sprite('treasureRing.png');
+				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+				r.name = 'ring';
+				r.hit = false;
+				r.speedAdjust = this.utils.randomNumberBetween(0.1, 0.65);
+				r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+				r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				r.rotate = this.utils.randomNumberBetween(-4, 4);
+				this.ringsPC.addChild(r);
+				
+			}
+		},
+	
+		createTransitionItems: function() {
+
+			for (let i = 0; i < this.transitionItemsQ; i ++) {
+				let r;
+				if (i < this.transitionItemsQ / 2) {
+					r = Assets.Sprite('swimTrans.png');
+					r.name = 'swim';
+				} else {
+					r = Assets.Sprite('flyTrans.png');
+					r.name = 'fly';
+				}
+				r.hit = false;
+				r.speedAdjust = this.utils.randomNumberBetween(0.1, 0.65);
+				r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+				r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+				this.transitionItems.push(r);
+				this.transCont.addChild(r);
+			}
 		},
 		createResources: function () {
 			this.array1 = [];
@@ -179,11 +204,11 @@ export default function () {
 				//console.log(bar.x, bar.y)
 				obj.array.push(bar);
 
-				let dot = this.dotsOP[this.createCounter];
+				let dot = this.createSpikes(obj.speedAdjust);//this.dotsOP[this.createCounter];
 				dot.bar = bar;
-				dot.scale.set(obj.speedAdjust);
+				//dot.scale.set(obj.speedAdjust);
 				dot.x = bar.x;
-				dot.tint = this.colors[this.colorCounter]; 
+				//dot.tint = this.colors[this.colorCounter]; 
 
 				this.colorCounter ++; 
 
@@ -192,7 +217,7 @@ export default function () {
 				}
 
 				bar.dot = dot;
-				dot.anchor.set(0.5);
+				//dot.anchor.set(0.5);
 				dot.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight)
 				obj.cont.addChild(dot);
 				this.dots.push(dot);
@@ -200,6 +225,20 @@ export default function () {
 				this.createCounter ++;
 			}
 
+		},
+		createSpikes: function (scale) {
+			let cont = Assets.Container();
+			let backSpike = Assets.Sprite("spike.png");
+			backSpike.anchor.set(0.5);
+			backSpike.scale.set(scale)
+			let frontSpike = Assets.Sprite("spike.png");
+			frontSpike.anchor.set(0.5);
+			frontSpike.scale.set(scale * 0.5);
+			cont.addChild(backSpike);
+			cont.addChild(frontSpike);
+			cont.frontSpike = frontSpike;
+			cont.backSpike = backSpike;
+			return cont;
 		},
 		resizeBars: function () {
 			this.createCounter = 0;
@@ -223,41 +262,13 @@ export default function () {
 				this.array4.length)
 		},
 		addToStage: function () {
-			//this.createCircles();
-			
-			// this.parentCont.addChildAt(this.level3, this.parentCont.children.length - 3);
-			// this.parentCont.addChildAt(this.level4, this.parentCont.children.length - 3);
+			BounceExplosion.addToStage();
 			this.parentCont.addChildAt(this.cont, 1);
 		},
 		removeFromStage: function () {
-			Tweens.killAll();
-			// this.cont.removeChild(this.level1);
-			// this.cont.removeChild(this.level2);
-			// this.cont.removeChild(this.level3);
-			// this.cont.removeChild(this.level4);
-			// this.cont.removeChild(this.ringsPC);
-			// this.parentCont.removeChild(this.level3);
-			// this.parentCont.removeChild(this.level4);
+			BounceExplosion.removeFromStage();
 			this.parentCont.removeChild(this.cont);
 		},
-		startSpaceShipJourney: function () {
-			this.loopingQ = 0;
-			Tweens.fadeTo(this.level1, 1, 0);
-			Tweens.fadeTo(this.level2, 1, 0);
-			Tweens.fadeTo(this.level3, 1, 0);
-			Tweens.fadeTo(this.level4, 1, 0);
-			Tweens.fadeTo(this.circles, 1, 0);
-			Tweens.fadeTo(this.background, 1, 0);
-        },
-        endSpaceShipJourney: function () {
-        	this.loopingQ = this.storeLoopingQ;
-        	Tweens.fadeTo(this.level1, 1, 1);
-			Tweens.fadeTo(this.level2, 1, 1);
-			Tweens.fadeTo(this.level3, 1, 1);
-			Tweens.fadeTo(this.level4, 1, 1);
-			Tweens.fadeTo(this.circles, 1, 1);
-			Tweens.fadeTo(this.background, 1, 1);
-        },
 		resize: function () {
 			// this.background.clear();
 			// this.background.beginFill(0x9900FF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
@@ -271,7 +282,7 @@ export default function () {
 			}
 
 		},
-		move: function (bar) {
+		moveBars: function (bar) {
 			bar.x -= (this.action.vx * bar.speedAdjust);
 			if (bar.x < 0 && this.action.vx > 0) {
 				let backBarX = bar.array[bar.array.length - 1].x;
@@ -285,36 +296,70 @@ export default function () {
 				bar.array.unshift(bar);
 			}
 		},
+		moveItems: function (item) {
+			item.x -= this.action.vx * item.speedAdjust;
+			item.y -= this.action.vy * item.speedAdjust;	
+
+			if (item.x < -item.width) {
+				item.x = this.utils.canvasWidth + item.width
+			} else if (item.x > this.utils.canvasWidth + item.width) {
+				item.x = -item.width
+			}
+
+			if (item.y < -item.width) {
+				item.y = this.utils.canvasHeight + item.width
+			} else if (item.y > this.utils.canvasHeight + item.width) {
+				item.y = -item.width
+			}
+		},
+		itemHitDetect: function (item) {
+			let globalPoint = this.transCont.toGlobal(item);
+			let ballB = {
+				x: globalPoint.x,
+				y: globalPoint.y,
+				radius: 30
+			}
+			let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
+			return x[0];
+		},
 		animate: function () {
+
+			BounceExplosion.animate();
+
 			for (let i = 0; i < this.loopingQ; i ++) {
 				if(this.array1[i]){
-					this.move(this.array1[i]);
+					this.moveBars(this.array1[i]);
 				}
 				if(this.array2[i]){
-					this.move(this.array2[i]);
+					this.moveBars(this.array2[i]);
 				}
 				if(this.array3[i]){
-					this.move(this.array3[i]);
+					this.moveBars(this.array3[i]);
 				}
 				if(this.array4[i]){
-					this.move(this.array4[i]);
+					this.moveBars(this.array4[i]);
 				}
-				//console.log(Assets.rings[0])
-				if (Assets.rings[i]) {
-					let ring = Assets.rings[i];
-					//ring.x = ring.x;
-					ring.y -= this.action.vy;
-					if (ring.y < -100) {
-						ring.y = this.utils.canvasHeight + ring.height;
-					} else if (ring.y > this.utils.canvasHeight + 100) {
-						ring.y = -ring.height;
-					}
-				}
+				
 
 				if (this.dots[i]) {
 					let dot = this.dots[i];
 					dot.x = dot.bar.x;
 					dot.y -= this.action.vy;
+					dot.frontSpike.rotation += 0.05;
+					dot.backSpike.rotation -= 0.025;
+
+					if (!dot.hit && this.itemHitDetect(dot) && dot.y < this.utils.canvasHeight / 2) {
+						dot.hit = true;
+						 this.utils.hero.activeHero.bounce(true);
+		   				 this.utils.root.activeAction.vy  = 10 * -1.75;
+		   				 BounceExplosion.startBad();
+						this.points.spikeHit();
+					}
+
+
+
+					
+
 					if(dot.y < -100){
 						dot.y = this.utils.canvasHeight + dot.height;
 					} else if(dot.y > this.utils.canvasHeight +100){
@@ -322,41 +367,29 @@ export default function () {
 					}
 				}
 			
-				// if (Assets.rings[i]) {
-				// 	let item = Assets.rings[i];
-				// 	item.x -= this.action.vx * item.speedAdjust;
-				// 	item.y -= this.action.vy * item.speedAdjust;	
-
-				// 	if (item.x < -item.width) {
-				// 		item.x = this.utils.canvasWidth + item.width
-				// 	} else if (item.x > this.utils.canvasWidth + item.width){
-				// 		item.x = -item.width
-				// 	}
-
-				// 	if (item.y < -item.width) {
-				// 		item.y = this.utils.canvasHeight + item.width
-				// 	} else if (item.y > this.utils.canvasHeight + item.width){
-				// 		item.y = -item.width
-				// 	}
-				// }
-
-
-				if(this.circleArray[i]){
-
-					let item = this.circleArray[i];
-					item.x -= this.action.vx * item.speedAdjust;
-					item.y -= this.action.vy * item.speedAdjust;	
-
-					if (item.x < -item.width) {
-						item.x = this.utils.canvasWidth + item.width
-					} else if (item.x > this.utils.canvasWidth + item.width){
-						item.x = -item.width
+				if (Assets.rings[i]) {
+					let ring = Assets.rings[i];
+					this.moveItems(ring);
+					if(!ring.hit && this.itemHitDetect(ring)){
+						ring.hit = true;
+						console.log("ring hit")
+						BounceExplosion.startGood();
+						ring.parent.removeChild(ring);
+						this.rings.slice(i, 1);
+						this.points.ringHit();
+						//this.utils.root.switchPlayerWithAnimation(item.name);
+					
 					}
+				}
 
-					if (item.y < -item.width) {
-						item.y = this.utils.canvasHeight + item.width
-					} else if (item.y > this.utils.canvasHeight + item.width){
-						item.y = -item.width
+				if (this.transitionItems[i]) {
+					let item = this.transitionItems[i];
+					this.moveItems(item);
+					if(!item.hit && this.itemHitDetect(item)){
+						item.hit = true;
+						console.log("hit")
+						//this.utils.root.switchPlayerWithAnimation(item.name);
+					
 					}
 				}
 			}

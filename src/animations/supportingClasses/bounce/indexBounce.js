@@ -17,9 +17,8 @@ export default function () {
     		this.bouncePlatform.init(cont, this.bounceInstructions);
     		this.bouncePlatform.on(false); 
     		this.bounceAction.init(this.bouncePlatform);
-    		this.bounceBackground.init(this.bounceAction);
     		this.bouncePoints.init();
-
+    		this.bounceBackground.init(this.bounceAction, this.bouncePoints);
 		},
 		addToStage: function () {
 			this.bouncePlatform.start();

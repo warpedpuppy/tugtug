@@ -5,9 +5,10 @@ export default {
 		opQ: 0,
 		op: [],
 		rings: [],
+		opCounter: 0, 
 		init: function () {
 
-			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?1000:100;
+			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?500:100;
 			for (let i = 0; i < this.ringQ; i ++) {
 				this.rings.push(this.Sprite('treasureRing.png'));
 			}
@@ -38,7 +39,7 @@ export default {
 				[0,1000,1,-1],
 				[2000,1000,-1,-1]
 			],s, cont = this.Container();
-			for(let i = 0; i < 4; i ++){
+			for (let i = 0; i < 4; i ++) {
 				s = this.Sprite(texture);
 				s.x = arr[i][0];
 				s.y = arr[i][1];

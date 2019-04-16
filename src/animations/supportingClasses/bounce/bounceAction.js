@@ -15,6 +15,9 @@ export default function () {
 			this.bouncePlatform = bouncePlatform;
 			this.canvasWidth = this.utils.canvasWidth;
 			this.canvasHeight = this.utils.canvasHeight;
+
+			
+
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -23,6 +26,7 @@ export default function () {
 		rotate: function () {
 
 		},
+		
 		animate: function () {
 			//this.hero.vy += 0.25;
 
