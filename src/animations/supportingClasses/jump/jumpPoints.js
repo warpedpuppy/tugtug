@@ -1,18 +1,21 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 import Config from '../../animationsConfig';
 export default {
 		utils: Utils,
 		score: 0,
 		totalNeeded: 10,
 		tokenEarned: false,
-		init: function (JumpTokenUnlocked) {
+		init: function (parent) {
+			this.parent = parent;
 			this.text = Assets.BitmapText(`jump points: ${this.score} / ${this.totalNeeded}`);
 			this.text.x = this.utils.canvasWidth / 2;
 			this.text.y = this.utils.canvasHeight  - this.text.height;
 			this.text.anchor.set(0.5);
-			this.jumpTokenUnlocked = JumpTokenUnlocked;
-			JumpTokenUnlocked.init();
+			console.log(parent)
+			this.jumpTokenUnlocked = parent.jumpTokenUnlocked;
+			this.jumpTokenUnlocked.init();
 		},
 		dotHit: function () {
 			this.score ++;
@@ -21,8 +24,12 @@ export default {
 			if (!this.tokenEarned && this.score >= this.totalNeeded) {
 				this.tokenEarned = true;
 				this.jumpTokenUnlocked.addToStage();
+				Tweens.tween(this.parent.tokenLock, 0.5, {alpha: [1,0], onComplete: this.removeLock.bind(this)});
 				//this.utils.root.earnToken(this.utils.root.grid.gridBuild.tokens[2]);
 			}
+		},
+		removeLock: function () {
+			this.parent.tokenLock.removeChild(this.parent.tokenLock);
 		},
 		spikeHit: function () {
 			//this.score -= 10;

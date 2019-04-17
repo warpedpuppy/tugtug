@@ -266,6 +266,7 @@
             <filename>../bmps/swipeScreen.png</filename>
             <filename>../bmps/spike.png</filename>
             <filename>../bmps/unlocked.png</filename>
+            <filename>../bmps/tokenLock.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

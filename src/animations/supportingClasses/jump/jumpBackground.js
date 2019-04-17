@@ -37,6 +37,7 @@ export default function () {
 		dotsArray: [],
 		dotsContArray: [],
 		jumpPoints: JumpPoints,
+		jumpTokenUnlocked: JumpTokenUnlocked,
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -106,7 +107,7 @@ export default function () {
 
 			// this.test = Assets.Graphics();
 			// this.cont.addChild(this.test);
-			this.jumpPoints.init(JumpTokenUnlocked);
+			this.jumpPoints.init(this);
 
 		},
 		dot: function () {
@@ -143,7 +144,10 @@ export default function () {
 				this.tokenOrb = this.orbs[tokenOrbIndex];
 				this.token = this.utils.root.grid.gridBuild.tokens[3];
 				this.token.x = this.token.y = 0;
-				this.tokenOrb.addChild(this.token)
+				this.dotsContArray[tokenOrbIndex].addChild(this.token)
+				this.tokenLock = Assets.Sprite("tokenLock.png");
+				this.tokenLock.anchor.set(0.5);
+				this.dotsContArray[tokenOrbIndex].addChild(this.tokenLock)
 			}
 		},
 		removeFromStage: function () {
@@ -176,7 +180,7 @@ export default function () {
 					this.utils.root.jump.jumpAction.pause = true;
 					
 					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
-				} else if (newPlanet === this.tokenOrb) {
+				} else if (newPlanet === this.tokenOrb && this.jumpPoints.tokenEarned) {
 					//ADD LOCK CODE HERE
 					this.tokenTaken = true;
 					this.utils.root.levelSlots.fillSlot(this.token);

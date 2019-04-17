@@ -461,7 +461,7 @@
 },
 "redTile.png":
 {
-	"frame": {"x":2,"y":1271,"w":67,"h":67},
+	"frame": {"x":79,"y":1271,"w":67,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":67,"h":67},
@@ -612,6 +612,15 @@
 	"sourceSize": {"w":81,"h":81},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"tokenLock.png":
+{
+	"frame": {"x":2,"y":1271,"w":75,"h":74},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":75,"h":74},
+	"sourceSize": {"w":75,"h":74},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "transparentRing.png":
 {
 	"frame": {"x":362,"y":616,"w":212,"h":212},
@@ -709,6 +718,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5b03a4e9176333d21735d0e643a1688d:68ad8b015987e7e3370a2657f3d57cd1:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9aec8ca54304fdf2bf3340ae0f6fd709:aedecf73202c4101c669689493ab9ba9:7a7dafe8686879c23378e53f9469620c$"
 }
 }

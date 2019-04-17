@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 // import Config from '../../animationsConfig';
 export default function () {
 	return {
@@ -46,7 +47,7 @@ export default function () {
 			this.utils.app.stage.addChild(this.textCont);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
-			
+			Tweens.tween(this.textCont, 2, {alpha: [1,0], onComplete: this.removeText.bind(this)})
 
 			this.tokenCounter ++;
 			token.x = token.y = 0;
@@ -57,6 +58,9 @@ export default function () {
 			if (this.tokenCounter === 4) {
 				this.parent.grid.gridComplete.boardComplete();
 			}
+		},
+		removeText: function () {
+			this.utils.app.stage.removeChild(this.textCont);
 		},
 		reset: function () {
 			this.tokenCounter = 0;
