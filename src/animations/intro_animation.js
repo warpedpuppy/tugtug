@@ -196,6 +196,9 @@ export default function(obj) {
             let index = this.stage.getChildIndex(this.clock.cont) + 1;
             this.grid.addToStage(index);
 
+            //testing
+            //this.earnToken();
+
         },
         stop: function () {
             window.onresize = undefined;
@@ -203,6 +206,16 @@ export default function(obj) {
              if (!this.isMobile) {
                 this.keyHandler.removeFromStage();
             }
+        },
+        earnToken: function (t) {
+            console.log('level complete');
+            this.action = false;
+            this.levelSlots.fillSlot(t);
+            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
+        },
+        resumePlayAfterEarnToken: function () {
+            this.levelSlots.clearText();
+            this.action = true;
         },
         increaseIndex: function() {
             this.activeModeIndex ++;
@@ -241,18 +254,20 @@ export default function(obj) {
             }
         },
         switchPlayerWithAnimation: function (mode) {
-            
+ 
             if (!this.transitionAnimationPlaying) {
                 this.grid.clearGrid();
                 this.action = false;
+                let oldActiveModeString = this.activeMode;
                 this.transitionAnimationPlaying = true;
                 let oldActiveMode = this[this.activeMode];
                 oldActiveMode.removeFromStage();
 
                 this.activeMode = (mode)?mode:this.increaseIndex();
-
+                let newActiveModeString = this.activeMode;
                 let newActiveMode = this[this.activeMode];
-                this.transitionAnimation.start(newActiveMode, Grid); 
+
+                this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
             }
         },
         completeSwitchPlayerAnimation: function () {
@@ -260,13 +275,21 @@ export default function(obj) {
             this.hero.switchPlayer(this.activeMode);
             this.activeAction = this[this.activeMode].addToStage();
             if (this.activeMode !== 'bounce') {
-                this.grid.changeGridSize()
+                this.grid.changeGridSize();
+                this.grid.gridAction.pause = false;
+                this.grid.gridBuild.cont.visible = true;
+
+
+               this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
+               this.activeAction.vx = this.activeAction.vy = 0;
+               this.action = true;
+
             } else {
                 this.grid.gridAction.pause = true;
                 this.grid.gridBuild.cont.visible = false;
+                this.action = true;
             }
            
-            this.action = true;
         },
         resizeBundle: function () {
             this.grid.resize();

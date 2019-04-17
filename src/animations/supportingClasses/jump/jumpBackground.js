@@ -2,6 +2,9 @@ import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import RainbowSwirls from './rainbowSwirls';
 import Tweens from '../../utils/tweens';
+import Planets from './planet';
+import JumpPoints from './jumpPoints';
+import JumpTokenUnlocked from './jumpTokenUnlocked';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -31,6 +34,9 @@ export default function () {
 		pause: false,
 		tokenTaken: false,
 		testCircle: {},
+		dotsArray: [],
+		dotsContArray: [],
+		jumpPoints: JumpPoints,
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -48,31 +54,10 @@ export default function () {
 			this.widths = [];
 			for(let i = 0; i < this.rowQ; i ++){
 
-				for(let j = 0; j < this.colQ; j ++){
-					let cont = Assets.Container();
-					let s = Assets.Sprite('circleAlpha1.png');
-					s.anchor.set(0.5);
-					let p = Assets.Sprite('pinWheel.png');
-					p.anchor.set(0.5);
-					cont.addChild(s);
-					cont.addChild(p);
-					cont.p = p;
-					let color1, color2;
-					color1 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					while(color2 === color1){
-						color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					}
-					s.tint = color1;
-					p.tint = color2;
-					cont.rotate = this.utils.randomNumberBetween(-10, 10);
-					let scale = this.utils.randomNumberBetween(0.25, 0.8);
-					cont.scale.set(scale);
+				for (let j = 0; j < this.colQ; j ++) {
 
-					cont.radius = cont.r = cont.width / 2;
-					cont.x = j * 350;//this.utils.randomNumberBetween(300, 400);
-					cont.y = i * 350;//this.utils.randomNumberBetween(300, 400);
-					cont.index = counter;
+					let cont = Planets().init(i, j, counter);
+					
 					this.orbsCont.addChild(cont);
 					this.orbs.push(cont);
 					
@@ -81,6 +66,22 @@ export default function () {
 						this.currentOrb = this.landingOrb = this.centralOrb = cont;
 						//this.currentOrb.alpha = 0.5;
 					}
+
+					let dotQ = 10;
+					let dist =  cont.radius + 20;
+					let dotsCont = Assets.Container();
+					for (let k = 0; k < dotQ; k++) {
+						let dot = this.dot();
+			            dot.x = dist * Math.cos( ( 2 * Math.PI) * k / dotQ);
+			            dot.y =  dist * Math.sin( ( 2 * Math.PI) * k / dotQ);
+			            dotsCont.addChild(dot);
+			            this.dotsArray.push(dot);
+			        }
+			        dotsCont.rotate = -cont.rotate;
+			        dotsCont.x = cont.x;
+			        dotsCont.y = cont.y;
+			        this.orbsCont.addChild(dotsCont);
+			        this.dotsContArray.push(dotsCont);
 
 					counter ++;
 					this.widths.push(cont.width);
@@ -104,7 +105,14 @@ export default function () {
 			}
 
 			// this.test = Assets.Graphics();
-			// this.cont.addChild(this.test)
+			// this.cont.addChild(this.test);
+			this.jumpPoints.init(JumpTokenUnlocked);
+
+		},
+		dot: function () {
+			let dot = Assets.Graphics();
+			dot.beginFill(0xFFFF00).drawCircle(0,0,5).endFill();
+			return dot;
 		},
 		addToStage: function () {
 
@@ -115,6 +123,7 @@ export default function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
+			this.jumpPoints.addToStage();
 		},
 		setUp: function () {
 			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
@@ -141,6 +150,7 @@ export default function () {
 			Tweens.killAll();
 
 			this.parentCont.removeChild(this.cont);
+			this.jumpPoints.removeFromStage();
 			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
@@ -167,6 +177,7 @@ export default function () {
 					
 					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
 				} else if (newPlanet === this.tokenOrb) {
+					//ADD LOCK CODE HERE
 					this.tokenTaken = true;
 					this.utils.root.levelSlots.fillSlot(this.token);
 				}
@@ -208,7 +219,26 @@ export default function () {
 				return;
 			}
 
+			for (let i = 0; i < this.dotsArray.length; i ++) {
+				let dot = this.dotsArray[i]
+				let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
+				let tempCircle2 = {
+					x: globalPoint2.x,
+					y: globalPoint2.y,
+					radius: 5
+				}
+
+				if(this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
+					dot.parent.removeChild(dot);
+					this.dotsArray.splice(i, 1);
+					this.jumpPoints.dotHit();
+				}
+
+
+			}
+
 			for (let i = 0; i < this.orbs.length; i ++) {
+
 				let orb = this.orbs[i];
 				orb.p.rotation += this.utils.deg2rad(orb.rotate);
 				let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
@@ -217,6 +247,9 @@ export default function () {
 					y: globalPoint2.y,
 					radius: orb.radius
 				}
+
+				let dotsCont = this.dotsContArray[i];
+				dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
 
 				if(orb !== this.currentOrb && 
 					!this.transition && 

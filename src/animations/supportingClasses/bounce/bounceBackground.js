@@ -25,7 +25,7 @@ export default function () {
 		createCounter: 0,
 		gridIndex: 5,
 		transitionItems: [], 
-		transitionItemsQ: 10,
+		transitionItemsQ: 2,
 		mines: [], 
 		mineQ: 10,
 		init: function (action, points) {
@@ -80,9 +80,15 @@ export default function () {
 
 			 this.heroCollisionDetector = {
 				x: this.utils.canvasWidth / 2,
-				y: this.utils.canvasHeight / 2,
-				radius: 10
+				y: (this.utils.canvasHeight / 2) - 20,
+				radius: 30
 			}
+
+			// this.test = Assets.Graphics();
+			// this.test.x = this.utils.canvasWidth / 2
+			// this.test.y = (this.utils.canvasHeight / 2) - 20;
+			// this.test.beginFill(0x000000).drawCircle(0,0,30).endFill();
+			// this.utils.app.stage.addChild(this.test)
 
 		},
 		createRings: function () {
@@ -262,6 +268,15 @@ export default function () {
 				this.array4.length)
 		},
 		addToStage: function () {
+			for (let i = 0; i < this.transitionItemsQ; i ++) {
+				let item = this.transitionItems[i];
+				item.hit = false;
+				if(i % 2 === 0) {
+					item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth * 0.25)
+				} else {
+					item.x = this.utils.randomNumberBetween(this.utils.canvasWidth * 0.75, this.utils.canvasWidth)
+				}
+			}
 			BounceExplosion.addToStage();
 			this.parentCont.addChildAt(this.cont, 1);
 		},
@@ -350,8 +365,8 @@ export default function () {
 
 					if (!dot.hit && this.itemHitDetect(dot) && dot.y < this.utils.canvasHeight / 2) {
 						dot.hit = true;
-						 this.utils.hero.activeHero.bounce(true);
-		   				 this.utils.root.activeAction.vy  = 10 * -1.75;
+						 // this.utils.hero.activeHero.bounce(true);
+		   		// 		 this.utils.root.activeAction.vy  = 10 * -1.75;
 		   				 BounceExplosion.startBad();
 						this.points.spikeHit();
 					}
@@ -370,9 +385,9 @@ export default function () {
 				if (Assets.rings[i]) {
 					let ring = Assets.rings[i];
 					this.moveItems(ring);
-					if(!ring.hit && this.itemHitDetect(ring)){
+					if (!ring.hit && this.itemHitDetect(ring)) {
 						ring.hit = true;
-						console.log("ring hit")
+						//console.log("ring hit")
 						BounceExplosion.startGood();
 						ring.parent.removeChild(ring);
 						this.rings.slice(i, 1);
@@ -385,10 +400,10 @@ export default function () {
 				if (this.transitionItems[i]) {
 					let item = this.transitionItems[i];
 					this.moveItems(item);
-					if(!item.hit && this.itemHitDetect(item)){
+					if (!item.hit && this.itemHitDetect(item)) {
 						item.hit = true;
 						console.log("hit")
-						//this.utils.root.switchPlayerWithAnimation(item.name);
+						this.utils.root.switchPlayerWithAnimation(item.name);
 					
 					}
 				}

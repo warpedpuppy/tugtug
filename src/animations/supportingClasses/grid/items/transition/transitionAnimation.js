@@ -73,25 +73,26 @@ export default {
     resize: function (wh) {
         this.wh = wh;
     },
-    start: function (newActiveMode, grid) {
+    start: function (newActiveMode, newActiveModeString, oldActiveModeString) {
 
-        console.log(this.utils.root.activeMode);
+      
+        let newMode = this.utils.root.activeMode;
 
-        //set pivot point to the current tile
-        if (this.utils.root.activeMode !== 'bounce') {
+        if (newMode !== 'bounce') {
+
             let block = this.utils.root.grid.gridAction.storeCurrent;
             let xPos = block.block.x + this.utils.root.grid.gridBuild.blockWidth / 2;
-
             let yPos = block.block.y + this.utils.root.grid.gridBuild.blockHeight / 2;
-
-
             this.utils.root.grid.gridBuild.cont.pivot = Assets.Point(xPos, yPos);
 
             this.utils.root.grid.gridBuild.cont.x = this.utils.canvasWidth / 2;
             this.utils.root.grid.gridBuild.cont.y = this.utils.canvasHeight / 2;
             let currentScale = this.utils.root.grid.gridBuild.cont.scale.x;
-            let newScale = (this.utils.root.activeMode === 'swim')?Config.swimBlockSize[0]/Config.flyBlockSize[0]:Config.flyBlockSize[0]/Config.swimBlockSize[0];
+
+            let newScale = Config[`${newActiveModeString}BlockSize`][0]/Config[`${oldActiveModeString}BlockSize`][0];
+
             Tweens.tween(this.utils.root.grid.gridBuild.cont.scale, 0.5, {x: [currentScale, newScale], y: [currentScale, newScale], onComplete: this.continueAnimation.bind(this)})
+            
         } else {
             this.continueAnimation();
         }

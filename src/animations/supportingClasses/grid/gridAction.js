@@ -157,7 +157,8 @@ export default {
 
 					if (x[0] && t.parent === this.gridBuild.cont) {
 						this.gridBuild.cont.removeChild(t)
-						this.utils.root.levelSlots.fillSlot(t);
+						this.utils.root.earnToken(t);
+						
 					}
 					
 				}

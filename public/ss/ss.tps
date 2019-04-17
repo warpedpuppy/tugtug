@@ -265,6 +265,7 @@
             <filename>../bmps/spaceShip.png</filename>
             <filename>../bmps/swipeScreen.png</filename>
             <filename>../bmps/spike.png</filename>
+            <filename>../bmps/unlocked.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

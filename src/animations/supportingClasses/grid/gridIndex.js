@@ -52,8 +52,9 @@ export default {
 
 			let w = Config[`${this.parent.activeMode}BlockSize`][0];
 			let h = Config[`${this.parent.activeMode}BlockSize`][1];
-
-			if(w === this.gridBuild.blockWidth && h === this.gridBuild.blockHeight)return;
+			// console.log("1")
+			// if(w === this.gridBuild.blockWidth && h === this.gridBuild.blockHeight)return;
+			// console.log("2")
 			this.gridBuild.blockWidth = w;
 			this.gridBuild.blockHeight = h;
 

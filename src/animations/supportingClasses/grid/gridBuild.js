@@ -135,7 +135,7 @@ export default {
 			this.placeItems(this.transitionItemsArray, true);
 			this.placeItems(this.treasureChests);
 			this.placeItems(this.magicPillsArray);
-			console.log("boom boom")
+
 			this.baddies.placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
