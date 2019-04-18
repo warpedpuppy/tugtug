@@ -109,6 +109,7 @@ export default function () {
 			// this.cont.addChild(this.test);
 			this.jumpPoints.init(this);
 
+			this.loopingQ = Math.max(this.orbs.length, this.dotsArray.length);
 		},
 		dot: function () {
 			let dot = Assets.Graphics();
@@ -223,43 +224,46 @@ export default function () {
 				return;
 			}
 
-			for (let i = 0; i < this.dotsArray.length; i ++) {
-				let dot = this.dotsArray[i]
-				let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
-				let tempCircle2 = {
-					x: globalPoint2.x,
-					y: globalPoint2.y,
-					radius: 5
+			for (let i = 0; i < this.loopingQ; i ++) {
+
+				if(this.dotsArray[i]){
+					let dot = this.dotsArray[i]
+					let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
+					let tempCircle2 = {
+						x: globalPoint2.x,
+						y: globalPoint2.y,
+						radius: 5
+					}
+
+					if(this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
+						dot.parent.removeChild(dot);
+						this.dotsArray.splice(i, 1);
+						this.jumpPoints.dotHit();
+					}
 				}
-
-				if(this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
-					dot.parent.removeChild(dot);
-					this.dotsArray.splice(i, 1);
-					this.jumpPoints.dotHit();
-				}
+				
 
 
-			}
+			
+				if(this.orbs[i]){
+					let orb = this.orbs[i];
+					orb.p.rotation += this.utils.deg2rad(orb.rotate);
+					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
+					let tempCircle2 = {
+						x: globalPoint2.x,
+						y: globalPoint2.y,
+						radius: orb.radius
+					}
 
-			for (let i = 0; i < this.orbs.length; i ++) {
+					let dotsCont = this.dotsContArray[i];
+					dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
 
-				let orb = this.orbs[i];
-				orb.p.rotation += this.utils.deg2rad(orb.rotate);
-				let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
-				let tempCircle2 = {
-					x: globalPoint2.x,
-					y: globalPoint2.y,
-					radius: orb.radius
-				}
-
-				let dotsCont = this.dotsContArray[i];
-				dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
-
-				if(orb !== this.currentOrb && 
-					!this.transition && 
-					this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
-					this.transition = true;
-					this.switchPlanets(orb);
+					if(orb !== this.currentOrb && 
+						!this.transition && 
+						this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
+						this.transition = true;
+						this.switchPlanets(orb);
+					}
 				}
 			}
 		}

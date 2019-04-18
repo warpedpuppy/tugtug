@@ -35,13 +35,7 @@ export default function () {
 		},
 		makeJumpActive: function () {
 			Tweens.killAll();
-			this.utils.root.jump.jumpBackground.pause = false;
-			this.utils.root.jump.jumpAction.pause = false;
-			this.utils.hero.cont.visible = true;
-			//this.ship.parent.removeChild(this.ship);
-			
-			this.utils.root.switchPlayer("jump");
-			this.utils.root.jump.jumpBackground.setUp();
+			this.utils.root.makeJumpActive();
 		},
 		returnHome: function () {
 

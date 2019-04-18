@@ -23,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['fly','swim','bounce'],
+        mode: ['bounce', 'fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -193,11 +193,14 @@ export default function(obj) {
                 this.app.ticker.add(this.animateMobile); 
             }
 
-            let index = this.stage.getChildIndex(this.clock.cont) + 1;
-            this.grid.addToStage(index);
+            // let index = this.stage.getChildIndex(this.clock.cont) + 1;
+            // this.grid.addToStage(index);
 
             //testing
             //this.earnToken();
+            if (Config.testingJump) {
+                this.makeJumpActive();
+            }
 
         },
         stop: function () {
@@ -208,7 +211,7 @@ export default function(obj) {
             }
         },
         earnToken: function (t) {
-            console.log('level complete');
+            //console.log('level complete');
             this.action = false;
             this.levelSlots.fillSlot(t);
             setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
@@ -223,36 +226,7 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];    
             return this.activeMode;  
         },
-        switchPlayer: function (str) {
-
-            if (this[this.activeMode]) this[this.activeMode].removeFromStage();
-            
-            if (str) {
-                this.activeMode = str;
-            } else {
-                this.increaseIndex();
-            }
-            
-            this.hero.cont.visible = true;
-            this.hero.switchPlayer(this.activeMode);
-            
-
-            if (this.activeMode !== 'jump') {
-                this.grid.changeGridSize();
-                this.activeAction = this[this.activeMode].addToStage();
-            } else {
-                this.activeAction = this.jump.jumpAction;
-            }
-
-            
-            if (this.isMobile) {
-                if (this.activeMode === 'bounce') {
-                    this.controlPanel.removeFromStage();
-                } else {
-                    this.controlPanel.addToStage();
-                }
-            }
-        },
+       
         switchPlayerWithAnimation: function (mode) {
  
             if (!this.transitionAnimationPlaying) {
@@ -267,30 +241,82 @@ export default function(obj) {
                 let newActiveModeString = this.activeMode;
                 let newActiveMode = this[this.activeMode];
 
+                if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
+                    let index = this.stage.getChildIndex(this.clock.cont) + 1;
+                    this.grid.addToStage(index);
+                }
+
                 this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
             }
         },
-        completeSwitchPlayerAnimation: function () {
+        switchPlayer: function (str) {
+
             this.transitionAnimationPlaying = false;
+
+            if (this[this.activeMode]) this[this.activeMode].removeFromStage();
+            
+            if (str) {
+                this.activeMode = str;
+            } else {
+                this.increaseIndex();
+            }
+            
+            this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
-            this.activeAction = this[this.activeMode].addToStage();
-            if (this.activeMode !== 'bounce') {
+            console.log("here")
+            
+
+            if (this.activeMode !== 'jump' && this.activeMode !== 'bounce') {
                 this.grid.changeGridSize();
+                this.activeAction = this[this.activeMode].addToStage();
                 this.grid.gridAction.pause = false;
                 this.grid.gridBuild.cont.visible = true;
-
-
-               this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
-               this.activeAction.vx = this.activeAction.vy = 0;
-               this.action = true;
-
-            } else {
-                this.grid.gridAction.pause = true;
-                this.grid.gridBuild.cont.visible = false;
-                this.action = true;
+            } else if(this.activeMode === 'jump') {
+                // add to stage happens elsewhere
+                this.activeAction = this.jump.jumpAction;
+                this.grid.removeFromStage();
+            } else if(this.activeMode === 'bounce') {
+                this.activeAction = this[this.activeMode].addToStage();
+                this.grid.removeFromStage();
             }
-           
+
+            
+            if (this.isMobile) {
+                if (this.activeMode === 'bounce') {
+                    this.controlPanel.removeFromStage();
+                } else {
+                    this.controlPanel.addToStage();
+                }
+            }
+
+            this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.action = true;
+
+          
+
         },
+        // completeSwitchPlayerAnimation: function () {
+        //    //  this.transitionAnimationPlaying = false;
+        //    //  //this.hero.switchPlayer(this.activeMode);
+        //    // // this.activeAction = this[this.activeMode].addToStage();
+        //    //  if (this.activeMode !== 'bounce') {
+        //    //      this.grid.changeGridSize();
+        //    //      this.grid.gridAction.pause = false;
+        //    //      this.grid.gridBuild.cont.visible = true;
+
+
+        //    //     this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
+        //    //     this.activeAction.vx = this.activeAction.vy = 0;
+        //    //     this.action = true;
+
+        //    //  } else {
+        //    //      this.grid.gridAction.pause = true;
+        //    //      this.grid.gridBuild.cont.visible = false;
+        //    //      this.action = true;
+        //    //  }
+           
+        // },
         resizeBundle: function () {
             this.grid.resize();
             this.clock.resize();
@@ -323,6 +349,22 @@ export default function(obj) {
         },
         endSpaceShipJourney: function () {
             this[this.activeMode].endSpaceShipJourney();
+        },
+        makeJumpActive: function () {
+            this.jump.jumpBackground.pause = false;
+            this.jump.jumpAction.pause = false;
+            this.hero.cont.visible = true;
+            //this.ship.parent.removeChild(this.ship);
+            
+            this.switchPlayer("jump");
+            this.jump.jumpBackground.setUp();
+
+             if (Config.testingJump) {
+                let background = this.utils.root.jump.jumpBackground.orbsCont;
+                background.scale.set(1)
+                this.jump.addToStage();
+            }
+
         },
         reset: function () {
             this.jump.reset();

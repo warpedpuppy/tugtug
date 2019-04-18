@@ -105,7 +105,6 @@ export default {
 			return x[0];
 		},
 		animate: function (vx, vy) {
-			
 			if (this.treasure.animationHappening) {
 				this.treasure.animateSpecial();			
 			} else {

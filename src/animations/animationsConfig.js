@@ -4,6 +4,7 @@ export default {
 	treasureChestQ: 10,
 	magicPillsQ: 10,
 	transitionItemsQ: 10,
+	jumpBlockSize: [400, 400],
 	bounceBlockSize: [400, 400],
 	flyBlockSize: [100, 100],
 	swimBlockSize: [200, 200],
@@ -16,5 +17,6 @@ export default {
 	boardCompleteButtonAppearDelay: 1000,
 	treasureShakeSpeeds: [0.01, 0.025],
 	rainbowColors: [],
-	testing: true
+	testing: true,
+	testingJump: true
 }

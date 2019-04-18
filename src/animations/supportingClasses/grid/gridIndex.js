@@ -83,9 +83,11 @@ export default {
 		},
 
 		addToStage: function (index) {
+			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 		},
 		removeFromStage: function () {
+			this.gridAction.pause = true;
 			this.parentCont.removeChild(this.gridBuild.cont)
 		},
 		resize: function () {

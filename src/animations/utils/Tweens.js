@@ -40,8 +40,8 @@ export default {
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
 			let newX = (this.utils.canvasWidth / 2);
 			let newY = (this.utils.canvasHeight / 2);
-			this.tween(orbsCont.pivot, 1.5, {x: [orbsCont.pivot.x, newPlanet.x], y: [orbsCont.pivot.y, newPlanet.y], onComplete: onCompleteFunction});
-			this.tween(hero, 1.5, {y:  [hero.y, -newPlanet.radius]});
+			this.tween(orbsCont.pivot, 0.5, {x: [orbsCont.pivot.x, newPlanet.x], y: [orbsCont.pivot.y, newPlanet.y], onComplete: onCompleteFunction});
+			this.tween(hero, 0.5, {y:  [hero.y, -newPlanet.radius]});
 		},
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
 			BlastOff.spaceShipBlastOff(ship, maze, background, onCompleteHandler);
@@ -53,9 +53,12 @@ export default {
 
 			let changeIncrement = (1 / this.utils.app._ticker.FPS) / seconds
 			let obj = {
-				changePropertiesObject,changeIncrement 
+				changePropertiesObject,
+				changeIncrement,
+				seconds 
 			}
-
+			item.seconds = seconds;
+			item.startTime = new Date().getTime();
 			if (Array.isArray(item.changeProperties)) {
 				item.changeProperties.push(obj);
 			} else {
@@ -66,6 +69,13 @@ export default {
 
 			
 		},
+		easeInQuad: function (t, b, c, d) {
+			// t: current time, b: begInnIng value, c: change In value, d: duration
+			return c*(t/=d)*t + b;
+		},
+		easeInSine: function (t, b, c, d) {
+		    return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+		 },
 		animate: function () {
 
 		
@@ -87,6 +97,19 @@ export default {
 							let startValue = changeObjectProperties[property][0];
 							let endValue = changeObjectProperties[property][1];
 							let changeIncrement = -(endValue - startValue) * changeObject.changeIncrement;
+
+							let currentChange = item[property] - startValue;
+							let currentTime = new Date().getTime();
+							//console.log(currentTime, startValue, currentChange,changeObject.seconds)
+			//changeIncrement = this.easeInQuad(currentTime, startValue, currentChange,changeObject.seconds)
+
+							 // let t = new Date().getTime() - item.startTime;
+						  //     let b = startValue;
+						  //     let c = endValue - item[property];
+						  //     let d = item.seconds * 1000;
+						  //     let percentage = t / d;
+						  //     console.log(percentage)
+						  //     let inc = this.easeInSine(t, b, c, d);
 							// console.log(property, startValue, endValue, Math.round(item[property]),  changeIncrement)
 							// console.log(property, changeIncrement)
 	

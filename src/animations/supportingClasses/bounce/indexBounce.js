@@ -1,5 +1,5 @@
 import BouncePlatform from './bouncePlatform';
-import BounceBackground from './bounceBackground';
+import BounceBackground from './bounceBackground/bounceBackgroundIndex';
 import BounceAction from './bounceAction';
 import BounceInstructions from './bounceInstructions';
 import BouncePoints from './bouncePoints';

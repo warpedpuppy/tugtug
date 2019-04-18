@@ -78,8 +78,9 @@ export default {
       
         let newMode = this.utils.root.activeMode;
 
-        if (newMode !== 'bounce') {
-
+        if (newMode !== 'bounce' && oldActiveModeString !== 'bounce') {
+            console.log(this.utils.root.grid.gridAction.storeCurrent);
+            console.log()
             let block = this.utils.root.grid.gridAction.storeCurrent;
             let xPos = block.block.x + this.utils.root.grid.gridBuild.blockWidth / 2;
             let yPos = block.block.y + this.utils.root.grid.gridBuild.blockHeight / 2;
@@ -126,8 +127,8 @@ export default {
         
         this.utils.app.stage.removeChild(this.cont);
 
-        
-        this.utils.root.completeSwitchPlayerAnimation();
+        this.utils.root.switchPlayer();
+        //this.utils.root.completeSwitchPlayerAnimation();
     },
     animate: function () {
 
