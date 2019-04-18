@@ -176,10 +176,8 @@ export default function () {
 			
 				if (newPlanet === this.spaceShipOrb) {
 					this.hero.activeHero.cont.y = 0;
-					//this.animate();
 					this.pause = true;
 					this.utils.root.jump.jumpAction.pause = true;
-					
 					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
 				} else if (newPlanet === this.tokenOrb && this.jumpPoints.tokenEarned) {
 					//ADD LOCK CODE HERE
