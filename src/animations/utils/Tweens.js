@@ -83,7 +83,7 @@ export default {
 		
 
 			if (this.tweenArray.length) {
-
+				//console.log(this.tweenArray.length)
 				this.tweenArray.forEach((item, index) => {
 
 					if(!item.changeProperties.length){
@@ -105,17 +105,17 @@ export default {
 							
 
 						
-							 let t = new Date().getTime() - item.startTime;
-						      let b = changeObjectProperties[property][0];
-						      let c = changeObjectProperties[property][1];
-						      let d = item.seconds * 1000;
-						      let e = c - b;
-						      let percentage = t / d;
-						      //console.log(percentage)
-						      let easing = (!changeObjectProperties["easing"])?this.defaultEasing:changeObjectProperties["easing"];
-						      let inc = Easing[easing](percentage);
-						      var inc2 = b + inc*(c-b);
-
+								let t = new Date().getTime() - item.startTime;
+								let b = changeObjectProperties[property][0];
+								let c = changeObjectProperties[property][1];
+								let d = item.seconds * 1000;
+								let e = c - b;
+								let percentage = t / d;
+								//console.log(t, d)
+								let easing = (!changeObjectProperties["easing"])?this.defaultEasing:changeObjectProperties["easing"];
+								let inc = Easing[easing](percentage);
+								var inc2 = b + inc*(c-b);
+						      //console.log(percentage,inc2)
 
 						      if (percentage <  1) {
 						          item[property] = inc2;

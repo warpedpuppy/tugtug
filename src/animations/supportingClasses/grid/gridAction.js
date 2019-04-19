@@ -148,8 +148,9 @@ export default {
 				}
 
 				if (item.name === 'magicPill' || item.name === 'swim' || item.name === 'fly' || item.name === 'treasureChest' ) {
-					if (item.counter >= item.counterLimit) {
-						this.gridBuild.moveItem(item);
+					if (item.counter >= item.counterLimit && !item.isTweening) {
+						item.isTweening = true;
+						this.gridBuild.moveItem1(item);
 					} else {
 						item.counter ++;
 					}

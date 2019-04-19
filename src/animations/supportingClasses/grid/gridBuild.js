@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddyIndex';
@@ -203,18 +204,41 @@ export default {
 				let i = Math.floor(Math.random()*this.freeSpaces.length);
 				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
 				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				item.storeScaleX = item.scale.x;
+				item.storeScaleY = item.scale.y;
 				item.counter = 0;
-            	item.counterLimit = this.utils.randomIntBetween(1000, 6000);
+            	item.counterLimit = this.utils.randomIntBetween(10, 60);
+            	item.isTweening = false;
 				//this.freeSpaces.push([b.x, b.y, b, i, j]);
 				item.currentSpace = this.freeSpaces[i];
 				this.freeSpaces.splice(i, 1);
 				this.cont.addChild(item);
 			})
 		},
-		moveItem: function (item) {
-			//this.freeSpaces.push([b.x, b.y, b, i, j]);
-			//this.cont.removeChild(item);
-			//re add that space to free spaces
+		moveItem1: function (item) {
+			
+			item.hit = true;
+			this.moveItem2 = this.moveItem2.bind(this);
+			let onCompleteHandler = function(){ this.moveItem2(item)}.bind(this);
+			Tweens.tween(item.scale, 1, 
+				{
+					x: [item.scale.x,0], 
+					y: [item.scale.y,0], 
+					onComplete: onCompleteHandler, 
+					easing: 'easeOutBounce'
+				})
+			
+		},
+		moveItem2: function (item) {
+			let onCompleteHandler = function(){ this.moveItem3(item)}.bind(this);
+			Tweens.tween(item.scale, 1, 
+				{
+					x: [item.scale.x,item.storeScaleX], 
+					y: [item.scale.y,item.storeScaleY], 
+					onComplete: onCompleteHandler, 
+					easing: 'easeOutBounce'
+				})
+
 			this.freeSpaces.push(item.currentSpace);
 
 
@@ -225,7 +249,12 @@ export default {
 			item.currentSpace = this.freeSpaces[i];
 			this.freeSpaces.splice(i, 1);
 			//this.cont.addChild(item);
+			
+		},
+		moveItem3: function (item) {
 			item.counter = 0;
+			item.isTweening = false;
+			
 		},
 		placeTokens: function () {
 			for (let key in this.tokenData) {
