@@ -4,21 +4,21 @@ import Utils from '../../utils/utils';
 export default  {
 	utils: Utils,
 	init: function () {
-		this.Sprite = Assets.Sprite("swipeScreen.png");
-		this.Sprite.anchor.set(0.5);
-		this.Sprite.x = this.utils.canvasWidth / 2;
-		this.Sprite.y = this.utils.canvasHeight / 2;
+		this.text = Assets.Sprite("swipeScreen.png");
+		this.text.anchor.set(0.5);
+		this.text.x = this.utils.canvasWidth / 2;
+		this.text.y = this.utils.canvasHeight / 2;
 		return this;
 	},
 	addToStage: function () {
-		this.utils.app.stage.addChild(this.Sprite)
+		this.utils.app.stage.addChild(this.text)
 	},
 	removeFromStage: function () {
-		this.utils.app.stage.removeChild(this.Sprite)
+		this.utils.app.stage.removeChild(this.text)
 	},
 	resize: function () {
-		this.Sprite.x = this.utils.canvasWidth / 2;
-		this.Sprite.x = this.utils.canvasHeight / 2;
+		this.text.x = this.utils.canvasWidth / 2;
+		this.text.y = this.utils.canvasHeight / 2;
 	},
 	animate: function () {
 

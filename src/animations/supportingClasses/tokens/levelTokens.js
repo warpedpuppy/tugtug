@@ -17,6 +17,8 @@ export default {
 			let s;
 			for(let i = 1; i <= 4; i ++){
 				s =  Assets.Sprite(`token${i}.png`);
+				s.name = 'token';
+				s.id = i;
 				this.tokens.push(s);
 			}
 			return this.tokens;

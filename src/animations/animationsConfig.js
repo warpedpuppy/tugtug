@@ -1,11 +1,11 @@
 export default {
 	swimVelocities: [1, 2],
 	flyVelocity: 3,
-	treasureChestQ: 10,
-	magicPillsQ: 10,
-	transitionItemsQ: 10,
+	treasureChestQ: 100,
+	magicPillsQ: 100,
+	transitionItemsQ: 100,
 	jumpBlockSize: [400, 400],
-	bounceBlockSize: [400, 400],
+	bounceBlockSize: [1400, 1400],
 	flyBlockSize: [100, 100],
 	swimBlockSize: [200, 200],
 	flyWallHit: -1,
@@ -18,5 +18,5 @@ export default {
 	treasureShakeSpeeds: [0.01, 0.025],
 	rainbowColors: [],
 	testing: true,
-	testingJump: true
+	testingJump: false
 }

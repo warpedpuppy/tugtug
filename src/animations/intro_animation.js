@@ -23,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['bounce', 'fly','swim'],
+        mode: ['fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -47,6 +47,7 @@ export default function(obj) {
         grid: Grid,
         dbData: {},
         storeAction: true,
+        timeOut: undefined,
         init: function (isMobile, isMobileOnly) {
 
             this.activeMode = this.mode[this.activeModeIndex];
@@ -193,13 +194,11 @@ export default function(obj) {
                 this.app.ticker.add(this.animateMobile); 
             }
 
-            // let index = this.stage.getChildIndex(this.clock.cont) + 1;
-            // this.grid.addToStage(index);
-
-            //testing
-            //this.earnToken();
             if (Config.testingJump) {
                 this.makeJumpActive();
+            } else if(this.activeMode !== 'bounce') {
+                let index = this.stage.getChildIndex(this.clock.cont) + 1;
+                this.grid.addToStage(index);
             }
 
         },
@@ -240,7 +239,7 @@ export default function(obj) {
                 this.activeMode = (mode)?mode:this.increaseIndex();
                 let newActiveModeString = this.activeMode;
                 let newActiveMode = this[this.activeMode];
-
+        
                 if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
                     let index = this.stage.getChildIndex(this.clock.cont) + 1;
                     this.grid.addToStage(index);
@@ -263,7 +262,7 @@ export default function(obj) {
             
             this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
-            console.log("here")
+ 
             
 
             if (this.activeMode !== 'jump' && this.activeMode !== 'bounce') {
@@ -318,7 +317,10 @@ export default function(obj) {
            
         // },
         resizeBundle: function () {
-            this.grid.resize();
+            if (this.activeMode === 'fly' || this.activeMode === 'swim') {
+                this.grid.resize();
+            }
+            this.score.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
@@ -340,6 +342,20 @@ export default function(obj) {
             this.resizeBundle();
            
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+
+            this.action = false;
+
+            if(this.timeOut){
+                clearTimeout(this.timeOut);
+            }
+            this.timeOut = setTimeout(this.resized.bind(this), 200)
+
+        },
+        resized: function () {
+
+            this.action = true;
+            clearTimeout(this.timeOut);
+           
         },
         startSpaceShipJourney: function () {
             this.hero.cont.visible = false;

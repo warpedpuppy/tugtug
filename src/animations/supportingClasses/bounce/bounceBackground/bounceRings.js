@@ -32,7 +32,11 @@ export default  {
 
 		},
 		resize: function () {
-
+			for (let i = 0; i < Assets.ringQ; i ++) {
+				let r = this.rings[i];
+				r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+				r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+			}
 		},
 		animate: function () {
 

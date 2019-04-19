@@ -148,7 +148,7 @@ export default {
 				bar.x = backBarX + bar.spacing;
 				bar.array.splice(0, 1);
 				bar.array.push(bar);
-			} else if(bar.x > this.utils.canvasWidth && this.action.vx < 0){
+			} else if(bar.x > this.utils.canvasWidth && this.utils.root.activeAction.vx < 0){
 				let firstBarX = bar.array[0].x;
 				bar.x = firstBarX - bar.spacing;
 				bar.array.splice(bar.array.length - 1, 1);

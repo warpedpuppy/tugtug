@@ -32,16 +32,29 @@ export default {
 		solderPerGridSquareQ: 1,
 		baddies: Baddies(),
 		init: function () {
+			//this.moveItem = this.moveItem.bind(this);
 
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 			
+			this.microscope = Assets.Sprite('microscope.png');
+			this.microscope.anchor.set(0.5);
+			this.microscope.scale.set(0.5);
+			this.microscope.name = 'microscope';
 		  	//items to be distributed around board
 			this.spaceShip = SpaceShip().init()
 			this.tokens = Tokens.init();
 			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
 			this.treasureChests = this.utils.root.grid.treasureChests;
 			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
+
+			this.omnibusArray = [
+			...this.magicPillsArray, 
+			...this.treasureChests, 
+			...this.transitionItemsArray,
+			...this.tokens, 
+			this.spaceShip, 
+			this.microscope];
 
   			this.boards = this.utils.root.dbData.boards;
 			this.buildGrid(this.boards[this.currentBoard]);
@@ -132,6 +145,7 @@ export default {
 			}
 
 			this.placeShip();
+			this.placeMircoscope();
 			this.placeItems(this.transitionItemsArray, true);
 			this.placeItems(this.treasureChests);
 			this.placeItems(this.magicPillsArray);
@@ -160,6 +174,14 @@ export default {
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
 		},
+		placeMircoscope: function () {
+			// for now just place space ship here
+			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 1;
+			this.microscope.x = this.microscope.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
+			this.microscope.y = this.microscope.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
+			this.freeSpaces.splice(index, 1)
+			this.cont.addChild(this.microscope);
+		},
 		placeItems: function (array, isTransitionItem) {
 
 			array.forEach((item, index) => {
@@ -181,9 +203,29 @@ export default {
 				let i = Math.floor(Math.random()*this.freeSpaces.length);
 				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
 				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				item.counter = 0;
+            	item.counterLimit = this.utils.randomIntBetween(1000, 6000);
+				//this.freeSpaces.push([b.x, b.y, b, i, j]);
+				item.currentSpace = this.freeSpaces[i];
 				this.freeSpaces.splice(i, 1);
 				this.cont.addChild(item);
 			})
+		},
+		moveItem: function (item) {
+			//this.freeSpaces.push([b.x, b.y, b, i, j]);
+			//this.cont.removeChild(item);
+			//re add that space to free spaces
+			this.freeSpaces.push(item.currentSpace);
+
+
+			//get new space for item
+			let i = Math.floor(Math.random() * this.freeSpaces.length);
+			item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
+			item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+			item.currentSpace = this.freeSpaces[i];
+			this.freeSpaces.splice(i, 1);
+			//this.cont.addChild(item);
+			item.counter = 0;
 		},
 		placeTokens: function () {
 			for (let key in this.tokenData) {
@@ -262,8 +304,8 @@ export default {
 			}
 
 			this.cont.alpha = 0;
-			window.clearTimeout(this.test);
-			this.test = setTimeout(this.resized.bind(this), 200)
+			window.clearTimeout(this.timeOut);
+			this.timeOut = setTimeout(this.resized.bind(this), 200)
 
 		},
 		resized: function () {
@@ -279,7 +321,7 @@ export default {
 
 			this.utils.root.grid.gridAction.pause = false;
 			this.utils.root.action = true;
-			window.clearTimeout(this.test);
+			window.clearTimeout(this.timeOut);
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		

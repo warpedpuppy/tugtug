@@ -11,6 +11,8 @@ export default function () {
 			this.ship = Assets.Sprite("spaceShip.png")
 			this.ship.anchor.set(0.5)
 			this.ship.scale.set(0.25)
+			this.ship.counter = 0;
+			this.ship.name = "spaceship";
 			this.ship.classRef = this;
 			return this.ship
 

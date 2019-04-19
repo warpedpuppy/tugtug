@@ -27,7 +27,9 @@ export default function () {
 				let determineContinue = Math.floor(Math.random()*10);
 				if(determineContinue < 9) continue;
 
-				let block = freeSpaces[i],
+				let freeSpacesIndex = Math.floor(Math.random() * freeSpaces.length);
+
+				let block = freeSpaces[freeSpacesIndex],
 				    c;
 
 				if (!this.castles[i]) {
@@ -66,7 +68,9 @@ export default function () {
 					
 					soldierCounter ++;
 				}
+				this.utils.root.grid.gridBuild.freeSpaces.splice(freeSpacesIndex, 1);
 			}
+
 			this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
 		},
 		removeCastlesAndSoldiers: function () {

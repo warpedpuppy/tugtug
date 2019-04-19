@@ -137,7 +137,8 @@ export default function () {
 			this.spaceShipOrb = this.orbs[spaceShipOrbIndex];
 			let spaceShip = this.utils.root.grid.gridBuild.spaceShip;
 			spaceShip.x = spaceShip.y = 0;
-			this.spaceShipOrb.addChild(spaceShip)
+			//this.spaceShipOrb.addChild(spaceShip)
+			this.dotsContArray[spaceShipOrbIndex].addChild(spaceShip)
 		},
 		addToken: function () {
 			if (!this.tokenTaken) {
@@ -159,11 +160,13 @@ export default function () {
 			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
-			// this.background.clear();
-			// this.background.beginFill(0x000066).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
-			// this.orbsCont.x = (this.utils.canvasWidth / 2) - this.currentOrb.x;
-			// this.orbsCont.y = (this.utils.canvasHeight / 2) - this.currentOrb.y;
+			this.jumpPoints.resize();
+			this.background.clear();
+			this.background.beginFill(0x000066).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+
+			this.orbsCont.x = (this.utils.canvasWidth / 2);
+			this.orbsCont.y = (this.utils.canvasHeight / 2);
 		},
 		switchPlanets: function (newPlanet) {
 				//this.orbsCont.pivot = Assets.Point(newPlanet.x, newPlanet.y)

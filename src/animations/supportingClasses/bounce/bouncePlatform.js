@@ -33,9 +33,9 @@ export default function () {
             this.on(true);
             
         },
-        resize: function (wh) {
-            if(this.startMode){
-                this.start(wh.canvasWidth, wh.canvasHeight)
+        resize: function () {
+            if (this.startMode) {
+                this.start(this.utils.canvasWidth, this.utils.canvasHeight)
             }
         },
         start: function (canvasWidth, canvasHeight) {

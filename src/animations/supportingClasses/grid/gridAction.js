@@ -22,6 +22,9 @@ export default {
 		 	this.blocks = this.utils.root.grid.gridBuild.blocks;
 		 	this.gridBuild = this.utils.root.grid.gridBuild;
 			this.spaceShip = this.gridBuild.spaceShip;
+			this.microscope = this.gridBuild.microscope;
+
+			this.omnibusArray = this.gridBuild.omnibusArray;
 
 		    this.itemLoopingQ = Math.max(
 		    	this.magicPillsArray.length, 
@@ -116,66 +119,44 @@ export default {
 			let ballB;
 			this.baddies.animate();
 
-
-			for (let i = 0; i < this.itemLoopingQ; i ++) {
-
-				if (this.transitionItemsArray[i]) {
-					if(!this.transitionItemsArray[i].hit && this.itemHitDetect(this.transitionItemsArray[i])){
-						this.transitionItemsArray[i].hit = true;
+			this.omnibusArray.forEach((item, i) => {
+				
+				if (this.itemHitDetect(item)) {
+					if(item.name === 'swim' || item.name === 'fly' && !item.hit) {
+						item.hit = true;
 						this.utils.root.filterAnimation.shutOff();
-						this.utils.root.switchPlayerWithAnimation(this.transitionItemsArray[i].name);
-					
-					}
-				}
-				if (this.treasure.chests[i]) {
-					if(this.itemHitDetect(this.treasure.chests[i]) && !this.treasure.animationHappening){
-						this.treasure.activeChest = this.treasure.chests[i];
+			 			this.utils.root.switchPlayerWithAnimation(item.name);
+					} else if (item.name === 'magicPill' && !this.utils.root.filterAnimation.enabled) {
+						this.utils.root.filterTest();
+					} else if (item.name === 'treasureChest' && !this.treasure.animationHappening) {
+						this.treasure.activeChest = item;
 						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation(this.treasure.activeChest);
 						this.treasure.removeChest(i);
-						
-					}  
-				}
-				if(this.magicPillsArray[i]){
-					if(this.itemHitDetect(this.magicPillsArray[i]) && !this.utils.root.filterAnimation.enabled){
-						this.utils.root.filterTest();
-						
+						this.omnibusArray.splice(i, 1)
+					} else if (item.name === 'token') {
+						this.gridBuild.cont.removeChild(item)
+			 			this.utils.root.earnToken(item);
+					} else if (item.name === 'spaceship') {
+						this.pause = true;
+						this.spaceShip.classRef.blastOff();
+					} else if (item.name === 'microscope') {
+						item.hit = true;
+						this.utils.root.filterAnimation.shutOff();
+			 			this.utils.root.switchPlayerWithAnimation('bounce');
 					}
 				}
-				if(this.utils.root.grid.gridBuild.tokens[i]){
-					let t = this.gridBuild.tokens[i];
+
+				if (item.name === 'magicPill' || item.name === 'swim' || item.name === 'fly' || item.name === 'treasureChest' ) {
+					if (item.counter >= item.counterLimit) {
+						this.gridBuild.moveItem(item);
+					} else {
+						item.counter ++;
+					}
 				
-					let globalPoint = this.gridBuild.cont.toGlobal(t);
-					ballB = {
-						x: globalPoint.x,
-						y: globalPoint.y,
-						radius: 30
-					}
-
-					let x = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
-
-					if (x[0] && t.parent === this.gridBuild.cont) {
-						this.gridBuild.cont.removeChild(t)
-						this.utils.root.earnToken(t);
-						
-					}
-					
 				}
-			}
+			})
 
-
-			let spaceShipGlobalPoint = this.gridBuild.cont.toGlobal(this.spaceShip);
-			ballB = {
-					x: spaceShipGlobalPoint.x,
-					y: spaceShipGlobalPoint.y,
-					radius: 30
-				}
-			
-			let rocketShipHit = this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, ballB);
-			 if (rocketShipHit[0]) {
-			 	this.pause = true;
-			 	this.spaceShip.classRef.blastOff();
-			 }
 
 			this.storeCurrent = this.currentSquare();
 			this.createBoundaries(this.storeCurrent);
@@ -183,53 +164,22 @@ export default {
 			this.gridBuild.cont.x -= vx;
 			if (this.gridBuild.cont.x > this.leftBorder) {
 			 	this.gridBuild.cont.x -= this.buffer;
-			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-
-			 	//if (this.utils.root.activeMode === "bounce") {
-			 	//	this.utils.hero.activeHero.bounce(true);
-		     //    	this.utils.root.activeAction.vx  = -5 * this.gridBuild.wallHit;
-			    // } else {
-			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-			   // }
-
+			 	this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 			} 
 			if (this.gridBuild.cont.x < -this.rightBorder) {
 				this.gridBuild.cont.x += this.buffer;
-			 	//this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-
-			 	// if (this.utils.root.activeMode === "bounce") {
-			 	// 	this.utils.hero.activeHero.bounce(true);
-		   //      	this.utils.root.activeAction.vx  = 5 * this.gridBuild.wallHit;
-			  //   } else {
-			        this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
-			   // }
-
+				this.utils.root.activeAction.vx *= this.gridBuild.wallHit;
 			}
 
 			this.gridBuild.cont.y -= vy;
 			if (this.gridBuild.cont.y > this.topBorder) {
 			 	this.gridBuild.cont.y = this.topBorder - this.buffer;
-			 	//this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
-
-			 	// if (this.utils.root.activeMode === "bounce") {
-			 	// 	this.utils.hero.activeHero.bounce(true);
-		   //      	this.utils.root.activeAction.vy  = -5 * this.gridBuild.wallHit;
-			  //   } else {
-			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
-			   // }
-
+			 	this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 			} 
 
 			if (this.gridBuild.cont.y < -this.bottomBorder + this.buffer) {
-
-				 this.gridBuild.cont.y = -this.bottomBorder + this.buffer;
-			
-			 	// if (this.utils.root.activeMode === "bounce") {
-			 	// 	this.utils.hero.activeHero.bounce(true);
-		   //      	this.utils.root.activeAction.vy  = 10 * this.gridBuild.wallHit;
-			  //   } else {
-			        this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
-			  //  }
+				this.gridBuild.cont.y = -this.bottomBorder + this.buffer;
+				this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 			}
 		}
 }

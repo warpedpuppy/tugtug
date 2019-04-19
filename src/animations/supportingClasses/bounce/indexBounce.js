@@ -35,6 +35,9 @@ export default function () {
 			this.bouncePoints.removeFromStage();
 		},
 		resize: function () {
+			BounceInstructions.resize();
+			this.bouncePlatform.resize();
+			this.bouncePoints.resize();
 			this.bounceBackground.resize();
 		},
 		startSpaceShipJourney: function () {

@@ -118,6 +118,21 @@ export default function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
+			for (let i = 0; i < this.transitionItemsQ; i ++) {
+				let item = this.transitionItems[i];
+				item.hit = false;
+				if(i % 2 === 0) {
+					item.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth * 0.25)
+				} else {
+					item.x = this.utils.randomNumberBetween(this.utils.canvasWidth * 0.75, this.utils.canvasWidth)
+				}
+			}
+
+			this.bounceRings.resize();
+			this.background.clear();
+
+			this.background.beginFill(0x00CCFF).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+
 	
 			this.bounceVerticals.resize();
 

@@ -4,6 +4,7 @@ import Config from '../animationsConfig';
 import BlastOff from './tweens/spaceShipBlastOff';
 import ReturnHome from './tweens/spaceShipReturnHome';
 import { TweenMax, TimelineMax, Elastic } from 'gsap';
+import Easing from './tweens/easing';
 export default {
 		animation: new TimelineMax(),
 		utils: Utils,
@@ -13,6 +14,7 @@ export default {
 		tweenArray: [],
 		blastOff: BlastOff,
 		tweens: [],
+		defaultEasing: 'linear',
 		killAll: function () {
 			//TweenMax.killAll();
 			let clone = (this.tweens)?this.tweens.slice():[];
@@ -40,7 +42,7 @@ export default {
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
 			let newX = (this.utils.canvasWidth / 2);
 			let newY = (this.utils.canvasHeight / 2);
-			this.tween(orbsCont.pivot, 0.5, {x: [orbsCont.pivot.x, newPlanet.x], y: [orbsCont.pivot.y, newPlanet.y], onComplete: onCompleteFunction});
+			this.tween(orbsCont.pivot, 0.5, {x: [orbsCont.pivot.x, newPlanet.x], y: [orbsCont.pivot.y, newPlanet.y], onComplete: onCompleteFunction, easing: 'easeOutBounce'});
 			this.tween(hero, 0.5, {y:  [hero.y, -newPlanet.radius]});
 		},
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
@@ -94,50 +96,38 @@ export default {
 
 						for(let property in changeObjectProperties) {
 
-							let startValue = changeObjectProperties[property][0];
-							let endValue = changeObjectProperties[property][1];
-							let changeIncrement = -(endValue - startValue) * changeObject.changeIncrement;
+							// let startValue = changeObjectProperties[property][0];
+							// let endValue = changeObjectProperties[property][1];
+							// let changeIncrement = -(endValue - startValue) * changeObject.changeIncrement;
 
-							let currentChange = item[property] - startValue;
-							let currentTime = new Date().getTime();
-							//console.log(currentTime, startValue, currentChange,changeObject.seconds)
-			//changeIncrement = this.easeInQuad(currentTime, startValue, currentChange,changeObject.seconds)
+							// let currentChange = item[property] - startValue;
+							// let currentTime = new Date().getTime();
+							
 
-							 // let t = new Date().getTime() - item.startTime;
-						  //     let b = startValue;
-						  //     let c = endValue - item[property];
-						  //     let d = item.seconds * 1000;
-						  //     let percentage = t / d;
-						  //     console.log(percentage)
-						  //     let inc = this.easeInSine(t, b, c, d);
-							// console.log(property, startValue, endValue, Math.round(item[property]),  changeIncrement)
-							// console.log(property, changeIncrement)
-	
-							if (startValue < endValue) {
-								if (item[property] < endValue) {
-									item[property] -= changeIncrement;
-								} else {
-									item[property] = endValue;
-									if(changeObjectProperties["onComplete"]) {
-										changeObjectProperties["onComplete"]();
-										changeObjectProperties["onComplete"] = function(){};
-									}
-									item.changeProperties.splice(index2, 1)
+						
+							 let t = new Date().getTime() - item.startTime;
+						      let b = changeObjectProperties[property][0];
+						      let c = changeObjectProperties[property][1];
+						      let d = item.seconds * 1000;
+						      let e = c - b;
+						      let percentage = t / d;
+						      //console.log(percentage)
+						      let easing = (!changeObjectProperties["easing"])?this.defaultEasing:changeObjectProperties["easing"];
+						      let inc = Easing[easing](percentage);
+						      var inc2 = b + inc*(c-b);
+
+
+						      if (percentage <  1) {
+						          item[property] = inc2;
+						       } else {
+						        //console.log("done")
+						        if(changeObjectProperties["onComplete"]) {
+									changeObjectProperties["onComplete"]();
+									changeObjectProperties["onComplete"] = function(){};
 								}
-							}
+						        item.changeProperties.splice(index2, 1)
+						       }
 
-							if (startValue > endValue) {
-								if (item[property] > endValue) {
-									item[property] -= changeIncrement;
-								} else {
-									item[property] = endValue;
-									if(changeObjectProperties["onComplete"]) {
-										changeObjectProperties["onComplete"]();
-										changeObjectProperties["onComplete"] = function(){};
-									}
-									item.changeProperties.splice(index2, 1)
-								}
-							}
 
 						}
 
