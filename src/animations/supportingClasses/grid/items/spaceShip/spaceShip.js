@@ -59,6 +59,7 @@ export default function () {
 		completeReturnHomeHandler: function () {
 			//in case coming back from jump 
 			if (this.utils.root.activeMode === 'jump') {
+	
 				let jump = this.utils.root.jump;
 				let background = jump.jumpBackground.orbsCont;
 				background.scale.set(1);
@@ -67,23 +68,16 @@ export default function () {
 				maze.x = this.storeX;
 				this.ship.scale.set(0.25);
 				this.ship.rotation = 0;
+
 			}
-			
+
 			this.utils.hero.cont.visible = true;
 			this.utils.hero.activeHero.cont.y = 0;
 
 			this.utils.root.jump.removeFromStage();
 
-			this.utils.root.switchPlayer(this.storeActiveMode);
-			
-			this.utils.root.grid.gridBuild.placeHero();
-			//this.utils.root.grid.gridBuild.placeShip();
 			this.ship.x = this.ship.storeX;
 			this.ship.y = this.ship.storeY;
-			this.utils.root.grid.gridBuild.cont.addChild(this.ship);
-			this.utils.root.grid.gridAction.pause = false;
-			this.utils.root.activeAction.vx = this.utils.root.activeAction.vy = 0;
-			this.utils.root.activeAction.radius = this.utils.root.activeAction.storeRadius = 0;
 
 			this.utils.root.endSpaceShipJourney();
 		},

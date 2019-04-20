@@ -14,37 +14,53 @@ export default {
 			this.background = background;
 			this.blastOffComplete = onCompleteHandler;
 
-			Tweens.tween(this.ship, 1, {
-				rotation:  [this.ship.rotation,  this.utils.deg2rad(90)], 
-				onComplete: this.spaceShipBlastOff_2.bind(this)});
+			Tweens.tween(this.ship, 1, 
+			{
+				rotation:  [this.ship.rotation,  this.utils.deg2rad(90)]
+			}, 
+			this.spaceShipBlastOff_2.bind(this),
+			'easeOutBounce');
 			
 		},
 		spaceShipBlastOff_2: function () {
 			//console.log("2")
-			Tweens.tween(this.ship.scale, 1, {
-				x:  [this.ship.scale.x, 1], 
-				y: [this.ship.scale.y, 1], 
-				onComplete: this.spaceShipBlastOff_3.bind(this)});
+			Tweens.tween(this.ship.scale, 1, 
+			{
+				x: [this.ship.scale.x, 1], 
+				y: [this.ship.scale.y, 1]
+			}, 
+			this.spaceShipBlastOff_3.bind(this),
+			'easeOutBounce'
+			);
 		},
 		spaceShipBlastOff_3: function () {
 			//console.log("3")
 			Tweens.tween(this.maze.scale, 1, {
 				x: [this.maze.scale.x, 0.015], 
-				y: [this.maze.scale.y, 0.015], 
-				onComplete: this.spaceShipBlastOff_4.bind(this)});
+				y: [this.maze.scale.y, 0.015]
+			}, 
+			this.spaceShipBlastOff_4.bind(this),
+			'easeInOutQuad'
+			);
 		},
 		spaceShipBlastOff_4: function () {
 			//console.log("4")
 			//this.mazeWidth = this.maze.width;
-			Tweens.tween(this.maze, 2, {
-				x: [this.maze.x, -this.mazeWidth], 
-				onComplete: this.spaceShipBlastOff_5.bind(this)});
+			Tweens.tween(this.maze, 2, 
+			{
+				x: [this.maze.x, -this.mazeWidth]
+			}, 
+			this.spaceShipBlastOff_5.bind(this),
+			'easeOutBounce');
 		},
 		spaceShipBlastOff_5: function () {
 			//console.log("5")
-			Tweens.tween(this.background.scale, 2, {
+			Tweens.tween(this.background.scale, 2, 
+			{
 				x:  [this.background.scale.x, 1], 
-				y: [this.background.scale.y, 1], 
-				onComplete: this.blastOffComplete});
+				y: [this.background.scale.y, 1]
+			}, 
+			this.blastOffComplete,
+			'easeOutBounce');
 		}
 }

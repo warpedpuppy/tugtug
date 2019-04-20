@@ -208,7 +208,7 @@ export default {
 				item.storeScaleY = item.scale.y;
 				item.counter = 0;
             	item.counterLimit = this.utils.randomIntBetween(10, 60);
-            	item.isTweening = false;
+            	//item.isTweening = false;
 				//this.freeSpaces.push([b.x, b.y, b, i, j]);
 				item.currentSpace = this.freeSpaces[i];
 				this.freeSpaces.splice(i, 1);
@@ -216,28 +216,34 @@ export default {
 			})
 		},
 		moveItem1: function (item) {
-			
+			//	alert("shrink")
 			item.hit = true;
-			this.moveItem2 = this.moveItem2.bind(this);
-			let onCompleteHandler = function(){ this.moveItem2(item)}.bind(this);
+
+			//this.moveItem2 = this.moveItem2.bind(this);
+			//let onCompleteHandler = ;
 			Tweens.tween(item.scale, 1, 
 				{
 					x: [item.scale.x,0], 
-					y: [item.scale.y,0], 
-					onComplete: onCompleteHandler, 
-					easing: 'easeOutBounce'
-				})
+					y: [item.scale.y,0]
+				}, 
+				this.moveItem2.bind(this, item), 
+				'easeOutBounce'
+				)
 			
 		},
 		moveItem2: function (item) {
-			let onCompleteHandler = function(){ this.moveItem3(item)}.bind(this);
+			//alert("grow")
+			//console.log("two hit")
+			//let onCompleteHandler = ;
 			Tweens.tween(item.scale, 1, 
 				{
-					x: [item.scale.x,item.storeScaleX], 
-					y: [item.scale.y,item.storeScaleY], 
-					onComplete: onCompleteHandler, 
-					easing: 'easeOutBounce'
-				})
+					x: [0,item.storeScaleX], 
+					y: [0,item.storeScaleY]
+				}, 
+				this.moveItem3.bind(this, item), 
+				'easeOutBounce'
+				)
+
 
 			this.freeSpaces.push(item.currentSpace);
 
@@ -252,6 +258,7 @@ export default {
 			
 		},
 		moveItem3: function (item) {
+			//alert("reset")
 			item.counter = 0;
 			item.isTweening = false;
 			

@@ -19,41 +19,55 @@ export default {
 			this.maze = maze;
 			this.ship = ship;
 			this.onCompleteHandler = onCompleteHandler;
-			console.log(this.onCompleteHandler)
-			Tweens.tween(background.scale, 1, {
+			Tweens.tween(background.scale, 1, 
+			{
 				x: [background.scale.x,0], 
-				y: [background.scale.y,0],
-				onComplete: this.spaceShipReturnHome_2.bind(this)})
+				y: [background.scale.y,0]
+			},
+			this.spaceShipReturnHome_2.bind(this),
+			'easeOutBounce'
+			)
 			
 		},
 		spaceShipReturnHome_2: function () {
-			console.log("2")
-			Tweens.tween(this.maze, 1, {
+			Tweens.tween(this.maze, 1, 
+			{
 				x: [this.maze.x, this.utils.root.grid.gridBuild.initialPoint.x], 
-				y:  [this.maze.y, this.utils.root.grid.gridBuild.initialPoint.y],
-				onComplete: this.spaceShipReturnHome_3.bind(this)})
+				y:  [this.maze.y, this.utils.root.grid.gridBuild.initialPoint.y]
+			},
+			this.spaceShipReturnHome_3.bind(this),
+			'easeOutBounce'
+			)
 			
 		},
 		spaceShipReturnHome_3: function () {
-			console.log("3")
-			Tweens.tween(this.maze.scale, 1, {
+			Tweens.tween(this.maze.scale, 1, 
+			{
 				x: [this.maze.scale.x,1], 
-				y: [this.maze.scale.y, 1],
-				onComplete: this.spaceShipReturnHome_4.bind(this)})
+				y: [this.maze.scale.y, 1]
+			},
+			this.spaceShipReturnHome_4.bind(this),
+			'easeOutBounce'
+			)
 			
 		},
 		spaceShipReturnHome_4: function () {
-			console.log("4")
-			Tweens.tween(this.ship, 1, {
-				rotation: [this.ship.rotation, this.utils.deg2rad(0)],
-				onComplete: this.spaceShipReturnHome_5.bind(this)})
+			Tweens.tween(this.ship, 1, 
+			{
+				rotation: [this.ship.rotation, this.utils.deg2rad(0)]
+			},
+			this.spaceShipReturnHome_5.bind(this),
+			'easeOutBounce'
+			)
 			
 		},
 		spaceShipReturnHome_5: function () {
-			console.log("5", Tweens.blastOff.storeShipScale)
-			Tweens.tween(this.ship.scale, 1, {
+			Tweens.tween(this.ship.scale, 1, 
+			{
 				x: [this.ship.scale.x, Tweens.blastOff.storeShipScale], 
-				y: [this.ship.scale.y, Tweens.blastOff.storeShipScale], 
-				onComplete: this.onCompleteHandler})
+				y: [this.ship.scale.y, Tweens.blastOff.storeShipScale]
+			}, 
+			this.onCompleteHandler,
+			'easeOutBounce')
 		}
 }

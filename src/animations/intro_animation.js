@@ -259,17 +259,22 @@ export default function(obj) {
             } else {
                 this.increaseIndex();
             }
-            
+ 
             this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
- 
+
             
 
             if (this.activeMode !== 'jump' && this.activeMode !== 'bounce') {
+
                 this.grid.changeGridSize();
+
                 this.activeAction = this[this.activeMode].addToStage();
+  
                 this.grid.gridAction.pause = false;
+      
                 this.grid.gridBuild.cont.visible = true;
+        
             } else if(this.activeMode === 'jump') {
                 // add to stage happens elsewhere
                 this.activeAction = this.jump.jumpAction;
@@ -364,6 +369,22 @@ export default function(obj) {
             this[this.activeMode].startSpaceShipJourney();
         },
         endSpaceShipJourney: function () {
+        
+            this.switchPlayer(this.storeActiveMode);
+           
+
+            this.grid.gridBuild.placeHero();
+  
+            //this.utils.root.grid.gridBuild.placeShip();
+            
+            this.grid.gridBuild.cont.addChild(this.ship);
+
+            this.grid.gridAction.pause = false;
+       
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.activeAction.radius = this.activeAction.storeRadius = 0;
+
+
             this[this.activeMode].endSpaceShipJourney();
         },
         makeJumpActive: function () {

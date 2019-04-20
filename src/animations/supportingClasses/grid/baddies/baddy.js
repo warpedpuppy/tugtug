@@ -49,11 +49,13 @@ export default function (gridBuild) {
 
 			let grid = gridBuild.cont;
 
-			if(grid.x > -currentSquare.x && 
+			if (
+				grid.x > -currentSquare.x && 
 				grid.x < this.utils.canvasWidth - currentSquare.x &&
 				grid.y > -currentSquare.y && 
-				 grid.y < this.utils.canvasHeight - currentSquare.y &&
-				 this.body.alpha){
+				grid.y < this.utils.canvasHeight - currentSquare.y &&
+				 this.body.alpha
+				 ) {
 				return true;
 			}
 			return false;
@@ -65,7 +67,7 @@ export default function (gridBuild) {
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
 			let globalPoint = this.cont.toGlobal(this.body);
-			
+
 			let iVal = Math.floor((globalPoint.y - gridBuild.cont.y) / this.blockHeight);
 			let jVal = Math.floor((globalPoint.x - gridBuild.cont.x) / this.blockWidth);
 			
