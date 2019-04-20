@@ -56,7 +56,7 @@ export default function () {
 				this.completeReturnHomeHandler)
 		
 		},
-		completeReturnHomeHandler: function () {
+		completeReturnHomeHandler: function (storeX) {
 			//in case coming back from jump 
 			if (this.utils.root.activeMode === 'jump') {
 	
@@ -65,7 +65,7 @@ export default function () {
 				background.scale.set(1);
 				let maze = this.utils.root.grid.gridBuild.cont;
 				maze.scale.set(1);
-				maze.x = this.storeX;
+				//maze.x = this.storeX;
 				this.ship.scale.set(0.25);
 				this.ship.rotation = 0;
 

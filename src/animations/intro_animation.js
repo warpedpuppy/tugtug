@@ -369,7 +369,11 @@ export default function(obj) {
             this[this.activeMode].startSpaceShipJourney();
         },
         endSpaceShipJourney: function () {
-        
+            console.log(
+                this.grid.gridBuild.cont.x, 
+                this.grid.gridBuild.cont.y,
+                this.grid.gridBuild.cont.scale.x,
+                this.grid.gridBuild.cont.scale.y)
             this.switchPlayer(this.storeActiveMode);
            
 
@@ -377,7 +381,7 @@ export default function(obj) {
   
             //this.utils.root.grid.gridBuild.placeShip();
             
-            this.grid.gridBuild.cont.addChild(this.ship);
+            this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
 
             this.grid.gridAction.pause = false;
        

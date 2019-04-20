@@ -21,7 +21,7 @@ export default function () {
 			let freeSpaces = gridBuild.freeSpaces,
 			    soldierCounter = 0,
 			    loopingQ = freeSpaces.length;
-
+			 
 			//for (let i = 0; i < loopingQ; i ++) {
 			for (let i = 0; i < 1; i ++) {
 			

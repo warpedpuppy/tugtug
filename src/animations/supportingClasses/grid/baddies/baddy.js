@@ -70,7 +70,7 @@ export default function (gridBuild) {
 
 			let iVal = Math.floor((globalPoint.y - gridBuild.cont.y) / this.blockHeight);
 			let jVal = Math.floor((globalPoint.x - gridBuild.cont.x) / this.blockWidth);
-			
+
 			return { block: gridBuild.blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		getModifiedHeroPoint: function () {

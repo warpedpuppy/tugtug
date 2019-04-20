@@ -54,7 +54,7 @@ export default {
 			'easeOutBounce');
 		},
 		spaceShipBlastOff_5: function () {
-			//console.log("5")
+			console.log("5")
 			Tweens.tween(this.background.scale, 2, 
 			{
 				x:  [this.background.scale.x, 1], 
