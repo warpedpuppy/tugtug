@@ -5,9 +5,9 @@ export default function () {
 	return {
 		utils: Utils,
 		score: 0,
-		totalNeeded: 200,
 		tokenEarned: false,
 		init: function () {
+			this.totalNeeded = Config.bouncePoints;
 			this.text = Assets.BitmapText(`bounce points: ${this.score} / ${this.totalNeeded}`);
 			this.text.x = this.utils.canvasWidth / 2;
 			this.text.y = this.utils.canvasHeight  - this.text.height;

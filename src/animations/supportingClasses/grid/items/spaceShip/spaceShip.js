@@ -74,7 +74,6 @@ export default function () {
 			this.utils.hero.cont.visible = true;
 			this.utils.hero.activeHero.cont.y = 0;
 
-			this.utils.root.jump.removeFromStage();
 
 			this.ship.x = this.ship.storeX;
 			this.ship.y = this.ship.storeY;

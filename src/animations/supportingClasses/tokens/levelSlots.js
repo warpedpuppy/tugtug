@@ -44,6 +44,7 @@ export default function () {
 			this.utils.app.stage.removeChild(this.textCont);
 		},
 		fillSlot: function (token) {
+			token.placed = true;
 			this.utils.app.stage.addChild(this.textCont);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
@@ -64,6 +65,10 @@ export default function () {
 		},
 		reset: function () {
 			this.tokenCounter = 0;
+			for(let i = 0; i < 4; i ++){
+				let t =  this.utils.root.grid.gridBuild.tokens[1];
+				t.placed = false;
+			}
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;

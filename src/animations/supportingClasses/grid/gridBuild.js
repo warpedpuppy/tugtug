@@ -94,6 +94,7 @@ export default {
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
 
+
 			if (mode === 'fly') {
 				texture = this.flyTexture;
 			} 
@@ -207,7 +208,7 @@ export default {
 				item.storeScaleX = item.scale.x;
 				item.storeScaleY = item.scale.y;
 				item.counter = 0;
-            	item.counterLimit = this.utils.randomIntBetween(10, 60);
+            	item.counterLimit = this.utils.randomIntBetween(1000, 6000);
             	//item.isTweening = false;
 				//this.freeSpaces.push([b.x, b.y, b, i, j]);
 				item.currentSpace = this.freeSpaces[i];
@@ -267,6 +268,10 @@ export default {
 			for (let key in this.tokenData) {
 				let index = key - 1;
 				let t = this.tokens[index];
+				if (t.placed) {
+					console.log(index, key)
+					continue;
+				}
 				t.anchor.set(0.5)
 				t.num = key;
 				t.x = this.tokenData[key].x + this.blockWidth / 2;

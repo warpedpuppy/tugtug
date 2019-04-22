@@ -91,7 +91,13 @@ export default {
 
             let newScale = Config[`${newActiveModeString}BlockSize`][0]/Config[`${oldActiveModeString}BlockSize`][0];
 
-            Tweens.tween(this.utils.root.grid.gridBuild.cont.scale, 0.5, {x: [currentScale, newScale], y: [currentScale, newScale], onComplete: this.continueAnimation.bind(this)})
+            Tweens.tween(this.utils.root.grid.gridBuild.cont.scale, 2, 
+                {
+                    x: [currentScale, newScale], 
+                    y: [currentScale, newScale]}, 
+                 this.continueAnimation.bind(this),
+                 'easeOutBounce'
+                 )
             
         } else {
 
@@ -107,7 +113,7 @@ export default {
 
     },
     continueAnimation: function () {
-        
+        console.log("TEST BREAK POINT2")
         this.setUp();
         this.runAnimation = true;
     },
@@ -128,7 +134,7 @@ export default {
         this.utils.app.stage.removeChild(this.cont);
 
         this.utils.root.switchPlayer(this.utils.root.activeMode);
-        //this.utils.root.completeSwitchPlayerAnimation();
+
     },
     animate: function () {
 
@@ -138,6 +144,7 @@ export default {
         if (this.animationCounter >= this.animationLength) {
             this.done = true;
             this.runAnimation = false;
+            this.reset();
         }
 
         if (!this.done) {

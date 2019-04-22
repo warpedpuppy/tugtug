@@ -57,7 +57,7 @@ export default {
 			console.log("5")
 			Tweens.tween(this.background.scale, 2, 
 			{
-				x:  [this.background.scale.x, 1], 
+				x: [this.background.scale.x, 1], 
 				y: [this.background.scale.y, 1]
 			}, 
 			this.blastOffComplete,

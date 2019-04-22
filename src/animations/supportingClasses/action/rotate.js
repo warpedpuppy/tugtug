@@ -15,7 +15,7 @@ export default {
             if (str === 'right') {
                 this.idle = false;
                 activeAction.radius += this.movementQ;
-                this.velocity = this.config.flyVelocity;
+                this.velocity = this.config[`${this.utils.root.activeMode}Velocity`];
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;
@@ -24,7 +24,7 @@ export default {
             } else if (str === 'left') {
                 this.idle = false;
                 activeAction.radius -= this.movementQ;
-                this.velocity = this.config.flyVelocity;
+                this.velocity = this.config[`${this.utils.root.activeMode}Velocity`];
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;

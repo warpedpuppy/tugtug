@@ -23,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['fly','swim'],
+        mode: ['swim','fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -227,7 +227,7 @@ export default function(obj) {
         },
        
         switchPlayerWithAnimation: function (mode) {
- 
+           
             if (!this.transitionAnimationPlaying) {
                 this.grid.clearGrid();
                 this.action = false;
@@ -247,12 +247,15 @@ export default function(obj) {
 
                 this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
             }
+
         },
         switchPlayer: function (str) {
-
+            
             this.transitionAnimationPlaying = false;
 
-            if (this[this.activeMode]) this[this.activeMode].removeFromStage();
+            if (this[this.activeMode]) { 
+                this[this.activeMode].removeFromStage();
+            }
             
             if (str) {
                 this.activeMode = str;
@@ -263,23 +266,26 @@ export default function(obj) {
             this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
 
-            
-
             if (this.activeMode !== 'jump' && this.activeMode !== 'bounce') {
 
                 this.grid.changeGridSize();
-
+               
                 this.activeAction = this[this.activeMode].addToStage();
-  
+                 
                 this.grid.gridAction.pause = false;
       
                 this.grid.gridBuild.cont.visible = true;
+
+                if ( !this.grid.gridBuild.cont.parent ) {
+                    let index = this.stage.getChildIndex(this.clock.cont) + 1;
+                    this.grid.addToStage(index);
+                }
         
-            } else if(this.activeMode === 'jump') {
+            } else if (this.activeMode === 'jump') {
                 // add to stage happens elsewhere
                 this.activeAction = this.jump.jumpAction;
                 this.grid.removeFromStage();
-            } else if(this.activeMode === 'bounce') {
+            } else if (this.activeMode === 'bounce') {
                 this.activeAction = this[this.activeMode].addToStage();
                 this.grid.removeFromStage();
             }
@@ -297,6 +303,8 @@ export default function(obj) {
             this.activeAction.vx = this.activeAction.vy = 0;
             this.action = true;
 
+            let x = this.grid.gridBuild.cont;
+            console.log(x.scale, x.visible, x.alpha, x.parent)
           
 
         },
@@ -363,17 +371,26 @@ export default function(obj) {
            
         },
         startSpaceShipJourney: function () {
+            this.storeActiveMode = this.activeMode;
             this.hero.cont.visible = false;
             this.activeAction.vx = this.activeAction.vy = 0;
             this.grid.gridAction.pause = true;
             this[this.activeMode].startSpaceShipJourney();
         },
         endSpaceShipJourney: function () {
-            console.log(
-                this.grid.gridBuild.cont.x, 
-                this.grid.gridBuild.cont.y,
-                this.grid.gridBuild.cont.scale.x,
-                this.grid.gridBuild.cont.scale.y)
+
+
+           // this.jump.removeFromStage();
+
+            // console.log(
+            //     this.grid.gridBuild.cont.x, 
+            //     this.grid.gridBuild.cont.y,
+            //     this.grid.gridBuild.cont.scale.x,
+            //     this.grid.gridBuild.cont.scale.y, 
+            //     this.grid.gridBuild.cont.visible,
+            //     this.grid.gridBuild.cont.alpha,
+            //     this.storeActiveMode, 
+            //     this.grid.gridBuild.cont.parent)
             this.switchPlayer(this.storeActiveMode);
            
 
@@ -424,9 +441,7 @@ export default function(obj) {
         animate: function () {
 
             this.transitionAnimation.animate();
-            if (this.transitionAnimation.done) {
-                this.transitionAnimation.reset();
-            }
+           
             this.score.animate();
 
             Tweens.animate();

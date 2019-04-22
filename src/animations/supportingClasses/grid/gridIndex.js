@@ -83,7 +83,7 @@ export default {
 		},
 
 		addToStage: function (index) {
-			console.log("grid added ")
+			console.log("grid added ", index)
 			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 		},

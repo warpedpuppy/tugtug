@@ -5,9 +5,9 @@ import Config from '../../animationsConfig';
 export default {
 		utils: Utils,
 		score: 0,
-		totalNeeded: 10,
 		tokenEarned: false,
 		init: function (parent) {
+			this.totalNeeded = Config.jumpPoints;
 			this.parent = parent;
 			this.text = Assets.BitmapText(`jump points: ${this.score} / ${this.totalNeeded}`);
 			this.text.x = this.utils.canvasWidth / 2;
