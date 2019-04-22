@@ -122,18 +122,18 @@ export default {
 			this.omnibusArray.forEach((item, i) => {
 				
 				if (this.itemHitDetect(item)) {
+					this.utils.root.filterAnimation.shutOff();
 					if(item.name === 'swim' || item.name === 'fly' && !item.hit) {
 						item.hit = true;
-						this.utils.root.filterAnimation.shutOff();
 			 			this.utils.root.switchPlayerWithAnimation(item.name);
 					} else if (item.name === 'magicPill' && !this.utils.root.filterAnimation.enabled) {
 						this.utils.root.filterTest();
 					} else if (item.name === 'treasureChest' && !this.treasure.animationHappening) {
 						this.treasure.activeChest = item;
-						this.utils.root.filterAnimation.shutOff();
 						this.treasure.playAnimation(this.treasure.activeChest);
 						this.treasure.removeChest(i);
-						this.omnibusArray.splice(i, 1)
+						this.omnibusArray.splice(i, 1);
+						this.utils.root.score.increase(100);
 					} else if (item.name === 'token') {
 						this.gridBuild.cont.removeChild(item)
 			 			this.utils.root.earnToken(item);
@@ -142,7 +142,6 @@ export default {
 						this.spaceShip.classRef.blastOff();
 					} else if (item.name === 'microscope') {
 						item.hit = true;
-						this.utils.root.filterAnimation.shutOff();
 			 			this.utils.root.switchPlayerWithAnimation('bounce');
 					}
 				}

@@ -10,7 +10,6 @@ export default {
 			this.token = Assets.Sprite("token.png");
 			this.token.anchor.set(0.5);
 			this.token.y = -100;
-			console.log(this.token.height)
 			this.unlocked = Assets.Sprite("unlocked.png");
 
 			this.unlocked.anchor.set(0.5);

@@ -13,7 +13,6 @@ export default {
 			this.text.x = this.utils.canvasWidth / 2;
 			this.text.y = this.utils.canvasHeight  - this.text.height;
 			this.text.anchor.set(0.5);
-			console.log(parent)
 			this.jumpTokenUnlocked = parent.jumpTokenUnlocked;
 			this.jumpTokenUnlocked.init();
 		},

@@ -32,31 +32,21 @@ export default {
 			this.halfWidth = this.wh.canvasWidth / 2;
 			this.halfHeight = this.wh.canvasHeight / 2;
 
-			var ringsPC = Assets.ParticleContainer(this.ringQ);
+			var ringsPC = this.ringsPC = Assets.ParticleContainer(this.ringQ);
 			this.ringCont.addChild(ringsPC);
 
 			for (let i = 0; i < this.ringQ; i ++) {
-
-				let r = Assets.rings[i];//Assets.Sprite('treasureRing.png');
-				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
-				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
-				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
-				r.rotate = this.utils.randomNumberBetween(-4, 4);
-				r.floor = this.halfHeight - r.height;
-				//THESE RINGS NEED TO BE ADDED TO A PARTICLE CONTAINER
-				ringsPC.addChild(r);
+				let r = Assets.rings[i];
 				this.rings.push(r);
-
-				this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;
-				this.rightEdge = this.utils.wh.canvasWidth + this.edgeBuffer;
-			
-				
 			}
+			this.bottomEdge = this.utils.canvasHeight + this.edgeBuffer;
+			this.rightEdge = this.utils.canvasWidth + this.edgeBuffer;
+			
 			this.radialCont.scale.set(0);
 			for(let i = 0; i < this.radialQ; i ++){
 				let r = Assets.Sprite('line.png');
 				r.width = 1;
-				r.height = this.utils.randomNumberBetween(100, 500);
+				r.height = this.utils.randomNumberBetween(50, 100);
 				//r.alpha = this.utils.randomNumberBetween(0.2, 0.8);
 				r.anchor.x = 0;
 				r.anchor.y = 0;
@@ -72,6 +62,21 @@ export default {
 
 		},
 		playAnimation: function (activeChest) {
+
+
+			for (let i = 0; i < this.ringQ; i ++) {
+				let r = this.rings[i];
+				r.x = r.y = 0;
+				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
+				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
+				r.rotate = this.utils.randomNumberBetween(-4, 4);
+				r.floor = this.halfHeight - r.height;
+				this.ringsPC.addChild(r);
+
+			}
+
+
 			this.activeChest = activeChest;
 				//place chest in center and rock it back and forth;
 			this.utils.root.grid.gridAction.pause = true;

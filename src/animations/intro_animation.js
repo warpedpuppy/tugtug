@@ -23,7 +23,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['swim','fly'],
+        mode: ['swim','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -196,10 +196,12 @@ export default function(obj) {
 
             if (Config.testingJump) {
                 this.makeJumpActive();
-            } else if(this.activeMode !== 'bounce') {
-                let index = this.stage.getChildIndex(this.clock.cont) + 1;
-                this.grid.addToStage(index);
             }
+
+            //  else if(this.activeMode !== 'bounce') {
+            //     let index = this.stage.getChildIndex(this.clock.cont) + 1;
+            //     this.grid.addToStage(index);
+            // }
 
         },
         stop: function () {
@@ -243,6 +245,7 @@ export default function(obj) {
                 if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
                     let index = this.stage.getChildIndex(this.clock.cont) + 1;
                     this.grid.addToStage(index);
+
                 }
 
                 this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
@@ -304,7 +307,6 @@ export default function(obj) {
             this.action = true;
 
             let x = this.grid.gridBuild.cont;
-            console.log(x.scale, x.visible, x.alpha, x.parent)
           
 
         },

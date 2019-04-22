@@ -39,11 +39,12 @@ export default function (soldiers, spears, gridBuild) {
 				if (onScreen) {
 
 					//onScreenSoldiers.push(onScreen);
-					// let sp = this.spears[i];
-					// if (this.spearHit(sp)) {
-					// 	sp.classRef.reset();
-					// 	alert("2")
-					// };
+					let sp = this.spears[i];
+					if (this.spearHit(sp)) {
+						//sp.classRef.reset();
+						//alert("2")
+						this.utils.root.score.decrease(10);
+					};
 
 					//prevent overlap
 					for (let j = 0; j < this.soldiers.length; j ++) {

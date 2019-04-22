@@ -59,18 +59,16 @@ export default {
 			this.gridBuild.blockHeight = h;
 
 			this.gridBuild.cont.removeChildren();
-
 			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
 
 			this.gridAction.setLimits();
 		},
 		nextBoard: function () {
-			console.log('testing placed property')
+			
 			this.gridBuild.tokens.forEach((item, index) => {
 				item.placed = false;
-				console.log(index, item.placed.toString())
 			})
-			console.log('end testing placed property')
+			
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
@@ -89,7 +87,6 @@ export default {
 		},
 
 		addToStage: function (index) {
-			console.log("grid added ", index)
 			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 		},

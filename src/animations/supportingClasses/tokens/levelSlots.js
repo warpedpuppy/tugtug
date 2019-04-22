@@ -65,13 +65,13 @@ export default function () {
 		},
 		reset: function () {
 			this.tokenCounter = 0;
-			console.log('reset tokens')
-			for (let i = 0; i < 4; i ++) {
-				let t =  this.utils.root.grid.gridBuild.tokens[1];
-				t.placed = false;
-				console.log(i, t.placed)
-			}
-			console.log('end reset tokens')
+			// console.log('reset tokens')
+			// for (let i = 0; i < 4; i ++) {
+			// 	let t =  this.utils.root.grid.gridBuild.tokens[1];
+			// 	t.placed = false;
+			// 	console.log(i, t.placed)
+			// }
+			// console.log('end reset tokens')
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;

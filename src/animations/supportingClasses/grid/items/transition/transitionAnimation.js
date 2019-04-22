@@ -75,7 +75,7 @@ export default {
     },
     start: function (newActiveMode, newActiveModeString, oldActiveModeString) {
 
-      
+  
         let newMode = this.utils.root.activeMode;
 
         if (newMode !== 'bounce' && oldActiveModeString !== 'bounce') {
@@ -113,7 +113,6 @@ export default {
 
     },
     continueAnimation: function () {
-        console.log("TEST BREAK POINT2")
         this.setUp();
         this.runAnimation = true;
     },

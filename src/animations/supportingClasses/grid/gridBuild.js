@@ -58,7 +58,8 @@ export default {
 			this.microscope];
 
   			this.boards = this.utils.root.dbData.boards;
-			this.buildGrid(this.boards[this.currentBoard]);
+  			//console.log('this grid build init')
+			//this.buildGrid(this.boards[this.currentBoard]);
 
 			this.baddies.init();
 			
@@ -76,7 +77,7 @@ export default {
 			return obj;
 		},
 		buildGrid: function (data) {
-			
+
 			let mode = this.utils.root.activeMode,
 			    obj = this.createObj(data),
 			    counter = 0,
@@ -260,6 +261,7 @@ export default {
 		},
 		moveItem3: function (item) {
 			//alert("reset")
+			item.hit = false;
 			item.counter = 0;
 			item.isTweening = false;
 			
