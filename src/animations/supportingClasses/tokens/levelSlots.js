@@ -29,7 +29,7 @@ export default function () {
 			this.token = Assets.Sprite("token.png");
 			this.token.anchor.set(0.5);
 			this.token.y = -100;
-			console.log(this.token.height)
+			
 			this.earned = Assets.Sprite("earned.png");
 
 			this.earned.anchor.set(0.5);
@@ -65,10 +65,13 @@ export default function () {
 		},
 		reset: function () {
 			this.tokenCounter = 0;
-			for(let i = 0; i < 4; i ++){
+			console.log('reset tokens')
+			for (let i = 0; i < 4; i ++) {
 				let t =  this.utils.root.grid.gridBuild.tokens[1];
 				t.placed = false;
+				console.log(i, t.placed)
 			}
+			console.log('end reset tokens')
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;

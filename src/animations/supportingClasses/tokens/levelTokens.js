@@ -6,14 +6,7 @@ export default {
 		utils: Utils,
 		tokens: [],
 		init: function () {
-			// let s;
-			// for(let i = 0; i < 4; i ++){
-			// 	s = Assets.Sprite('slot.png');
-			// 	s.x = 50 * i;
-			// 	this.cont.addChild(s);
-			// }
-			// return this;
-
+		
 			let s;
 			for(let i = 1; i <= 4; i ++){
 				s =  Assets.Sprite(`token${i}.png`);

@@ -379,32 +379,17 @@ export default function(obj) {
         },
         endSpaceShipJourney: function () {
 
-
-           // this.jump.removeFromStage();
-
-            // console.log(
-            //     this.grid.gridBuild.cont.x, 
-            //     this.grid.gridBuild.cont.y,
-            //     this.grid.gridBuild.cont.scale.x,
-            //     this.grid.gridBuild.cont.scale.y, 
-            //     this.grid.gridBuild.cont.visible,
-            //     this.grid.gridBuild.cont.alpha,
-            //     this.storeActiveMode, 
-            //     this.grid.gridBuild.cont.parent)
             this.switchPlayer(this.storeActiveMode);
            
-
             this.grid.gridBuild.placeHero();
   
-            //this.utils.root.grid.gridBuild.placeShip();
-            
             this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
 
             this.grid.gridAction.pause = false;
        
             this.activeAction.vx = this.activeAction.vy = 0;
-            this.activeAction.radius = this.activeAction.storeRadius = 0;
 
+            this.activeAction.radius = this.activeAction.storeRadius = 0;
 
             this[this.activeMode].endSpaceShipJourney();
         },

@@ -27,6 +27,11 @@ export default {
 
         this.root.activeAction.vx = this.root.activeAction.vy = 0;
         this.root.keyHandler.removeFromStage();
+
+       if (this.root.activeMode === "bounce") {
+            this.root.bounce.bouncePlatform.on(false);
+        }
+
     },
     uponNewBoardButtonPress: function (e) {
         this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = false;
@@ -34,10 +39,13 @@ export default {
 
         if (this.root.activeMode === "jump") {
             this.root.grid.gridBuild.spaceShip.classRef.completeReturnHomeHandler();
+        } else if (this.root.activeMode === "bounce") {
+            this.root.endSpaceShipJourney();
         }
 
-        this.root.reset();
-        this.root.grid.nextBoard();
+        this.root.reset(); //we make all tokens not placed
+
+        this.root.grid.nextBoard(); //then here they should be placed
         
         this.root.keyHandler.addToStage();  
         this.loadNewBoard();

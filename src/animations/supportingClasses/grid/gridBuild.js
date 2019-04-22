@@ -269,14 +269,13 @@ export default {
 				let index = key - 1;
 				let t = this.tokens[index];
 				if (t.placed) {
-					console.log(index, key)
 					continue;
 				}
 				t.anchor.set(0.5)
 				t.num = key;
 				t.x = this.tokenData[key].x + this.blockWidth / 2;
 				t.y = this.tokenData[key].y + this.blockHeight / 2;
-				this.tokens.push(t);
+				//this.tokens.push(t);
 				if(t.num < 4)this.cont.addChild(t);
 			}
 		},

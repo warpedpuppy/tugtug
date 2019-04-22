@@ -65,6 +65,12 @@ export default {
 			this.gridAction.setLimits();
 		},
 		nextBoard: function () {
+			console.log('testing placed property')
+			this.gridBuild.tokens.forEach((item, index) => {
+				item.placed = false;
+				console.log(index, item.placed.toString())
+			})
+			console.log('end testing placed property')
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
