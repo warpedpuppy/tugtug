@@ -72,8 +72,8 @@ export default {
 			}
 			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
 			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
-			obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
-			obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
+			// obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
+			// obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
 			return obj;
 		},
 		buildGrid: function (data) {

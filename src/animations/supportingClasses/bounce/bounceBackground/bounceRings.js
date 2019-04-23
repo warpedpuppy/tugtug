@@ -1,6 +1,6 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-// import Config from './animationsConfig';
+import Config from '../../../animationsConfig';
 export default  {
 		utils: Utils,
 		init: function (parent) {
@@ -11,7 +11,7 @@ export default  {
 
 			this.rings = Assets.rings.slice();
 
-			for (let i = 0; i < Assets.ringQ; i ++) {
+			for (let i = 0; i < Config.bouncePoints; i ++) {
 
 				let r = this.rings[i];//Assets.Sprite('treasureRing.png');
 				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));

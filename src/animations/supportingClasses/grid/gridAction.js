@@ -133,7 +133,7 @@ export default {
 						this.treasure.playAnimation(this.treasure.activeChest);
 						this.treasure.removeChest(i);
 						this.omnibusArray.splice(i, 1);
-						this.utils.root.score.increase(100);
+						this.utils.root.score.increase(Config.treasureChestScoreIncrease);
 					} else if (item.name === 'token') {
 						this.gridBuild.cont.removeChild(item)
 			 			this.utils.root.earnToken(item);

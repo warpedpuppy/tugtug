@@ -1,5 +1,6 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import Config from '../../animationsConfig';
 import RainbowSwirls from './rainbowSwirls';
 import Tweens from '../../utils/tweens';
 import Planets from './planet';
@@ -13,8 +14,8 @@ export default function () {
 		orbsCont: Assets.Container(),
 		ground: Assets.Graphics(),
 		colSpacing: 200,
-		colQ: 10,
-		rowQ: 10,
+		colQ: Config.spaceColQ,
+		rowQ: Config.spaceRowQ,
 		tileColQ: 4,
 		cols: {},
 		columns: [],
@@ -68,7 +69,7 @@ export default function () {
 						//this.currentOrb.alpha = 0.5;
 					}
 
-					let dotQ = 10;
+					let dotQ = Config.spaceDotsPerPlanet;
 					let dist =  cont.radius + 20;
 					let dotsCont = Assets.Container();
 					for (let k = 0; k < dotQ; k++) {

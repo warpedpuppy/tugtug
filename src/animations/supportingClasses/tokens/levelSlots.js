@@ -20,12 +20,12 @@ export default function () {
 				s = Assets.Sprite('slot.png');
 				s.anchor.set(0.5);
 				s.alpha = 0.25;
-				c.x = 50 * i;
+				c.x = 25 + (50 * i);
 				c.addChild(s);
 				this.slots.push(c);
 				this.cont.addChild(c);
 			}
-
+			
 			this.token = Assets.Sprite("token.png");
 			this.token.anchor.set(0.5);
 			this.token.y = -100;
@@ -36,6 +36,13 @@ export default function () {
 			//this.earned.y = this.earned.height / 2
 			this.textCont.addChild(this.earned);
 			this.textCont.addChild(this.token);
+
+			// let testGraphics = Assets.Graphics();
+			// testGraphics.alpha = 0.5;
+			// testGraphics.beginFill(0xFFFF00).drawRect(0,0,190,40).endFill();
+			// this.cont.addChild(testGraphics)
+
+			this.cont.pivot = Assets.Point(this.cont.width / 2, this.cont.height / 2)
 
 			return this;
 			
@@ -74,8 +81,8 @@ export default function () {
 			// console.log('end reset tokens')
 		},
 		addToStage: function () {
-			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
-			this.cont.y = this.utils.canvasHeight - this.cont.height - 100;
+			this.cont.x = (this.utils.canvasWidth + 50) / 2;
+			this.cont.y = this.utils.canvasHeight - 100;
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
@@ -84,8 +91,8 @@ export default function () {
 		resize: function () {
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
-			this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
-			this.cont.y = this.utils.canvasHeight - this.cont.height - 100;
+			this.cont.x = (this.utils.canvasWidth + 50) / 2;
+			this.cont.y = this.utils.canvasHeight - 100;
 		},
 		animate: function () {
 
