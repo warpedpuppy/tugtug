@@ -68,7 +68,7 @@ export default {
 				this.barsOP.push(Assets.Sprite(arr[arrCounter]));
 				arrCounter ++;
 				if(arrCounter >= arr.length)arrCounter = 0;
-				if(i < this.level1Object.q){
+				if (i < this.level1Object.q) {
 					let spike = this.createSpikes(1);
 					this.spikesOP.push(spike);
 				}

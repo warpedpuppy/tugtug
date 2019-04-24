@@ -79,7 +79,11 @@ export default function () {
                     if(Utils.root.activeMode !== 'jump')this.parent.switchPlayerWithAnimation();
                     break;
                 case 83:
-                    this.utils.root.grid.gridBuild.spaceShip.classRef.blastOff();
+                    if(Utils.root.activeMode === 'jump'){
+                        this.utils.root.grid.gridBuild.spaceShip.classRef.blastOff();
+                    } else if(Utils.root.activeMode === 'bounce') {
+                        this.utils.root.bounce.tokenEarn();
+                    }
                     break;
                 case 40:
                     break;

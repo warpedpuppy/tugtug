@@ -1,16 +1,19 @@
 import * as PIXI from 'pixi.js';
 import Utils from './utils';
+import Config from '../animationsConfig';
 export default {
 		utils: Utils,
 		opQ: 0,
 		op: [],
 		rings: [],
+		lines: [],
 		opCounter: 0, 
 		init: function () {
 
-			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?500:100;
+			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?Config.bounceTotalPoints:100;
 			for (let i = 0; i < this.ringQ; i ++) {
-				this.rings.push(this.Sprite('treasureRing.png'));
+				this.lines.push(this.Graphics());
+				this.rings.push(this.Sprite('transparentRing.png'));
 			}
 
 

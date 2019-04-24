@@ -268,6 +268,7 @@
             <filename>../bmps/unlocked.png</filename>
             <filename>../bmps/tokenLock.png</filename>
             <filename>../bmps/microscope.png</filename>
+            <filename>../bmps/arrow.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

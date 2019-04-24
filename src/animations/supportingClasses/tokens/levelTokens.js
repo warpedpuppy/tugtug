@@ -7,13 +7,15 @@ export default {
 		tokens: [],
 		init: function () {
 		
-			let s;
+			let t;
 			for(let i = 1; i <= 4; i ++){
-				s =  Assets.Sprite(`token${i}.png`);
-				s.name = 'token';
-				s.placed = false;
-				s.id = i;
-				this.tokens.push(s);
+				t =  Assets.Sprite(`token${i}.png`);
+				t.anchor.set(0.5)
+				t.name = 'token';
+				t.placed = false;
+				t.num = i;
+				t.id = i;
+				this.tokens.push(t);
 			}
 			return this.tokens;
 			

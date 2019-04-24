@@ -51,6 +51,7 @@ export default function () {
 			this.utils.app.stage.removeChild(this.textCont);
 		},
 		fillSlot: function (token) {
+
 			token.placed = true;
 			this.utils.app.stage.addChild(this.textCont);
 			this.textCont.x = this.utils.canvasWidth / 2;
@@ -61,6 +62,7 @@ export default function () {
 			token.x = token.y = 0;
 			let index = token.num - 1;
 			token.name = "token";
+			console.log(token.num, this.slots)
 			this.slots[index].addChild(token);
 
 			if (this.tokenCounter === 4) {

@@ -50,6 +50,10 @@ export default function(obj) {
         timeOut: undefined,
         init: function (isMobile, isMobileOnly) {
 
+            if(Config.testingBounce){
+                this.mode = ['bounce'];
+            }
+
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
@@ -245,7 +249,7 @@ export default function(obj) {
                 if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
                     let index = this.stage.getChildIndex(this.clock.cont) + 1;
                     this.grid.addToStage(index);
-
+                    //alert('addgrid to stage')
                 }
 
                 this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
@@ -253,12 +257,12 @@ export default function(obj) {
 
         },
         switchPlayer: function (str) {
-            
+            //alert('switch player')
             this.transitionAnimationPlaying = false;
 
-            if (this[this.activeMode]) { 
-                this[this.activeMode].removeFromStage();
-            }
+            // if (this[this.activeMode]) { 
+            //     this[this.activeMode].removeFromStage();
+            // }
             
             if (str) {
                 this.activeMode = str;
@@ -308,7 +312,7 @@ export default function(obj) {
 
             let x = this.grid.gridBuild.cont;
           
-
+            this.score.switchMode();
         },
         // completeSwitchPlayerAnimation: function () {
         //    //  this.transitionAnimationPlaying = false;

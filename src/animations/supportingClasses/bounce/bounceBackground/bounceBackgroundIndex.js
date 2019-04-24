@@ -1,5 +1,6 @@
 import Utils from '../../../utils/utils';
 import Assets from '../../../utils/assetCreation';
+import Config from '../../../animationsConfig';
 import Tweens from '../../../utils/tweens';
 import BounceExplosion from './bounceMiniExplosion';
 import BounceVerticals from './bounceVerticals';
@@ -27,6 +28,7 @@ export default function () {
 		mineQ: 10,
 		bounceVerticals: BounceVerticals,
 		bounceRings: BounceRings,
+		bounceExplosion: BounceExplosion,
 		init: function (action, points) {
 
 			BounceExplosion.init();
@@ -43,10 +45,14 @@ export default function () {
 
 			this.cont.addChild(this.background);
 
-			this.ringsPC = Assets.ParticleContainer(Assets.ringQ);
+			this.ringsPC = Assets.ParticleContainer(Config.bounceTotalPoints);
 
 
 			this.bounceRings.init(this);
+
+			if(Config.testingBounce){
+				this.transitionItemsQ = 0;
+			}
 			this.createTransitionItems();
 
 			this.bounceVerticals.init(this);
@@ -58,7 +64,7 @@ export default function () {
 				this.bounceVerticals.array2.length, 
 				this.bounceVerticals.array3.length, 
 				this.bounceVerticals.array4.length,
-				Assets.ringQ)
+				Config.bounceTotalPoints)
 		
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
@@ -79,6 +85,8 @@ export default function () {
 			// this.test.y = (this.utils.canvasHeight / 2) - 20;
 			// this.test.beginFill(0x000000).drawCircle(0,0,30).endFill();
 			// this.utils.app.stage.addChild(this.test)
+
+
 
 		},
 		createTransitionItems: function() {
@@ -112,8 +120,10 @@ export default function () {
 			}
 			BounceExplosion.addToStage();
 			this.parentCont.addChildAt(this.cont, 1);
+			this.bounceRings.addToStage();
 		},
 		removeFromStage: function () {
+			this.bounceRings.removeFromStage();
 			BounceExplosion.removeFromStage();
 			this.parentCont.removeChild(this.cont);
 		},
@@ -174,6 +184,8 @@ export default function () {
 
 			BounceExplosion.animate();
 
+			this.bounceRings.animate();
+
 			for (let i = 0; i < this.loopingQ; i ++) {
 				if(this.bounceVerticals.array1[i]){
 					this.bounceVerticals.moveBars(this.bounceVerticals.array1[i]);
@@ -189,7 +201,7 @@ export default function () {
 				}
 				
 
-				if (this.bounceVerticals.spikes[i]) {
+				if (this.bounceVerticals.spikes[i] && !Config.testingBounce) {
 					let spike = this.bounceVerticals.spikes[i];
 					spike.x = spike.bar.x;
 					spike.y -= this.action.vy;
@@ -199,7 +211,8 @@ export default function () {
 					if (!spike.hit && this.itemHitDetect(spike) && spike.y < this.utils.canvasHeight / 2) {
 						spike.hit = true;
 		   				BounceExplosion.startBad();
-						this.points.spikeHit();
+		   				this.bounceRings.reAddRingsAndLines(10)
+						
 					}
 
 					if (spike.y < -spike.height - 100) {
@@ -208,26 +221,27 @@ export default function () {
 						spike.y = -spike.height;
 					}
 				}
+
 			
-				if (Assets.rings[i]) {
-					let ring = Assets.rings[i];
-					this.moveItems(ring);
-					if (!ring.hit && this.itemHitDetect(ring)) {
-						ring.hit = true;
-						BounceExplosion.startGood();
-						ring.parent.removeChild(ring);
-						this.bounceRings.rings.slice(i, 1);
-						this.points.ringHit();
+			
+				// if (Assets.rings[i]) {
+				// 	let ring = Assets.rings[i];
+				// 	this.moveItems(ring);
+				// 	if (!ring.hit && this.itemHitDetect(ring)) {
+				// 		ring.hit = true;
+				// 		BounceExplosion.startGood();
+				// 		ring.parent.removeChild(ring);
+				// 		this.bounceRings.rings.slice(i, 1);
+				// 		this.points.ringHit();
 					
-					}
-				}
+				// 	}
+				// }
 
 				if (this.transitionItems[i]) {
 					let item = this.transitionItems[i];
 					this.moveItems(item);
 					if (!item.hit && this.itemHitDetect(item)) {
 						item.hit = true;
-						console.log("hit")
 						this.utils.root.switchPlayerWithAnimation(item.name);
 					
 					}
