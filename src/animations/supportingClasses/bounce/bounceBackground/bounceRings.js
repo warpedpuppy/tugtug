@@ -18,9 +18,11 @@ export default  {
 
 			for (let i = 0; i < Config.bounceTotalPoints; i ++) {
 				let r = this.rings[i];
-				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+				r.anchor.set(0.5)
+				r.scale.set(0.15);//.set(this.utils.randomNumberBetween(0.1, 0.5));
 				r.name = 'ring';
 				r.hit = false;
+				r.tint = 0x00FF00;
 				r.speedAdjust = this.utils.randomNumberBetween(0.1, 0.65);
 				r.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
 				r.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
@@ -63,8 +65,11 @@ export default  {
                 particle.x += particle.vx;
                 particle.y += particle.vy;
 
-                particle.x -= this.utils.root.activeAction.vx;
-                particle.y -= this.utils.root.activeAction.vy;
+                // particle.x -= this.utils.root.activeAction.vx;
+                // particle.y -= this.utils.root.activeAction.vy;
+
+                particle.x += particle.vx - this.utils.root.activeAction.vx;
+                particle.y += particle.vy - this.utils.root.activeAction.vy;
 
                 if (particle.x > this.utils.canvasWidth) {
                     particle.x = 0;
@@ -106,7 +111,7 @@ export default  {
 
                 var line = this.lines[index];
                 line.clear();
-                line.lineStyle(1, 0xFFFFFF);
+                line.lineStyle(6, 0xFFFFFF);
                 line.moveTo(partA.x, partA.y);
                 line.lineTo(partB.x, partB.y);
                 line.alpha = 1 - dist / this.minDist;
@@ -135,20 +140,20 @@ export default  {
         reAddRingsAndLines: function (q) {
         	
         	//this.loopingQ += q;
-        	this.utils.root.score.bounceSpikeHit(q);
+     //    	this.utils.root.score.bounceSpikeHit(q);
 
-        	for (let i = 0; i < q; i ++) {
-        		if (this.earnedRings[i] && this.earnedLines[i]) {
-        			this.earnedRings[i].hit = false;
-        			this.parent.ringsPC.addChild(this.earnedRings[i]);
-					this.utils.app.stage.removeChild(this.earnedLines[i])
-		        	this.rings.push(this.earnedRings[i]);
-		        	this.lines.push(this.earnedLines[i]);
-		        	this.earnedRings.splice(i, 1);
-					this.earnedLines.splice(i, 1);
-        		}
-        	}
-        	this.loopingQ = this.rings.length;
+     //    	for (let i = 0; i < q; i ++) {
+     //    		if (this.earnedRings[i] && this.earnedLines[i]) {
+     //    			this.earnedRings[i].hit = false;
+     //    			this.parent.ringsPC.addChild(this.earnedRings[i]);
+					// this.utils.app.stage.removeChild(this.earnedLines[i])
+		   //      	this.rings.push(this.earnedRings[i]);
+		   //      	this.lines.push(this.earnedLines[i]);
+		   //      	this.earnedRings.splice(i, 1);
+					// this.earnedLines.splice(i, 1);
+     //    		}
+     //    	}
+     //    	this.loopingQ = this.rings.length;
         }
        
 	

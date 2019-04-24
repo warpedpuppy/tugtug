@@ -1,6 +1,6 @@
 export default {
 	jumpPoints: 200,
-	bounceTotalPoints: 50,
+	bounceTotalPoints:20,
 	swimVelocities: [1, 2],
 	flyVelocity: 6,
 	swimVelocity: 6,
@@ -26,5 +26,5 @@ export default {
 	rainbowColors: [],
 	testing: true,
 	testingJump: false,
-	testingBounce: true
+	testingBounce: false
 }

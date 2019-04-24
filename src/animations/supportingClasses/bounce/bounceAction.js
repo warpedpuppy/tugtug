@@ -78,7 +78,7 @@ export default function () {
 		        let B = {x: this.bouncePlatform.dot2.x, y: this.bouncePlatform.dot2.y};
 		        let C = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 		        if (this.bouncePlatform.mouseDown !== true && this.utils.lineIntersectCircle(A, B, C, 20)) {
-		        	
+		        	this.hero.y -= 10;
 		         	this.hero.activeHero.bounce(true);
 		            let delta_x = dot1.x - dot2.x;
 					let delta_y = dot1.y - dot2.y;

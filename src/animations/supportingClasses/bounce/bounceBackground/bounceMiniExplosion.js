@@ -6,7 +6,8 @@ export default {
 		badItems: [],
 		goodCont: Assets.Container(),
 		badCont: Assets.Container(),
-		goodCounter: 0,
+		goodCounter: -1,
+		badCounter: -1,
 		utils: Utils,
 		goodGo: false,
 		badGo: false,
@@ -16,6 +17,7 @@ export default {
 				if ( i < 50 ) {
 					let item = Assets.Sprite("transparentRing.png");
 					//item.tint = null;
+					item.anchor.set(0.5)
 					item.scale.set(this.utils.randomNumberBetween(0.1, 0,5))
 					item.q = this.utils.randomNumberBetween(-10, 10)
 					this.goodCont.addChild(item)
@@ -23,6 +25,7 @@ export default {
 				} else {
 					let item = Assets.Sprite("transparentRing.png");
 					item.tint = 0xFF0000;
+					item.anchor.set(0.5)
 					item.scale.set(this.utils.randomNumberBetween(0.1, 0,5))
 					item.q = this.utils.randomNumberBetween(-10, 10)
 					this.badCont.addChild(item)
@@ -48,10 +51,12 @@ export default {
 		startGood: function () {
 			this.resetGood();
 			this.goodGo = true;
+			this.goodCounter = 0;
 		},
 		startBad: function (item) {
 			this.resetBad();
 			this.badGo = true;
+			this.badCounter = 0;
 		},
 		resize: function () {
 			this.goodCont.x = this.utils.canvasWidth / 2;
@@ -64,16 +69,19 @@ export default {
 				let item = this.goodItems[i];
 				item.x = item.y = 0;
 			}
+			this.goodCounter = -1;
 		},
 		resetBad: function () {
 			for(let i = 0; i < 50; i ++){
 				let item = this.badItems[i];
+
 				item.x = item.y = 0;
 			}
+			this.badCounter = -1;
 		},
 		animate: function () {
 
-			if (this.goodCont.parent) {
+			if (this.goodCounter >= 0) {
 				for(let i = 0; i < 50; i ++){
 					let item = this.goodItems[i];
 					item.x += item.q * Math.cos( ( 2 * Math.PI) * i / 100);
@@ -87,7 +95,7 @@ export default {
 				}
 			}
 
-			if (this.badCont.parent) {
+			if (this.badCounter >= 0) {
 				for(let i = 0; i < 50; i ++){
 					let item = this.badItems[i];
 					item.x += item.q * Math.cos( ( 2 * Math.PI) * i / 100);

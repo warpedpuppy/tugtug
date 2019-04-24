@@ -41,7 +41,7 @@ export default function () {
 			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
 
-			this.background.beginFill(0x00CCFF).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
+			this.background.beginFill(0x4a766e).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
 
 			this.cont.addChild(this.background);
 
@@ -65,7 +65,7 @@ export default function () {
 				this.bounceVerticals.array3.length, 
 				this.bounceVerticals.array4.length,
 				Config.bounceTotalPoints)
-		
+			this.level1.alpha = this.level2.alpha = this.level3.alpha = this.level4.alpha = 0.25;
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
 			this.cont.addChild(this.level3);
