@@ -1,10 +1,10 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
-// import Config from '../../../../animationsConfig';
+import Config from '../../../../animationsConfig';
 export default {
 		ringQ: 0,
 		chestQ: 0,
-		rings: [],
+		coins: [],
 		utils: Utils,
 		hit: false,
 		activeChest: undefined,
@@ -26,19 +26,20 @@ export default {
 			this.parent = this.utils.root;
 			this.wh = this.utils.wh;
 			//this.hero = this.utils.hero.cont;
-			this.ringQ = Assets.webgl ? 500 : 10;
+			this.coinQ = Config[`${this.utils.root.activeMode}CoinsPerTreasureChest`];
 			this.chestQ = Assets.webgl ? 100 : 1;
-			this.radialQ = Assets.webgl ? 1000 : 10;
+			this.radialQ = Assets.webgl ? 300 : 10;
 			this.halfWidth = this.wh.canvasWidth / 2;
 			this.halfHeight = this.wh.canvasHeight / 2;
 
-			var ringsPC = this.ringsPC = Assets.ParticleContainer(this.ringQ);
+			var ringsPC = this.ringsPC = Assets.ParticleContainer(this.coinQ);
 			this.ringCont.addChild(ringsPC);
 
-			for (let i = 0; i < this.ringQ; i ++) {
-				let r = Assets.rings[i];
-				this.rings.push(r);
-			}
+			this.coins = [...Assets.coins]
+			// for (let i = 0; i < this.ringQ; i ++) {
+			// 	let r = Assets.rings[i];
+			// 	this.rings.push(r);
+			// }
 			this.bottomEdge = this.utils.canvasHeight + this.edgeBuffer;
 			this.rightEdge = this.utils.canvasWidth + this.edgeBuffer;
 			
@@ -64,8 +65,8 @@ export default {
 		playAnimation: function (activeChest) {
 
 
-			for (let i = 0; i < this.ringQ; i ++) {
-				let r = this.rings[i];
+			for (let i = 0; i < this.coinQ; i ++) {
+				let r = this.coins[i];
 				r.x = r.y = 0;
 				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
@@ -113,9 +114,8 @@ export default {
 			// this.radialCont.addChild(test);
 		},
 		animateSpecial: function () {
-
-			for (let i = 0; i < this.ringQ; i ++) {
-				let r = this.rings[i];
+			for (let i = 0; i < this.coinQ; i ++) {
+				let r = this.coins[i];
 				r.vy += this.gravity;
 				r.y += r.vy;
 				r.x += r.vx;
@@ -149,8 +149,8 @@ export default {
 		},
 		reset: function () {
 
-			for (let i = 0; i < this.ringQ; i ++) {
-				let r = this.rings[i];
+			for (let i = 0; i < this.coinQ; i ++) {
+				let r = this.coins[i];
 				r.x = r.y = 0;
 				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
 				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);

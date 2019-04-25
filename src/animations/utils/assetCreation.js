@@ -7,6 +7,7 @@ export default {
 		op: [],
 		rings: [],
 		lines: [],
+		coins: [],
 		opCounter: 0, 
 		init: function () {
 
@@ -14,6 +15,11 @@ export default {
 			for (let i = 0; i < this.ringQ; i ++) {
 				this.lines.push(this.Graphics());
 				this.rings.push(this.Sprite('transparentRing.png'));
+			}
+
+			this.coinQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?Config.flyCoinsPerTreasureChest:10;
+			for (let i = 0; i < this.coinQ; i ++) {
+				this.coins.push(this.Sprite('transparentRing.png'));
 			}
 
 

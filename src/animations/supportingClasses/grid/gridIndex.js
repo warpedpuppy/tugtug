@@ -33,9 +33,11 @@ export default {
 		    
 		    this.magicPillsArray = this.magicPills.init();
 
-            this.flyTreasureChests = this.treasure.createAndReturnChests();
+		    this.treasure.init();
 
-            this.swimTreasureChests = this.treasure.createAndReturnChests();
+            this.flyTreasureChests = this.treasure.createAndReturnChests(Config.flyTreasureChestQ);
+
+            this.swimTreasureChests = this.treasure.createAndReturnChests(Config.swimTreasureChestQ);
 
             this.transitionItemsArray = this.transitionItems.init().build();
 

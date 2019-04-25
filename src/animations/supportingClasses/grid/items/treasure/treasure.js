@@ -23,6 +23,9 @@ export default function () {
 	edgeBuffer: 200,
 	animationHappening: false,
 	treasureAnimation: TreasureAnimation,
+	init: function () {
+		this.treasureAnimation.init();
+	},
 	createAndReturnChests: function (q) {
 		this.chestQ = q;
 		let arr = [];
@@ -51,10 +54,10 @@ export default function () {
   //       	c.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
   //       }
 	},
-	removeChest: function (index){
-		this.chests.splice(index, 1);
-		this.chestQ --;
-	},
+	// removeChest: function (index){
+	// 	this.chests.splice(index, 1);
+	// 	this.chestQ --;
+	// },
 	playAnimation: function (activeChest) {
 		//this.animationHappening = true;
 		this.treasureAnimation.playAnimation(activeChest);
@@ -63,8 +66,8 @@ export default function () {
 		this.treasureAnimation.animateSpecial();
 	},
 	animate: function () {
-		for (let i = 0; i < this.chestQ; i ++) {
-			let c = this.chests[i];
+		for (let i = 0; i < this.utils.root.grid[`${this.utils.root.activeMode}TreasureChests`]; i ++) {
+			let c = this.utils.root.grid[`${this.utils.root.activeMode}TreasureChests`][i];
 			c.rotation = this.utils.cosWave(this.utils.deg2rad(0), this.utils.deg2rad(c.variance), c.rotateSpeed);
 			
 		}

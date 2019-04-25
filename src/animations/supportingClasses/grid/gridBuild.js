@@ -46,12 +46,14 @@ export default {
 			this.spaceShip = SpaceShip().init()
 			this.tokens = Tokens.init();
 			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
-			this.treasureChests = this.utils.root.grid.treasureChests;
+			this.flyTreasureChests = this.utils.root.grid.flyTreasureChests;
+			this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;
 			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
 			this.omnibusArray = [
 			...this.magicPillsArray, 
-			...this.treasureChests, 
+			...this.flyTreasureChests, 
+			...this.swimTreasureChests, 
 			...this.transitionItemsArray,
 			...this.tokens, 
 			this.spaceShip, 
@@ -150,7 +152,7 @@ export default {
 			this.placeShip();
 			this.placeMircoscope();
 			this.placeItems(this.transitionItemsArray, true);
-			this.placeItems(this.treasureChests);
+			this.placeItems(this[`${this.utils.root.activeMode}TreasureChests`]);
 			this.placeItems(this.magicPillsArray);
 
 			this.baddies.placeCastlesAndSoldiers(this);
@@ -186,7 +188,7 @@ export default {
 			this.cont.addChild(this.microscope);
 		},
 		placeItems: function (array, isTransitionItem) {
-
+			console.log(array)
 			array.forEach((item, index) => {
 				if (!this.freeSpaces.length) return;
 

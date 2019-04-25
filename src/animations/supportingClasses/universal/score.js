@@ -11,12 +11,12 @@ export default function () {
 	targetNumber: undefined,
 	counter: 0,
 	utils: Utils,
-	dragonTotal: 0,
-	fishTotal: 0,
+	flyTotal: 0,
+	swimTotal: 0,
 	spaceTotal: 0,
 	bounceTotal: 0,
-	dragonPoints: 0,
-	fishPoints: 0,
+	flyPoints: 0,
+	swimPoints: 0,
 	spacePoints: 0,
 	bouncePoints: 0,
 	bounceTokenEarned: false,
@@ -102,9 +102,9 @@ export default function () {
 	createTotals: function () {
 
 		// dragon
-		this.dragonTotal = Config.flyTreasureChestQ * Config.flyCoinsPerTreasureChest;
+		this.flyTotal = Config.flyTreasureChestQ * Config.flyCoinsPerTreasureChest;
 		// fish
-		this.fishTotal = Config.swimTreasureChestQ * Config.swimCoinsPerTreasureChest;
+		this.swimTotal = Config.swimTreasureChestQ * Config.swimCoinsPerTreasureChest;
 		// space
 		this.spaceTotal = Config.spaceColQ * Config.spaceRowQ * Config.spaceDotsPerPlanet;
 		// bounce
@@ -112,8 +112,8 @@ export default function () {
 	},
 	stringCreate: function (dragon, fish, space, bounce) {
 		return {
-				flyText:  Assets.BitmapText(`dragon points: ${this.dragonPoints} / ${this.dragonTotal}`),
-				swimText:  Assets.BitmapText(`fish points: ${this.fishPoints}/ ${this.fishTotal}`), 
+				flyText:  Assets.BitmapText(`dragon points: ${this.flyPoints} / ${this.flyTotal}`),
+				swimText:  Assets.BitmapText(`fish points: ${this.swimPoints}/ ${this.swimTotal}`), 
 				jumpText:  Assets.BitmapText(`space points: ${this.spacePoints} / ${this.spaceTotal}`),
 				bounceText:  Assets.BitmapText(`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`)
 			};
@@ -159,6 +159,12 @@ export default function () {
 			this.scoreTexts.bounceText.text = `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
 		
 		
+	},
+	treasureIncrease: function () {
+		let activeMode = this.utils.root.activeMode;
+		this[`${activeMode}Points`] += Config[`${activeMode}CoinsPerTreasureChest`];
+		console.log(activeMode,this[`${activeMode}Points`],  Config[`${activeMode}CoinsPerTreasureChest`])
+		this.scoreTexts[`${activeMode}Text`].text = `dragon points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
 	},
 	animate: function () {
 

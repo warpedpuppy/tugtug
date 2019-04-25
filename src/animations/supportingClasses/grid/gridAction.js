@@ -16,7 +16,8 @@ export default {
 		 	
 		 	this.magicPillsArray = this.utils.root.grid.magicPillsArray;
 		 	this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
-		 	this.treasureChests = this.utils.root.grid.treasureChests;
+		 	this.flyTreasureChests = this.utils.root.grid.flyTreasureChests;
+		 	this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;
 		 	this.treasure = this.utils.root.grid.treasure;
 		 	this.baddies = this.utils.root.grid.gridBuild.baddies;
 		 	this.blocks = this.utils.root.grid.gridBuild.blocks;
@@ -29,7 +30,8 @@ export default {
 		    this.itemLoopingQ = Math.max(
 		    	this.magicPillsArray.length, 
 		    	this.transitionItemsArray.length, 
-		    	this.treasureChests.length)
+		    	this.flyTreasureChests.length,
+		    	this.swimTreasureChests.length)
 		
 		    this.heroCollisionDetector = {
 				x: this.utils.canvasWidth / 2,
@@ -131,9 +133,11 @@ export default {
 					} else if (item.name === 'treasureChest' && !this.treasure.animationHappening) {
 						this.treasure.activeChest = item;
 						this.treasure.playAnimation(this.treasure.activeChest);
-						this.treasure.removeChest(i);
+						//this.treasure.removeChest(i);
 						this.omnibusArray.splice(i, 1);
-						this.utils.root.score.increase(Config.treasureChestScoreIncrease);
+						let index = this[`${this.utils.root.activeMode}TreasureChests`].indexOf(item);
+						this[`${this.utils.root.activeMode}TreasureChests`].splice(index, 1);
+						this.utils.root.score.treasureIncrease();
 					} else if (item.name === 'token') {
 						this.gridBuild.cont.removeChild(item)
 			 			this.utils.root.earnToken(item);
