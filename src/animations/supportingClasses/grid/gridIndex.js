@@ -18,7 +18,8 @@ export default {
 		magicPills: MagicPills(),
 		treasure: Treasure(),
 		transitionItemsArray: [],
-		treasureChests: [],
+		flyTreasureChests: [],
+		swimTreasureChests: [],
 		magicPillsArray: [],
 		gridAction: GridAction,
 		gridBuild: GridBuild,
@@ -32,7 +33,9 @@ export default {
 		    
 		    this.magicPillsArray = this.magicPills.init();
 
-            this.treasureChests = this.treasure.init();
+            this.flyTreasureChests = this.treasure.createAndReturnChests();
+
+            this.swimTreasureChests = this.treasure.createAndReturnChests();
 
             this.transitionItemsArray = this.transitionItems.init().build();
 

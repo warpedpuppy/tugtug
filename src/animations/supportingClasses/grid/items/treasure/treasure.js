@@ -23,8 +23,9 @@ export default function () {
 	edgeBuffer: 200,
 	animationHappening: false,
 	treasureAnimation: TreasureAnimation,
-	init: function () {
-		this.chestQ = Assets.webgl ? Config.treasureChestQ : 1;
+	createAndReturnChests: function (q) {
+		this.chestQ = q;
+		let arr = [];
 		for (let i = 0; i < this.chestQ; i ++) {
 			let c = Assets.Sprite('treasureChest.png');
 			c.scale.set(this.utils.randomNumberBetween(0.75, 0.85));
@@ -35,10 +36,10 @@ export default function () {
         	c.variance = this.utils.randomNumberBetween(5, 20);
         	c.rotateSpeed = this.utils.randomNumberBetween(0.001, 0.0025);
 			
-			this.chests.push(c);
+			arr.push(c);
 		}
-		this.treasureAnimation.init();
-		return this.chests
+		//this.treasureAnimation.init();
+		return arr;
 	},
 	resize: function (wh) {
 		// this.wh = wh;

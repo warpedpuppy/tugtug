@@ -58,8 +58,9 @@ export default  {
 		},
 		animate: function (event) {
             let i, j, particle, partA, partB;
+            console.log(this.earnedRings.length, this.earnedLines.length, ' vs ', this.rings.length, this.parent.ringsPC.children.length)
             for (i = 0; i < this.loopingQ; i++) {
-                this.lines[i].clear();
+                if(this.lines[i])this.lines[i].clear();
                 particle = this.rings[i];
 
                 particle.x += particle.vx;
@@ -137,23 +138,33 @@ export default  {
 			this.loopingQ = this.rings.length;
 			this.utils.root.score.bounceRingHit();
         },
-        reAddRingsAndLines: function (q) {
+        reAddRingsAndLines: function (q, spike) {
         	
         	//this.loopingQ += q;
-     //    	this.utils.root.score.bounceSpikeHit(q);
+        	this.utils.root.score.bounceSpikeHit(q);
 
-     //    	for (let i = 0; i < q; i ++) {
-     //    		if (this.earnedRings[i] && this.earnedLines[i]) {
-     //    			this.earnedRings[i].hit = false;
-     //    			this.parent.ringsPC.addChild(this.earnedRings[i]);
-					// this.utils.app.stage.removeChild(this.earnedLines[i])
-		   //      	this.rings.push(this.earnedRings[i]);
-		   //      	this.lines.push(this.earnedLines[i]);
-		   //      	this.earnedRings.splice(i, 1);
-					// this.earnedLines.splice(i, 1);
-     //    		}
-     //    	}
-     //    	this.loopingQ = this.rings.length;
+            q = (q > this.earnedRings.length)? this.earnedRings.length: q;
+          
+        	for (let i = 0; i < q; i ++) {
+
+                    let ring = this.earnedRings[0];
+                    let line = this.lines[0];
+        			ring.hit = false;
+                    ring.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight);
+                    ring.x = this.utils.randomNumberBetween(0, this.utils.canvasWidth);
+        			this.parent.ringsPC.addChild(ring);
+					this.utils.app.stage.removeChild(line)
+		        	this.rings.push(ring);
+		        	this.lines.push(line);
+		        	this.earnedRings.splice(0, 1);
+					this.earnedLines.splice(0, 1);
+        
+        	}
+        	this.loopingQ = this.rings.length;
+            setTimeout(this.rePowerSpike.bind(this, spike), 2000)
+        },
+        rePowerSpike: function (spike) {
+            spike.hit = false;
         }
        
 	

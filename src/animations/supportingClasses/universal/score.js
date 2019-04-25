@@ -22,6 +22,11 @@ export default function () {
 	bounceTokenEarned: false,
 	init: function (optionalStartScore) {
 
+		this.flyTreasureChestQ = Config.flyTreasureChestQ;
+		this.flyCoinsPerTreasureChest = Config.flyCoinsPerTreasureChest;
+		this.swimTreasureChestQ = Config.swimTreasureChestQ;
+		this.swimCoinsPerTreasureChest = Config.swimCoinsPerTreasureChest;
+
 		this.createTotals();
 		//this.cont = this.utils.app.stage;
 
@@ -62,7 +67,8 @@ export default function () {
 			this.utils.root.action = false;
 			let spacer = 0;
 			for (let key in this.scoreTexts) {
-				this.scoreTexts[key].y = spacer * 20
+				this.scoreTexts[key].x = 50;
+				this.scoreTexts[key].y = 50 + (spacer * 30);
 				this.popUp.addChild(this.scoreTexts[key]);
 				spacer ++;
 			}
@@ -78,7 +84,9 @@ export default function () {
 				this.popUp.removeChild(this.scoreTexts[key]);
 			}
 			this.cont.visible = true;
-			this.cont.addChild(this.scoreTexts[`${this.utils.root.activeMode}Text`])
+			let current = this.scoreTexts[`${this.utils.root.activeMode}Text`];
+			current.x = current.y = 0;
+			this.cont.addChild(current)
 		}
 		
 	},
@@ -94,9 +102,9 @@ export default function () {
 	createTotals: function () {
 
 		// dragon
-		this.dragonTotal = Config.treasureChestQ * Config.treasureChestScoreIncrease;
+		this.dragonTotal = Config.flyTreasureChestQ * Config.flyCoinsPerTreasureChest;
 		// fish
-		this.fishTotal = Config.treasureChestQ * Config.treasureChestScoreIncrease;
+		this.fishTotal = Config.swimTreasureChestQ * Config.swimCoinsPerTreasureChest;
 		// space
 		this.spaceTotal = Config.spaceColQ * Config.spaceRowQ * Config.spaceDotsPerPlanet;
 		// bounce
@@ -134,6 +142,7 @@ export default function () {
 		this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
 	},
 	bounceRingHit: function () {
+		
 		this.bouncePoints ++;
 		this.scoreTexts.bounceText.text =  `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
 
@@ -143,11 +152,12 @@ export default function () {
 		}
 	},
 	bounceSpikeHit: function (q) {
-		//alert('subtract' + q)
-		if(this.bouncePoints > q){
+		
+			let store = this.bouncePoints
+			q = (q > this.bouncePoints)? this.bouncePoints: q;
 			this.bouncePoints -= q;
-		this.scoreTexts.bounceText.text = `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
-		}
+			this.scoreTexts.bounceText.text = `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
+		
 		
 	},
 	animate: function () {

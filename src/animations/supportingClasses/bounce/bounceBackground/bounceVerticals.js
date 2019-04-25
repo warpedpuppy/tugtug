@@ -135,6 +135,8 @@ export default {
 					spike.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight)
 					obj.cont.addChild(spike);
 					this.spikes.push(spike);
+				} else {
+					bar.alpha = 0.25;
 				}
 
 				this.createCounter ++;

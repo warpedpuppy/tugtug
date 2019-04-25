@@ -65,7 +65,6 @@ export default function () {
 				this.bounceVerticals.array3.length, 
 				this.bounceVerticals.array4.length,
 				Config.bounceTotalPoints)
-			this.level1.alpha = this.level2.alpha = this.level3.alpha = this.level4.alpha = 0.25;
 			this.cont.addChild(this.level1);
 			this.cont.addChild(this.level2);
 			this.cont.addChild(this.level3);
@@ -211,7 +210,7 @@ export default function () {
 					if (!spike.hit && this.itemHitDetect(spike) && spike.y < this.utils.canvasHeight / 2) {
 						spike.hit = true;
 		   				BounceExplosion.startBad();
-		   				this.bounceRings.reAddRingsAndLines(10)
+		   				this.bounceRings.reAddRingsAndLines(10, spike)
 						
 					}
 
