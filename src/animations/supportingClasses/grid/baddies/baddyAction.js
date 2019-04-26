@@ -1,26 +1,25 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
-export default function (soldiers, spears, gridBuild) {
-	return {
-		soldiers: soldiers,
-		spears: spears,
+export default {
 		utils: Utils,
-		spearHit: function (spear) {
-			let globalPoint1 = gridBuild.cont.toGlobal(spear);
-			let c1 = {
-				x: globalPoint1.x,
-				y: globalPoint1.y,
-				radius: 10
-			}
-			let c2 = {
-				x: this.utils.canvasWidth / 2,
-				y: this.utils.canvasHeight / 2,
-				radius: 10
-			}
-			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
-			return x[0];
-		},
+		// spearHit: function (spear) {
+		// 	let globalPoint1 = this.utils.root.grid.gridBuild.cont.toGlobal(spear);
+		// 	let c1 = {
+		// 		x: Math.floor(globalPoint1.x),
+		// 		y: Math.floor(globalPoint1.y),
+		// 		radius: 10
+		// 	}
+		// 	let c2 = {
+		// 		x: this.utils.canvasWidth / 2,
+		// 		y: this.utils.canvasHeight / 2,
+		// 		radius: 10
+		// 	}
+			
+		// 	let x = this.utils.circleToCircleCollisionDetection(c1, c2);
+		// 	//console.log(Math.floor(spear.x), Math.floor(spear.y))
+		// 	return x[0];
+		// },
 		hit: function () {
 			if (this.health < 0) { 
 				this.body.alpha = 0;
@@ -29,22 +28,31 @@ export default function (soldiers, spears, gridBuild) {
 			  this.health --;
 			}
 		},
+		setVars: function (soldiers, spears, gridBuild) {
+			this.soldiers = soldiers;
+			this.spears = spears;
+			this.grid = gridBuild;
+		},
 		animate: function () {
 		
-			//let onScreenSoldiers = [];
+			let onScreenSoldiers = [];
 			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
 				
 				let onScreen = s.classRef.animate();
 				if (onScreen) {
 
-					//onScreenSoldiers.push(onScreen);
-					let sp = this.spears[i];
-					if (this.spearHit(sp)) {
-						//sp.classRef.reset();
-						//alert("2")
-						this.utils.root.score.decrease(10);
-					};
+					//let spear = this.spears[i];
+					
+					// if (spear.visible && this.spearHit(spear)) {
+					// 	spear.classRef.disable();
+					// 	this.utils.root.score.gridWeaponHit();		
+					// } else if (!spear.visible) {
+					// 	spear.classRef.counter ++;
+					// 	if (spear.classRef.counter == spear.classRef.counterLimit) {
+					// 		spear.classRef.reenable();
+					// 	}
+					// }
 
 					//prevent overlap
 					for (let j = 0; j < this.soldiers.length; j ++) {
@@ -62,5 +70,4 @@ export default function (soldiers, spears, gridBuild) {
 
 			
 		}
-	}
 }

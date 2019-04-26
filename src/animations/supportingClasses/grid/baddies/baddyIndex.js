@@ -13,8 +13,10 @@ export default function () {
 		solderPerGridSquareQ: 1,
 		baddiesPool: [],
 		baddy: Baddy(),
+		baddyAction: BaddyAction,
 		init: function () {
 			this.animate = this.animate.bind(this);
+			//this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
 		},
 		placeCastlesAndSoldiers: function (gridBuild) {
 			
@@ -58,6 +60,7 @@ export default function () {
 					if (!this.soldiers[soldierCounter]) {
 						s = Baddy(gridBuild).init('soldier.png');
 						this.spears.push(s.classRef.spear)
+						s.classRef.spear.classRef.counter = 0;
 						this.soldiers.push(s);
 					} else {
 						s = this.soldiers[soldierCounter];
@@ -72,7 +75,7 @@ export default function () {
 				this.utils.root.grid.gridBuild.freeSpaces.splice(freeSpacesIndex, 1);
 			}
 
-			this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
+			this.baddyAction.setVars(this.soldiers, this.spears, gridBuild);
 		},
 		removeCastlesAndSoldiers: function () {
 			

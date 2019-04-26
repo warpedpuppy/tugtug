@@ -25,7 +25,7 @@ export default {
 			this.spaceShip = this.gridBuild.spaceShip;
 			this.microscope = this.gridBuild.microscope;
 
-			this.omnibusArray = this.gridBuild.omnibusArray;
+			//this.omnibusArray = this.gridBuild.omnibusArray;
 
 		    this.itemLoopingQ = Math.max(
 		    	this.magicPillsArray.length, 
@@ -121,7 +121,32 @@ export default {
 			let ballB;
 			this.baddies.animate();
 
-			this.omnibusArray.forEach((item, i) => {
+			//keeping this out of the above loop because items will continue being added and subtracted from it
+			this.gridBuild.onGridCoins[this.utils.root.activeMode].forEach((item, index) => {
+
+				item.x = this.utils.cosWave(item.startPointX, item.differential, item.speed);
+				item.y = this.utils.cosWave(item.startPointY, item.differential, item.speed)
+
+				if (this.itemHitDetect(item)) {
+					if(item.hit !== true){
+						//console.log("COIN HIT")
+						item.hit = true;
+						//remove item from stage
+						item.parent.removeChild(item)
+
+						//readd to score
+						this.utils.root.score.treasureChange('up');
+
+						//splice from array
+						this.gridBuild.onGridCoins[this.utils.root.activeMode].splice(index, 1);
+					}
+					
+				}
+			})
+
+			
+
+			this.gridBuild.omnibusArray.forEach((item, i) => {
 				
 				if (this.itemHitDetect(item)) {
 					this.utils.root.filterAnimation.shutOff();
@@ -134,7 +159,7 @@ export default {
 						this.treasure.activeChest = item;
 						this.treasure.playAnimation(this.treasure.activeChest);
 						//this.treasure.removeChest(i);
-						this.omnibusArray.splice(i, 1);
+						this.gridBuild.omnibusArray.splice(i, 1);
 						let index = this[`${this.utils.root.activeMode}TreasureChests`].indexOf(item);
 						this[`${this.utils.root.activeMode}TreasureChests`].splice(index, 1);
 						this.utils.root.score.treasureIncrease();
@@ -165,6 +190,8 @@ export default {
 				
 				}
 			})
+
+			
 
 
 			this.storeCurrent = this.currentSquare();

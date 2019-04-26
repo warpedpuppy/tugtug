@@ -139,7 +139,7 @@ export default function () {
 	},
 	resize: function (wh) {
 
-		this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
+		//this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
 	},
 	bounceRingHit: function () {
 		
@@ -165,6 +165,35 @@ export default function () {
 		this[`${activeMode}Points`] += Config[`${activeMode}CoinsPerTreasureChest`];
 		console.log(activeMode,this[`${activeMode}Points`],  Config[`${activeMode}CoinsPerTreasureChest`])
 		this.scoreTexts[`${activeMode}Text`].text = `dragon points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
+	},
+	treasureChange: function (str) {
+		let activeMode = this.utils.root.activeMode;
+		
+		if(str === 'down') {
+			this[`${activeMode}Points`] --;
+		} else if (str === 'up') {
+			this[`${activeMode}Points`] ++;
+		}
+		console.log(activeMode,this[`${activeMode}Points`],  Config[`${activeMode}CoinsPerTreasureChest`])
+		this.scoreTexts[`${activeMode}Text`].text = `dragon points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
+	},
+	gridWeaponHit: function () {
+
+		if(this[`${this.utils.root.activeMode}Points`] <= 0)return;
+		//make soldier unable to hit again for two seconds
+
+		//remove one point from flyPoints, if available
+		this.treasureChange('down');
+
+		//add ring to free space on page
+		this.utils.root.grid.gridBuild.addCoinToGrid();
+
+		//make sure upon grid build all the coins that should be on there are
+
+		//add ring to loop for collision detection to be readded
+
+
+
 	},
 	animate: function () {
 

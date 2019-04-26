@@ -8,6 +8,7 @@ export default function () {
 		ripples: Ripples(),
 		swimAction: SwimAction(),
 		swimBackground: SwimBackground(),
+		onGridCoins: [],
 		init: function (cont) {
 			this.background = this.swimBackground;
 			this.swimBackground.init(cont);
@@ -29,6 +30,9 @@ export default function () {
 		resize: function () {
 			this.swimAction.resize();
 			this.swimBackground.resize();
+		},
+		addCoinToGrid: function () {
+
 		},
 		startSpaceShipJourney: function () {
 			this.ripples.on(false);

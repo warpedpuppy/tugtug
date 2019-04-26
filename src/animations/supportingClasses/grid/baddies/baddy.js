@@ -28,19 +28,8 @@ export default function (gridBuild) {
 			this.startSquare = this.currentSquare();
 
 			//spears
-			this.spear = Weapon(gridBuild).init();
-			// this.spear = Assets.Sprite('bouncePlatformLine.png');
-			// this.spear.anchor.set(0.5);
-			// this.spear.width = 50;
-			// this.spear.height = 4;
-			// this.spear.vx = 0;
-			// this.spear.vy = 0;
-			// this.spear.reset = () => {
-			// 	this.spearCounter = 0;
-			// 	this.throw = false;
-			// 	this.spearThrowing = false;
-			// }
-			
+			this.spear = Weapon(gridBuild).init(this.body);
+		
 			return this.body;
 		},
 		onScreen: function () {
@@ -114,6 +103,12 @@ export default function (gridBuild) {
 			this.cont.addChild(this.spear);
 		},
 		removeFromStage: function () {
+			
+
+			this.spearThrowing = false;
+			this.spearCounter = 0;
+			this.throw = false;
+			this.spear.classRef.reset();
 			this.cont.removeChild(this.body);
 			this.cont.removeChild(this.spear);
 		},
@@ -139,6 +134,7 @@ export default function (gridBuild) {
 				//this only happen if it isn't touching a blocked box
 				this.body.x += this.vx;
 				this.body.y += this.vy;
+				//console.log(Math.floor(this.body.x), Math.floor(this.body.y))
 
 				if (this.spearCounter < 10) {
 					this.spearCounter ++;
@@ -161,6 +157,7 @@ export default function (gridBuild) {
 					this.spear.vy = Math.sin(this.spear.angle) * this.spearSpeed;
 					this.spear.x += this.spear.vx;
 					this.spear.y += this.spear.vy;
+					//console.log(Math.floor(this.spear.x), Math.floor(this.spear.y))
 					this.spear.rotation = this.spear.angle;
 
 					let xDiff = Math.floor(Math.abs(this.spear.originalTarget.x - this.spear.x));
@@ -168,11 +165,13 @@ export default function (gridBuild) {
 
 					if (xDiff < this.buffer && yDiff < this.buffer) {
 						this.resetSpear();
+						this.utils.root.score.gridWeaponHit();
 					}
 				}
 				
 				this.body.rotation = angle + this.utils.deg2rad(90);
-				return this.body; //this is so we have a count of who is on screen
+				return this.onScreen();
+				//return this.body; //this is so we have a count of who is on screen
 			}
 		}
 	}

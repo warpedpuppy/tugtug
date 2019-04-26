@@ -32,6 +32,8 @@ export default {
 		spears: [],
 		solderPerGridSquareQ: 1,
 		baddies: Baddies(),
+		onGridCoins: {},
+		omnibusArray: [],
 		init: function () {
 			//this.moveItem = this.moveItem.bind(this);
 
@@ -50,20 +52,26 @@ export default {
 			this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;
 			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
-			this.omnibusArray = [
-			...this.magicPillsArray, 
-			...this.flyTreasureChests, 
-			...this.swimTreasureChests, 
-			...this.transitionItemsArray,
-			...this.tokens, 
-			this.spaceShip, 
-			this.microscope];
+			// this.omnibusArray = [
+			// 	...this.magicPillsArray, 
+			// 	...this.flyTreasureChests, 
+			// 	...this.swimTreasureChests, 
+			// 	...this.transitionItemsArray,
+			// 	...this.tokens, 
+			// 	this.spaceShip, 
+			// 	this.microscope
+			// ];
 
   			this.boards = this.utils.root.dbData.boards;
   			//console.log('this grid build init')
 			//this.buildGrid(this.boards[this.currentBoard]);
 
 			this.baddies.init();
+
+			this.onGridCoins = {
+				fly: [],
+				swim: []
+			}
 			
 			return this;
 		},
@@ -77,6 +85,26 @@ export default {
 			// obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
 			// obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
 			return obj;
+		},
+		addCoinToGrid: function () {
+
+			let coinsInArray = this.onGridCoins[this.utils.root.activeMode].length;
+			let totalCoins = this.utils.root.score[`${this.utils.root.activeMode}Total`];
+
+			if (coinsInArray < totalCoins) {
+				let coin = Assets.Sprite('transparentRing.png');
+				coin.hit = false;
+
+				
+				coin.anchor.set(0.5);
+				coin.tint = 0xB29700;
+				this.onGridCoins[this.utils.root.activeMode].push(coin);
+
+				//add to stage
+				this.placeCoin(coin);
+			}
+
+			
 		},
 		buildGrid: function (data) {
 
@@ -96,6 +124,16 @@ export default {
 			this.colQ = data.cols;
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
+			this.coinSpaces = [];
+
+			this.omnibusArray = [
+				...this.magicPillsArray, 
+				...this[`${mode}TreasureChests`], 
+				...this.transitionItemsArray,
+				...this.tokens, 
+				this.spaceShip, 
+				this.microscope
+			];
 
 
 			if (mode === 'fly') {
@@ -152,8 +190,10 @@ export default {
 			this.placeShip();
 			this.placeMircoscope();
 			this.placeItems(this.transitionItemsArray, true);
-			this.placeItems(this[`${this.utils.root.activeMode}TreasureChests`]);
+			this.placeItems(this[`${mode}TreasureChests`]);
 			this.placeItems(this.magicPillsArray);
+
+			this.placeCoins(this.onGridCoins[mode])
 
 			this.baddies.placeCastlesAndSoldiers(this);
 
@@ -187,8 +227,58 @@ export default {
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.microscope);
 		},
+		placeCoin: function (coin) {
+			//this needs its own function
+			let coinSpacePossible = false;
+			if (this.coinSpaces.length) {
+				coinSpacePossible = true;
+			}
+
+			//if there are coinSpaces and random 10 < 5, use one of those spaces
+			let coinSpaceUse = Math.floor(Math.random()* 10) < 5;
+			if(coinSpacePossible && coinSpaceUse) {
+				//add coin to 
+				console.log('add coin to new already used coin space')
+				let i = Math.floor(Math.random()*this.coinSpaces.length);
+				coin.x = this.coinSpaces[i][0] + this.blockWidth / 2;
+				coin.y = this.coinSpaces[i][1] + this.blockHeight / 2;
+				coin.currentSpace = this.freeSpaces[i];
+				this.cont.addChild(coin);
+			} else {
+				console.log('add coin to new free space')
+				//place it on a free space
+				let i = Math.floor(Math.random()*this.freeSpaces.length);
+
+
+				coin.x = this.freeSpaces[i][0] + this.blockWidth / 2;
+				coin.y = this.freeSpaces[i][1] + this.blockHeight / 2;
+				
+				coin.currentSpace = this.freeSpaces[i];
+				this.coinSpaces.push(this.freeSpaces[i])
+				this.freeSpaces.splice(i, 1);
+				this.cont.addChild(coin);
+
+			}
+
+			coin.scale.set(this.utils.randomNumberBetween(0.075, 0.25));
+
+			coin.startPointX = coin.x; 
+			coin.differential = this.utils.randomNumberBetween(10, 30);
+			coin.speed = this.utils.randomNumberBetween(0.001, 0.005);
+
+			coin.startPointY = coin.y; 
+			coin.differential = this.utils.randomNumberBetween(10, 30);
+			coin.speed = this.utils.randomNumberBetween(0.001, 0.005);
+
+		},
+		placeCoins: function (array) {
+			//this needs its own function because coins can share spaces
+			array.forEach((coin, index) => {
+				this.placeCoin(coin);
+			})
+		},
 		placeItems: function (array, isTransitionItem) {
-			console.log(array)
+			
 			array.forEach((item, index) => {
 				if (!this.freeSpaces.length) return;
 

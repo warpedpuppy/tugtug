@@ -385,6 +385,8 @@ export default function(obj) {
         },
         endSpaceShipJourney: function () {
 
+            this.jump.removeFromStage();
+            
             this.switchPlayer(this.storeActiveMode);
            
             this.grid.gridBuild.placeHero();

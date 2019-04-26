@@ -17,7 +17,7 @@ export default {
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
 	flyBlockSize: [100, 100],
-	swimBlockSize: [200, 200],
+	swimBlockSize: [110, 110],
 	flyWallHit: -1,
 	swimWallHit: -1,
 	bounceWallHit: -1.75,

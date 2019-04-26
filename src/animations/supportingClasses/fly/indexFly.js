@@ -6,6 +6,7 @@ export default function () {
 	return {
 		flyBackground: FlyBackground(),
 		flyAction: FlyAction(),
+		onGridCoins: [],
 		init: function (parent, grassSquare) {
 			this.background = this.flyBackground;
 			this.flyBackground.init(parent);
@@ -22,6 +23,9 @@ export default function () {
 		resize: function () {
 			this.flyBackground.resize();
 			this.flyAction.resize();
+		},
+		addCoinToGrid: function () {
+
 		},
 		startSpaceShipJourney: function () {
             
