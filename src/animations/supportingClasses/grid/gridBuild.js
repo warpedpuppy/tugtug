@@ -301,7 +301,7 @@ export default {
 				item.storeScaleX = item.scale.x;
 				item.storeScaleY = item.scale.y;
 				item.counter = 0;
-            	item.counterLimit = this.utils.randomIntBetween(1000, 6000);
+            	item.counterLimit = this.utils.randomIntBetween(Config.itemLifeSpan[0], Config.itemLifeSpan[1]);
             	//item.isTweening = false;
 				//this.freeSpaces.push([b.x, b.y, b, i, j]);
 				item.currentSpace = this.freeSpaces[i];
