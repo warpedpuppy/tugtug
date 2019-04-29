@@ -5,7 +5,7 @@ export default {
 	swimVelocities: [1, 2],
 	flyVelocity: 6,
 	swimVelocity: 6,
-	flyTreasureChestQ: 10,
+	flyTreasureChestQ: 0,
 	flyCoinsPerTreasureChest: 100,
 	flyBaddyHitCost: 1,
 	swimTreasureChestQ: 2,
@@ -13,8 +13,8 @@ export default {
 	spaceRowQ: 10,
 	spaceColQ: 10,
 	spaceDotsPerPlanet: 10,
-	magicPillsQ: 10,
-	transitionItemsQ: 10,
+	magicPillsQ: 0,
+	transitionItemsQ: 0,
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
 	flyBlockSize: [100, 100],
@@ -30,5 +30,6 @@ export default {
 	rainbowColors: [],
 	testing: true,
 	testingJump: false,
-	testingBounce: false
+	testingBounce: false,
+	baddyHealth: 1
 }

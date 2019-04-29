@@ -35,12 +35,13 @@ export default {
 		},
 		animate: function () {
 		
-			let onScreenSoldiers = [];
+			this.onScreenSoldiers = [];
 			for (let i = 0; i < this.soldiers.length; i ++) {
 				let s = this.soldiers[i];
 				
 				let onScreen = s.classRef.animate();
 				if (onScreen) {
+					this.onScreenSoldiers.push(s);
 
 					//let spear = this.spears[i];
 					

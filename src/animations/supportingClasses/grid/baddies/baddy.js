@@ -14,7 +14,7 @@ export default function (gridBuild) {
 		spearThrowing: false,
 		throw: false,
 		spearCounter: 0,
-		health: 100,
+		health: Config.baddyHealth,
 		init: function (str) {
 			this.cont = gridBuild.cont;
 			this.destPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
@@ -31,6 +31,14 @@ export default function (gridBuild) {
 			this.spear = Weapon(gridBuild).init(this.body);
 		
 			return this.body;
+		},
+		fireHit: function () {
+			this.health --;
+			if (this.health < 0) {
+				this.utils.root.grid.gridBuild.cont.removeChild(this.body);
+				let index = this.utils.root.grid.gridBuild.baddies.soldiers.indexOf(this.body);
+				this.utils.root.grid.gridBuild.baddies.soldiers.splice(index, 1);
+			}
 		},
 		onScreen: function () {
 				

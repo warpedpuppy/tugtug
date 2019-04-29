@@ -38,7 +38,46 @@ export default function () {
             //this.flameQ = (Assets.webgl)? 500 : 10;
             this.flames = Assets.ParticleContainer(this.flameQ);
 
- 
+ 			
+ 			this.testing = Assets.Graphics();
+			let startX = 0;
+   			let startY =  0;
+   			let x1 = startX + Math.cos(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
+   			let y1 = startY + Math.sin(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
+   			let x2 = startX + Math.cos(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
+   			let y2 = startY +  Math.sin(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
+
+   			this.testing.clear();
+   			this.testing.beginFill(0xFF0000)
+   			.moveTo(startX,startY)
+   			.lineTo(x1, y1)
+   			.lineTo(x2, y2)
+   			.lineTo(startX,startY)
+   			.endFill();
+
+   			this.point1 = Assets.Sprite('slot.png');
+   			this.point1.anchor.set(0.5);
+   			this.point1.x = this.point1.y = 0;
+   			this.point1.alpha = 0;
+   			this.hero.activeHero.headCont.addChild(this.point1);
+
+   			this.point2 = Assets.Sprite('slot.png');
+   			this.point2.anchor.set(0.5);
+   			this.point2.alpha = 0;
+   			this.point2.x = x1;
+   			this.point2.y = y1;
+   			this.hero.activeHero.headCont.addChild(this.point2);
+
+   			this.point3 = Assets.Sprite('slot.png');
+   			this.point3.anchor.set(0.5);
+   			this.point3.alpha = 0;
+   			this.point3.x = x2;
+   			this.point3.y = y2;
+   			this.hero.activeHero.headCont.addChild(this.point3);
+
+
+ 			//this.hero.activeHero.headCont.addChild(this.testing);
+ 			//this.utils.app.stage.addChild(this.testing)
 
 		},
 		createPool: function () {
@@ -89,56 +128,34 @@ export default function () {
 		fire: function (boolean) {
 			this.flameOn = this.flames.visible = boolean;
 		},
-		fireHit: function (soldier, flame){
-			let globalPoint1 = this.grid.cont.toGlobal(soldier);
-			let globalPoint2 = this.flames.toGlobal(flame);
-			let c1 = {
-				x: globalPoint1.x,
-				y: globalPoint1.y,
-				radius: 10
-			}
-			let c2 = {
-				x: globalPoint2.x,
-				y: globalPoint2.y,
-				radius: 10
-			}
-			let x = this.utils.circleToCircleCollisionDetection(c1, c2);
-			return x[0];
+		fireHit: function (){
+			let onScreenSoldiers = this.utils.root.grid.gridBuild.baddies.baddyAction.onScreenSoldiers;
+
+   			
+   			let globalPoint1 = this.hero.activeHero.headCont.toGlobal(this.point1);
+   			let globalPoint2 = this.hero.activeHero.headCont.toGlobal(this.point2);
+   			let globalPoint3 = this.hero.activeHero.headCont.toGlobal(this.point3);
+
+   			if (onScreenSoldiers) {
+	   			onScreenSoldiers.forEach(soldier => {
+
+	   				let soldierPoint = this.utils.root.grid.gridBuild.cont.toGlobal(soldier);
+	   				let circle = {
+	   					x: soldierPoint.x,
+	   					y: soldierPoint.y,
+	   					radius: soldier.radius
+	   				}
+	        		if(this.utils.triangleCircleCollision(circle, globalPoint1, globalPoint2, globalPoint3)){
+	        			//soldier.scale.set(2)
+	        			soldier.classRef.fireHit();
+	        		}
+	        	})
+	   		}
 		},
-		
 		animate: function () {
 
 			this.clouds.animate();
 			
-			// let onScreenSoldiers = [];
-			// for (let i = 0; i < this.soldiers.length; i ++) {
-			// 	let s = this.soldiers[i];
-			// 	let onScreen = s.classRef.animate();
-			// 	if(onScreen){
-
-			// 		onScreenSoldiers.push(onScreen);
-			// 		let sp = this.spears[i];
-			// 		if (this.spearHit(sp)) {
-			// 			sp.reset();
-			// 			this.parent.score.decrease(10);
-			// 		};
-
-			// 		//prevent overlap
-			// 		for (let j = 0; j < this.soldiers.length; j ++) {
-			// 			let s2 = this.soldiers[j];
-			// 			if (s2.classRef.onScreen()) {
-			// 				let hit = this.utils.circleToCircleCollisionDetection(s, s2);
-			// 				//console.log(hit[0])
-			// 				if (hit[0]) {
-			// 					//console.log('hit')
-			// 					//console.log(s2.x, s2.y, s2.r)
-			// 					this.utils.adjustPositions(s, s2, hit[1]);
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-
-			// }
 
 		
 			this.hero.activeHero.eyeCont.rotation = this.radius;
@@ -156,30 +173,26 @@ export default function () {
 	                this.hero.activeHero.segments[i].rotation = this.hero.pos[index];
 	            }
 	        }
+	        
+
 	        if (this.flameOn) {
-	        	for(let i = 0; i < this.flameQ; i ++) {
+	   			this.fireHit();
+
+	   			for(let i = 0; i < this.flameQ; i ++) {
 		        	let item = this.flameArray[i];
-		        let determineContinue = Math.floor(Math.random()*10);
-				if(determineContinue < 9) continue;
-		        	item.x += item.vx;
-		        	item.y += item.vy;
-		        	item.alpha -= item.fade;
+			        let determineContinue = Math.floor(Math.random()*10);
+					if(determineContinue < 9) continue;
+			        	item.x += item.vx;
+			        	item.y += item.vy;
+			        	item.alpha -= item.fade;
+			        	if (Math.abs(item.y) > item.maxDistance) {
+			        		item.x = 0;
+			        		item.y = 0;
+			        		item.alpha = 1;
+			        	}
+		         }
 
-		        	// for (let soldier of onScreenSoldiers) {
-		        	// 	if (this.fireHit(soldier, item)) {
 
-		        	// 		soldier.classRef.hit();
-		        	// 		//MAKE SCORE GO UP
-		        	// 		this.parent.score.increase(10);
-		        	// 	}
-		        	// }
-
-		        	if (Math.abs(item.y) > item.maxDistance) {
-		        		item.x = 0;
-		        		item.y = 0;
-		        		item.alpha = 1;
-		        	}
-	            }
 	        } else if (!this.spinning) {
 	        	//console.log(this.radius)
 	        	this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
