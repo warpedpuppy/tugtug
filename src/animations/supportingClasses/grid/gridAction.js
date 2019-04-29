@@ -19,7 +19,8 @@ export default {
 		 	this.flyTreasureChests = this.utils.root.grid.flyTreasureChests;
 		 	this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;
 		 	this.treasure = this.utils.root.grid.treasure;
-		 	this.baddies = this.utils.root.grid.gridBuild.baddies;
+		 	this.swimBaddies = this.utils.root.grid.gridBuild.swimBaddies;
+		 	this.flyBaddies = this.utils.root.grid.gridBuild.flyBaddies;
 		 	this.blocks = this.utils.root.grid.gridBuild.blocks;
 		 	this.gridBuild = this.utils.root.grid.gridBuild;
 			this.spaceShip = this.gridBuild.spaceShip;
@@ -119,7 +120,7 @@ export default {
 			if(this.pause)return;
 
 			let ballB;
-			this.baddies.animate();
+			this[`${this.utils.root.activeMode}Baddies`].animate();
 
 			//keeping this out of the above loop because items will continue being added and subtracted from it
 			this.gridBuild.onGridCoins[this.utils.root.activeMode].forEach((item, index) => {

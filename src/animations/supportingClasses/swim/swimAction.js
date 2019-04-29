@@ -1,6 +1,7 @@
 import Utils from '../../utils/utils';
 import AirBubbles from '../swim/airBubbles';
 import Rotate from '../action/rotate';
+import TriangleOfCollision from '../action/triangleOfCollision';
 export default function () {
 	return {
 		radius: 0,
@@ -16,6 +17,8 @@ export default function () {
 		percApply: true,
 		airBubbles: AirBubbles(),
 		increment: 5,
+		triangleOfCollision: TriangleOfCollision,
+		flameOn: false,
 		init: function (stage) {
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
@@ -23,6 +26,7 @@ export default function () {
 			// this.vx = this.utils.randomNumberBetween(1,2); 
    //          this.vy = this.utils.randomNumberBetween(1,2);
             this.airBubbles.setupBubbles(stage);
+            this.triangleOfCollision.init();
 		},
 		start: function() {
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
@@ -35,7 +39,16 @@ export default function () {
 		resize: function () {
 			this.airBubbles.resize();
 		},
+		fire: function (boolean) {
+			this.flameOn = boolean;
+		},
 		animate: function () {
+
+			 if (this.flameOn) {
+	   			this.triangleOfCollision.fireHit();
+	        }
+	        this.hero.activeHero.headCont.rotation = this.radius;
+
 
 			if(!this.spinning){
 				this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);

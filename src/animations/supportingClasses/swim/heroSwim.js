@@ -13,6 +13,7 @@ export default function () {
 			this.segmentsQ = 5;
 			this.finCont = Assets.Container();
 			this.eyeCont = Assets.Container();
+			this.headCont = Assets.Container();
 			this.fishArray = [
 				'headSegment.png', 
 				'bodySegment1.png', 
@@ -29,7 +30,7 @@ export default function () {
 				r.scale.set(0);
 				this.airBubbles.push(r);
 			}
-
+			this.cont.addChild(this.headCont);
 
 			 for (let i = 0; i < this.segmentsQ; i++) {
                 let segment = this.fishBodySegment(this.segmentHeight, 0xFFFF00, i, this.fishArray[i]);

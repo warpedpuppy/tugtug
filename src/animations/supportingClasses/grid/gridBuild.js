@@ -31,7 +31,8 @@ export default {
 		castles: [],
 		spears: [],
 		solderPerGridSquareQ: 1,
-		baddies: Baddies(),
+		flyBaddies: Baddies(),
+		swimBaddies: Baddies(),
 		onGridCoins: {},
 		omnibusArray: [],
 		init: function () {
@@ -66,7 +67,8 @@ export default {
   			//console.log('this grid build init')
 			//this.buildGrid(this.boards[this.currentBoard]);
 
-			this.baddies.init();
+			this.flyBaddies.init('fly');
+			this.swimBaddies.init('swim');
 
 			this.onGridCoins = {
 				fly: [],
@@ -115,7 +117,7 @@ export default {
 			    texture;
 			this.cont.scale.set(1);
 			this.cont.pivot = Assets.Point(0, 0);
-			this.baddies.removeCastlesAndSoldiers(); 
+			this[`${mode}Baddies`].removeCastlesAndSoldiers(); 
 			this.wallHit = Config[`${mode}WallHit`];
 			this.buffer = Config[`${mode}Buffer`];    
 			this.blockWidth = Config[`${mode}BlockSize`][0];
@@ -195,7 +197,7 @@ export default {
 
 			this.placeCoins(this.onGridCoins[mode])
 
-			this.baddies.placeCastlesAndSoldiers(this);
+			this[`${mode}Baddies`].placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
 			

@@ -36,8 +36,8 @@ export default function (gridBuild) {
 			this.health --;
 			if (this.health < 0) {
 				this.utils.root.grid.gridBuild.cont.removeChild(this.body);
-				let index = this.utils.root.grid.gridBuild.baddies.soldiers.indexOf(this.body);
-				this.utils.root.grid.gridBuild.baddies.soldiers.splice(index, 1);
+				let index = this.utils.root.grid.gridBuild[`${this.utils.root.activeMode}Baddies`].soldiers.indexOf(this.body);
+				this.utils.root.grid.gridBuild[`${this.utils.root.activeMode}Baddies`].soldiers.splice(index, 1);
 			}
 		},
 		onScreen: function () {

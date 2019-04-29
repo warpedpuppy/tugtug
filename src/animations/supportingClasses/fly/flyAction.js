@@ -1,6 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import Rotate from '../action/rotate';
+import TriangleOfCollision from '../action/triangleOfCollision';
 export default function () {
 	return {
 		radius: 0,
@@ -21,6 +22,7 @@ export default function () {
 		flameCounter: 0,
 		flameOn:false,
 		utils: Utils,
+		triangleOfCollision: TriangleOfCollision,
 		init: function (parent, background) {
 			this.parent = parent;
 			this.grid = parent.grid;
@@ -39,45 +41,46 @@ export default function () {
             this.flames = Assets.ParticleContainer(this.flameQ);
 
  			
- 			this.testing = Assets.Graphics();
-			let startX = 0;
-   			let startY =  0;
-   			let x1 = startX + Math.cos(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
-   			let y1 = startY + Math.sin(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
-   			let x2 = startX + Math.cos(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
-   			let y2 = startY +  Math.sin(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
+ 		// 	this.testing = Assets.Graphics();
+			// let startX = 0;
+   // 			let startY =  0;
+   // 			let x1 = startX + Math.cos(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
+   // 			let y1 = startY + Math.sin(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
+   // 			let x2 = startX + Math.cos(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
+   // 			let y2 = startY +  Math.sin(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
 
-   			this.testing.clear();
-   			this.testing.beginFill(0xFF0000)
-   			.moveTo(startX,startY)
-   			.lineTo(x1, y1)
-   			.lineTo(x2, y2)
-   			.lineTo(startX,startY)
-   			.endFill();
+   // 			this.testing.clear();
+   // 			this.testing.beginFill(0xFF0000)
+   // 			.moveTo(startX,startY)
+   // 			.lineTo(x1, y1)
+   // 			.lineTo(x2, y2)
+   // 			.lineTo(startX,startY)
+   // 			.endFill();
 
-   			this.point1 = Assets.Sprite('slot.png');
-   			this.point1.anchor.set(0.5);
-   			this.point1.x = this.point1.y = 0;
-   			this.point1.alpha = 0;
-   			this.hero.activeHero.headCont.addChild(this.point1);
+   // 			this.point1 = Assets.Sprite('slot.png');
+   // 			this.point1.anchor.set(0.5);
+   // 			this.point1.x = this.point1.y = 0;
+   // 			this.point1.alpha = 0;
+   // 			this.hero.activeHero.headCont.addChild(this.point1);
 
-   			this.point2 = Assets.Sprite('slot.png');
-   			this.point2.anchor.set(0.5);
-   			this.point2.alpha = 0;
-   			this.point2.x = x1;
-   			this.point2.y = y1;
-   			this.hero.activeHero.headCont.addChild(this.point2);
+   // 			this.point2 = Assets.Sprite('slot.png');
+   // 			this.point2.anchor.set(0.5);
+   // 			this.point2.alpha = 0;
+   // 			this.point2.x = x1;
+   // 			this.point2.y = y1;
+   // 			this.hero.activeHero.headCont.addChild(this.point2);
 
-   			this.point3 = Assets.Sprite('slot.png');
-   			this.point3.anchor.set(0.5);
-   			this.point3.alpha = 0;
-   			this.point3.x = x2;
-   			this.point3.y = y2;
-   			this.hero.activeHero.headCont.addChild(this.point3);
+   // 			this.point3 = Assets.Sprite('slot.png');
+   // 			this.point3.anchor.set(0.5);
+   // 			this.point3.alpha = 0;
+   // 			this.point3.x = x2;
+   // 			this.point3.y = y2;
+   // 			this.hero.activeHero.headCont.addChild(this.point3);
 
 
- 			//this.hero.activeHero.headCont.addChild(this.testing);
- 			//this.utils.app.stage.addChild(this.testing)
+ 		// 	//this.hero.activeHero.headCont.addChild(this.testing);
+ 		// 	//this.utils.app.stage.addChild(this.testing)
+ 		this.triangleOfCollision.init();
 
 		},
 		createPool: function () {
@@ -128,30 +131,30 @@ export default function () {
 		fire: function (boolean) {
 			this.flameOn = this.flames.visible = boolean;
 		},
-		fireHit: function (){
-			let onScreenSoldiers = this.utils.root.grid.gridBuild.baddies.baddyAction.onScreenSoldiers;
+		// fireHit: function (){
+		// 	let onScreenSoldiers = this.utils.root.grid.gridBuild.baddies.baddyAction.onScreenSoldiers;
 
    			
-   			let globalPoint1 = this.hero.activeHero.headCont.toGlobal(this.point1);
-   			let globalPoint2 = this.hero.activeHero.headCont.toGlobal(this.point2);
-   			let globalPoint3 = this.hero.activeHero.headCont.toGlobal(this.point3);
+  //  			let globalPoint1 = this.hero.activeHero.headCont.toGlobal(this.point1);
+  //  			let globalPoint2 = this.hero.activeHero.headCont.toGlobal(this.point2);
+  //  			let globalPoint3 = this.hero.activeHero.headCont.toGlobal(this.point3);
 
-   			if (onScreenSoldiers) {
-	   			onScreenSoldiers.forEach(soldier => {
+  //  			if (onScreenSoldiers) {
+	 //   			onScreenSoldiers.forEach(soldier => {
 
-	   				let soldierPoint = this.utils.root.grid.gridBuild.cont.toGlobal(soldier);
-	   				let circle = {
-	   					x: soldierPoint.x,
-	   					y: soldierPoint.y,
-	   					radius: soldier.radius
-	   				}
-	        		if(this.utils.triangleCircleCollision(circle, globalPoint1, globalPoint2, globalPoint3)){
-	        			//soldier.scale.set(2)
-	        			soldier.classRef.fireHit();
-	        		}
-	        	})
-	   		}
-		},
+	 //   				let soldierPoint = this.utils.root.grid.gridBuild.cont.toGlobal(soldier);
+	 //   				let circle = {
+	 //   					x: soldierPoint.x,
+	 //   					y: soldierPoint.y,
+	 //   					radius: soldier.radius
+	 //   				}
+	 //        		if(this.utils.triangleCircleCollision(circle, globalPoint1, globalPoint2, globalPoint3)){
+	 //        			//soldier.scale.set(2)
+	 //        			soldier.classRef.fireHit();
+	 //        		}
+	 //        	})
+	 //   		}
+		// },
 		animate: function () {
 
 			this.clouds.animate();
@@ -176,7 +179,7 @@ export default function () {
 	        
 
 	        if (this.flameOn) {
-	   			this.fireHit();
+	   			this.triangleOfCollision.fireHit();
 
 	   			for(let i = 0; i < this.flameQ; i ++) {
 		        	let item = this.flameArray[i];

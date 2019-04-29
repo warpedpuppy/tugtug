@@ -51,7 +51,7 @@ export default {
 
 		},
 		clearGrid: function () {
-			this.gridBuild.baddies.removeCastlesAndSoldiers();
+			this.gridBuild[`${this.utils.root.activeMode}Baddies`].removeCastlesAndSoldiers();
 		},
 		changeGridSize: function(){
 

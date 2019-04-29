@@ -14,38 +14,62 @@ export default function () {
 		baddiesPool: [],
 		baddy: Baddy(),
 		baddyAction: BaddyAction,
-		init: function () {
+		init: function (mode) {
 			this.animate = this.animate.bind(this);
+			this.loopingQ = Config[`${mode}BaddyQ`];
 			//this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
+			let soldierCounter = 0;
+			for (let i = 0; i < this.loopingQ; i ++) {
+				//make castle array
+				let c;
+				if (!this.castles[i]) {
+					c = BaddyHouse(this.utils.root.grid.gridBuild).init();
+					this.castles.push(c);
+				} else {
+					c = this.castles[i];
+				}
+				c.soldiers = [];
+				//make baddy array
+				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+					
+					let s;
+					if (!this.soldiers[soldierCounter]) {
+						s = Baddy(this.utils.root.grid.gridBuild).init('soldier.png');
+						this.spears.push(s.classRef.spear)
+						s.classRef.spear.classRef.counter = 0;
+						this.soldiers.push(s);
+					} else {
+						s = this.soldiers[soldierCounter];
+						soldierCounter ++;
+					}
+					c.soldiers.push(s);
+					s.castle = c;
+				}	
+			}
+
+
 		},
 		placeCastlesAndSoldiers: function (gridBuild) {
 			
 			let freeSpaces = gridBuild.freeSpaces,
-			    soldierCounter = 0,
-			    loopingQ = freeSpaces.length;
+			    soldierCounter = 0;
+			
 			 
-			for (let i = 0; i < loopingQ; i ++) {
+			for (let i = 0; i < this.loopingQ; i ++) {
 			//for (let i = 0; i < 1; i ++) {
 			
-				let determineContinue = Math.floor(Math.random()*10);
-				if(determineContinue < 9) continue;
+				// let determineContinue = Math.floor(Math.random()*10);
+				// if(determineContinue < 9) continue;
 
 				let freeSpacesIndex = Math.floor(Math.random() * freeSpaces.length);
 
 				let block = freeSpaces[freeSpacesIndex],
 				    c;
 
-				if (!this.castles[i]) {
-					c = BaddyHouse(gridBuild).init();
-					// c = Assets.Sprite('castle.png');
-					// c.anchor.set(0.5);
-					// c.scale.set(0.25);
-					this.castles.push(c);
-				} else {
-					c = this.castles[i];
+				
+				c = this.castles[i];
 
-				}
-
+				
 				let bw = Config[`${this.utils.root.activeMode}BlockSize`][0];
 				let bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
@@ -54,7 +78,7 @@ export default function () {
 
 				c.classRef.addToStage();
 				
-				for (let j = 0; j < this.solderPerGridSquareQ; j ++) {
+				for (let j = 0; j < c.soldiers; j ++) {
 					
 					let s;
 					if (!this.soldiers[soldierCounter]) {

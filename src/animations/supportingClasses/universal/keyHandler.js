@@ -27,7 +27,7 @@ export default function () {
             if(this.parent.activeAction.jump){
             	this.parent.activeAction.jump();
             }
-            if(this.parent.activeMode === 'fly' && this.parent.activeAction.fire){
+            if((this.parent.activeMode === 'fly' && this.parent.activeAction.fire) || this.parent.activeMode === 'swim'){
             	this.parent.activeAction.fire(true);
             }
         },
