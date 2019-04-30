@@ -38,6 +38,7 @@ export default function () {
 		testCircle: {},
 		dotsArray: [],
 		dotsContArray: [],
+		gremlinContsArray: [],
 		jumpPoints: JumpPoints,
 		jumpTokenUnlocked: JumpTokenUnlocked,
 		spaceGremlin: SpaceGremlin,
@@ -74,6 +75,7 @@ export default function () {
 					let dotQ = Config.spaceDotsPerPlanet;
 					let dist =  cont.radius + 20;
 					let dotsCont = Assets.Container();
+					let gremlinCont = Assets.Container();
 					for (let k = 0; k < dotQ; k++) {
 						let dot = this.dot();
 			            dot.x = dist * Math.cos( ( 2 * Math.PI) * k / dotQ);
@@ -85,13 +87,28 @@ export default function () {
 			        dotsCont.x = cont.x;
 			        dotsCont.y = cont.y;
 			        this.orbsCont.addChild(dotsCont);
+
+			        gremlinCont.y = cont.y;
+					gremlinCont.x = cont.x;
+					gremlinCont.rotation = this.utils.deg2rad(-90);
+			        this.orbsCont.addChild(gremlinCont);
+
 			        this.dotsContArray.push(dotsCont);
 
 					counter ++;
 					this.widths.push(cont.width);
 
-					let gremlin = this.spaceGremlin.init();
-					cont.addChild(gremlin);
+					// let test = Assets.Graphics();
+					// test.beginFill(0xFFFF00).drawCircle(0,0,50).endFill();
+					// //test.y = 200;
+					// gremlinCont.addChild(test)
+
+					let gremlin = this.spaceGremlin.buildGremlin();
+					gremlinCont.speed = this.utils.deg2rad(this.utils.randomNumberBetween(-2, 2));
+					gremlin.y = -cont.width / 2;
+					gremlinCont.addChild(gremlin);
+					this.gremlinContsArray.push(gremlinCont)
+					console.log(gremlin.x, gremlin.y)
 				
 				}
 			}
@@ -241,6 +258,11 @@ export default function () {
 						y: globalPoint2.y,
 						radius: 5
 					}
+					if(this.gremlinContsArray[i]){
+						let gremlin = this.gremlinContsArray[i];
+					gremlin.rotation += gremlin.speed;
+					}
+					
 
 					if(this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
 						dot.parent.removeChild(dot);
