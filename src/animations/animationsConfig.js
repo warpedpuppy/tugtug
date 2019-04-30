@@ -14,7 +14,7 @@ export default {
 	spaceColQ: 10,
 	spaceDotsPerPlanet: 10,
 	magicPillsQ: 0,
-	transitionItemsQ: 30,
+	transitionItemsQ: 10,
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
 	flyBlockSize: [100, 100],
@@ -32,6 +32,6 @@ export default {
 	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
-	flyBaddyQ:10, 
-	swimBaddyQ: 10
+	flyBaddyQ:100, 
+	swimBaddyQ: 100
 }

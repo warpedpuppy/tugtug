@@ -8,7 +8,7 @@ export default {
 		rings: [],
 		lines: [],
 		coins: [],
-		opCounter: 0, 
+		opCounter: 0,
 		init: function () {
 
 			this.ringQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?Config.bounceTotalPoints:100;
@@ -23,7 +23,7 @@ export default {
 			}
 
 
-			this.opQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?1000:100;
+			this.opQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?300:50;
 			for (let i = 0; i < this.opQ; i ++) {
 				this.op.push(this.Sprite());
 			}
@@ -126,6 +126,32 @@ export default {
 		},
 		Graphics: function () {
 			return new PIXI.Graphics();
+		},
+		createPool: function (cont, str, colors) {
+			let flameArray = this.returnObjectPool(str);
+            let flameQ = flameArray.length;
+            let colorCounter = 0;
+			let item;
+			for (let i = 0; i < flameQ; i ++) {
+				item = flameArray[i];
+				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
+				item.anchor.set(0.5);
+				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
+				item.fade = this.utils.randomNumberBetween(0.001, 0.01);
+				item.maxDistance = this.utils.randomNumberBetween(100, 1000);
+				let hypotenuse = this.utils.randomNumberBetween(10, 100);
+				item.vx = Math.cos(item.angle) * hypotenuse;
+	        	item.vy = Math.sin(item.angle) * hypotenuse;
+				
+				item.tint = colors[colorCounter];
+				colorCounter ++;
+				if (colorCounter > colors.length - 1) {
+					colorCounter = 0;
+				}
+				cont.addChild(item);
+			}
+			return {flameArray, flameQ}
+			
 		}
 
 	}

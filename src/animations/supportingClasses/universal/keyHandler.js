@@ -27,7 +27,12 @@ export default function () {
             if(this.parent.activeAction.jump){
             	this.parent.activeAction.jump();
             }
-            if((this.parent.activeMode === 'fly' && this.parent.activeAction.fire) || this.parent.activeMode === 'swim'){
+           
+            if(
+                (this.parent.activeMode === 'fly'  || this.parent.activeMode === 'swim') 
+                && this.parent.activeAction.fire)
+            {
+    
             	this.parent.activeAction.fire(true);
             }
         },
@@ -50,8 +55,13 @@ export default function () {
             this.parent.rotateLeftBoolean = false;
             this.parent.rotateRightBoolean = false;
             this.parent.idle = true;
-            if (this.parent.activeMode === 'fly' && this.parent.activeAction.fire) {
-            	this.parent.activeAction.fire(false);
+        
+            if(
+                (this.parent.activeMode === 'fly'  || this.parent.activeMode === 'swim') 
+                && this.parent.activeAction.fire)
+            {
+                this.parent.swim.swimAction.fire(true)
+                this.parent.activeAction.fire(false);
             }
         },
 		keyDown: function (e) {

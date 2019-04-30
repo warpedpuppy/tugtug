@@ -27,10 +27,10 @@ export default {
 		treasureChests: [],
 		magicPillsArray: [],
 		itemLoopingQ: 0,
-		soldiers: [],
-		castles: [],
-		spears: [],
-		solderPerGridSquareQ: 1,
+		// soldiers: [],
+		// castles: [],
+		// spears: [],
+		// solderPerGridSquareQ: 1,
 		flyBaddies: Baddies(),
 		swimBaddies: Baddies(),
 		onGridCoins: {},
@@ -64,8 +64,8 @@ export default {
 			// ];
 
   			this.boards = this.utils.root.dbData.boards;
-  			//console.log('this grid build init')
-			//this.buildGrid(this.boards[this.currentBoard]);
+  			// console.log('this grid build init')
+			// this.buildGrid(this.boards[this.currentBoard]);
 
 			this.flyBaddies.init('fly');
 			this.swimBaddies.init('swim');
@@ -76,6 +76,10 @@ export default {
 			}
 			
 			return this;
+		},
+		resetBaddies: function () {
+			this.flyBaddies.setArrays();
+			this.swimBaddies.setArrays();
 		},
 		createObj: function (board) {
 			let obj = {};

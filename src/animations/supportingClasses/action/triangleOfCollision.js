@@ -41,7 +41,7 @@ export default {
    			this.utils.hero.activeHero.headCont.addChild(this.point3);
 
 
- 			this.utils.hero.activeHero.headCont.addChild(this.testing);
+ 			//this.utils.hero.activeHero.headCont.addChild(this.testing);
  			//this.utils.app.stage.addChild(this.testing);
  			this.fireHit = this.fireHit.bind(this);
 		},

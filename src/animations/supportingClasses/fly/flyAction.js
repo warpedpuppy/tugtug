@@ -16,7 +16,7 @@ export default function () {
 		percApply: true,
 		increment: 5,
 		colors: [0xFF0000, 0xFFFF00, 0xFF9900],
-		colorCounter:0,
+		// colorCounter:0,
 		flameArray: [],
 		shootingFlames: [],
 		flameCounter: 0,
@@ -40,76 +40,17 @@ export default function () {
             //this.flameQ = (Assets.webgl)? 500 : 10;
             this.flames = Assets.ParticleContainer(this.flameQ);
 
- 			
- 		// 	this.testing = Assets.Graphics();
-			// let startX = 0;
-   // 			let startY =  0;
-   // 			let x1 = startX + Math.cos(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
-   // 			let y1 = startY + Math.sin(this.utils.deg2rad(-110)) * this.utils.canvasWidth;
-   // 			let x2 = startX + Math.cos(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
-   // 			let y2 = startY +  Math.sin(this.utils.deg2rad(-70)) * this.utils.canvasWidth;
-
-   // 			this.testing.clear();
-   // 			this.testing.beginFill(0xFF0000)
-   // 			.moveTo(startX,startY)
-   // 			.lineTo(x1, y1)
-   // 			.lineTo(x2, y2)
-   // 			.lineTo(startX,startY)
-   // 			.endFill();
-
-   // 			this.point1 = Assets.Sprite('slot.png');
-   // 			this.point1.anchor.set(0.5);
-   // 			this.point1.x = this.point1.y = 0;
-   // 			this.point1.alpha = 0;
-   // 			this.hero.activeHero.headCont.addChild(this.point1);
-
-   // 			this.point2 = Assets.Sprite('slot.png');
-   // 			this.point2.anchor.set(0.5);
-   // 			this.point2.alpha = 0;
-   // 			this.point2.x = x1;
-   // 			this.point2.y = y1;
-   // 			this.hero.activeHero.headCont.addChild(this.point2);
-
-   // 			this.point3 = Assets.Sprite('slot.png');
-   // 			this.point3.anchor.set(0.5);
-   // 			this.point3.alpha = 0;
-   // 			this.point3.x = x2;
-   // 			this.point3.y = y2;
-   // 			this.hero.activeHero.headCont.addChild(this.point3);
-
-
- 		// 	//this.hero.activeHero.headCont.addChild(this.testing);
- 		// 	//this.utils.app.stage.addChild(this.testing)
  		this.triangleOfCollision.init();
 
 		},
 		createPool: function () {
-			this.flameArray = Assets.returnObjectPool('star.png');
-            this.flameQ = this.flameArray.length;
-            
-			let item;
-			for (let i = 0; i < this.flameQ; i ++) {
-				item = this.flameArray[i];
-				item.scale.set(this.utils.randomNumberBetween(0.01, 0.1));
-				item.anchor.set(0.5);
-				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
-				item.fade = this.utils.randomNumberBetween(0.001, 0.01);
-				item.maxDistance = this.utils.randomNumberBetween(100, 1000);
-				let hypotenuse = this.utils.randomNumberBetween(10, 100);
-				item.vx = Math.cos(item.angle) * hypotenuse;
-	        	item.vy = Math.sin(item.angle) * hypotenuse;
-				
-				item.tint = this.colors[this.colorCounter];
-				this.colorCounter ++;
-				if (this.colorCounter > this.colors.length - 1) {
-					this.colorCounter = 0;
-				}
-				this.flames.addChild(item);
-			}
+	
+
+			let obj = Assets.createPool(this.flames, 'star.png', this.colors);
+			this.flameArray = obj.flameArray;
+			this.flameQ = obj.flameQ;
 			this.flames.visible = false;
-			// this.flames.x = this.utils.canvasWidth / 2;
-			 this.flames.y = -50;//this.utils.canvasHeight / 2;
-			// let index = this.stage.getChildIndex(this.utils.hero.cont) - 1;
+			this.flames.y = -50;
 			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
 		},
 		resize: function () {
@@ -131,30 +72,6 @@ export default function () {
 		fire: function (boolean) {
 			this.flameOn = this.flames.visible = boolean;
 		},
-		// fireHit: function (){
-		// 	let onScreenSoldiers = this.utils.root.grid.gridBuild.baddies.baddyAction.onScreenSoldiers;
-
-   			
-  //  			let globalPoint1 = this.hero.activeHero.headCont.toGlobal(this.point1);
-  //  			let globalPoint2 = this.hero.activeHero.headCont.toGlobal(this.point2);
-  //  			let globalPoint3 = this.hero.activeHero.headCont.toGlobal(this.point3);
-
-  //  			if (onScreenSoldiers) {
-	 //   			onScreenSoldiers.forEach(soldier => {
-
-	 //   				let soldierPoint = this.utils.root.grid.gridBuild.cont.toGlobal(soldier);
-	 //   				let circle = {
-	 //   					x: soldierPoint.x,
-	 //   					y: soldierPoint.y,
-	 //   					radius: soldier.radius
-	 //   				}
-	 //        		if(this.utils.triangleCircleCollision(circle, globalPoint1, globalPoint2, globalPoint3)){
-	 //        			//soldier.scale.set(2)
-	 //        			soldier.classRef.fireHit();
-	 //        		}
-	 //        	})
-	 //   		}
-		// },
 		animate: function () {
 
 			this.clouds.animate();

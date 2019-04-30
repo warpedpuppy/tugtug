@@ -78,6 +78,7 @@ export default {
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
+			this.gridBuild.resetBaddies();
 			this.gridAction.setLimits();
 		},
 		addNewBoardData: function (newData) {

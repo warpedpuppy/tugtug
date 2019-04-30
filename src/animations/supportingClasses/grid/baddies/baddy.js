@@ -25,7 +25,7 @@ export default function (gridBuild) {
 			this.spearSpeed = this.utils.randomNumberBetween(0.6, 0.8);
 			this.body.classRef = this;
 			this.body.radius = this.body.r = 11;
-			this.startSquare = this.currentSquare();
+			//this.startSquare = this.currentSquare();
 
 			//spears
 			this.spear = Weapon(gridBuild).init(this.body);
@@ -107,6 +107,7 @@ export default function (gridBuild) {
 			}
 		},
 		addToStage: function () {
+			this.startSquare = this.currentSquare();
 			this.cont.addChild(this.body);
 			this.cont.addChild(this.spear);
 		},
