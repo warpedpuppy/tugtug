@@ -6,6 +6,7 @@ import Tweens from '../../utils/tweens';
 import Planets from './planet';
 import JumpPoints from './jumpPoints';
 import JumpTokenUnlocked from './jumpTokenUnlocked';
+import SpaceGremlin from './spaceGremlin';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -39,6 +40,7 @@ export default function () {
 		dotsContArray: [],
 		jumpPoints: JumpPoints,
 		jumpTokenUnlocked: JumpTokenUnlocked,
+		spaceGremlin: SpaceGremlin,
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -87,6 +89,9 @@ export default function () {
 
 					counter ++;
 					this.widths.push(cont.width);
+
+					let gremlin = this.spaceGremlin.init();
+					cont.addChild(gremlin);
 				
 				}
 			}

@@ -29,7 +29,7 @@ export default {
 	treasureShakeSpeeds: [0.01, 0.025],
 	rainbowColors: [],
 	testing: true,
-	testingJump: false,
+	testingJump: true,
 	testingBounce: false,
 	baddyHealth: 1,
 	flyBaddyQ:100, 
