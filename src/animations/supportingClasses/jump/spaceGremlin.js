@@ -34,6 +34,7 @@ export default  {
 			body.anchor.set(0.5)
 			body.y = -30;
 			this.body = body;
+			cont.body = body;
 			cont.addChild(body);
 
 

@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 import Config from '../../animationsConfig';
 export default function () {
 	return {
@@ -13,19 +14,21 @@ export default function () {
 	utils: Utils,
 	flyTotal: 0,
 	swimTotal: 0,
-	spaceTotal: 0,
+	jumpTotal: 0,
 	bounceTotal: 0,
 	flyPoints: 0,
 	swimPoints: 0,
-	spacePoints: 0,
+	jumpPoints: 0,
 	bouncePoints: 0,
 	bounceTokenEarned: false,
+	jumpTokenEarned: false,
 	init: function (optionalStartScore) {
 
 		this.flyTreasureChestQ = Config.flyTreasureChestQ;
 		this.flyCoinsPerTreasureChest = Config.flyCoinsPerTreasureChest;
 		this.swimTreasureChestQ = Config.swimTreasureChestQ;
 		this.swimCoinsPerTreasureChest = Config.swimCoinsPerTreasureChest;
+		this.jumpTokenUnlockPoints = Config.jumpTokenUnlockPoints;
 
 		this.createTotals();
 		//this.cont = this.utils.app.stage;
@@ -106,7 +109,7 @@ export default function () {
 		// fish
 		this.swimTotal = Config.swimTreasureChestQ * Config.swimCoinsPerTreasureChest;
 		// space
-		this.spaceTotal = Config.spaceColQ * Config.spaceRowQ * Config.spaceDotsPerPlanet;
+		this.jumpTotal = Config.spaceColQ * Config.spaceRowQ * Config.spaceDotsPerPlanet;
 		// bounce
 		this.bounceTotal = Config.bounceTotalPoints;
 	},
@@ -114,7 +117,7 @@ export default function () {
 		return {
 				flyText:  Assets.BitmapText(`dragon points: ${this.flyPoints} / ${this.flyTotal}`),
 				swimText:  Assets.BitmapText(`fish points: ${this.swimPoints}/ ${this.swimTotal}`), 
-				jumpText:  Assets.BitmapText(`space points: ${this.spacePoints} / ${this.spaceTotal}`),
+				jumpText:  Assets.BitmapText(`space points: ${this.jumpPoints} / ${this.jumpTotal}`),
 				bounceText:  Assets.BitmapText(`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`)
 			};
 	},
@@ -176,6 +179,31 @@ export default function () {
 		}
 		console.log(activeMode,this[`${activeMode}Points`],  Config[`${activeMode}CoinsPerTreasureChest`])
 		this.scoreTexts[`${activeMode}Text`].text = `dragon points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
+	},
+	jumpDotHit: function (str) {
+
+		let activeMode = this.utils.root.activeMode;
+		let jumpBackground = this.utils.root.jump.jumpBackground;
+		let dotsEaten = this.utils.root.jump.jumpBackground.eatenDots.length;
+	
+		// if(str === 'down') {
+		// 	this[`${activeMode}Points`] --;
+		// } else if (str === 'up') {
+		// 	this[`${activeMode}Points`] ++;
+		// }
+		this[`${activeMode}Points`] = dotsEaten;
+		
+		this.scoreTexts[`${activeMode}Text`].text = `space points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
+
+		if (!jumpBackground.jumpTokenUnlocked && this[`${activeMode}Points`] >= this.jumpTokenUnlockPoints) {
+			jumpBackground.jumpTokenUnlocked = true;
+			jumpBackground.jumpTokenUnlockedGraphic.addToStage();
+			Tweens.tween(jumpBackground.tokenLock, 0.5, {alpha: [1,0], onComplete: this.jumpRemoveLock.bind(this)});
+		}
+	},
+	jumpRemoveLock: function () {
+		let jumpBackground = this.utils.jump.jumpBackground;
+		jumpBackground.tokenLock.removeChild(jumpBackground.tokenLock);
 	},
 	gridWeaponHit: function () {
 

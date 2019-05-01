@@ -17,7 +17,7 @@ export default {
 			this.textCont.addChild(this.unlocked);
 			this.textCont.addChild(this.token);
 
-			
+			this.addToStage = this.addToStage.bind(this);
 
 
 		},
