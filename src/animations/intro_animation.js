@@ -13,6 +13,7 @@ import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
 import Score from '../animations/supportingClasses/universal/score';
 import ControlPanel from './supportingClasses/universal/controlPanel';
+import LevelComplete from './supportingClasses/universal/levelComplete';
 import LevelSlots from './supportingClasses/tokens/levelSlots';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
@@ -48,6 +49,7 @@ export default function(obj) {
         dbData: {},
         storeAction: true,
         timeOut: undefined,
+        levelComplete: LevelComplete,
         init: function (isMobile, isMobileOnly) {
 
             if(Config.testingBounce){
@@ -57,6 +59,9 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
+
+            console.log(this.levelComplete);
+            this.levelComplete.init();
 
          
             if (!this.isMobileOnly) {
@@ -417,10 +422,10 @@ export default function(obj) {
             }
 
         },
-        reset: function () {
-            this.jump.reset();
-            this.levelSlots.reset();
-        },
+        // reset: function () {
+        //     this.jump.reset();
+        //     this.levelSlots.reset();
+        // },
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
@@ -430,6 +435,21 @@ export default function(obj) {
         },
         animateDesktopIpad: function () {
             this.animate();
+        },
+        levelCompleteHandler: function () {
+            this.levelComplete.boardComplete();
+            
+            this.score.nextLevel();
+            this.levelSlots.reset();
+
+            //reset fly
+
+            //reset swim
+
+            //reset jump
+            this.jump.reset();
+
+            //reset bounce
         },
         animate: function () {
 

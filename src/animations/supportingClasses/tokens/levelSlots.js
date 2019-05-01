@@ -62,11 +62,10 @@ export default function () {
 			token.x = token.y = 0;
 			let index = token.num - 1;
 			token.name = "token";
-			console.log(token.num, this.slots)
 			this.slots[index].addChild(token);
 
 			if (this.tokenCounter === 4) {
-				this.parent.grid.gridComplete.boardComplete();
+				this.parent.levelCompleteHandler();
 			}
 		},
 		removeText: function () {

@@ -44,7 +44,7 @@ export default function () {
 		//jumpPoints: JumpPoints,
 		jumpTokenUnlocked: false,
 		jumpTokenUnlockedGraphic: JumpTokenUnlockedGraphic,
-		jumpTokenEarned: false,
+		jumpTokenTaken: false,
 		dotEatBoolean: true,
 		spaceGremlin: SpaceGremlin,
 		//writeItOut: true,
@@ -121,7 +121,6 @@ export default function () {
 					gremlin.hit = false;
 					gremlinCont.addChild(gremlin);
 					this.gremlinContsArray.push(gremlinCont)
-					console.log(gremlin.x, gremlin.y)
 				
 				}
 			}
@@ -141,11 +140,11 @@ export default function () {
 				this.columns.push(this.tileColumn);
 			}
 
-			// this.test = Assets.Graphics();
-			// this.cont.addChild(this.test);
-			//this.jumpPoints.init(this);
-
 			this.loopingQ = Math.max(this.orbs.length, this.dotsArray.length);
+		},
+		reset: function () {
+			this.jumpTokenUnlocked = false;
+			this.jumpTokenTaken = false;
 		},
 		dot: function () {
 			let dot = Assets.Graphics();
@@ -212,15 +211,15 @@ export default function () {
 				this.hero.activeHero.floor = -newPlanet.radius;
 				this.currentOrb = newPlanet;
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
-			
+
 				if (newPlanet === this.spaceShipOrb) {
 					this.hero.activeHero.cont.y = 0;
 					this.pause = true;
 					this.utils.root.jump.jumpAction.pause = true;
 					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
-				} else if (newPlanet === this.tokenOrb && this.utils.root.score.jumpTokenEarned) {
-					//ADD LOCK CODE HERE
-					this.tokenTaken = true;
+				} else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
+
+					this.jumpTokenTaken = true;
 					this.utils.root.levelSlots.fillSlot(this.token);
 				}
 		},
@@ -232,7 +231,6 @@ export default function () {
 		gremlinHit: function (index, gremlin) {
 			//distribute dots to where they should be via tweens
 			let cont = this.dotsContArray[index];
-			console.log('this.eatenDots length ', this.eatenDots.length)
 			//figure out how many dots to add back
 
 			let dotQToAddBack = Config.spaceDotsPerPlanet - cont.children.length;
@@ -265,7 +263,6 @@ export default function () {
 			if (arr[1] === Config.spaceDotsPerPlanet - 1) {
 				arr[0].hit = false;
 				this.dotEatBoolean = true;
-				console.log('complete gremlin hit');
 			}
 		},
 		animate: function () {
@@ -329,7 +326,6 @@ export default function () {
 
 
 							if(!gremlinCont.gremlin.hit && this.utils.circleToCircleCollisionDetection(this.tempCircle, tempGremlin)[0]) {
-								console.log("hit");
 								this.gremlinHit(i, gremlinCont.gremlin);
 								gremlinCont.gremlin.hit = true;
 								this.dotEatBoolean = false;

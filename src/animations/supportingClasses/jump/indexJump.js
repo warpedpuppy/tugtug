@@ -13,7 +13,7 @@ export default function () {
             this.jumpBackground.init(stage, this.jumpAction);
 		},
 		reset: function () {
-			this.jumpBackground.tokenTaken = false;
+			this.jumpBackground.reset();
 		},
 		addToStage: function () {
 			this.jumpBackground.addToStage();

@@ -20,6 +20,8 @@ export default function () {
 	swimPoints: 0,
 	jumpPoints: 0,
 	bouncePoints: 0,
+	grandTotal: 0,
+	storeTotal: 0,
 	bounceTokenEarned: false,
 	jumpTokenEarned: false,
 	init: function (optionalStartScore) {
@@ -64,11 +66,20 @@ export default function () {
 		this.popUp.addChild(this.closeButton);
 		this.closeButton.on('pointerdown',this.seeScores);
 	},
+	nextLevel: function () {
+		
+		this.storeTotal = this.grandTotal;
+		this.flyPoints = 0;
+		this.swimPoints = 0;
+		this.jumpPoints = 0;
+		this.bouncePoints = 0;
+	},
 	seeScores: function () {
 
 		if (this.utils.root.action) {
 			this.utils.root.action = false;
 			let spacer = 0;
+			this.setGrandTotal();
 			for (let key in this.scoreTexts) {
 				this.scoreTexts[key].x = 50;
 				this.scoreTexts[key].y = 50 + (spacer * 30);
@@ -114,12 +125,18 @@ export default function () {
 		this.bounceTotal = Config.bounceTotalPoints;
 	},
 	stringCreate: function (dragon, fish, space, bounce) {
+		this.grandTotal = this.flyPoints + this.swimPoints + this.jumpPoints + this.bouncePoints;
 		return {
 				flyText:  Assets.BitmapText(`dragon points: ${this.flyPoints} / ${this.flyTotal}`),
 				swimText:  Assets.BitmapText(`fish points: ${this.swimPoints}/ ${this.swimTotal}`), 
 				jumpText:  Assets.BitmapText(`space points: ${this.jumpPoints} / ${this.jumpTotal}`),
-				bounceText:  Assets.BitmapText(`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`)
+				bounceText:  Assets.BitmapText(`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`),
+				grandTotal: Assets.BitmapText(`grand total: ${this.grandTotal}`)
 			};
+	},
+	setGrandTotal: function () {
+		this.grandTotal = this.storeTotal + this.flyPoints + this.swimPoints + this.jumpPoints + this.bouncePoints;
+		this.scoreTexts.grandTotal.text = `grand total: ${this.grandTotal}`;
 	},
 	makeScore: function (score) {
 		// this.cont.removeChild(this.scoreText)
@@ -186,13 +203,8 @@ export default function () {
 		let jumpBackground = this.utils.root.jump.jumpBackground;
 		let dotsEaten = this.utils.root.jump.jumpBackground.eatenDots.length;
 	
-		// if(str === 'down') {
-		// 	this[`${activeMode}Points`] --;
-		// } else if (str === 'up') {
-		// 	this[`${activeMode}Points`] ++;
-		// }
 		this[`${activeMode}Points`] = dotsEaten;
-		
+
 		this.scoreTexts[`${activeMode}Text`].text = `space points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
 
 		if (!jumpBackground.jumpTokenUnlocked && this[`${activeMode}Points`] >= this.jumpTokenUnlockPoints) {

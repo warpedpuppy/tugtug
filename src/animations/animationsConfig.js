@@ -1,7 +1,7 @@
 export default {
 	itemLifeSpan: [100, 600], 
 	jumpTokenUnlockPoints: 10,
-	bounceTotalPoints:20,
+	bounceTotalPoints:2,
 	swimVelocities: [1, 2],
 	flyVelocity: 6,
 	swimVelocity: 6,
@@ -29,7 +29,7 @@ export default {
 	treasureShakeSpeeds: [0.01, 0.025],
 	rainbowColors: [],
 	testing: true,
-	testingJump: true,
+	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
 	flyBaddyQ:100, 

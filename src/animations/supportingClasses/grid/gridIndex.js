@@ -8,7 +8,7 @@ import Treasure from './items/treasure/treasure';
 import MagicPills from './items/magic/magicPills';
 import GridBuild from './gridBuild';
 import GridAction from './gridAction';
-import GridComplete from './gridComplete';
+//import GridComplete from './gridComplete';
 export default {
 		blocks: {},
 		utils: Utils,
@@ -45,7 +45,7 @@ export default {
 
 			this.gridAction.init()
 
-			this.gridComplete = GridComplete.init();
+			//this.gridComplete = GridComplete.init();
 
 		    this.nextBoard = this.nextBoard.bind(this);
 
