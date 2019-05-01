@@ -23,34 +23,34 @@ export default {
             this.nextMazeButton.on('pointerdown',this.uponNewBoardButtonPress);
         }
         this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = true;
-        this.root.stage.addChild(this.nextMazeButton)
+        this.utils.app.stage.addChild(this.nextMazeButton)
 
-        this.root.activeAction.vx = this.root.activeAction.vy = 0;
-        this.root.keyHandler.removeFromStage();
+        this.utils.root.activeAction.vx = this.utils.root.activeAction.vy = 0;
+        this.utils.root.keyHandler.removeFromStage();
 
-       if (this.root.activeMode === "bounce") {
-            this.root.bounce.bouncePlatform.on(false);
+       if (this.utils.root.activeMode === "bounce") {
+            this.utils.root.bounce.bouncePlatform.on(false);
         }
 
     },
     uponNewBoardButtonPress: function (e) {
         this.nextMazeButton.interactive = this.nextMazeButton.buttonMode = false;
-        this.root.stage.removeChild(this.nextMazeButton);
+        this.utils.app.stage.removeChild(this.nextMazeButton);
 
-        if (this.root.activeMode === "jump") {
-            this.root.grid.gridBuild.spaceShip.classRef.completeReturnHomeHandler();
+        if (this.utils.root.activeMode === "jump") {
+            this.utils.root.grid.gridBuild.spaceShip.classRef.completeReturnHomeHandler();
         } else if (this.root.activeMode === "bounce") {
-            this.root.endSpaceShipJourney();
+            this.utils.root.endSpaceShipJourney();
         }
 
-        //this.root.reset(); //we make all tokens not placed
+        this.utils.root.reset(); //we make all tokens not placed
 
-        this.root.grid.nextBoard(); //then here they should be placed
+        this.utils.root.grid.nextBoard(); //then here they should be placed
         
-        this.root.keyHandler.addToStage();  
+        this.utils.root.keyHandler.addToStage();  
         this.loadNewBoard();
     },
     loadNewBoard: function () {
-        this.root.getDatabaseData();
+        this.utils.root.getDatabaseData();
     }
 }

@@ -64,7 +64,22 @@ export default function () {
 			let centerOrb = this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
 			this.widths = [];
-			for(let i = 0; i < this.rowQ; i ++){
+
+			// //build planet object pool
+			 let totalPlanets = this.rowQ * this.colQ;
+
+			// //dotsCont object pool
+			 let totalDotsCont = this.rowQ * this.colQ;
+
+			// //dot object pool
+
+			// //gremlinCont object pool
+			 let totalGremlinCont = this.rowQ * this.colQ;
+
+			// //gremlin object pool
+
+
+			for (let i = 0; i < this.rowQ; i ++) {
 
 				for (let j = 0; j < this.colQ; j ++) {
 
@@ -142,9 +157,33 @@ export default function () {
 
 			this.loopingQ = Math.max(this.orbs.length, this.dotsArray.length);
 		},
+		buildBoard: function () {
+
+		},
 		reset: function () {
 			this.jumpTokenUnlocked = false;
 			this.jumpTokenTaken = false;
+
+			this.dotsContArray.forEach(cont => {
+				for (let i = 0; i < Config.spaceDotsPerPlanet; i ++) {
+					let dot;
+					if (i < cont.children.length) {
+						dot = cont.getChildAt(i);
+					} else {
+						dot = this.eatenDots[0];
+						this.eatenDots.splice(0,1);
+						this.dotsArray.push(dot);
+						cont.addChild(dot);
+					}
+					let xDest = cont.dist * Math.cos( ( 2 * Math.PI) * i /  this.dotQ);
+					let yDest = cont.dist * Math.sin( ( 2 * Math.PI) * i /  this.dotQ);
+					dot.x = xDest;
+					dot.y = yDest;
+				}
+			})
+
+			//replace token lock
+			this.setUp();
 		},
 		dot: function () {
 			let dot = Assets.Graphics();
@@ -254,9 +293,9 @@ export default function () {
 				}, 
 				this.completeGremlinHit.bind(this, [gremlin, i]),
 				'easeOutBounce');
-				}
-				this.utils.root.score.jumpDotHit();
-			//undo points
+			}
+			this.utils.root.score.jumpDotHit();
+			
 		},
 		completeGremlinHit: function (arr) {
 			

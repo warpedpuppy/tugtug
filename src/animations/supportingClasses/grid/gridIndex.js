@@ -51,6 +51,7 @@ export default {
 
 		},
 		clearGrid: function () {
+			console.log('clear ', this.utils.root.activeMode)
 			this.gridBuild[`${this.utils.root.activeMode}Baddies`].removeCastlesAndSoldiers();
 		},
 		changeGridSize: function(){

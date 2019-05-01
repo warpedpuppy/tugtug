@@ -240,7 +240,7 @@ export default function(obj) {
         switchPlayerWithAnimation: function (mode) {
            
             if (!this.transitionAnimationPlaying) {
-                this.grid.clearGrid();
+               
                 this.action = false;
                 let oldActiveModeString = this.activeMode;
                 this.transitionAnimationPlaying = true;
@@ -252,6 +252,7 @@ export default function(obj) {
                 let newActiveMode = this[this.activeMode];
         
                 if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
+                     this.grid.clearGrid();
                     let index = this.stage.getChildIndex(this.clock.cont) + 1;
                     this.grid.addToStage(index);
                     //alert('addgrid to stage')
@@ -422,10 +423,22 @@ export default function(obj) {
             }
 
         },
-        // reset: function () {
+        reset: function () {
         //     this.jump.reset();
         //     this.levelSlots.reset();
-        // },
+            this.score.nextLevel();
+            this.levelSlots.reset();
+
+            //reset fly
+
+            //reset swim
+
+            //reset jump
+            this.jump.reset();
+
+            //reset bounce
+            this.bounce.reset();
+        },
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
@@ -438,18 +451,8 @@ export default function(obj) {
         },
         levelCompleteHandler: function () {
             this.levelComplete.boardComplete();
-            
-            this.score.nextLevel();
-            this.levelSlots.reset();
 
-            //reset fly
 
-            //reset swim
-
-            //reset jump
-            this.jump.reset();
-
-            //reset bounce
         },
         animate: function () {
 

@@ -73,6 +73,12 @@ export default function () {
 		this.swimPoints = 0;
 		this.jumpPoints = 0;
 		this.bouncePoints = 0;
+
+		this.scoreTexts.flyText.text = `dragon points: ${this.flyPoints} / ${this.flyTotal}`;
+		this.scoreTexts.swimText.text = `fish points: ${this.swimPoints} / ${this.swimTotal}`; 
+		this.scoreTexts.jumpText.text = `space points: ${this.jumpPoints} / ${this.jumpTotal}`;
+		this.scoreTexts.bounceText.text=`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
+		this.scoreTexts.grandTotal.text= `grand total: ${this.grandTotal}`;
 	},
 	seeScores: function () {
 

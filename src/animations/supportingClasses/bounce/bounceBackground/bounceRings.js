@@ -15,6 +15,7 @@ export default  {
 
 			this.rings = [...Assets.rings];
 			this.lines = [...Assets.lines];
+            this.earnedRings = [];
 
 			for (let i = 0; i < Config.bounceTotalPoints; i ++) {
 				let r = this.rings[i];
@@ -35,6 +36,9 @@ export default  {
 
 			this.loopingQ = Config.bounceTotalPoints;
 		},
+        reset: function () {
+            this.createRings();
+        },
 		addToStage: function () {
 			//console.log('adding rings, ', this.lines.length, 'on stage')
 			for (let i = 0; i < this.lines.length; i ++) {

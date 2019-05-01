@@ -88,6 +88,9 @@ export default function () {
 
 
 		},
+		reset: function () {
+			this.bounceRings.reset();
+		},
 		createTransitionItems: function() {
 
 			for (let i = 0; i < this.transitionItemsQ; i ++) {

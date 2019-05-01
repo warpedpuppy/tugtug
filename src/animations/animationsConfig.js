@@ -5,10 +5,10 @@ export default {
 	swimVelocities: [1, 2],
 	flyVelocity: 6,
 	swimVelocity: 6,
-	flyTreasureChestQ: 0,
+	flyTreasureChestQ: 10,
 	flyCoinsPerTreasureChest: 100,
 	flyBaddyHitCost: 1,
-	swimTreasureChestQ: 0,
+	swimTreasureChestQ: 10,
 	swimCoinsPerTreasureChest: 100,
 	spaceRowQ: 10,
 	spaceColQ: 10,
@@ -32,6 +32,6 @@ export default {
 	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
-	flyBaddyQ:100, 
-	swimBaddyQ: 100
+	flyBaddyQ:10, 
+	swimBaddyQ: 10
 }
