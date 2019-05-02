@@ -44,7 +44,7 @@ export default function (spritesheet) {
 		animate: function () {
 
 			for(var ball of this.array){
-				this.utils.update(ball);
+				this.utils.updateLeaveScreen(ball);
 				for(var ball2 of this.array){
 					if(ball !== ball2){
 						let collision = this.utils.circleToCircleCollisionDetection(ball, ball2);

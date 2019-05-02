@@ -24,7 +24,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['fly','swim'],
+        mode: ['swim','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -50,6 +50,7 @@ export default function(obj) {
         storeAction: true,
         timeOut: undefined,
         levelComplete: LevelComplete,
+        fullStop: false,
         init: function (isMobile, isMobileOnly) {
 
             if(Config.testingBounce){
@@ -112,20 +113,26 @@ export default function(obj) {
 
         },
         getDatabaseData: function () {
-           let indexToGet = this.grid.boards.length;
+
+           let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
            let that = this;
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
+               
                 this.dbData = response.data;
                 if (indexToGet === 0) {
+                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
                     this.buildGame();
                  } else {
+                    if (response.data.boards) {
+                        this.grid.boards = [...this.grid.boards, response.data.boards];
+                    }
                     this.grid.addNewBoardData(this.dbData)
                  }
-               
+              
             })
             .catch(err => console.error(err));  
         },
@@ -252,7 +259,7 @@ export default function(obj) {
                 let newActiveMode = this[this.activeMode];
         
                 if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
-                     this.grid.clearGrid();
+                    this.grid.clearGrid();
                     let index = this.stage.getChildIndex(this.clock.cont) + 1;
                     this.grid.addToStage(index);
                     //alert('addgrid to stage')
@@ -262,7 +269,7 @@ export default function(obj) {
             }
 
         },
-        switchPlayer: function (str) {
+        switchPlayer: function (str, gameReset: false) {
             //alert('switch player')
             this.transitionAnimationPlaying = false;
 
@@ -279,7 +286,7 @@ export default function(obj) {
             this.hero.cont.visible = true;
             this.hero.switchPlayer(this.activeMode);
 
-            if (this.activeMode !== 'jump' && this.activeMode !== 'bounce') {
+            if (this.activeMode !== 'jump' && this.activeMode !== 'bounce' && !gameReset) {
 
                 this.grid.changeGridSize();
                
@@ -424,20 +431,19 @@ export default function(obj) {
 
         },
         reset: function () {
-        //     this.jump.reset();
-        //     this.levelSlots.reset();
             this.score.nextLevel();
             this.levelSlots.reset();
-
-            //reset fly
-
-            //reset swim
-
-            //reset jump
             this.jump.reset();
-
-            //reset bounce
             this.bounce.reset();
+
+            this[this.activeMode].removeFromStage();
+            this.switchPlayer(this.mode[0], true);
+           
+            this.grid.nextBoard(); 
+            this.keyHandler.addToStage();  
+            this.getDatabaseData();
+
+            this.fullStop = false;
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();
@@ -455,6 +461,8 @@ export default function(obj) {
 
         },
         animate: function () {
+
+            if(this.fullStop)return;
 
             this.transitionAnimation.animate();
            

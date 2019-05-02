@@ -80,8 +80,8 @@ export default function () {
 
 			for (let i = 0; i < this.loopingQ; i ++) {
 			 	let f = this.fishArray[i];
-			 	f.x += f.vx;
-			 	f.y += f.vy;
+			 	f.x += (f.vx - this.utils.root.activeAction.vx);
+			 	f.y += (f.vy - this.utils.root.activeAction.vy);
 			 	if(f.x < -f.width - this.buffer) {
 			 		f.x += this.buffer;
 			 		f.vx *= -1;

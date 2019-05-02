@@ -23,13 +23,14 @@ export default {
 		magicPillsArray: [],
 		gridAction: GridAction,
 		gridBuild: GridBuild,
+		boards: [],
 		init: function () {
 
 			this.parent = this.utils.root;
 
 			this.parentCont = this.parent.stage;
 
-		    this.boards = this.parent.dbData.boards;
+		    //this.boards = this.parent.dbData.boards;
 		    
 		    this.magicPillsArray = this.magicPills.init();
 
@@ -58,39 +59,34 @@ export default {
 
 			let w = Config[`${this.parent.activeMode}BlockSize`][0];
 			let h = Config[`${this.parent.activeMode}BlockSize`][1];
-			// console.log("1")
-			// if(w === this.gridBuild.blockWidth && h === this.gridBuild.blockHeight)return;
-			// console.log("2")
+			
 			this.gridBuild.blockWidth = w;
 			this.gridBuild.blockHeight = h;
 
 			this.gridBuild.cont.removeChildren();
-			this.gridBuild.buildGrid(this.boards[this.currentBoard]);
+			this.gridBuild.buildGrid(this.parent.dbData.boards[this.currentBoard]);
 
 			this.gridAction.setLimits();
 		},
 		nextBoard: function () {
 			
+			//console.log('NEXT BOARD')
 			this.gridBuild.tokens.forEach((item, index) => {
 				item.placed = false;
 			})
-			
+			//console.log(this.parent.dbData)
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
+			console.log(this.boards)
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 			this.gridBuild.resetBaddies();
 			this.gridAction.setLimits();
 		},
 		addNewBoardData: function (newData) {
-			if(newData.boards){
-				//console.log("new data", newData)
-				this.boards.push(newData.boards);
-				//console.log(this.boards)
-			} else {
-				//console.log("just use old one")
-			}
-			
+			// if (newData.boards) {
+			// 	this.parent.dbData.boards.push(newData.boards);
+			// } 
 		},
 
 		addToStage: function (index) {

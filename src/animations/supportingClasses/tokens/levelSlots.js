@@ -64,7 +64,7 @@ export default function () {
 			token.name = "token";
 			this.slots[index].addChild(token);
 
-			if (this.tokenCounter === 4) {
+			if (this.tokenCounter === 1) {
 				this.parent.levelCompleteHandler();
 			}
 		},
@@ -72,14 +72,13 @@ export default function () {
 			this.utils.app.stage.removeChild(this.textCont);
 		},
 		reset: function () {
+			
 			this.tokenCounter = 0;
-			// console.log('reset tokens')
-			// for (let i = 0; i < 4; i ++) {
-			// 	let t =  this.utils.root.grid.gridBuild.tokens[1];
-			// 	t.placed = false;
-			// 	console.log(i, t.placed)
-			// }
-			// console.log('end reset tokens')
+			for (let i = 0; i < 4; i ++) {
+				let t =  this.utils.root.grid.gridBuild.tokens[i];
+				if(t.parent)t.parent.removeChild(t)
+				t.placed = false;
+			}
 		},
 		addToStage: function () {
 			this.cont.x = (this.utils.canvasWidth + 50) / 2;

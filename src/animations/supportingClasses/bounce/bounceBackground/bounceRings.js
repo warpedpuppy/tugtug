@@ -62,7 +62,7 @@ export default  {
 		},
 		animate: function (event) {
             let i, j, particle, partA, partB;
-            console.log(this.earnedRings.length, this.earnedLines.length, ' vs ', this.rings.length, this.parent.ringsPC.children.length)
+       
             for (i = 0; i < this.loopingQ; i++) {
                 if(this.lines[i])this.lines[i].clear();
                 particle = this.rings[i];

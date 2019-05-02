@@ -67,8 +67,8 @@ export default function () {
 		this.closeButton.on('pointerdown',this.seeScores);
 	},
 	nextLevel: function () {
-		
-		this.storeTotal = this.grandTotal;
+		//console.log('assign ', this.grandTotal, 'to', this.storeTotal)
+		this.storeTotal += this.grandTotal;
 		this.flyPoints = 0;
 		this.swimPoints = 0;
 		this.jumpPoints = 0;
@@ -82,8 +82,8 @@ export default function () {
 	},
 	seeScores: function () {
 
-		if (this.utils.root.action) {
-			this.utils.root.action = false;
+		if (!this.utils.root.fullStop) {
+			this.utils.root.fullStop = true;
 			let spacer = 0;
 			this.setGrandTotal();
 			for (let key in this.scoreTexts) {
@@ -98,7 +98,7 @@ export default function () {
 			this.popUp.x = this.utils.canvasWidth / 2;
 			this.popUp.y = this.utils.canvasHeight / 2;
 		} else {
-			this.utils.root.action = true;
+			this.utils.root.fullStop = false;
 			this.utils.app.stage.removeChild(this.popUp);
 			for (let key in this.scoreTexts) {
 				this.popUp.removeChild(this.scoreTexts[key]);

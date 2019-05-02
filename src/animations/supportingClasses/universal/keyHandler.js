@@ -1,6 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-// import Config from './animationsConfig';
+ import Config from '../../animationsConfig';
 export default function () {
 	return {
         utils: Utils,
@@ -68,6 +68,10 @@ export default function () {
             //e.preventDefault();
             //console.log(e.keyCode)
             switch (e.keyCode) {
+                case 84:
+                    // the letter t
+                    if(Config.testing)this.utils.root.levelCompleteHandler();
+                    break;
                 case 32:
                 // space
                     this.spaceHit();
@@ -86,9 +90,11 @@ export default function () {
                     break;
                 case 67:
                     // the letter c for switch player
-                    if(Utils.root.activeMode !== 'jump')this.parent.switchPlayerWithAnimation();
+                    if(Utils.root.activeMode !== 'jump' && Config.testing)this.parent.switchPlayerWithAnimation();
                     break;
                 case 83:
+                    //letter s
+                    if(!Config.testing)return;
                     if(Utils.root.activeMode === 'jump'){
                         this.utils.root.grid.gridBuild.spaceShip.classRef.blastOff();
                     } else if(Utils.root.activeMode === 'bounce') {

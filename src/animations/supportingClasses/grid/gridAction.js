@@ -46,8 +46,9 @@ export default {
 			let halfCanvasWidth = (this.utils.canvasWidth / 2),
 			    halfCanvasHeight = (this.utils.canvasHeight / 2),
 			    iVal = Math.floor((halfCanvasHeight - this.gridBuild.cont.y) / this.blockHeight),
-			    jVal = Math.floor((halfCanvasWidth - this.gridBuild.cont.x) / this.blockWidth);
-			return { block: this.blocks[iVal][jVal], i: iVal, j: jVal }
+			    jVal = Math.floor((halfCanvasWidth - this.gridBuild.cont.x) / this.blockWidth),
+			    blocks = this.utils.root.grid.gridBuild.blocks;;
+			return { block: blocks[iVal][jVal], i: iVal, j: jVal }
 		},
 		createBoundaries: function (currentSquare) {
 
@@ -89,8 +90,8 @@ export default {
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-			this.colQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].cols;
-			this.rowQ = this.utils.root.grid.gridBuild.boards[this.utils.root.grid.gridBuild.currentBoard].rows;
+			this.colQ = this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard].cols;
+			this.rowQ = this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard].rows;
 
 			this.boardWidth = this.colQ * this.blockWidth;
 			this.boardHeight = this.rowQ * this.blockHeight;

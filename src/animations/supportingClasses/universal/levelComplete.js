@@ -13,7 +13,7 @@ export default {
         setTimeout(this.addButton, Config.boardCompleteButtonAppearDelay);
     },
     addButton: function () {
-
+        this.utils.root.fullStop = true;
         if (!this.nextMazeButton) {
             this.nextMazeButton = Assets.Sprite("nextMaze.png");
             this.nextMazeButton.anchor.set(0.5)
@@ -45,12 +45,6 @@ export default {
 
         this.utils.root.reset(); //we make all tokens not placed
 
-        this.utils.root.grid.nextBoard(); //then here they should be placed
-        
-        this.utils.root.keyHandler.addToStage();  
-        this.loadNewBoard();
-    },
-    loadNewBoard: function () {
-        this.utils.root.getDatabaseData();
+    
     }
 }

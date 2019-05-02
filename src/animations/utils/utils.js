@@ -321,6 +321,28 @@ export default {
         var dy = ballB.y - ballA.y;
         return [rSum*rSum > dx*dx + dy*dy,rSum-Math.sqrt(dx*dx+dy*dy)];
     },
+    updateLeaveScreen: function (ball) {
+        // ball.x += ball.vx;
+        // ball.y += ball.vy;
+        ball.x -= this.root.activeAction.vx;
+        ball.y -= this.root.activeAction.vy;
+        ball.rotation += this.deg2rad(ball.rotate);
+
+        if(ball.x > this.canvasWidth + ball.r) {
+            ball.x =  - ball.r;
+            //ball.vx *= -1;
+        } else if(ball.x < -ball.r) {
+            ball.x = this.canvasWidth + ball.r;
+            //ball.vx *= -1;
+        }
+        if(ball.y > this.canvasHeight + ball.r) {
+            ball.y = - ball.r;
+            //ball.vy *= -1;
+        } else if(ball.y < -ball.r) {
+            ball.y = this.canvasHeight + ball.r;
+            //ball.vy *= -1;
+        }
+    },
     update: function (ball) {
         ball.x += ball.vx;
         ball.y += ball.vy;

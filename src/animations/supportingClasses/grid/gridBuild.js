@@ -18,7 +18,7 @@ export default {
 		tokenData: {},
 		freeSpaces: [],
 		coveredSpaces: [],
-		boards: [],
+		//boards: [],
 		currentBoard: 0,
 		blockPool: [],
 		spaceShip: {},
@@ -63,7 +63,7 @@ export default {
 			// 	this.microscope
 			// ];
 
-  			this.boards = this.utils.root.dbData.boards;
+  			//this.boards = this.utils.root.dbData.boards;
   			// console.log('this grid build init')
 			// this.buildGrid(this.boards[this.currentBoard]);
 
@@ -140,6 +140,7 @@ export default {
 				this.spaceShip, 
 				this.microscope
 			];
+
 
 
 			if (mode === 'fly') {

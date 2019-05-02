@@ -183,7 +183,7 @@ export default function () {
 			})
 
 			//replace token lock
-			this.setUp();
+			//this.setUp();
 		},
 		dot: function () {
 			let dot = Assets.Graphics();
