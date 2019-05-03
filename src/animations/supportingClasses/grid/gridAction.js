@@ -152,7 +152,7 @@ export default {
 				
 				if (this.itemHitDetect(item)) {
 					this.utils.root.filterAnimation.shutOff();
-					if(item.name === 'swim' || item.name === 'fly' && !item.hit) {
+					if(item.name === 'swim' || item.name === 'fly' || item.name === 'bounce' && !item.hit) {
 						item.hit = true;
 			 			this.utils.root.switchPlayerWithAnimation(item.name);
 					} else if (item.name === 'magicPill' && !this.utils.root.filterAnimation.enabled) {
@@ -171,9 +171,6 @@ export default {
 					} else if (item.name === 'spaceship') {
 						this.pause = true;
 						this.spaceShip.classRef.blastOff();
-					} else if (item.name === 'microscope') {
-						item.hit = true;
-			 			this.utils.root.switchPlayerWithAnimation('bounce');
 					}
 				}
 

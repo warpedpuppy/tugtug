@@ -269,6 +269,7 @@
             <filename>../bmps/tokenLock.png</filename>
             <filename>../bmps/microscope.png</filename>
             <filename>../bmps/arrow.png</filename>
+            <filename>../bmps/scoreBackground.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

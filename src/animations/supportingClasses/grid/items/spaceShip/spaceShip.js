@@ -18,6 +18,7 @@ export default function () {
 
 		},
 		blastOff: function () {
+			this.utils.root.score.hide();
 			this.utils.root.startSpaceShipJourney();
 
 			this.storeActiveMode = this.utils.root.activeMode;
@@ -29,18 +30,19 @@ export default function () {
 			let maze = this.utils.root.grid.gridBuild.cont;
 			let jump = this.utils.root.jump;
 			let background = this.utils.root.jump.jumpBackground.orbsCont;
-			background.scale.set(0)
+			background.scale.set(0);
 			jump.addToStage();
 
 			Tweens.spaceShipBlastOff(this.ship, maze, background, this.makeJumpActive);
 
 		},
 		makeJumpActive: function () {
+			this.utils.root.score.show();
 			Tweens.killAll();
 			this.utils.root.makeJumpActive();
 		},
 		returnHome: function () {
-
+			this.utils.root.score.hide();
 			this.utils.hero.cont.visible = false;
 			this.utils.app.stage.addChild(this.ship);
 			this.ship.x = this.utils.canvasWidth / 2;
@@ -58,6 +60,7 @@ export default function () {
 		},
 		completeReturnHomeHandler: function (storeX) {
 			//in case coming back from jump 
+			this.utils.root.score.show();
 			if (this.utils.root.activeMode === 'jump') {
 	
 				let jump = this.utils.root.jump;

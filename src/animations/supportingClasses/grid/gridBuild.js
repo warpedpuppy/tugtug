@@ -44,7 +44,7 @@ export default {
 			this.microscope = Assets.Sprite('microscope.png');
 			this.microscope.anchor.set(0.5);
 			this.microscope.scale.set(0.5);
-			this.microscope.name = 'microscope';
+			this.microscope.name = 'bounce';
 		  	//items to be distributed around board
 			this.spaceShip = SpaceShip().init()
 			this.tokens = Tokens.init();

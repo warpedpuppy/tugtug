@@ -82,6 +82,8 @@ export default function () {
 				this.activeHero = this.heroFly;
 			}
 			this.activeHero.name = string;
+			this.cont.visible = true;
+            this.activeHero.cont.rotation = 0;
 			this.activeHero.addToStage();
 		}
 	}

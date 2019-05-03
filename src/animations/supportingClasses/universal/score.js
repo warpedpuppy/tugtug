@@ -34,37 +34,59 @@ export default function () {
 
 		this.createTotals();
 		//this.cont = this.utils.app.stage;
+		this.seeScores = this.seeScores.bind(this);
+		this.spin = this.spin.bind(this);
 
 		if(optionalStartScore)this.startScore = optionalStartScore;
 
 		this.scoreTexts = this.stringCreate();
-		
-		this.cont.addChild(this.scoreTexts[`${this.utils.root.activeMode}Text`])
-		
-		this.seeScores = this.seeScores.bind(this);
+
+
+		//TOP BAR
+		this.topBackground = Assets.Sprite('scoreBackground.png');
 		this.button = Assets.Sprite('arrow.png');
 		this.button.anchor.set(0.5);
 		this.button.buttonMode = this.button.interactive = true;
-		this.button.x = this.cont.width + 20;
-		this.button.y = 20;
-		this.cont.addChild(this.button);
 		this.button.on('pointerdown',this.seeScores);
-	
+		this.button.on('pointerover',this.spin);
+		this.button.rotateDest = this.utils.deg2rad(360);
+		this.button.finalDest = 0;
+		this.button.rotateSpeed = 0.5;
 		this.utils.app.stage.addChild(this.cont);
-		this.cont.x = (this.utils.canvasWidth - this.cont.width) / 2;
 		
-		//this.makeScore(this.startScore);
 
-		//this.cont.addChild(this.scoreText);
+
 		this.popUp = Assets.Container();
-		this.background = Assets.Graphics();
-		this.background.beginFill(0x000000).drawRect(0,0,500,500).endFill();
-		this.popUp.addChild(this.background);
+		this.popUpBackground1 = Assets.Graphics();
+		this.popUpBackground1.beginFill(0xFFFF00).drawRect(0,0,520,520).endFill();
+		this.popUpBackground1.x = this.popUpBackground1.y = -10;
+		this.popUp.addChild(this.popUpBackground1);
+		this.popUpBackground = Assets.Graphics();
+		this.popUpBackground.beginFill(0x000000).drawRect(0,0,500,500).endFill();
+		this.popUp.addChild(this.popUpBackground);
 		this.closeButton = Assets.Sprite('arrow.png');
 		this.closeButton.anchor.set(0.5);
+		this.closeButton.rotateSpeed = 0.25;
+		this.closeButton.rotateDest = this.closeButton.finalDest = this.utils.deg2rad(180);
+
 		this.closeButton.buttonMode = this.closeButton.interactive = true;
 		this.popUp.addChild(this.closeButton);
 		this.closeButton.on('pointerdown',this.seeScores);
+		this.closeButton.on('pointerover',this.spin);
+	},
+	hide: function () {
+		this.cont.visible = false;
+		this.popUp.visible = false;
+	},
+	show: function () {
+		this.cont.visible = true;
+		this.popUp.visible = true;
+	},
+	spin: function (e) {
+		Tweens.tween(e.target, e.target.rotateSpeed, {rotation: [0, e.target.rotateDest]}, this.spinEnd.bind(this, e.target))
+	},
+	spinEnd: function (button) {
+		button.rotation = button.finalDest;
 	},
 	nextLevel: function () {
 		//console.log('assign ', this.grandTotal, 'to', this.storeTotal)
@@ -86,6 +108,7 @@ export default function () {
 			this.utils.root.fullStop = true;
 			let spacer = 0;
 			this.setGrandTotal();
+			this.closeButton.rotation = 0;
 			for (let key in this.scoreTexts) {
 				this.scoreTexts[key].x = 50;
 				this.scoreTexts[key].y = 50 + (spacer * 30);
@@ -104,20 +127,23 @@ export default function () {
 				this.popUp.removeChild(this.scoreTexts[key]);
 			}
 			this.cont.visible = true;
-			let current = this.scoreTexts[`${this.utils.root.activeMode}Text`];
-			current.x = current.y = 0;
-			this.cont.addChild(current)
+			// let current = this.scoreTexts[`${this.utils.root.activeMode}Text`];
+			// this.cont.addChild(current)
+			this.switchMode();
 		}
 		
 	},
 	switchMode: function () {
 		this.cont.removeChildren();
+		this.cont.addChild(this.topBackground);
 		let newText = this.scoreTexts[`${this.utils.root.activeMode}Text`];
-		newText.x = newText.y = 0;
+		newText.x = 10;
+		newText.y = 10;
 		this.cont.addChild(newText);
-		this.button.x = this.cont.width + 20;
-		this.button.y = 20;
+		this.button.x = this.cont.width - 25;
+		this.button.y = 23;
 		this.cont.addChild(this.button);
+		this.cont.x = (this.utils.canvasWidth - this.cont.width) /2;
 	},
 	createTotals: function () {
 
@@ -144,28 +170,11 @@ export default function () {
 		this.grandTotal = this.storeTotal + this.flyPoints + this.swimPoints + this.jumpPoints + this.bouncePoints;
 		this.scoreTexts.grandTotal.text = `grand total: ${this.grandTotal}`;
 	},
-	makeScore: function (score) {
-		// this.cont.removeChild(this.scoreText)
-		// score = this.utils.numberWithCommas(score);
-		// this.scoreText.text = `score: ${score}`;
-		// this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
-		// this.cont.addChild(this.scoreText);
-	},
-	increase: function (num) {
-		if (!this.changeAllow) {
-	       this.targetNumber = num + this.score;
-		   this.changeAllow = true;
-		}
-	},
-	decrease: function (num) {
-		if (!this.changeAllow) {
-	       this.targetNumber =  this.score - num;
-		   this.changeAllow = true;
-		}
-	},
 	resize: function (wh) {
 
-		//this.scoreText.x = (this.utils.canvasWidth - this.scoreText.width) / 2;
+		this.cont.x = (this.utils.canvasWidth - this.cont.width) /2;
+		this.popUp.x = this.utils.canvasWidth / 2;
+		this.popUp.y = this.utils.canvasHeight / 2;
 	},
 	bounceRingHit: function () {
 		
@@ -240,33 +249,6 @@ export default function () {
 
 
 
-	},
-	animate: function () {
-
-		if(this.changeAllow){
-
-			this.counter ++;
-			//if (!(this.counter % 2)) {
-				//console.log('new score = ', this.targetNumber)
-				if(this.score < this.targetNumber) {
-					this.score ++;
-					this.makeScore(this.score);
-
-				} else if (this.score > this.targetNumber) {
-					this.score --;
-					this.makeScore(this.score);
-				} else {
-
-					this.changeAllow = false;
-					this.counter = 0;
-				}
-			//}
-			
-
-
-
-
-		}
 	}
 }
 }

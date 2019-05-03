@@ -24,7 +24,7 @@ import { API_BASE_URL } from '../config';
 
 export default function(obj) {
     return {
-        mode: ['swim','swim'],
+        mode: ['fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -53,7 +53,7 @@ export default function(obj) {
         fullStop: false,
         init: function (isMobile, isMobileOnly) {
 
-            if(Config.testingBounce){
+            if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
 
@@ -214,10 +214,7 @@ export default function(obj) {
                 this.makeJumpActive();
             }
 
-            //  else if(this.activeMode !== 'bounce') {
-            //     let index = this.stage.getChildIndex(this.clock.cont) + 1;
-            //     this.grid.addToStage(index);
-            // }
+                
 
         },
         stop: function () {
@@ -247,70 +244,37 @@ export default function(obj) {
         switchPlayerWithAnimation: function (mode) {
            
             if (!this.transitionAnimationPlaying) {
-               
-                this.action = false;
-                let oldActiveModeString = this.activeMode;
+
                 this.transitionAnimationPlaying = true;
-                let oldActiveMode = this[this.activeMode];
-                oldActiveMode.removeFromStage();
+                this.action = false;
+
+                let oldActiveModeString = this.activeMode;
+                this[this.activeMode].removeFromStage();
 
                 this.activeMode = (mode)?mode:this.increaseIndex();
                 let newActiveModeString = this.activeMode;
-                let newActiveMode = this[this.activeMode];
-        
-                if (newActiveModeString === 'fly' || newActiveModeString === 'swim') {
-                    this.grid.clearGrid();
-                    let index = this.stage.getChildIndex(this.clock.cont) + 1;
-                    this.grid.addToStage(index);
-                    //alert('addgrid to stage')
-                }
+               
 
-                this.transitionAnimation.start(newActiveMode, newActiveModeString, oldActiveModeString); 
+                this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
             }
 
         },
-        switchPlayer: function (str, gameReset: false) {
-            //alert('switch player')
-            this.transitionAnimationPlaying = false;
-
-            // if (this[this.activeMode]) { 
-            //     this[this.activeMode].removeFromStage();
-            // }
-            
+        switchPlayer: function (str) {
+           
             if (str) {
                 this.activeMode = str;
             } else {
                 this.increaseIndex();
             }
  
-            this.hero.cont.visible = true;
-            this.hero.switchPlayer(this.activeMode);
+           this.hero.switchPlayer(this.activeMode);
 
-            if (this.activeMode !== 'jump' && this.activeMode !== 'bounce' && !gameReset) {
-
-                this.grid.changeGridSize();
-               
-                this.activeAction = this[this.activeMode].addToStage();
-                 
-                this.grid.gridAction.pause = false;
-      
-                this.grid.gridBuild.cont.visible = true;
-
-                if ( !this.grid.gridBuild.cont.parent ) {
-                    let index = this.stage.getChildIndex(this.clock.cont) + 1;
-                    this.grid.addToStage(index);
-                }
-        
-            } else if (this.activeMode === 'jump') {
-                // add to stage happens elsewhere
+           if (this.activeMode === 'jump') {
                 this.activeAction = this.jump.jumpAction;
-                this.grid.removeFromStage();
-            } else if (this.activeMode === 'bounce') {
-                this.activeAction = this[this.activeMode].addToStage();
-                this.grid.removeFromStage();
+            } else {
+                this.activeAction = this[this.activeMode].addToStage();   
             }
 
-            
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
                     this.controlPanel.removeFromStage();
@@ -318,36 +282,12 @@ export default function(obj) {
                     this.controlPanel.addToStage();
                 }
             }
-
-            this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
-            this.activeAction.vx = this.activeAction.vy = 0;
+          
+            this.transitionAnimationPlaying = false;
             this.action = true;
 
-            let x = this.grid.gridBuild.cont;
-          
             this.score.switchMode();
         },
-        // completeSwitchPlayerAnimation: function () {
-        //    //  this.transitionAnimationPlaying = false;
-        //    //  //this.hero.switchPlayer(this.activeMode);
-        //    // // this.activeAction = this[this.activeMode].addToStage();
-        //    //  if (this.activeMode !== 'bounce') {
-        //    //      this.grid.changeGridSize();
-        //    //      this.grid.gridAction.pause = false;
-        //    //      this.grid.gridBuild.cont.visible = true;
-
-
-        //    //     this.hero.activeHero.cont.rotation = this.fly.flyAction.radius = this.fly.flyAction.storeRadius = 0;
-        //    //     this.activeAction.vx = this.activeAction.vy = 0;
-        //    //     this.action = true;
-
-        //    //  } else {
-        //    //      this.grid.gridAction.pause = true;
-        //    //      this.grid.gridBuild.cont.visible = false;
-        //    //      this.action = true;
-        //    //  }
-           
-        // },
         resizeBundle: function () {
             if (this.activeMode === 'fly' || this.activeMode === 'swim') {
                 this.grid.resize();
@@ -437,7 +377,7 @@ export default function(obj) {
             this.bounce.reset();
 
             this[this.activeMode].removeFromStage();
-            this.switchPlayer(this.mode[0], true);
+            this.switchPlayer(this.mode[0]);
            
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
@@ -461,14 +401,14 @@ export default function(obj) {
 
         },
         animate: function () {
-
+            Tweens.animate();
             if(this.fullStop)return;
 
             this.transitionAnimation.animate();
            
-            this.score.animate();
+           // this.score.animate();
 
-            Tweens.animate();
+            
           
             if (this.action) {
                 if(this.rotateLeftBoolean) {

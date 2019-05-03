@@ -73,7 +73,7 @@ export default {
     resize: function (wh) {
         this.wh = wh;
     },
-    start: function (newActiveMode, newActiveModeString, oldActiveModeString) {
+    start: function (oldActiveModeString, newActiveModeString) {
 
   
         let newMode = this.utils.root.activeMode;
@@ -106,7 +106,7 @@ export default {
        
 
         //tween the proportions
-        this.newActiveMode = newActiveMode;
+        this.newActiveMode = this.utils.root[newActiveModeString];//newActiveMode;
         // this.newActiveMode = newActiveMode;
         // this.setUp();
         // this.runAnimation = true;
