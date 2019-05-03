@@ -166,8 +166,10 @@ export default {
 						this[`${this.utils.root.activeMode}TreasureChests`].splice(index, 1);
 						this.utils.root.score.treasureIncrease();
 					} else if (item.name === 'token') {
-						this.gridBuild.cont.removeChild(item)
-			 			this.utils.root.earnToken(item);
+						if (item.mode === this.utils.root.activeMode) {
+							this.gridBuild.cont.removeChild(item)
+			 				this.utils.root.earnToken(item);
+						}
 					} else if (item.name === 'spaceship') {
 						this.pause = true;
 						this.spaceShip.classRef.blastOff();

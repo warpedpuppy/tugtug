@@ -64,7 +64,7 @@ export default function () {
 			token.name = "token";
 			this.slots[index].addChild(token);
 
-			if (this.tokenCounter === 1) {
+			if (this.tokenCounter === 4) {
 				this.parent.levelCompleteHandler();
 			}
 		},
