@@ -77,6 +77,8 @@ export default function () {
 			this.parentCont.addChildAt(this.cont2, 2);
 			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
 			this.parentCont.addChildAt(this.cont, index);
+
+			this.parentCont.setChildIndex(this.utils.hero.cont, index - 1);
 		},
 		removeFromStage: function () {
 			this.fishSchool.removeFromStage();

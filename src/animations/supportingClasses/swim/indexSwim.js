@@ -27,7 +27,7 @@ export default function () {
 			this.swimBackground.addToStage();
 			this.swimAction.start();
 			
-this.swimAction.vx = this.swimAction.vy = 0;
+			this.swimAction.vx = this.swimAction.vy = 0;
 			
             
 			return this.swimAction;

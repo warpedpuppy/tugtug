@@ -381,7 +381,7 @@ export default function () {
 						dot.parent.removeChild(dot);
 						this.eatenDots.push(dot);
 						this.dotsArray.splice(i, 1);
-						this.utils.root.score.jumpDotHit();
+						this.utils.root.score.jumpScore.jumpDotHit();
 					}
 				}
 				

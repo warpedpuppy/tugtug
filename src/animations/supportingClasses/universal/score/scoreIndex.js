@@ -37,6 +37,12 @@ export default function () {
 			this.topBanner = ScoreGraphics.returnTopBar();
 			this.popUp = ScoreGraphics.returnMainBar();
 		},
+		hide: function () {
+			ScoreGraphics.hide();
+		},
+		show: function () {
+			ScoreGraphics.show();
+		},
 		createTotals: function () {
 			// dragon
 			this.flyTotal = Config.flyTreasureChestQ * Config.flyCoinsPerTreasureChest;

@@ -407,10 +407,7 @@ export default function(obj) {
 
             this.transitionAnimation.animate();
            
-           // this.score.animate();
 
-            
-          
             if (this.action) {
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');

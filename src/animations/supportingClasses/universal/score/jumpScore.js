@@ -4,17 +4,19 @@ import Tweens from '../../../utils/tweens';
 import Config from '../../../animationsConfig';
 
 export default {
+	utils: Utils,
 	jumpDotHit: function (str) {
 
-		let activeMode = this.utils.root.activeMode;
-		let jumpBackground = this.utils.root.jump.jumpBackground;
-		let dotsEaten = this.utils.root.jump.jumpBackground.eatenDots.length;
+		let activeMode = this.utils.root.activeMode,
+			jumpBackground = this.utils.root.jump.jumpBackground,
+			dotsEaten = this.utils.root.jump.jumpBackground.eatenDots.length,
+			score = this.utils.root.score;
 	
-		this[`${activeMode}Points`] = dotsEaten;
+		score[`${activeMode}Points`] = dotsEaten;
 
-		this.scoreTexts[`${activeMode}Text`].text = `space points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
+		score.scoreTexts[`${activeMode}Text`].text = `space points: ${score[`${activeMode}Points`]} / ${score[`${activeMode}Total`]}`;
 
-		if (!jumpBackground.jumpTokenUnlocked && this[`${activeMode}Points`] >= this.jumpTokenUnlockPoints) {
+		if (!jumpBackground.jumpTokenUnlocked && score[`${activeMode}Points`] >= score.jumpTokenUnlockPoints) {
 			jumpBackground.jumpTokenUnlocked = true;
 			jumpBackground.jumpTokenUnlockedGraphic.addToStage();
 			Tweens.tween(jumpBackground.tokenLock, 0.5, {alpha: [1,0], onComplete: this.jumpRemoveLock.bind(this)});
