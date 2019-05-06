@@ -75,7 +75,7 @@ export default function () {
 			this.lilypadLotuses.addToStage();
 			this.parentCont.addChildAt(this.background, 0);
 			this.parentCont.addChildAt(this.cont2, 2);
-			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.cont) - 1;
+			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
 			this.parentCont.addChildAt(this.cont, index);
 		},
 		removeFromStage: function () {

@@ -294,7 +294,7 @@ export default function () {
 				this.completeGremlinHit.bind(this, [gremlin, i]),
 				'easeOutBounce');
 			}
-			this.utils.root.score.jumpDotHit();
+			this.utils.root.score.jumpScore.jumpDotHit();
 			
 		},
 		completeGremlinHit: function (arr) {

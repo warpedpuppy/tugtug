@@ -11,10 +11,10 @@ import TransitionAnimation from './supportingClasses/grid/items/transition/trans
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
-import Score from '../animations/supportingClasses/universal/score';
+import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
-import LevelSlots from './supportingClasses/tokens/levelSlots';
+import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
@@ -43,7 +43,7 @@ export default function(obj) {
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
-        levelSlots: LevelSlots(),
+        tokens: Tokens,
         controlPanel: ControlPanel(),
         grid: Grid,
         dbData: {},
@@ -154,6 +154,9 @@ export default function(obj) {
 
             this.clock.init().addToStage();
 
+            //this.levelSlots.init(this).addToStage();
+            this.tokens.init();
+
             this.grid.init();
 
             this.score.init()
@@ -172,8 +175,6 @@ export default function(obj) {
 
             this.jump.init(this.stage);
             
-            this.levelSlots.init(this).addToStage();
-
             this.transitionAnimation.init(this);
            
             this.keyHandler = KeyHandler();
@@ -227,11 +228,11 @@ export default function(obj) {
         earnToken: function (t) {
             //console.log('level complete');
             this.action = false;
-            this.levelSlots.fillSlot(t);
+            this.tokens.fillSlot(t);
             setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
         },
         resumePlayAfterEarnToken: function () {
-            this.levelSlots.clearText();
+           // this.tokens.clearText();
             this.action = true;
         },
         increaseIndex: function() {

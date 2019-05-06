@@ -174,7 +174,7 @@ export default function (gridBuild) {
 
 					if (xDiff < this.buffer && yDiff < this.buffer) {
 						this.resetSpear();
-						this.utils.root.score.gridWeaponHit();
+						this.utils.root.score.gridScore.gridWeaponHit();
 					}
 				}
 				

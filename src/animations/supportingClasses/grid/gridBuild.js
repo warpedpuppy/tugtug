@@ -4,7 +4,7 @@ import Tweens from '../../utils/tweens';
 import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddyIndex';
-import Tokens from '../tokens/levelTokens';
+// import Tokens from '../tokens/levelTokens';
 export default {
 		cont: Assets.ParticleContainer(10000),
 		blockWidth: 0,
@@ -47,7 +47,7 @@ export default {
 			this.microscope.name = 'bounce';
 		  	//items to be distributed around board
 			this.spaceShip = SpaceShip().init()
-			this.tokens = Tokens.init();
+			this.tokens = this.utils.root.tokens.tokens;
 			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
 			this.flyTreasureChests = this.utils.root.grid.flyTreasureChests;
 			this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;

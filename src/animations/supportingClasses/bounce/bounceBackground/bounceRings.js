@@ -140,12 +140,12 @@ export default  {
 			this.lines.splice(i, 1);
 			//console.log('splice', this.lines.length)
 			this.loopingQ = this.rings.length;
-			this.utils.root.score.bounceRingHit();
+			this.utils.root.score.bounceScore.bounceRingHit();
         },
         reAddRingsAndLines: function (q, spike) {
         	
         	//this.loopingQ += q;
-        	this.utils.root.score.bounceSpikeHit(q);
+        	this.utils.root.score.bounceScore.bounceSpikeHit(q);
 
             q = (q > this.earnedRings.length)? this.earnedRings.length: q;
           
