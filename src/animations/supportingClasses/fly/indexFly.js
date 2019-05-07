@@ -28,10 +28,8 @@ export default function () {
 		},
 		removeFromStage: function () {
 			this.flyBackground.removeFromStage();
-
-			
-			this.utils.root.grid.clearGrid();
-			this.utils.root.grid.removeFromStage();
+			// this.utils.root.grid.clearGrid();
+			// this.utils.root.grid.removeFromStage();
 		},
 		resize: function () {
 			this.flyBackground.resize();

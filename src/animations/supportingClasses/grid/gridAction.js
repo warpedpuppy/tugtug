@@ -169,6 +169,8 @@ export default {
 						if (item.mode === this.utils.root.activeMode) {
 							this.gridBuild.cont.removeChild(item)
 			 				this.utils.root.earnToken(item);
+						} else {
+							this.utils.root.tokens.wrongTokenAnimation(item);
 						}
 					} else if (item.name === 'spaceship') {
 						this.pause = true;

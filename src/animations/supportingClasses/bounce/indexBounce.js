@@ -38,8 +38,11 @@ export default function () {
 			this.bounceInstructions.removeFromStage();
 			//this.bouncePoints.removeFromStage();
 		},
-		tokenEarn: function () {
-			this.utils.root.earnToken(this.utils.root.grid.gridBuild.tokens[2]);
+		tokenUnlock: function () {
+			this.bounceBackground.tokenUnlock();
+		},
+		tokenEarn: function (token) {
+			this.utils.root.earnToken(token);
 		},
 		resize: function () {
 			BounceInstructions.resize();

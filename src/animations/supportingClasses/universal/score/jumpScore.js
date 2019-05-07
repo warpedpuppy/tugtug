@@ -15,8 +15,12 @@ export default {
 		score[`${activeMode}Points`] = dotsEaten;
 
 		score.scoreTexts[`${activeMode}Text`].text = `space points: ${score[`${activeMode}Points`]} / ${score[`${activeMode}Total`]}`;
-
-		if (!jumpBackground.jumpTokenUnlocked && score[`${activeMode}Points`] >= score.jumpTokenUnlockPoints) {
+		//console.log(jumpBackground.jumpTokenUnlocked, 
+			//score[`${activeMode}Points`], score.jumpTokenUnlockPoints);
+		if (
+			!jumpBackground.jumpTokenUnlocked && 
+			score[`${activeMode}Points`] >= score.jumpTokenUnlockPoints
+			) {
 			jumpBackground.jumpTokenUnlocked = true;
 			jumpBackground.jumpTokenUnlockedGraphic.addToStage();
 			Tweens.tween(jumpBackground.tokenLock, 0.5, {alpha: [1,0], onComplete: this.jumpRemoveLock.bind(this)});

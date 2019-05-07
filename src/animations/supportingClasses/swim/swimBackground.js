@@ -56,29 +56,16 @@ export default function () {
 			this.background.clear();
 			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
-		// build: function (arr) {
-		// 	let s, cont = Assets.Container();
-		// 	for(let i = 0; i < 4; i ++){
-		// 		s = Assets.Sprite(this.texture);
-		// 		console.log(s.width, s.height)
-		// 		s.x = arr[i][0];
-		// 		s.y = arr[i][1];
-		// 		s.scale.x = arr[i][2];
-		// 		s.scale.y = arr[i][3];
-		// 		cont.addChild(s);
-		// 	}
-		// 	return cont;
-		// },
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
 			this.fishSchool.addToStage();
-			this.lilypadLotuses.addToStage();
+			
 			this.parentCont.addChildAt(this.background, 0);
 			this.parentCont.addChildAt(this.cont2, 2);
 			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
 			this.parentCont.addChildAt(this.cont, index);
-
-			this.parentCont.setChildIndex(this.utils.hero.cont, index - 1);
+			this.lilypadLotuses.addToStage();
+			//this.parentCont.setChildIndex(this.utils.hero.cont, index - 1);
 		},
 		removeFromStage: function () {
 			this.fishSchool.removeFromStage();
@@ -88,12 +75,7 @@ export default function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		startSpaceShipJourney: function () {
-			// Tweens.fadeTo(this.fishSchool.fishCont, 1, 0, "alpha");
-			// Tweens.fadeTo(this.fishSchool.sharkCont, 1, 0, "alpha");
-   //          Tweens.fadeTo(this.lilypadLotuses.cont, 1, 0, "alpha");
-   //          Tweens.fadeTo(this.cont, 1, 0, "alpha");
-   //          Tweens.fadeTo(this.cont2, 1, 0, "alpha");
-
+		
    		    Tweens.tween(this.fishSchool.fishCont, 1, {alpha: [1,0]});
 			Tweens.tween(this.fishSchool.sharkCont, 1, {alpha: [1,0]});
             Tweens.tween(this.lilypadLotuses.cont, 1, {alpha: [1,0]});
@@ -101,12 +83,7 @@ export default function () {
             Tweens.tween(this.cont2, 1, {alpha: [1,0]});
         },
         endSpaceShipJourney: function () {
-     //       Tweens.fadeTo(this.fishSchool.fishCont, 1, 1, "alpha");
-		   // Tweens.fadeTo(this.fishSchool.sharkCont, 1, 1, "alpha");
-     //       Tweens.fadeTo(this.lilypadLotuses.cont, 1, 1, "alpha");
-     //       Tweens.fadeTo(this.cont, 1, 0.15, "alpha");
-     //       Tweens.fadeTo(this.cont2, 1, 0.5, "alpha");
-
+     
      	   Tweens.tween(this.fishSchool.fishCont, 1, {alpha: [0,1]});
 		   Tweens.tween(this.fishSchool.sharkCont, 1, {alpha: [0,1]});
            Tweens.tween(this.lilypadLotuses.cont, 1, {alpha: [0,1]});

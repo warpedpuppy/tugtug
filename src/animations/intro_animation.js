@@ -21,6 +21,7 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import Animations from './supportingClasses/universal/animations/animationsIndex';
 
 export default function(obj) {
     return {
@@ -176,6 +177,8 @@ export default function(obj) {
             this.jump.init(this.stage);
             
             this.transitionAnimation.init(this);
+
+            Animations.init();
            
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
@@ -215,7 +218,7 @@ export default function(obj) {
                 this.makeJumpActive();
             }
 
-                
+          
 
         },
         stop: function () {
@@ -241,7 +244,6 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];    
             return this.activeMode;  
         },
-       
         switchPlayerWithAnimation: function (mode) {
            
             if (!this.transitionAnimationPlaying) {
@@ -254,6 +256,12 @@ export default function(obj) {
 
                 this.activeMode = (mode)?mode:this.increaseIndex();
                 let newActiveModeString = this.activeMode;
+
+                if(this.activeMode === 'bounce'){
+                   //   this.grid.clearGrid();
+                this.grid.removeFromStage();
+                }
+              
                
 
                 this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
@@ -301,7 +309,7 @@ export default function(obj) {
             this.bounce.resize();
             this.fly.resize();
             this.jump.resize();
-            this.levelSlots.resize();
+            this.tokens.resize();
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    
@@ -373,7 +381,7 @@ export default function(obj) {
         },
         reset: function () {
             this.score.nextLevel();
-            this.levelSlots.reset();
+            this.tokens.reset();
             this.jump.reset();
             this.bounce.reset();
 
@@ -402,10 +410,14 @@ export default function(obj) {
 
         },
         animate: function () {
+
             Tweens.animate();
+
             if(this.fullStop)return;
 
             this.transitionAnimation.animate();
+
+            Animations.animate();
            
 
             if (this.action) {

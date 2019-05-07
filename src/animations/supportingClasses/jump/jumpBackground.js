@@ -259,7 +259,7 @@ export default function () {
 				} else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
 
 					this.jumpTokenTaken = true;
-					this.utils.root.levelSlots.fillSlot(this.token);
+					this.utils.root.tokens.fillSlot(this.token);
 				}
 		},
 		makeTransitionComplete: function (i) {

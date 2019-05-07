@@ -64,7 +64,7 @@ export default {
 			this.gridBuild.blockHeight = h;
 
 			this.gridBuild.cont.removeChildren();
-			this.gridBuild.buildGrid(this.parent.dbData.boards[this.currentBoard]);
+			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 
 			this.gridAction.setLimits();
 		},

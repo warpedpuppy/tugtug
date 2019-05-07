@@ -34,7 +34,7 @@ export default function (spritesheet) {
 			this.utils.setLilypads(this);
 		},
 		addToStage: function () {
-			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
+			let index = this.utils.app.stage.getChildIndex(this.utils.hero.cont)+1;
 		  	this.parentCont.addChildAt(this.cont, index);
 
 		},
@@ -44,12 +44,12 @@ export default function (spritesheet) {
 	
 		animate: function () {
 
-			for(var ball of this.array){
+			for (var ball of this.array) {
 				this.utils.updateLeaveScreen(ball);
-				for(var ball2 of this.array){
-					if(ball !== ball2){
+				for (var ball2 of this.array) {
+					if (ball !== ball2) {
 						let collision = this.utils.circleToCircleCollisionDetection(ball, ball2);
-						if(collision[0]){
+						if (collision[0]) {
 							this.utils.adjustPositions(ball, ball2, collision[1]);
 							this.utils.resolveCollision(ball, ball2);
 						}

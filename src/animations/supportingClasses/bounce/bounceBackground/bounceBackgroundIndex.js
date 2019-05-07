@@ -29,6 +29,7 @@ export default function () {
 		bounceVerticals: BounceVerticals,
 		bounceRings: BounceRings,
 		bounceExplosion: BounceExplosion,
+		token: undefined,
 		init: function (action, points) {
 
 			BounceExplosion.init();
@@ -123,11 +124,18 @@ export default function () {
 			BounceExplosion.addToStage();
 			this.parentCont.addChildAt(this.cont, 1);
 			this.bounceRings.addToStage();
+			if(this.token){
+				this.utils.app.stage.addChild(this.token);
+			}
 		},
 		removeFromStage: function () {
 			this.bounceRings.removeFromStage();
 			BounceExplosion.removeFromStage();
 			this.parentCont.removeChild(this.cont);
+
+			if(this.token){
+				this.utils.app.stage.removeChild(this.token);
+			}
 		},
 		resize: function () {
 			for (let i = 0; i < this.transitionItemsQ; i ++) {
@@ -155,7 +163,22 @@ export default function () {
 			}
 
 		},
-		
+		tokenUnlock: function () {
+
+			//celebratory animation
+
+			//removeSpikes
+			this.bounceVerticals.spikes.forEach(spike => {
+				spike.visible = false;
+			})
+			//addToken
+			this.token = this.utils.root.tokens.tokens[2];
+			this.token.radius = 30;
+			this.token.speedAdjust = this.utils.randomNumberBetween(0.1, 0.65);
+			this.utils.app.stage.addChild(this.token);
+			
+
+		},
 		moveItems: function (item) {
 			item.x -= this.action.vx * item.speedAdjust;
 			item.y -= this.action.vy * item.speedAdjust;	
@@ -188,6 +211,15 @@ export default function () {
 
 			this.bounceRings.animate();
 
+			if(this.token){
+				this.moveItems(this.token);
+				if(this.utils.circleToCircleCollisionDetection(this.heroCollisionDetector, this.token)[0]){
+					//this.utils.app.stage.removeChild(this.token);
+					this.utils.root.earnToken(this.token);
+					this.token = undefined;
+				}
+			}
+
 			for (let i = 0; i < this.loopingQ; i ++) {
 				if(this.bounceVerticals.array1[i]){
 					this.bounceVerticals.moveBars(this.bounceVerticals.array1[i]);
@@ -205,12 +237,13 @@ export default function () {
 
 				if (this.bounceVerticals.spikes[i] && !Config.testingBounce) {
 					let spike = this.bounceVerticals.spikes[i];
+
 					spike.x = spike.bar.x;
 					spike.y -= this.action.vy;
-					spike.frontSpike.rotation += 0.05;
-					spike.backSpike.rotation -= 0.025;
+					spike.frontSpike.rotation += 0.5;
+					spike.backSpike.rotation -= 0.25;
 
-					if (!spike.hit && this.itemHitDetect(spike) && spike.y < this.utils.canvasHeight / 2) {
+					if (spike.visible && !spike.hit && this.itemHitDetect(spike) && spike.y < this.utils.canvasHeight / 2) {
 						spike.hit = true;
 		   				BounceExplosion.startBad();
 		   				this.bounceRings.reAddRingsAndLines(10, spike)
@@ -224,20 +257,7 @@ export default function () {
 					}
 				}
 
-			
-			
-				// if (Assets.rings[i]) {
-				// 	let ring = Assets.rings[i];
-				// 	this.moveItems(ring);
-				// 	if (!ring.hit && this.itemHitDetect(ring)) {
-				// 		ring.hit = true;
-				// 		BounceExplosion.startGood();
-				// 		ring.parent.removeChild(ring);
-				// 		this.bounceRings.rings.slice(i, 1);
-				// 		this.points.ringHit();
-					
-				// 	}
-				// }
+				
 
 				if (this.transitionItems[i]) {
 					let item = this.transitionItems[i];

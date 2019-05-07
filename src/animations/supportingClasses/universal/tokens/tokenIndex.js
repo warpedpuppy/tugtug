@@ -15,7 +15,6 @@ export default {
 				
 		},
 		reset: function () {
-			
 			this.tokenCounter = 0;
 			for (let i = 0; i < 4; i ++) {
 				let t =  this.utils.root.grid.gridBuild.tokens[i];
@@ -26,6 +25,9 @@ export default {
 		fillSlot: function (token) {
 			TokenSlots.fillSlot(token);
 			TokenAnimations.playEarnedTokenAnimation();
+		},
+		wrongTokenAnimation: function (token) {
+			TokenAnimations.wrongTokenAnimation(token);
 		},
 		// clearText: function (){
 		// 	TokenAnimations.clearText();

@@ -231,7 +231,8 @@ export default {
 			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 1;
 			this.microscope.x = this.microscope.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
 			this.microscope.y = this.microscope.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
-			this.freeSpaces.splice(index, 1)
+			this.freeSpaces.splice(index, 1);
+			this.microscope.hit = false;
 			this.cont.addChild(this.microscope);
 		},
 		placeCoin: function (coin) {
@@ -301,7 +302,7 @@ export default {
 						}
 					}
 				}
-
+				item.hit = false;
 				let i = Math.floor(Math.random()*this.freeSpaces.length);
 				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
 				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;

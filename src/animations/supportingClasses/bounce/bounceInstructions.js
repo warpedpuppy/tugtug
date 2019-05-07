@@ -5,6 +5,7 @@ export default  {
 	utils: Utils,
 	init: function () {
 		this.text = Assets.Sprite("swipeScreen.png");
+		this.text.scale.set(0.5);
 		this.text.anchor.set(0.5);
 		this.text.x = this.utils.canvasWidth / 2;
 		this.text.y = this.utils.canvasHeight / 2;

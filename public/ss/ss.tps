@@ -270,6 +270,8 @@
             <filename>../bmps/microscope.png</filename>
             <filename>../bmps/arrow.png</filename>
             <filename>../bmps/scoreBackground.png</filename>
+            <filename>../bmps/mustBeDragon.png</filename>
+            <filename>../bmps/mustBeFish.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -16,16 +16,27 @@ export default {
 			this.textCont.addChild(this.token);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
+
+			this.mustBeFish = Assets.Sprite('mustBeFish.png');
+			this.mustBeFish.anchor.set(0.5);
+			this.mustbeDragon  = Assets.Sprite('mustBeDragon.png');
+			this.mustbeDragon.anchor.set(0.5);
 		},
 		playEarnedTokenAnimation: function () {
 			this.utils.app.stage.addChild(this.textCont);
-			Tweens.tween(this.textCont, 2, {alpha: [1,0]}, this.removeText.bind(this))
+			Tweens.tween(this.textCont, 2, {alpha: [1,0]}, this.removeText.bind(this, this.textCont))
 		},
-		// clearText: function () {
-		// 	this.utils.app.stage.removeChild(this.textCont);
-		// },
-		removeText: function () {
-			this.utils.app.stage.removeChild(this.textCont);
+		wrongTokenAnimation: function (token) {
+
+			let text = (this.utils.root.activeMode === 'swim')?this.mustbeDragon:this.mustBeFish;
+			text.alpha = 1;
+			text.x = token.x;
+			text.y = token.y;
+			this.utils.root.grid.gridBuild.cont.addChild(text);
+			Tweens.tween(text, 2, {alpha: [1,0]}, this.removeText.bind(this, text))
+		},
+		removeText: function (cont) {
+			this.utils.app.stage.removeChild(cont);
 		}
 	
 }
