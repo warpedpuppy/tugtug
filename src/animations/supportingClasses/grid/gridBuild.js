@@ -21,6 +21,7 @@ export default {
 		//boards: [],
 		currentBoard: 0,
 		blockPool: [],
+		gridCirclePool: [],
 		spaceShip: {},
 		wallHit: 0,
 		transitionItemsArray: [],
@@ -35,6 +36,7 @@ export default {
 		swimBaddies: Baddies(),
 		onGridCoins: {},
 		omnibusArray: [],
+		flyColors: [0x5713B8, 0xFF0F59, 0x4A34FF, 0x60B800, 0x0122FA],
 		init: function () {
 			//this.moveItem = this.moveItem.bind(this);
 
@@ -118,7 +120,8 @@ export default {
 			    obj = this.createObj(data),
 			    counter = 0,
 			    b,
-			    texture;
+			    texture,
+			    gridCircle;
 			this.cont.scale.set(1);
 			this.cont.pivot = Assets.Point(0, 0);
 			this[`${mode}Baddies`].removeCastlesAndSoldiers(); 
@@ -155,9 +158,13 @@ export default {
 
 					if (!this.blockPool[counter]) {
 						b = Assets.Sprite()
-						this.blockPool.push(b)	
+						gridCircle = Assets.Sprite('gridCircle600.png');
+						gridCircle.anchor.set(0.5);
+						this.blockPool.push(b);
+						this.gridCirclePool.push(gridCircle);	
 					} else {
 						b = this.blockPool[counter];
+						gridCircle = this.gridCirclePool[counter];
 					}
 
 					b.width = this.blockWidth;
@@ -167,6 +174,13 @@ export default {
 					b.y = i * this.blockHeight;
 					
 					this.cont.addChild(b);
+
+					gridCircle.width = this.blockWidth;
+					gridCircle.height = this.blockHeight;
+					gridCircle.x = j * this.blockWidth + (this.blockWidth / 2);
+					gridCircle.y = i * this.blockHeight + (this.blockHeight / 2);
+					
+					
 
 					let token = false;
 					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
@@ -184,9 +198,15 @@ export default {
 
 					if (bool) {
 						b.texture = this.whiteSquare;
+						//b.tint = 0x003300;
 						this.coveredSpaces.push(b)
 					} else {
-						b.texture = texture;
+						b.texture = this.whiteSquare;
+						//b.tint = this.utils.randomItemFromArray(this.flyColors);
+						b.alpha = 0.25;
+						b.gridCircle = gridCircle;
+						gridCircle.alpha = 0.25;
+						this.cont.addChild(gridCircle);
 					}
 					
 					this.blocks[i][j] = b;
@@ -241,22 +261,24 @@ export default {
 			if (this.coinSpaces.length) {
 				coinSpacePossible = true;
 			}
-
 			//if there are coinSpaces and random 10 < 5, use one of those spaces
 			let coinSpaceUse = Math.floor(Math.random()* 10) < 5;
-			if(coinSpacePossible && coinSpaceUse) {
-				//add coin to 
-				console.log('add coin to new already used coin space')
+			if (this.freeSpaces.length === 0 || (coinSpacePossible && coinSpaceUse)) {
+				//add coin to space which currently has other coins
+				//console.log('add coin to new already used coin space')
 				let i = Math.floor(Math.random()*this.coinSpaces.length);
 				coin.x = this.coinSpaces[i][0] + this.blockWidth / 2;
 				coin.y = this.coinSpaces[i][1] + this.blockHeight / 2;
 				coin.currentSpace = this.freeSpaces[i];
 				this.cont.addChild(coin);
 			} else {
-				console.log('add coin to new free space')
+				//console.log('add coin to new free space')
 				//place it on a free space
-				let i = Math.floor(Math.random()*this.freeSpaces.length);
 
+
+
+				let i = Math.floor(Math.random()*this.freeSpaces.length);
+				console.log(this.freeSpaces.length, i)
 
 				coin.x = this.freeSpaces[i][0] + this.blockWidth / 2;
 				coin.y = this.freeSpaces[i][1] + this.blockHeight / 2;

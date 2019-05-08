@@ -3,7 +3,7 @@ export default {
 	jumpTokenUnlockPoints: 10,
 	bounceTotalPoints: 1,
 	swimVelocities: [1, 2],
-	flyVelocity: 6,
+	flyVelocity: 3,
 	swimVelocity: 6,
 	flyTreasureChestQ: 10,
 	flyCoinsPerTreasureChest: 100,
@@ -14,11 +14,11 @@ export default {
 	spaceColQ: 10,
 	spaceDotsPerPlanet: 10,
 	magicPillsQ: 0,
-	transitionItemsQ: 50,
+	transitionItemsQ: 0,
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
-	flyBlockSize: [200, 200],
-	swimBlockSize: [400, 400],
+	flyBlockSize: [400, 400],
+	swimBlockSize: [600, 600],
 	flyWallHit: -1,
 	swimWallHit: -1,
 	bounceWallHit: -1.75,
@@ -32,6 +32,6 @@ export default {
 	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
-	flyBaddyQ: 0, 
-	swimBaddyQ: 0
+	flyBaddyQ: 100, 
+	swimBaddyQ: 100
 }

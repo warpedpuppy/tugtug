@@ -12,17 +12,17 @@ export default {
 			this.parentCont = this.utils.app.stage;
 			let hourhand = this.hourhand = Assets.Sprite('/hourhand.png');
 			hourhand.anchor.set(0.5);
-			hourhand.tint = 0xFF0000;
+			//hourhand.tint = 0xFF0000;
 			this.cont.addChild(hourhand);
 
 			let minutehand = this.minutehand = Assets.Sprite('/minutehand.png');
 			minutehand.anchor.set(0.5);
-			minutehand.tint = 0x000000;
+			//minutehand.tint = 0x000000;
 			this.cont.addChild(minutehand);
 
 			let secondhand = this.secondhand = Assets.Sprite('/secondhand.png');
 			secondhand.anchor.set(0.5);
-			secondhand.tint = 0xFF00FF;
+			//secondhand.tint = 0xFF00FF;
 			this.cont.addChild(secondhand);
 
 			let d = this.d = new Date();

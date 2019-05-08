@@ -241,7 +241,6 @@
             <filename>../bmps/wingPart1.png</filename>
             <filename>../bmps/wingPart2.png</filename>
             <filename>../bmps/dragonHead.png</filename>
-            <filename>../bmps/dragonSegment.png</filename>
             <filename>../bmps/dragonTail.png</filename>
             <filename>../bmps/dragonTriangle.png</filename>
             <filename>../bmps/slot.png</filename>
@@ -256,11 +255,9 @@
             <filename>../bmps/token2.png</filename>
             <filename>../bmps/token3.png</filename>
             <filename>../bmps/token4.png</filename>
-            <filename>../bmps/grassSquareSmall.png</filename>
             <filename>../bmps/castle.png</filename>
             <filename>../bmps/horse.png</filename>
             <filename>../bmps/soldier.png</filename>
-            <filename>../bmps/cloud.png</filename>
             <filename>../bmps/nextMaze.png</filename>
             <filename>../bmps/spaceShip.png</filename>
             <filename>../bmps/swipeScreen.png</filename>
@@ -272,6 +269,8 @@
             <filename>../bmps/scoreBackground.png</filename>
             <filename>../bmps/mustBeDragon.png</filename>
             <filename>../bmps/mustBeFish.png</filename>
+            <filename>../bmps/gridCircle.png</filename>
+            <filename>../bmps/gridCircle600.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -1,5 +1,7 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import Tweens from '../../utils/tweens';
+
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -28,8 +30,8 @@ export default function () {
 
                 if (i !== this.segmentsQ - 1) {
                 	segment = Assets.Sprite('dragonSegment.png');
-
-                	segment.y = i * (segment.height - 20);
+                	segment.y = i * (segment.height + 40);
+                	//segment.scale.y = -1;
                 } else { 
                 	segment = Assets.Sprite('dragonTail.png');
                 	segment.y = i * (segment.height - 40);
@@ -123,7 +125,24 @@ export default function () {
 		dye: function (color) {
 			for(let part of this.dyeLot){
 				part.tint = color;
+
 			}
+		},
+		hit: function () {
+	
+			this.dyeLot.forEach(seg => {
+				seg.tint = 0xFF0000;
+				seg.alpha = 0;
+				Tweens.tween(seg, 0.15, 
+					{alpha: [0, 1]}, 
+					this.fadeToBlack.bind(this, seg))
+			})
+		},
+		fadeToBlack: function (part){
+			part.alpha = 1;
+			part.tint = 0x000000;
+			//Tweens.tween(part, 0.5,{tint: [part.tint, 0x000000]})
+			
 		},
 		bodySegment: function (radius, color, yVal, str) {
 			let cont = Assets.Container();

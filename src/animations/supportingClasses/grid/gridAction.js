@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/tweens';
 import Config from '../../animationsConfig';
 export default {
 		utils: Utils,
@@ -47,8 +48,30 @@ export default {
 			    halfCanvasHeight = (this.utils.canvasHeight / 2),
 			    iVal = Math.floor((halfCanvasHeight - this.gridBuild.cont.y) / this.blockHeight),
 			    jVal = Math.floor((halfCanvasWidth - this.gridBuild.cont.x) / this.blockWidth),
-			    blocks = this.utils.root.grid.gridBuild.blocks;;
+			    blocks = this.utils.root.grid.gridBuild.blocks;
+			this.glow(iVal, jVal)
 			return { block: blocks[iVal][jVal], i: iVal, j: jVal }
+		},
+		glow: function (i,j) {
+			if(this.glow.obj === undefined){
+				this.glow.obj = {i: 1,j: 1};
+			}
+			if (i !== this.glow.obj.i || j !== this.glow.obj.j) {
+				let blocks = this.utils.root.grid.gridBuild.blocks;
+				let currentBlock = blocks[this.glow.obj.i][this.glow.obj.j]
+				Tweens.tween(currentBlock, 0.15, {alpha: [0.5,0.25]});
+				let gc = currentBlock.gridCircle;
+				let ninetyDegrees = this.utils.deg2rad(90);
+				Tweens.tween(currentBlock.gridCircle, 3, {rotation: [ninetyDegrees,0]}
+					, undefined,'easeOutBounce');
+
+				let newBlock = blocks[i][j]
+				Tweens.tween(newBlock, 0.15, {alpha: [0.25,0.5]});
+				Tweens.tween(newBlock.gridCircle, 3, {rotation: [0,ninetyDegrees]}
+					, undefined,'easeOutElastic');
+				this.glow.obj = {i, j};
+			}
+			
 		},
 		createBoundaries: function (currentSquare) {
 
