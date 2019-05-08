@@ -59,14 +59,14 @@ export default {
 			if (i !== this.glow.obj.i || j !== this.glow.obj.j) {
 				let blocks = this.utils.root.grid.gridBuild.blocks;
 				let currentBlock = blocks[this.glow.obj.i][this.glow.obj.j]
-				Tweens.tween(currentBlock, 0.15, {alpha: [0.5,0.25]});
+				Tweens.tween(currentBlock, 0.15, {alpha: [0.75,0.25]});
 				let gc = currentBlock.gridCircle;
 				let ninetyDegrees = this.utils.deg2rad(90);
 				Tweens.tween(currentBlock.gridCircle, 3, {rotation: [ninetyDegrees,0]}
 					, undefined,'easeOutBounce');
 
 				let newBlock = blocks[i][j]
-				Tweens.tween(newBlock, 0.15, {alpha: [0.25,0.5]});
+				Tweens.tween(newBlock, 0.15, {alpha: [0.25,0.75]});
 				Tweens.tween(newBlock.gridCircle, 3, {rotation: [0,ninetyDegrees]}
 					, undefined,'easeOutElastic');
 				this.glow.obj = {i, j};
