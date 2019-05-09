@@ -211,6 +211,7 @@ export default {
 						item.isTweening = true;
 						this.gridBuild.moveItem1(item);
 					} else {
+						//if(item.name === 'treasureChest')item.classRef.animate();
 						item.counter ++;
 					}
 				

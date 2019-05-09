@@ -44,20 +44,6 @@ export default function () {
 		//this.treasureAnimation.init();
 		return arr;
 	},
-	resize: function (wh) {
-		// this.wh = wh;
-		// this.bottomEdge = this.wh.canvasHeight + this.edgeBuffer;
-		// this.rightEdge = this.wh.canvasWidth + this.edgeBuffer;
-		// for (let i = 0; i < this.chestQ; i ++ ) {
-		// 	let c = this.chests[i];
-  //       	c.x = this.utils.randomNumberBetween(0, wh.canvasWidth);
-  //       	c.y = this.utils.randomNumberBetween(0, wh.canvasHeight);
-  //       }
-	},
-	// removeChest: function (index){
-	// 	this.chests.splice(index, 1);
-	// 	this.chestQ --;
-	// },
 	playAnimation: function (activeChest) {
 		//this.animationHappening = true;
 		this.treasureAnimation.playAnimation(activeChest);
