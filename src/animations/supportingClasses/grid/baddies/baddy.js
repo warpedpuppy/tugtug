@@ -19,9 +19,19 @@ export default function (gridBuild) {
 			this.cont = gridBuild.cont;
 			this.destPoint = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 			this.root = this.utils.root;
-			this.body = Assets.Sprite(str);
+
+			//this.body = Assets.Sprite(str);
+			let bodyTextures = [
+				Assets.Texture('soldierWalking1.png'),
+				Assets.Texture('soldierWalking2.png')
+			];
+			this.body = Assets.AnimatedSprite(bodyTextures);
+			this.body.animationSpeed = 0.1;
+			this.body.play();
+
 			this.body.anchor.set(0.5);
 			this.speed = this.utils.randomNumberBetween(0.1, 0.5);
+			this.body.animationSpeed = this.speed * 0.25;
 			this.spearSpeed = this.utils.randomNumberBetween(0.6, 0.8);
 			this.body.classRef = this;
 			this.body.radius = this.body.r = 11;
@@ -39,22 +49,27 @@ export default function (gridBuild) {
 				let index = this.utils.root.grid.gridBuild[`${this.utils.root.activeMode}Baddies`].soldiers.indexOf(this.body);
 				this.utils.root.grid.gridBuild[`${this.utils.root.activeMode}Baddies`].soldiers.splice(index, 1);
 			}
-		},
+		}, 
 		onScreen: function () {
 				
-			let currentSquare = this.currentSquare().block;
-
-			let grid = gridBuild.cont;
+			let currentSquare = this.currentSquare().block,
+			    grid = gridBuild.cont,
+			    leftEdge = -currentSquare.x - this.blockWidth,
+			    topEdge = -currentSquare.y  - this.blockHeight,
+			    rightEdge = this.utils.canvasWidth - currentSquare.x, 
+			    bottomEdge = this.utils.canvasHeight - currentSquare.y;
 
 			if (
-				grid.x > -currentSquare.x && 
-				grid.x < this.utils.canvasWidth - currentSquare.x &&
-				grid.y > -currentSquare.y && 
-				grid.y < this.utils.canvasHeight - currentSquare.y &&
+				grid.x >  leftEdge && 
+				grid.x <  rightEdge &&
+				grid.y >  topEdge && 
+				grid.y <  bottomEdge &&
 				 this.body.alpha
 				 ) {
+				if(!this.body.playing)this.body.play();
 				return true;
 			}
+			if(this.body.playing)this.body.stop();
 			return false;
 
 		},
@@ -174,7 +189,7 @@ export default function (gridBuild) {
 
 					if (xDiff < this.buffer && yDiff < this.buffer) {
 						this.resetSpear();
-						//this.utils.hero.activeHero.hit();
+						this.utils.hero.activeHero.hit();
 						this.utils.root.score.gridScore.gridWeaponHit();
 					}
 				}

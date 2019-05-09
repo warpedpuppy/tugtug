@@ -7,10 +7,10 @@ export default function (gridBuild) {
 		counterLimit: 200,
 		init: function (baddy) {
 			this.baddy = baddy;
-			this.spear = Assets.Sprite('bouncePlatformLine.png');
+			this.spear = Assets.Sprite('spear.png');
 			this.spear.anchor.set(0.5);
-			this.spear.width = 50;
-			this.spear.height = 4;
+			// this.spear.width = 50;
+			// this.spear.height = 4;
 			this.spear.vx = 0;
 			this.spear.vy = 0;
 			this.spear.classRef = this;

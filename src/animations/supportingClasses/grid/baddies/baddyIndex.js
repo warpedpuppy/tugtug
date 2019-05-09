@@ -10,7 +10,7 @@ export default function () {
 		spears: [],
 		castles: [],
 		soldiers: [],
-		solderPerGridSquareQ: 1,
+		solderPerGridSquareQ: 2,
 		baddiesPool: [],
 		castlePool: [],
 		spearsPool: [],

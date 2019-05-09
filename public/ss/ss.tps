@@ -271,6 +271,21 @@
             <filename>../bmps/mustBeFish.png</filename>
             <filename>../bmps/gridCircle.png</filename>
             <filename>../bmps/gridCircle600.png</filename>
+            <filename>../bmps/soldierWalking1.png</filename>
+            <filename>../bmps/soldierWalking2.png</filename>
+            <filename>../bmps/spear.png</filename>
+            <filename>../bmps/openTreasureChest.png</filename>
+            <filename>../bmps/jewel1.png</filename>
+            <filename>../bmps/jewel2.png</filename>
+            <filename>../bmps/jewel3.png</filename>
+            <filename>../bmps/jewel4.png</filename>
+            <filename>../bmps/jewel5.png</filename>
+            <filename>../bmps/jewel6.png</filename>
+            <filename>../bmps/jewel7.png</filename>
+            <filename>../bmps/jewel8.png</filename>
+            <filename>../bmps/jewel9.png</filename>
+            <filename>../bmps/jewel10.png</filename>
+            <filename>../bmps/jewel11.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

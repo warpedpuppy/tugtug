@@ -9,6 +9,7 @@ export default function () {
 		utils: Utils,
 		segmentsQ: 10,
 		dyeLot: [],
+		timeoutHandler: undefined,
 		init: function (parentCont) {
 			this.parentCont = parentCont;
 			let head = Assets.Sprite('dragonHead.png');
@@ -129,19 +130,19 @@ export default function () {
 			}
 		},
 		hit: function () {
-	
-			this.dyeLot.forEach(seg => {
-				seg.tint = 0xFF0000;
-				seg.alpha = 0;
-				Tweens.tween(seg, 0.15, 
-					{alpha: [0, 1]}, 
-					this.fadeToBlack.bind(this, seg))
-			})
+			if(!this.timeoutHandler){
+				this.dyeLot.forEach(seg => {
+					seg.tint = 0xFF0000;
+				})
+				this.timeoutHandler = setTimeout(this.fadeToBlack.bind(this), 100)
+			}
+			
 		},
 		fadeToBlack: function (part){
-			part.alpha = 1;
-			part.tint = 0x000000;
-			//Tweens.tween(part, 0.5,{tint: [part.tint, 0x000000]})
+			this.dyeLot.forEach(seg => {
+				seg.tint = 0x000000;
+			})
+			this.timeoutHandler = undefined;
 			
 		},
 		bodySegment: function (radius, color, yVal, str) {

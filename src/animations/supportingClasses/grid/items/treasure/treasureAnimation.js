@@ -46,16 +46,17 @@ export default {
 			this.radialCont.scale.set(0);
 			for(let i = 0; i < this.radialQ; i ++){
 				let r = Assets.Sprite('line.png');
-				r.width = 1;
-				r.height = this.utils.randomNumberBetween(50, 100);
+				r.width = 0.25;
+				r.height = this.utils.randomNumberBetween(10, 50);
 				//r.alpha = this.utils.randomNumberBetween(0.2, 0.8);
 				r.anchor.x = 0;
 				r.anchor.y = 0;
 				r.storeHeight = r.height;
-				r.variance = this.utils.randomNumberBetween(20, 50);
+				r.variance = this.utils.randomNumberBetween(10, 20);
 				r.rotation = this.utils.deg2rad(i*(360 / this.radialQ));
 				r.speed = this.utils.randomNumberBetween(.0003, .003);
-				r.tint = this.utils.randomColor();
+				r.tint = 0xFFFF00;//this.utils.randomColor();
+				r.alpha = this.utils.randomNumberBetween(0.1, 1);
 				this.radials.push(r);
 				this.radialCont.addChild(r);
 			}
@@ -67,8 +68,10 @@ export default {
 
 			for (let i = 0; i < this.coinQ; i ++) {
 				let r = this.coins[i];
+				let num = Math.ceil(Math.random()*11);
+				r.texture = this.utils.spritesheet.textures[`jewel${num}.png`];
 				r.x = r.y = 0;
-				r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
+				//r.scale.set(this.utils.randomNumberBetween(0.1, 0.5));
 				r.vy = this.utils.randomNumberBetween(this.vys[0], this.vys[1]);
 				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
 				r.rotate = this.utils.randomNumberBetween(-4, 4);
@@ -79,6 +82,7 @@ export default {
 
 
 			this.activeChest = activeChest;
+			this.activeChest.texture = this.utils.spritesheet.textures['openTreasureChest.png'];
 				//place chest in center and rock it back and forth;
 			this.utils.root.grid.gridAction.pause = true;
 			//this.utils.root.action = false;

@@ -38,6 +38,7 @@ export default function () {
         },
         upHit: function () {
             //this.parent.hero.heroJump.look('up');
+             this.parent.activeAction.vx =  this.parent.activeAction.vy = 0;
         },
         downHit: function () {
             //this.vy = 0;

@@ -19,7 +19,9 @@ export default {
 
 			this.coinQ = (this.utils.app.renderer instanceof PIXI.WebGLRenderer)?Config.flyCoinsPerTreasureChest:10;
 			for (let i = 0; i < this.coinQ; i ++) {
-				this.coins.push(this.Sprite('transparentRing.png'));
+				let num = Math.ceil(Math.random()*11);
+				//console.log(num)
+				this.coins.push(this.Sprite(`jewel${num}.png`));
 			}
 
 

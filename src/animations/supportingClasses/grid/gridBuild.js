@@ -100,7 +100,8 @@ export default {
 			let totalCoins = this.utils.root.score[`${this.utils.root.activeMode}Total`];
 
 			if (coinsInArray < totalCoins) {
-				let coin = Assets.Sprite('transparentRing.png');
+				let num = Math.ceil(Math.random()*11);
+				let coin = Assets.Sprite(`jewel${num}.png`);
 				coin.hit = false;
 
 				
@@ -290,7 +291,7 @@ export default {
 
 			}
 
-			coin.scale.set(this.utils.randomNumberBetween(0.075, 0.25));
+			//coin.scale.set(this.utils.randomNumberBetween(0.075, 0.25));
 
 			coin.startPointX = coin.x; 
 			coin.differential = this.utils.randomNumberBetween(10, 30);

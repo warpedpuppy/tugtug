@@ -6,7 +6,7 @@ export default function (gridBuild) {
 		init: function () {
 			this.c = Assets.Sprite('castle.png');
 			this.c.anchor.set(0.5);
-			this.c.scale.set(0.25);
+			//this.c.scale.set(0.25);
 			this.c.classRef = this;
 			return this.c;
 		},
