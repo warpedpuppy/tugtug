@@ -189,8 +189,6 @@
         <key>fileList</key>
         <array>
             <filename>../bmps/flyTrans.png</filename>
-            <filename>../bmps/jumpTrans.png</filename>
-            <filename>../bmps/bounceTrans.png</filename>
             <filename>../bmps/swimTrans.png</filename>
             <filename>../bmps/bouncePlatformBall.png</filename>
             <filename>../bmps/bouncePlatformLine.png</filename>
@@ -269,7 +267,6 @@
             <filename>../bmps/scoreBackground.png</filename>
             <filename>../bmps/mustBeDragon.png</filename>
             <filename>../bmps/mustBeFish.png</filename>
-            <filename>../bmps/gridCircle.png</filename>
             <filename>../bmps/gridCircle600.png</filename>
             <filename>../bmps/soldierWalking1.png</filename>
             <filename>../bmps/soldierWalking2.png</filename>
@@ -286,6 +283,7 @@
             <filename>../bmps/jewel9.png</filename>
             <filename>../bmps/jewel10.png</filename>
             <filename>../bmps/jewel11.png</filename>
+            <filename>../bmps/vortex.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

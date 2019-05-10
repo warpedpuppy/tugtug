@@ -161,15 +161,12 @@ export default {
 						b = Assets.Sprite()
 						gridCircle = Assets.Sprite('gridCircle600.png');
 						gridCircle.anchor.set(0.5);
-
 						this.blockPool.push(b);
 						this.gridCirclePool.push(gridCircle);	
 					} else {
 						b = this.blockPool[counter];
 						gridCircle = this.gridCirclePool[counter];
 					}
-
-				
 
 					b.width = this.blockWidth;
 					b.height = this.blockHeight;
@@ -178,7 +175,6 @@ export default {
 					b.y = i * this.blockHeight;
 					
 					this.cont.addChild(b);
-
 
 					gridCircle.width = this.blockWidth;
 					gridCircle.height = this.blockHeight;
@@ -250,23 +246,6 @@ export default {
 			this.spaceShip.y = this.spaceShip.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
-
-
-			let cont = this.vortexCont = Assets.Container();
-			
-
-			const graphics = this.vortexMask = Assets.Graphics();
-			graphics.beginFill(0xFF3300).drawRect(0, 0, 400, 400).endFill();
-
-			const sprite = this.vortex = Assets.Sprite('vortex.png');
-			sprite.anchor.set(0.5);
-			sprite.x = 200;
-			sprite.y = 200;
-			sprite.mask = graphics;
-			cont.addChild(sprite)
-			this.utils.app.stage.addChild(cont);
-
-			this.spaceShipPoint = {x: this.spaceShip.x, y: this.spaceShip.y}
 		},
 		placeMircoscope: function () {
 			// for now just place space ship here

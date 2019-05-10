@@ -2,6 +2,7 @@ import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import TreasureAnimation from './treasureAnimation';
 import Config from '../../../../animationsConfig';
+import TreasureChest from './treasureChest';
 export default function () {
 	return {
 	chests: [],
@@ -30,16 +31,16 @@ export default function () {
 		this.chestQ = q;
 		let arr = [];
 		for (let i = 0; i < this.chestQ; i ++) {
-			let c = Assets.Sprite('treasureChest.png');
-			c.scale.set(this.utils.randomNumberBetween(0.75, 0.85));
-			c.anchor.set(0.5);
-			c.name = "treasureChest";
-			c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
+			// let c = Assets.Sprite('treasureChest.png');
+			// c.scale.set(this.utils.randomNumberBetween(0.75, 0.85));
+			// c.anchor.set(0.5);
+			// c.name = "treasureChest";
+			// c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
 		
-        	c.variance = this.utils.randomNumberBetween(5, 20);
-        	c.rotateSpeed = this.utils.randomNumberBetween(0.001, 0.0025);
-			
-			arr.push(c);
+   //      	c.variance = this.utils.randomNumberBetween(5, 20);
+   //      	c.rotateSpeed = this.utils.randomNumberBetween(0.001, 0.0025);
+
+			arr.push(TreasureChest().build());
 		}
 		//this.treasureAnimation.init();
 		return arr;

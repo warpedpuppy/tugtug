@@ -35,7 +35,8 @@ export default function () {
 		c.fallSpeed = this.utils.randomNumberBetween(this.fallSpeeds[0], this.fallSpeeds[1]);
 		c.classRef = this;
     	c.variance = this.utils.deg2rad(this.utils.randomNumberBetween(5, 20));
-    	c.rotateSpeed = this.utils.randomNumberBetween(0.001, 0.0025);
+    	c.rotateSpeed = this.utils.randomNumberBetween(0.006, 0.0075);
+    	return c;
 		
 		
 		

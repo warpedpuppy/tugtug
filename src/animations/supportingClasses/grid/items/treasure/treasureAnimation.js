@@ -105,10 +105,10 @@ export default {
 			//explode coins
 			this.ringCont.x = this.utils.canvasWidth / 2;
 			this.ringCont.y = this.utils.canvasHeight / 2;
-			
+			this.utils.app.stage.addChild(this.activeChest);
 			this.utils.app.stage.addChild(this.ringCont);
 			
-			this.utils.app.stage.addChild(this.activeChest);
+			
 
 			//trigger animate special
 			this.utils.root.grid.treasure.animationHappening = true;

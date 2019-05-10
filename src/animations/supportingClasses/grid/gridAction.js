@@ -141,6 +141,21 @@ export default {
 				this.treasure.animate();
 			}
 
+			// vortex
+			this.gridBuild.vortex.rotation += 0.2;
+			let gp = this.gridBuild.cont.toGlobal(this.gridBuild.spaceShip);
+			//console.log(gp);
+			let x = gp.x - this.gridBuild.blockWidth / 2;
+			let y =   gp.y - this.gridBuild.blockHeight / 2;
+
+			this.gridBuild.vortexCont.x =  x;
+			this.gridBuild.vortexCont.y =y;
+
+
+			this.gridBuild.vortexMask.clear();
+			this.gridBuild.vortexMask.beginFill(0xFF3300).drawRect(x,y, 400, 400).endFill();
+
+
 			if(this.pause)return;
 
 			let ballB;
@@ -211,7 +226,10 @@ export default {
 						item.isTweening = true;
 						this.gridBuild.moveItem1(item);
 					} else {
-						//if(item.name === 'treasureChest')item.classRef.animate();
+						if(item.name === 'treasureChest'){
+							//console.log(item)
+							item.classRef.animate();
+						}
 						item.counter ++;
 					}
 				
