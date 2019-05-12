@@ -92,10 +92,17 @@ export default {
 		addToStage: function (index) {
 			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
+			this.gridBuild.vortexes.forEach(v => {
+				this.parentCont.addChildAt(v.vortex, 0);
+			})
+			
 		},
 		removeFromStage: function () {
 			this.gridAction.pause = true;
-			this.parentCont.removeChild(this.gridBuild.cont)
+			this.parentCont.removeChild(this.gridBuild.cont);
+			this.gridBuild.vortexes.forEach(v => {
+				this.parentCont.removeChild(v.vortex);
+			})
 		},
 		resize: function () {
 			this.gridBuild.resize();

@@ -37,8 +37,6 @@ export default {
 		onGridCoins: {},
 		omnibusArray: [],
 		flyColors: [0x5713B8, 0xFF0F59, 0x4A34FF, 0x60B800, 0x0122FA],
-		shipSpace: [],
-		vortexes: [],
 		init: function () {
 			//this.moveItem = this.moveItem.bind(this);
 
@@ -163,15 +161,12 @@ export default {
 						b = Assets.Sprite()
 						gridCircle = Assets.Sprite('gridCircle600.png');
 						gridCircle.anchor.set(0.5);
-
 						this.blockPool.push(b);
 						this.gridCirclePool.push(gridCircle);	
 					} else {
 						b = this.blockPool[counter];
 						gridCircle = this.gridCirclePool[counter];
 					}
-
-				
 
 					b.width = this.blockWidth;
 					b.height = this.blockHeight;
@@ -180,7 +175,6 @@ export default {
 					b.y = i * this.blockHeight;
 					
 					this.cont.addChild(b);
-
 
 					gridCircle.width = this.blockWidth;
 					gridCircle.height = this.blockHeight;
@@ -200,7 +194,7 @@ export default {
 					let heroSpace = (String(i) === data.hero.i && String(j) === data.hero.j)?true:false;
 					
 					if (!bool && !token && !heroSpace) {
-						this.freeSpaces.push([b.x, b.y, b, i, j, gridCircle]);
+						this.freeSpaces.push([b.x, b.y, b, i, j]);
 					}
 
 					if (bool) {
@@ -245,30 +239,13 @@ export default {
 			//this.changeBackground(this.utils.root.activeMode)
 
 		},
-		createVortex: function (rotateQ, item) {
-			let mask = Assets.Graphics();
-			mask.beginFill(0xFF3300).drawRect(0, 0, 400, 400).endFill();
-			let vortex = Assets.Sprite('vortex.png');
-			vortex.rotationQ = rotateQ;
-			vortex.anchor.set(0.5);
-			vortex.mask = mask;
-			this.vortexes.push({vortex, mask, item});
-		},
 		placeShip: function () {
 			// for now just place space ship here
 			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 0;
-			//console.log('ship space = ', this.freeSpaces[index])
-			this.shipSpace = this.freeSpaces[index];
 			this.spaceShip.x = this.spaceShip.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
 			this.spaceShip.y = this.spaceShip.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
 			this.freeSpaces.splice(index, 1)
 			this.cont.addChild(this.spaceShip);
-			this.shipSpace[2].alpha = 0;
-			this.shipSpace[5].alpha = 0;
-
-			this.createVortex(0.15, this.spaceShip)
-			
-			this.spaceShipPoint = {x: this.spaceShip.x, y: this.spaceShip.y, item: this.spaceShip}
 		},
 		placeMircoscope: function () {
 			// for now just place space ship here
@@ -278,9 +255,6 @@ export default {
 			this.freeSpaces.splice(index, 1);
 			this.microscope.hit = false;
 			this.cont.addChild(this.microscope);
-
-			this.createVortex(-0.15, this.microscope)
-		
 		},
 		placeCoin: function (coin) {
 			//this needs its own function

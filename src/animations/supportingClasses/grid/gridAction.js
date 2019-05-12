@@ -141,22 +141,21 @@ export default {
 				this.treasure.animate();
 			}
 
-			// vortex
-			this.gridBuild.vortex.rotation += 0.2;
-			let gp = this.gridBuild.cont.toGlobal(this.gridBuild.spaceShip);
-			//console.log(gp);
-			let x = gp.x - this.gridBuild.blockWidth / 2;
-			let y =   gp.y - this.gridBuild.blockHeight / 2;
-
-			this.gridBuild.vortexCont.x =  x;
-			this.gridBuild.vortexCont.y =y;
-
-
-			this.gridBuild.vortexMask.clear();
-			this.gridBuild.vortexMask.beginFill(0xFF3300).drawRect(x,y, 400, 400).endFill();
-
-
 			if(this.pause)return;
+
+			this.gridBuild.vortexes.forEach(v => {
+				v.vortex.rotation += v.vortex.rotationQ;
+				let gp = this.gridBuild.cont.toGlobal(v.item),
+				    x = gp.x,
+				    y = gp.y,
+				    x2 = gp.x - this.gridBuild.blockWidth / 2,
+				    y2 = gp.y - this.gridBuild.blockHeight / 2;
+				v.vortex.x = x;
+				v.vortex.y = y;
+				v.mask.clear();
+				v.mask.beginFill(0xFF3300).drawRect(x2 ,y2, this.blockWidth, this.blockHeight).endFill();
+
+			})
 
 			let ballB;
 			this[`${this.utils.root.activeMode}Baddies`].animate();
