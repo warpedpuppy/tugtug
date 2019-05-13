@@ -248,6 +248,8 @@ export default function(obj) {
            
             if (!this.transitionAnimationPlaying) {
 
+
+
                 this.transitionAnimationPlaying = true;
                 this.action = false;
 
@@ -257,13 +259,10 @@ export default function(obj) {
                 this.activeMode = (mode)?mode:this.increaseIndex();
                 let newActiveModeString = this.activeMode;
 
-                if(this.activeMode === 'bounce'){
-                   //   this.grid.clearGrid();
-                this.grid.removeFromStage();
+                if (this.activeMode === 'bounce') {
+                    this.grid.removeFromStage();
                 }
-              
-               
-
+            
                 this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
             }
 

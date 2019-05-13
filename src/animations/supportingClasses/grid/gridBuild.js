@@ -254,6 +254,15 @@ export default {
 			vortex.mask = mask;
 			this.vortexes.push({vortex, mask, item});
 		},
+		addRemoveVortexes: function(add) {
+			this.vortexes.forEach(v => {
+				if (add) {
+					this.utils.app.stage.addChildAt(v.vortex, 0);
+				} else {
+					this.utils.app.stage.removeChild(v.vortex);
+				}
+			})
+		},
 		placeShip: function () {
 			// for now just place space ship here
 			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 0;

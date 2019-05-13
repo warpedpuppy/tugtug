@@ -35,6 +35,7 @@ export default {
 		},
 		spaceShipBlastOff_3: function () {
 			//console.log("3")
+			this.utils.root.grid.gridBuild.addRemoveVortexes(false);
 			Tweens.tween(this.maze.scale, 1, {
 				x: [this.maze.scale.x, 0.015], 
 				y: [this.maze.scale.y, 0.015]
