@@ -37,6 +37,8 @@ export default function () {
 
 		},
 		makeJumpActive: function () {
+			this.utils.root.animations.explosionStart();
+			this.utils.root.animations.circles(false);
 			this.utils.root.score.show();
 			Tweens.killAll();
 			this.utils.root.makeJumpActive();

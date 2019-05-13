@@ -1,6 +1,6 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-// import Config from './animationsConfig';
+import Config from '../../../animationsConfig';
 export default  {
 		cont: Assets.Container, 
 		rings: [],
@@ -13,12 +13,18 @@ export default  {
 		expand: true,
 		rate: 0.025,
 		init: function () {
+			let counter = 0;
 			for (let i = 0; i < this.ringQ; i ++) {
 				let ring = Assets.Sprite('whiteConcentricCircle.png');
+				ring.tint = Config.colors[counter];
 				//console.log(ring)
 				ring.anchor.set(0.5);
 				ring.scale.set(0);
 				this.rings.push(ring);
+				counter ++;
+				if (counter > Config.colors.length){
+					counter = 0;
+				}
 			}
 		},
 		setMaxScaleHandler: function () {
@@ -40,14 +46,16 @@ export default  {
 			}
 		},
 		removeFromStage: function () {
-
+			this.rings.forEach(ring => {
+				this.utils.app.stage.removeChild(ring);
+			})
 		},
 		resize: function () {
 
 		},
 		animate: function () {
 			this.counter ++;
-			if(this.counter % 20 === 0){
+			if(this.counter % 10 === 0){
 				let ring = this.rings[this.ringCounter];
 				//console.log(ring)
 				if (this.expand) {

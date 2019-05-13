@@ -52,6 +52,7 @@ export default function(obj) {
         timeOut: undefined,
         levelComplete: LevelComplete,
         fullStop: false,
+        animations: Animations,
         init: function (isMobile, isMobileOnly) {
 
             if (Config.testingBounce) {

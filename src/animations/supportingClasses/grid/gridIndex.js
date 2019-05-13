@@ -90,6 +90,7 @@ export default {
 		},
 
 		addToStage: function (index) {
+			console.log('add to stage called')
 			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
 			this.gridBuild.addRemoveVortexes(true)

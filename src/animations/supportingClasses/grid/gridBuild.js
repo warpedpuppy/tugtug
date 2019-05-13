@@ -246,9 +246,12 @@ export default {
 
 		},
 		createVortex: function (rotateQ, item) {
+
+
 			let mask = Assets.Graphics();
 			mask.beginFill(0xFF3300).drawRect(0, 0, 400, 400).endFill();
 			let vortex = Assets.Sprite('vortex.png');
+			vortex.alpha = 0.5;
 			vortex.rotationQ = rotateQ;
 			vortex.anchor.set(0.5);
 			vortex.mask = mask;
@@ -275,7 +278,7 @@ export default {
 			this.shipSpace[2].alpha = 0;
 			this.shipSpace[5].alpha = 0;
 
-			this.createVortex(0.15, this.spaceShip)
+			if(this.vortexes.length < 2)this.createVortex(0.15, this.spaceShip)
 			
 			this.spaceShipPoint = {x: this.spaceShip.x, y: this.spaceShip.y, item: this.spaceShip}
 		},
@@ -288,7 +291,7 @@ export default {
 			this.microscope.hit = false;
 			this.cont.addChild(this.microscope);
 
-			this.createVortex(-0.15, this.microscope)
+			if(this.vortexes.length < 2)this.createVortex(-0.15, this.microscope)
 		
 		},
 		placeCoin: function (coin) {
