@@ -11,9 +11,11 @@ export default  {
 		explosionBoolean: false,
 		init: function () {
 			for(let i = 0; i < this.itemQ; i ++){
-				let item = Assets.Sprite("transparentRing.png");
+				let item = Assets.Sprite("star.png");
 				item.anchor.set(0.5)
-				//item.scale.set(this.utils.randomNumberBetween(0.1, 0,5))
+				item.tint = 0xFFFF00;
+				item.scale.set(this.utils.randomNumberBetween(0.25, 0.75))
+				item.rotateQ = this.utils.deg2rad(this.utils.randomNumberBetween(-5, 5));
 				item.q = this.utils.randomNumberBetween(-50, 50);
 				this.cont.addChild(item)
 				this.items.push(item);
@@ -48,6 +50,7 @@ export default  {
 			}
 			this.items.forEach((item, i) => {
 				item.alpha -= 0.01;
+				item.rotation += item.rotateQ;
 				item.x += item.q * Math.cos( ( 2 * Math.PI) * i / this.itemQ);
             	item.y += item.q * Math.sin( ( 2 * Math.PI) * i / this.itemQ);
 			})

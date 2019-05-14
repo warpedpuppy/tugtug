@@ -6,7 +6,7 @@ export default {
 		utils: Utils,
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
 
-			this.utils.root.animations.circles(true);
+			this.utils.root.animations.circles({start: true, expand: false});
 
 			this.storeX = maze.x;
 			this.storeY = maze.y;
@@ -52,24 +52,6 @@ export default {
 			'easeInOutQuad'
 			);
 
-			// Tweens.tween(this.maze, 1, {
-			// 	x: [this.maze.x, 500], 
-			// 	y: [this.maze.y, 500]
-			// }, 
-			// undefined,
-			// 'easeInOutQuad'
-			// );
-
-
-			//console.log("2")
-			// Tweens.tween(this.ship.scale, 1, 
-			// {
-			// 	x: [this.ship.scale.x, 1], 
-			// 	y: [this.ship.scale.y, 1]
-			// }, 
-			// this.spaceShipBlastOff_3.bind(this),
-			// 'easeOutBounce'
-			// );
 		},
 		spaceShipBlastOff_3: function () {
 
@@ -88,34 +70,25 @@ export default {
 			undefined,
 			'linear');
 
-			//console.log("3")
-			// this.utils.root.grid.gridBuild.addRemoveVortexes(false);
-			// Tweens.tween(this.maze.scale, 1, {
-			// 	x: [this.maze.scale.x, 0.015], 
-			// 	y: [this.maze.scale.y, 0.015]
-			// }, 
-			// this.spaceShipBlastOff_4.bind(this),
-			// 'easeInOutQuad'
-			// );
 		},
-		spaceShipBlastOff_4: function () {
-			//console.log("4")
-			//this.mazeWidth = this.maze.width;
-			Tweens.tween(this.maze, 2, 
-			{
-				x: [this.maze.x, -this.mazeWidth]
-			}, 
-			this.spaceShipBlastOff_5.bind(this),
-			'easeOutBounce');
-		},
-		spaceShipBlastOff_5: function () {
-			console.log("5")
-			Tweens.tween(this.background.scale, 2, 
-			{
-				x: [this.background.scale.x, 1], 
-				y: [this.background.scale.y, 1]
-			}, 
-			this.blastOffComplete,
-			'easeOutBounce');
-		}
+		// spaceShipBlastOff_4: function () {
+		// 	//console.log("4")
+		// 	//this.mazeWidth = this.maze.width;
+		// 	Tweens.tween(this.maze, 2, 
+		// 	{
+		// 		x: [this.maze.x, -this.mazeWidth]
+		// 	}, 
+		// 	this.spaceShipBlastOff_5.bind(this),
+		// 	'easeOutBounce');
+		// },
+		// spaceShipBlastOff_5: function () {
+		// 	console.log("5")
+		// 	Tweens.tween(this.background.scale, 2, 
+		// 	{
+		// 		x: [this.background.scale.x, 1], 
+		// 		y: [this.background.scale.y, 1]
+		// 	}, 
+		// 	this.blastOffComplete,
+		// 	'easeOutBounce');
+		// }
 }

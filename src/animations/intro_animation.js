@@ -219,8 +219,7 @@ export default function(obj) {
                 this.makeJumpActive();
             }
 
-          
-
+            //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
             window.onresize = undefined;

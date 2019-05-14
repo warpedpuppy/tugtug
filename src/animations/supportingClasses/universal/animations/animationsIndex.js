@@ -12,14 +12,14 @@ export default  {
 			this.animateFunction = function () {};
 			ConcentricCircles.init();
 		},
-		circles: function (on) {
+		circles: function (obj) {
 			
-			if (on) {
+			if (obj.start) {
 				this.circlesBoolean = true;
-				ConcentricCircles.addToStage(false);
+				ConcentricCircles.addToStage(obj.expand);
 			} else {
 				this.circlesBoolean = false;
-				ConcentricCircles.removeFromStage(false);
+				ConcentricCircles.removeFromStage();
 			}
 			
 		},
@@ -37,7 +37,9 @@ export default  {
 
 		},
 		animate: function () {
-			if(this.circlesBoolean)ConcentricCircles.animate();
+			if (this.circlesBoolean) {
+				ConcentricCircles.animate();
+			}
 			if(this.explosionBoolean){
 				if(!this.explosion.explosionBoolean){
 					this.explosionBoolean = false;

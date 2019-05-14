@@ -52,7 +52,6 @@ export default function () {
 			let maze = this.utils.root.grid.gridBuild.cont;
 			let jump = this.utils.root.jump;
 			let background = jump.jumpBackground.orbsCont;
-			console.log(this)
 			Tweens.spaceShipReturnHome(
 				background, 
 				maze, 
@@ -84,6 +83,7 @@ export default function () {
 			this.ship.y = this.ship.storeY;
 
 			this.utils.root.endSpaceShipJourney();
+			this.utils.root.animations.circles({start: false, expand: true});
 		},
 		addToStage: function () {
 

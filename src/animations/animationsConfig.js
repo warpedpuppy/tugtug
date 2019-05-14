@@ -27,12 +27,11 @@ export default {
 	bounceBuffer: 30,
 	boardCompleteButtonAppearDelay: 1000,
 	treasureShakeSpeeds: [0.01, 0.025],
-	rainbowColors: [],
 	testing: true,
 	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
 	flyBaddyQ: 100, 
 	swimBaddyQ: 100,
-	colors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000]
+	rainbowColors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000]
 }
