@@ -1,7 +1,8 @@
 import React from 'react';
 import './Home.css';
 import Welcome from '../components/loginRegister/Welcome';
-import HomeCanvas from '../components/HomeCanvas';
+//import HomeCanvas from '../components/HomeCanvas';
+import HomeCanvas from '../components/ThreeOfAKindTestCanvas';
 
 import { connect } from 'react-redux';
 import { changePage } from '../actions/themeActions.js';
