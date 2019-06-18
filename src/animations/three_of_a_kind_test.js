@@ -67,7 +67,8 @@ export default function(obj) {
             setTimeout(this.completeHandler, 2000);
         },
         completeHandler: function () {
-            let arr = this.lookForThreeOfAKind();
+            console.log("GO")
+            let arr = this.lookForThreeOfAKind() || [];
             // let arr = [];
             // this.lookForThreeOfAKind(true);
             // remove those three
@@ -101,7 +102,7 @@ export default function(obj) {
                 }
             })
 
-
+            console.log('this temp length', this.temp.length)
             this.temp.forEach(item => {
                 Tweens.tween(item, 1, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
             })
@@ -109,12 +110,12 @@ export default function(obj) {
         done: function () {
            
             this.tempCounter ++;
-           // console.log(this.tempCounter, this.temp.length)
-            if(this.tempCounter === this.temp.length){
+            console.log(this.tempCounter, this.temp.length)
+            if (this.tempCounter === this.temp.length) {
                  //alert ('done');
-                 this.completeHandler();
+                  setTimeout(this.completeHandler, 1000);
                  this.tempCounter = 0;
-                 this.temp = [];
+                 //this.temp = [];
             }
         },
         lookForThreeOfAKind: function (testing) {
@@ -124,13 +125,13 @@ export default function(obj) {
             let counter = 0;
             let row = 1;
             let testVerts = true;
-            console.log('NEW')
+           // console.log('NEW')
             for (let i = 0; i < this.dots.length; i ++) {
 
                 let dot = this.dots[i];
                 let lastHorizItem = horiz[horiz.length - 1];
 
-                console.log(dot.color)
+               // console.log(dot.color)
 
                 if (lastHorizItem && dot.color === lastHorizItem.color) {
                     //console.log(dot.color)
@@ -138,7 +139,7 @@ export default function(obj) {
                 } else {
 
                      if (horiz.length >= 3) {
-                        console.log('three of a kind');
+                        //console.log('three of a kind');
                         if (testing) {
                              horiz.forEach(item => {
                                 item.scale.set(0.5)
@@ -207,7 +208,7 @@ export default function(obj) {
                 counter ++;
                 if (counter === this.colQ) {
                     testVerts = false;
-                    console.log("END COLUMN")
+                    //console.log("END COLUMN")
                     counter = 0;
                     horiz = [];
                 }
