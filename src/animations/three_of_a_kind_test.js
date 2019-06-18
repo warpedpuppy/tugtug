@@ -69,11 +69,19 @@ export default function(obj) {
         completeHandler: function () {
             console.log("GO")
             let arr = this.lookForThreeOfAKind() || [];
+            console.log(arr)
             // let arr = [];
             // this.lookForThreeOfAKind(true);
             // remove those three
             this.temp = [];
             this.tempCounter = 0;
+
+            // console.log('this arr length', arr.length)
+            //  if(arr.length === 0){
+            //     this.dots.forEach((item, index) => {
+            //         console.log(index, item.color)
+            //     })
+            // }
             arr.forEach(item => {
 
                // item.y -= this.spacer * 0.75;
@@ -97,46 +105,63 @@ export default function(obj) {
                     }
 
                     this.dots[index].startY = this.dots[index].y;
-                    this.dots[index].y -= this.spacer * 0.75;
+                    this.dots[index].y -= this.spacer;
                     index = targetIndex;
                 }
             })
 
-            console.log('this temp length', this.temp.length)
+            
+
+           
             this.temp.forEach(item => {
-                Tweens.tween(item, 1, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
+                Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
             })
         },
         done: function () {
            
             this.tempCounter ++;
-            console.log(this.tempCounter, this.temp.length)
+            //console.log(this.tempCounter, this.temp.length)
             if (this.tempCounter === this.temp.length) {
                  //alert ('done');
-                  setTimeout(this.completeHandler, 1000);
+                setTimeout(this.completeHandler, 500);
                  this.tempCounter = 0;
                  //this.temp = [];
             }
         },
-        lookForThreeOfAKind: function (testing) {
+        lookForThreeOfAKind: function () {
             let horiz = [];
             let vert = [];
             let storeColor = undefined;
             let counter = 0;
             let row = 1;
             let testVerts = true;
-           // console.log('NEW')
+            let testing = false;
+
+            // there are two events that prompt the returning of the array:
+            // 1) the end of a row if it found three of a kind
+            // 2) the introduction of a new color after three or more had been put into an array
             for (let i = 0; i < this.dots.length; i ++) {
 
                 let dot = this.dots[i];
+
                 let lastHorizItem = horiz[horiz.length - 1];
 
-               // console.log(dot.color)
-
                 if (lastHorizItem && dot.color === lastHorizItem.color) {
-                    //console.log(dot.color)
                     horiz.push(dot);
+                    // the problem is that if it pushes the 
+                    if (counter === this.colQ - 1 && horiz.length >= 3) {
+                        if (testing) {
+                             horiz.forEach(item => {
+                                item.scale.set(0.5)
+                            })
+                            // break;
+                         } else {
+                            console.log('returning horiz!', horiz)
+                            return horiz;
+                         }
+                    }
                 } else {
+
 
                      if (horiz.length >= 3) {
                         //console.log('three of a kind');
@@ -144,8 +169,9 @@ export default function(obj) {
                              horiz.forEach(item => {
                                 item.scale.set(0.5)
                             })
-                             break;
+                            // break;
                          } else {
+                            console.log('returning horiz!', horiz)
                             return horiz;
                          }
                        
@@ -153,6 +179,15 @@ export default function(obj) {
 
                     horiz = [dot];
                   //  console.log(dot.color)
+                }
+
+                counter ++;
+                if (counter === this.colQ) {
+                    //dot.scale.set(0.5)
+                    testVerts = false;
+                    //console.log("END COLUMN")
+                    counter = 0;
+                    horiz = [];
                 }
 
                 //this should only be triggered after a different color has been found
@@ -205,13 +240,7 @@ export default function(obj) {
                 //     vert = [];
                 // }
 
-                counter ++;
-                if (counter === this.colQ) {
-                    testVerts = false;
-                    //console.log("END COLUMN")
-                    counter = 0;
-                    horiz = [];
-                }
+               
             }
         },
         dotClick: function (e) {
