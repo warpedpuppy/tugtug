@@ -9,7 +9,7 @@ export default function(obj) {
         dots: [],
         colQ: 10,
         rowQ: 5,
-        spacer: 70,
+        spacer: 30,
         temp: [],
         tempCounter: 0,
         init: function (isMobile, isMobileOnly) {
@@ -42,10 +42,11 @@ export default function(obj) {
                 for (let j = 0; j < this.colQ; j ++) {
                     let dot = Assets.Sprite("pellet.png");
                     dot.anchor.set(0.5)
+                    dot.scale.set(0.25)
                     let color = this.utils.randomItemFromArray(this.rainbowColors)
                     //dot.beginFill(color[0]).drawCircle(0,0,10).endFill();
                     dot.x = j * this.spacer;
-                    dot.y = i * this.spacer;
+                    dot.y = dot.startY = i * this.spacer;
                     dot.tint = color[0];
                     dot.color = color[1];
                     dot.interactive = dot.buttonMode = true;
@@ -67,55 +68,87 @@ export default function(obj) {
             setTimeout(this.completeHandler, 2000);
         },
         completeHandler: function () {
-            console.log("GO")
-            let arr = this.lookForThreeOfAKind() || [];
-            console.log(arr)
+            console.log('start')
+            let result = this.lookForThreeOfAKind() || [[], ""];
+            //if(!result)return;
+
+            let arr = result[0];
+            let direction = result[1];
+
+            console.log(direction, arr)
+        
             // let arr = [];
             // this.lookForThreeOfAKind(true);
             // remove those three
             this.temp = [];
             this.tempCounter = 0;
 
-            // console.log('this arr length', arr.length)
-            //  if(arr.length === 0){
-            //     this.dots.forEach((item, index) => {
-            //         console.log(index, item.color)
-            //     })
-            // }
-            arr.forEach(item => {
+ 
+           if (direction === 'horiz') {
+                arr.forEach(item => {
+                        let index = this.dots.indexOf(item);
+                        while (this.dots[index]) {
 
-               // item.y -= this.spacer * 0.75;
+                            let dot = this.dots[index];
+                            this.temp.push(dot)
 
-                let index = this.dots.indexOf(item);
+                            let targetIndex = index - this.colQ;
+
+                            if (targetIndex >= 0) {
+                                dot.tint = this.dots[targetIndex].tint;
+                                dot.color = this.dots[targetIndex].color;
+                            } else {
+                                let item = this.utils.randomItemFromArray(this.rainbowColors);
+                                dot.tint = item[0];//0xFFFFFF;
+                                dot.color = item[1];
+                            }
+
+                            this.dots[index].startY = this.dots[index].y;
+                            this.dots[index].y -= this.spacer;
+                            index = targetIndex;
+                        }
+                })
+             } else if (direction === 'vert') {
+                console.log('vert', arr)
+                //arr[0].scale.set(0.5)
+                let index = this.dots.indexOf(arr.pop());
+                let firstIndex = this.dots.indexOf(arr[0]);
+                let firstNonComboIndex = firstIndex - this.colQ;
+                let riseAmount = (arr.length + 1)  * this.spacer;
 
                 while (this.dots[index]) {
-
                     let dot = this.dots[index];
+                    dot.y -= riseAmount;
                     this.temp.push(dot)
 
-                    let targetIndex = index - this.colQ;
+                    
 
-                    if (targetIndex >= 0) {
-                        dot.tint = this.dots[targetIndex].tint;
-                        dot.color = this.dots[targetIndex].color;
+                    
+                    if (firstNonComboIndex >= 0) {
+                        dot.tint = this.dots[firstNonComboIndex].tint;
+                        dot.color = this.dots[firstNonComboIndex].color;
                     } else {
                         let item = this.utils.randomItemFromArray(this.rainbowColors);
                         dot.tint = item[0];//0xFFFFFF;
                         dot.color = item[1];
                     }
-
-                    this.dots[index].startY = this.dots[index].y;
-                    this.dots[index].y -= this.spacer;
-                    index = targetIndex;
+                    //this.dots[index].startY = this.dots[index].y;
+                    //this.dots[index].y -= this.spacer;
+                    firstNonComboIndex -= this.colQ;
+                    index -= this.colQ;
                 }
-            })
+
+
+
+            }
 
             
 
-           
+          
             this.temp.forEach(item => {
                 Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
             })
+            
         },
         done: function () {
            
@@ -123,7 +156,7 @@ export default function(obj) {
             //console.log(this.tempCounter, this.temp.length)
             if (this.tempCounter === this.temp.length) {
                  //alert ('done');
-                setTimeout(this.completeHandler, 500);
+                setTimeout(this.completeHandler, 1000);
                  this.tempCounter = 0;
                  //this.temp = [];
             }
@@ -157,12 +190,10 @@ export default function(obj) {
                             // break;
                          } else {
                             console.log('returning horiz!', horiz)
-                            return horiz;
+                             return [horiz, "horiz"];
                          }
                     }
                 } else {
-
-
                      if (horiz.length >= 3) {
                         //console.log('three of a kind');
                         if (testing) {
@@ -172,16 +203,58 @@ export default function(obj) {
                             // break;
                          } else {
                             console.log('returning horiz!', horiz)
-                            return horiz;
+                            return [horiz, "horiz"];
                          }
                        
                     }
 
                     horiz = [dot];
-                  //  console.log(dot.color)
+                }
+              
+
+               
+                if (testVerts) {
+                    //console.log(dot.color)
+                    let loopQ = 0;
+                    while (loopQ < this.rowQ) {
+
+                        let x = i + (this.colQ * loopQ)
+                        //console.log(x, this.dots[x].color)
+                        let lastVertItem = vert[vert.length - 1];
+                        if (lastVertItem && this.dots[x].color === lastVertItem.color) {
+                            vert.push(this.dots[x]);
+
+                            if(loopQ === (this.rowQ -1 ) && vert.length >= 3){
+                                console.log('three of a kind verticals');
+                                if(testing){
+                                    vert.forEach(item => {
+                                      item.scale.set(1.5)
+                                    })
+                                } else {
+                                    return [vert, "vert"];
+                                }
+                            }
+                        } else {
+                            if(vert.length >= 3){
+                                console.log('three of a kind verticals');
+                                if(testing){
+                                    vert.forEach(item => {
+                                      item.scale.set(1.5)
+                                    })
+                                } else {
+                                    return [vert, "vert"];
+                                }
+                            }
+
+                            vert = [this.dots[x]];
+                        }
+                       
+                        loopQ ++;
+                    }
+                    vert = [];
                 }
 
-                counter ++;
+                 counter ++;
                 if (counter === this.colQ) {
                     //dot.scale.set(0.5)
                     testVerts = false;
@@ -189,56 +262,6 @@ export default function(obj) {
                     counter = 0;
                     horiz = [];
                 }
-
-                //this should only be triggered after a different color has been found
-                // if (horiz.length >= 3) {
-                //     //console.log('three of a kind');
-                //     if (testing) {
-                //          horiz.forEach(item => {
-                //             item.scale.set(0.5)
-                //         })
-                //          break;
-                //      } else {
-
-                //         //return horiz;
-                //      }
-                   
-                // }
-               
-                // if (testVerts) {
-                //     //console.log(dot.color)
-                //     let loopQ = 0;
-
-                //     while (loopQ < this.rowQ) {
-
-                //         let x = i + (this.colQ * loopQ)
-
-                //         //console.log(x, this.dots[x].color)
-
-                //         let lastVertItem = vert[vert.length - 1];
-                //         if (lastVertItem && this.dots[x].color === lastVertItem.color) {
-                //             vert.push(this.dots[x]);
-                //         } else {
-                //             vert = [this.dots[x]];
-                //         }
-                //         //console.log(vert.color);
-
-                //         if(vert.length >= 3){
-                //             console.log('three of a kind verticals');
-                //             if(testing){
-                //                 vert.forEach(item => {
-                //                   item.scale.set(1.5)
-                //                 })
-                //             } else {
-                //                 return vert;
-                //             }
-                           
-                //         }
-
-                //         loopQ ++;
-                //     }
-                //     vert = [];
-                // }
 
                
             }
