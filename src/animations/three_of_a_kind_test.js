@@ -5,13 +5,22 @@ import Tweens from './utils/tweens';
 
 export default function(obj) {
     return {
+        cont: Assets.Container(),
         utils: Utils,
         dots: [],
         colQ: 10,
-        rowQ: 5,
+        rowQ: 10,
         spacer: 30,
         temp: [],
         tempCounter: 0,
+        delayTimes: 0,
+        activeDelayTimes: 250,
+        setUp: true,
+        startScale: 0.25,
+        dot1: undefined,
+        dot2: undefined,
+
+        rainbowColors: [[0xFF0000, "red"],[0x4B0082, "purple"],[0x0000FF, "blue"], [0x00FF00, "green"], [0xFFFF00, "yellow"]],
         init: function (isMobile, isMobileOnly) {
 
             var app = this.app = Assets.Application( 
@@ -25,24 +34,12 @@ export default function(obj) {
             
             this.app.ticker.add(this.animate); 
 
-            let cont = Assets.Container();
 
-               this.rainbowColors = 
-                [
-                [0xFF0000, "red"], 
-                [0x4B0082, "purple"], 
-                [0x0000FF, "blue"]
-                // , 
-                // [0x00FF00, "green"]
-                // , 
-                // [0xFFFF00, "yellow"]
-
-                ];//, 0xFF7F00, 0xFF0000];
             for (let i = 0; i < this.rowQ; i ++) {
                 for (let j = 0; j < this.colQ; j ++) {
                     let dot = Assets.Sprite("pellet.png");
                     dot.anchor.set(0.5)
-                    dot.scale.set(0.25)
+                    dot.scale.set(this.startScale)
                     let color = this.utils.randomItemFromArray(this.rainbowColors)
                     //dot.beginFill(color[0]).drawCircle(0,0,10).endFill();
                     dot.x = j * this.spacer;
@@ -50,40 +47,65 @@ export default function(obj) {
                     dot.tint = color[0];
                     dot.color = color[1];
                     dot.interactive = dot.buttonMode = true;
-                    dot.on('pointerdown', this.dotClick);
-                    cont.addChild(dot);
+                    dot.on('pointerdown', this.dotClick.bind(this));
+                    this.cont.addChild(dot);
                     this.dots.push(dot)
                 }
             }
-            this.stage.addChild(cont);
-            cont.x = (1000 - cont.width ) / 2;
-            cont.y = (500 - cont.height ) / 2;
+            this.stage.addChild(this.cont);
+            this.cont.x = (1000 - this.cont.width ) / 2;
+            this.cont.y = (500 - this.cont.height ) / 2;
             this.dotClick = this.dotClick.bind(this);
-            // let arr = this.lookForThreeOfAKind();
-            // arr.forEach(item => {
-            //     Tweens.tween(item, 1, {y: [item.y, item.y + this.spacer]}, this.completeHandler, 'linear')
-            // })
-            this.completeHandler = this.completeHandler.bind(this);
+            
+            this.completeHandler1 = this.completeHandler1.bind(this);
+            this.completeHandler2 = this.completeHandler2.bind(this);
             this.done = this.done.bind(this)
-            setTimeout(this.completeHandler, 2000);
+            setTimeout(this.completeHandler1, this.delayTimes);
+             this.touchPower(false);
+             this.cont.visible = false;
         },
-        completeHandler: function () {
-            console.log('start')
-            let result = this.lookForThreeOfAKind() || [[], ""];
-            //if(!result)return;
+        completeHandler1: function () {
 
+            let result = this.lookForThreeOfAKind() || [[], ""];
+           
             let arr = result[0];
             let direction = result[1];
+            if(this.dot1)this.dot1.scale.set(this.startScale);
+                
+            if(this.dot2)this.dot2.scale.set(this.startScale);
 
-            console.log(direction, arr)
-        
-            // let arr = [];
-            // this.lookForThreeOfAKind(true);
-            // remove those three
+            if(!arr.length) {
+                this.touchPower(true);
+                //console.log("done");
+
+                if(this.setUp){
+                    this.setUp = false;
+                    this.delayTimes = this.activeDelayTimes;
+                     this.cont.visible = true;
+                }
+            }
+            
+
             this.temp = [];
             this.tempCounter = 0;
 
- 
+            arr.forEach(item => {
+                item.scale.set((this.startScale * 2));
+            })
+
+            let obj = {arr, direction}
+            setTimeout(this.completeHandler2.bind(this, obj), this.delayTimes)
+
+        },
+        completeHandler2: function (obj) {
+          
+           let arr = obj.arr;
+           let direction = obj.direction; 
+
+            arr.forEach(item => {
+                item.scale.set(0.25);
+            }) 
+
            if (direction === 'horiz') {
                 arr.forEach(item => {
                         let index = this.dots.indexOf(item);
@@ -99,18 +121,20 @@ export default function(obj) {
                                 dot.color = this.dots[targetIndex].color;
                             } else {
                                 let item = this.utils.randomItemFromArray(this.rainbowColors);
-                                dot.tint = item[0];//0xFFFFFF;
+                                dot.tint = item[0];
                                 dot.color = item[1];
                             }
 
-                            this.dots[index].startY = this.dots[index].y;
-                            this.dots[index].y -= this.spacer;
+                            if(!this.setUp){
+                                this.dots[index].startY = this.dots[index].y;
+                                this.dots[index].y -= this.spacer;
+                            }
+                            
                             index = targetIndex;
                         }
                 })
              } else if (direction === 'vert') {
-                console.log('vert', arr)
-                //arr[0].scale.set(0.5)
+
                 let index = this.dots.indexOf(arr.pop());
                 let firstIndex = this.dots.indexOf(arr[0]);
                 let firstNonComboIndex = firstIndex - this.colQ;
@@ -118,22 +142,20 @@ export default function(obj) {
 
                 while (this.dots[index]) {
                     let dot = this.dots[index];
-                    dot.y -= riseAmount;
+                    if(!this.setUp){
+                        dot.y -= riseAmount;
+                    }
                     this.temp.push(dot)
 
-                    
-
-                    
                     if (firstNonComboIndex >= 0) {
                         dot.tint = this.dots[firstNonComboIndex].tint;
                         dot.color = this.dots[firstNonComboIndex].color;
                     } else {
                         let item = this.utils.randomItemFromArray(this.rainbowColors);
-                        dot.tint = item[0];//0xFFFFFF;
+                        dot.tint = item[0];
                         dot.color = item[1];
                     }
-                    //this.dots[index].startY = this.dots[index].y;
-                    //this.dots[index].y -= this.spacer;
+                  
                     firstNonComboIndex -= this.colQ;
                     index -= this.colQ;
                 }
@@ -141,34 +163,41 @@ export default function(obj) {
 
 
             }
-
-            
-
+            if(!this.setUp){
+                this.temp.forEach(item => {
+                    Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
+                })
+            } else {
+                this.completeHandler1();
+            }
           
-            this.temp.forEach(item => {
-                Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
-            })
-            
+
         },
         done: function () {
            
             this.tempCounter ++;
-            //console.log(this.tempCounter, this.temp.length)
+
             if (this.tempCounter === this.temp.length) {
-                 //alert ('done');
-                setTimeout(this.completeHandler, 1000);
-                 this.tempCounter = 0;
-                 //this.temp = [];
+
+                this.temp.forEach(item => {
+                    item.y = item.startY;
+                })
+
+                setTimeout(this.completeHandler1, this.delayTimes);
+                this.tempCounter = 0;
+
+            }
+        },
+        returnArray: function (arr, str) {
+            if(arr.length >= 3){
+                return [arr, str]
             }
         },
         lookForThreeOfAKind: function () {
-            let horiz = [];
-            let vert = [];
-            let storeColor = undefined;
-            let counter = 0;
-            let row = 1;
-            let testVerts = true;
-            let testing = false;
+            let horiz = [],
+                vert = [],
+                counter = 0,
+                testVerts = true;
 
             // there are two events that prompt the returning of the array:
             // 1) the end of a row if it found three of a kind
@@ -176,102 +205,92 @@ export default function(obj) {
             for (let i = 0; i < this.dots.length; i ++) {
 
                 let dot = this.dots[i];
-
                 let lastHorizItem = horiz[horiz.length - 1];
 
                 if (lastHorizItem && dot.color === lastHorizItem.color) {
                     horiz.push(dot);
-                    // the problem is that if it pushes the 
                     if (counter === this.colQ - 1 && horiz.length >= 3) {
-                        if (testing) {
-                             horiz.forEach(item => {
-                                item.scale.set(0.5)
-                            })
-                            // break;
-                         } else {
-                            console.log('returning horiz!', horiz)
                              return [horiz, "horiz"];
-                         }
                     }
                 } else {
                      if (horiz.length >= 3) {
-                        //console.log('three of a kind');
-                        if (testing) {
-                             horiz.forEach(item => {
-                                item.scale.set(0.5)
-                            })
-                            // break;
-                         } else {
-                            console.log('returning horiz!', horiz)
-                            return [horiz, "horiz"];
-                         }
-                       
+                        return [horiz, "horiz"];
                     }
 
                     horiz = [dot];
                 }
-              
 
-               
                 if (testVerts) {
-                    //console.log(dot.color)
                     let loopQ = 0;
                     while (loopQ < this.rowQ) {
 
                         let x = i + (this.colQ * loopQ)
-                        //console.log(x, this.dots[x].color)
+
                         let lastVertItem = vert[vert.length - 1];
                         if (lastVertItem && this.dots[x].color === lastVertItem.color) {
                             vert.push(this.dots[x]);
-
                             if(loopQ === (this.rowQ -1 ) && vert.length >= 3){
-                                console.log('three of a kind verticals');
-                                if(testing){
-                                    vert.forEach(item => {
-                                      item.scale.set(1.5)
-                                    })
-                                } else {
                                     return [vert, "vert"];
-                                }
                             }
                         } else {
                             if(vert.length >= 3){
-                                console.log('three of a kind verticals');
-                                if(testing){
-                                    vert.forEach(item => {
-                                      item.scale.set(1.5)
-                                    })
-                                } else {
                                     return [vert, "vert"];
-                                }
                             }
-
                             vert = [this.dots[x]];
                         }
-                       
                         loopQ ++;
                     }
                     vert = [];
                 }
 
-                 counter ++;
+                counter ++;
                 if (counter === this.colQ) {
-                    //dot.scale.set(0.5)
                     testVerts = false;
-                    //console.log("END COLUMN")
                     counter = 0;
                     horiz = [];
                 }
-
-               
             }
         },
+        touchPower: function (boolean) {
+            this.dots.forEach(item =>{
+                item.interactive = item.buttonMode = boolean;
+            })
+        },
         dotClick: function (e) {
-            if(e.target.scale.x === 1){
-                e.target.scale.set(2)
-            } else {
-                e.target.scale.set(1)
+
+            if(!this.dot1 && !this.dot2) {
+                this.dot1 = e.target;
+                this.dot1.scale.set((this.startScale * 2))
+            } else if (this.dot1 && !this.dot2) {
+                this.dot2 = e.target;
+                this.dot2.scale.set((this.startScale * 2))
+
+                let color1 = this.dot1.color;
+                let tint1 = this.dot1.tint;
+
+                let color2 = this.dot2.color;
+                let tint2 = this.dot2.tint;
+
+                this.dot1.color = color2;
+                this.dot1.tint = tint2;
+
+                this.dot2.color = color1;
+                this.dot2.tint = tint1;
+
+                this.touchPower(false);
+                this.completeHandler1();
+
+            } else if(this.dot2) {
+          
+                this.dot2.scale.set((this.startScale))
+                this.dot2 = undefined;
+                this.dot1.scale.set((this.startScale))
+                this.dot1 = e.target;
+                this.dot1.scale.set((this.startScale * 2))
+                
             }
+           
+           
             
         },
         animate: function () {
