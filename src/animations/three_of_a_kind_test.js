@@ -278,7 +278,26 @@ export default function(obj) {
                 this.dot2.tint = tint1;
 
                 this.touchPower(false);
-                this.completeHandler1();
+                //this.completeHandler1();
+                Tweens.tween(this.dot1, 0.25, {
+                    x: [this.dot2.x, this.dot1.x], 
+                    y: [this.dot2.y, this.dot1.y]
+                }, undefined, 'linear')
+
+                Tweens.tween(this.dot1.scale, 0.25, {
+                    x: [this.dot1.scale.x, this.startScale],
+                    y: [this.dot1.scale.y, this.startScale]
+                }, undefined, 'linear')
+
+                 Tweens.tween(this.dot2, 0.25, {
+                    x: [this.dot1.x, this.dot2.x],
+                    y: [this.dot1.y, this.dot2.y]
+                }, undefined, 'linear')
+
+                  Tweens.tween(this.dot2.scale, 0.25, {
+                    x: [this.dot2.scale.x, this.startScale],
+                    y: [this.dot2.scale.y, this.startScale]
+                }, this.completeHandler1, 'linear')
 
             } else if(this.dot2) {
           
