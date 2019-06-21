@@ -10,22 +10,23 @@ export default function () {
 			let cont = Assets.Container();
 			let s = Assets.Sprite('circleAlpha1.png');
 			s.anchor.set(0.5);
-			let p = Assets.Sprite('pinWheel.png');
-			p.anchor.set(0.5);
+			//let p = Assets.Sprite('pinWheel.png');
+			//p.anchor.set(0.5);
 			cont.addChild(s);
-			cont.addChild(p);
-			cont.p = p;
+			//cont.addChild(p);
+			//cont.p = p;
 			let color1, color2;
 			color1 = this.colors[Math.floor(Math.random()*this.colors.length)];
 			color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
 			while(color2 === color1){
 				color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
 			}
-			s.tint = color1;
-			p.tint = color2;
+			s.tint = cont.color = color1;
+			cont.s = s;
+			//p.tint = color2;
 			cont.rotate = this.utils.randomNumberBetween(-2, 2);
-			let scale = this.utils.randomNumberBetween(0.25, 0.8);
-			cont.scale.set(scale);
+			//let scale = this.utils.randomNumberBetween(0.25, 0.8);
+			cont.scale.set(0.5);
 
 			cont.radius = cont.r = cont.width / 2;
 			cont.x = j * 350;//this.utils.randomNumberBetween(300, 400);

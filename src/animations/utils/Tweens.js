@@ -30,7 +30,7 @@ export default {
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
 			let newX = (this.utils.canvasWidth / 2);
 			let newY = (this.utils.canvasHeight / 2);
-			this.tween(orbsCont.pivot, 0.5, 
+			this.tween(orbsCont.pivot, 1.5, 
 				{
 					x: [orbsCont.pivot.x, newPlanet.x], 
 					y: [orbsCont.pivot.y, newPlanet.y] 
