@@ -47,6 +47,8 @@ export default function () {
 		jumpTokenUnlockedGraphic: JumpTokenUnlockedGraphic,
 		jumpTokenTaken: false,
 		dotEatBoolean: true,
+		spacer: 250,
+		startScale: 0.5,
 		spaceGremlin: SpaceGremlin,
 		//writeItOut: true,
 		init: function (parentCont, action) {
@@ -84,7 +86,7 @@ export default function () {
 
 				for (let j = 0; j < this.colQ; j ++) {
 
-					let cont = Planets().init(i, j, counter);
+					let cont = Planets().init(i, j, counter, this.spacer, this.colors, this.startScale);
 					
 					this.orbsCont.addChild(cont);
 					this.orbs.push(cont);
@@ -142,8 +144,11 @@ export default function () {
 			}
 
 			this.orbsCont.scale.set(0.25)
-            let result = ThreeInARow.lookForThreeOfAKind(this.orbs) || [[], ""];
-            console.log(result)
+
+			// TESTING
+            let threeInARow = ThreeInARow.init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont);
+            threeInARow.completeHandler1();
+            
 
 	
 

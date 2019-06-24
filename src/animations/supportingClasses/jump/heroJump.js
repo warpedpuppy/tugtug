@@ -123,7 +123,7 @@ export default function () {
 
 		},
 		addToStage: function () {
-			console.log('add hero jump to stage')
+			//console.log('add hero jump to stage')
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {

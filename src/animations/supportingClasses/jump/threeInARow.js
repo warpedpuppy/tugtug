@@ -1,13 +1,181 @@
+import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
+import Tweens from '../../utils/tweens';
+import Config from '../../animationsConfig';
+
 export default {
-	   lookForThreeOfAKind: function (arr) {
+	 	cont: Assets.Container(),
+        utils: Utils,
+        dots: [],
+ 		colQ: Config.spaceColQ,
+		rowQ: Config.spaceRowQ,
+        temp: [],
+        tempCounter: 0,
+        delayTimes: 0,
+        activeDelayTimes: 500,
+        setUp: true,
+        // startScale: 0.5,
+        dot1: undefined,
+        dot2: undefined,
+       // rainbowColors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
+        init: function (arr, spacer, colors, startScale, cont) {
+        	this.done = this.done.bind(this)
+        	this.completeHandler1 = this.completeHandler1.bind(this)
+        	this.completeHandler2 = this.completeHandler2.bind(this)
+        	this.mainArr = arr;
+        	this.spacer = spacer;
+        	this.rainbowColors = colors;
+        	this.startScale = startScale;
+        	this.cont = cont;
+        	this.cont.visible = false;
+        	return this;
+        },
+	 	completeHandler1: function () {
+
+
+
+            let result = this.lookForThreeOfAKind() || [[], ""];
+           
+            let arr = result[0];
+            let direction = result[1];
+            // if(this.dot1)this.dot1.scale.set(this.startScale);
+                
+            // if(this.dot2)this.dot2.scale.set(this.startScale);
+
+            if(!arr.length) {
+                //this.touchPower(true);
+                console.log("done");
+
+                if (this.setUp) {
+                    this.setUp = false;
+                    this.delayTimes = this.activeDelayTimes;
+                    this.cont.visible = true;
+                }
+
+            } else {
+
+	            this.temp = [];
+	            this.tempCounter = 0;
+
+	            if (!this.setUp) {
+		            arr.forEach(item => {
+		                item.scale.set((this.startScale * 2));
+		            })
+		        }
+
+	            let obj = {arr, direction}
+	            setTimeout(this.completeHandler2.bind(this, obj), this.delayTimes)
+            }
+
+          
+
+        },
+          completeHandler2: function (obj) {
+          
+           let arr = obj.arr;
+           let direction = obj.direction; 
+           let mainArr = this.mainArr;
+
+            arr.forEach(item => {
+                item.scale.set(this.startScale);
+            }) 
+
+           if (direction === 'horiz') {
+                arr.forEach(item => {
+                        let index = mainArr.indexOf(item);
+                        while (mainArr[index]) {
+
+                            let dot = mainArr[index];
+                            this.temp.push(dot)
+
+                            let targetIndex = index - this.colQ;
+
+                            if (targetIndex >= 0) {
+                                dot.s.tint = mainArr[targetIndex].s.tint;
+                                dot.color = mainArr[targetIndex].color;
+                            } else {
+                                let item = this.utils.randomItemFromArray(this.rainbowColors);
+                                dot.s.tint = item;
+                                dot.color = item;
+                            }
+
+                           if(!this.setUp){
+                                mainArr[index].startY = mainArr[index].y;
+                                mainArr[index].y -= this.spacer;
+                            }
+                            
+                            index = targetIndex;
+                        }
+                })
+             } else if (direction === 'vert') {
+
+                let index = mainArr.indexOf(arr.pop());
+                let firstIndex = mainArr.indexOf(arr[0]);
+                let firstNonComboIndex = firstIndex - this.colQ;
+                let riseAmount = (arr.length + 1)  * this.spacer;
+   
+
+                while (mainArr[index]) {
+                	
+                    let dot = mainArr[index];
+                    if (!this.setUp){
+                        dot.y -= riseAmount;
+                    }
+                    this.temp.push(dot)
+
+                    if (firstNonComboIndex >= 0) {
+                        dot.s.tint = mainArr[firstNonComboIndex].s.tint;
+                        dot.color = mainArr[firstNonComboIndex].color;
+                    } else {
+                        let item = this.utils.randomItemFromArray(this.rainbowColors);
+
+                        dot.s.tint = item;//[0];
+                        dot.color = item;//1];
+                    }
+                  
+                    firstNonComboIndex -= this.colQ;
+                    index -= this.colQ;
+                }
+
+
+
+            }
+            if(!this.setUp){
+                this.temp.forEach(item => {
+                    Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
+                })
+             } else {
+                 this.completeHandler1();
+             }
+          
+
+        },
+        done: function () {
+           
+            this.tempCounter ++;
+
+            if (this.tempCounter === this.temp.length) {
+
+                this.temp.forEach(item => {
+                    item.y = item.startY;
+                })
+
+                setTimeout(this.completeHandler1, this.delayTimes);
+                this.tempCounter = 0;
+
+            }
+        },
+	   lookForThreeOfAKind: function () {
             let horiz = [],
                 vert = [],
                 counter = 0,
-                testVerts = true;
+                testVerts = true,
+                arr = this.mainArr;
 
             // there are two events that prompt the returning of the array:
             // 1) the end of a row if it found three of a kind
             // 2) the introduction of a new color after three or more had been put into an array
+
             for (let i = 0; i < arr.length; i ++) {
 
                 let dot = arr[i];
