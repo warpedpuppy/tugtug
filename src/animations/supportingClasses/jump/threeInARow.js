@@ -18,7 +18,7 @@ export default {
         dot1: undefined,
         dot2: undefined,
        // rainbowColors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
-        init: function (arr, spacer, colors, startScale, cont) {
+        init: function (arr, spacer, colors, startScale, cont, listeners) {
         	this.done = this.done.bind(this)
         	this.completeHandler1 = this.completeHandler1.bind(this)
         	this.completeHandler2 = this.completeHandler2.bind(this)
@@ -28,6 +28,7 @@ export default {
         	this.startScale = startScale;
         	this.cont = cont;
         	this.cont.visible = false;
+        	this.listeners = listeners;
         	return this;
         },
 	 	completeHandler1: function () {
@@ -41,11 +42,11 @@ export default {
             // if(this.dot1)this.dot1.scale.set(this.startScale);
                 
             // if(this.dot2)this.dot2.scale.set(this.startScale);
-
+            this.listeners(false);
             if(!arr.length) {
                 //this.touchPower(true);
                 console.log("done");
-
+                this.listeners(true);
                 if (this.setUp) {
                     this.setUp = false;
                     this.delayTimes = this.activeDelayTimes;

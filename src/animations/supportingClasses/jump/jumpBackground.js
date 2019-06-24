@@ -48,8 +48,9 @@ export default function () {
 		jumpTokenTaken: false,
 		dotEatBoolean: true,
 		spacer: 250,
-		startScale: 0.5,
+		startScale: 0.25,
 		spaceGremlin: SpaceGremlin,
+		orbListen: true,
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -60,7 +61,7 @@ export default function () {
 			this.action = action;
 
 			this.jumpTokenUnlockedGraphic.init();
-
+			
 			this.makeTransitionComplete = this.makeTransitionComplete.bind(this);
 
 
@@ -143,11 +144,11 @@ export default function () {
 				}
 			}
 
-			this.orbsCont.scale.set(0.25)
+			//this.orbsCont.scale.set(0.25)
 
 			// TESTING
-            let threeInARow = ThreeInARow.init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont);
-            threeInARow.completeHandler1();
+            this.threeInARow = ThreeInARow.init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
+            this.threeInARow.completeHandler1();
             
 
 	
@@ -170,6 +171,11 @@ export default function () {
 		},
 		buildBoard: function () {
 
+		},
+		listeners: function (boolean) {
+			this.orbListen = boolean;
+			console.log(this.utils.root)
+			this.utils.root.keyHandler.onOff(boolean);
 		},
 		reset: function () {
 			this.jumpTokenUnlocked = false;
@@ -308,6 +314,7 @@ export default function () {
 				}
 		},
 		makeTransitionComplete: function (i) {
+			this.threeInARow.completeHandler1();
 			this.centerOrbIndex = i;
 			this.pause = false;
 			this.transition = false;
@@ -383,7 +390,7 @@ export default function () {
 
 			for (let i = 0; i < this.loopingQ; i ++) {
 
-				if(this.dotsArray[i]){
+				if (this.dotsArray[i]) {
 					let dot = this.dotsArray[i]
 					let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
 					let tempCircle2 = {
@@ -433,25 +440,25 @@ export default function () {
 
 
 			
-				if(this.orbs[i]){
-					// let orb = this.orbs[i];
+				if (this.orbListen && this.orbs[i]) {
+					let orb = this.orbs[i];
 					
-					// let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
-					// let tempCircle2 = {
-					// 	x: globalPoint2.x,
-					// 	y: globalPoint2.y,
-					// 	radius: orb.radius
-					// }
+					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
+					let tempCircle2 = {
+						x: globalPoint2.x,
+						y: globalPoint2.y,
+						radius: orb.radius
+					}
 
-					// let dotsCont = this.dotsContArray[i];
-					// dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
+					let dotsCont = this.dotsContArray[i];
+					dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
 
-					// if(orb !== this.currentOrb && 
-					// 	!this.transition && 
-					// 	this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
-					// 	this.transition = true;
-					// 	this.switchPlanets(orb, i);
-					// }
+					if(orb !== this.currentOrb && 
+						!this.transition && 
+						this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
+						this.transition = true;
+						this.switchPlanets(orb, i);
+					}
 				}
 			}
 		}

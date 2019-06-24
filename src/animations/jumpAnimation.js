@@ -52,6 +52,7 @@ export default function(obj) {
         levelComplete: LevelComplete,
         fullStop: false,
         animations: Animations,
+        keyHandler: KeyHandler(),
         init: function (isMobile, isMobileOnly) {
 
             if (Config.testingBounce) {
@@ -140,7 +141,7 @@ export default function(obj) {
 
             Animations.init();
            
-            this.keyHandler = KeyHandler();
+            
             this.keyHandler.init(this);
             if (this.isMobile) {
                 //ipad and mobile

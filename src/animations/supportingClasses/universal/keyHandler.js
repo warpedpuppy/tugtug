@@ -23,6 +23,13 @@ export default function () {
 			window.removeEventListener('keydown', this.keyDown);
             window.removeEventListener('keyup', this.keyUp);
 		},
+        onOff: function (boolean){
+            if(boolean){
+                this.addToStage();
+            } else {
+                this.removeFromStage();
+            }
+        },
 		spaceHit: function () {
             if(this.parent.activeAction.jump){
             	this.parent.activeAction.jump();
