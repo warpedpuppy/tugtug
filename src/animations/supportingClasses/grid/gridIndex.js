@@ -9,7 +9,8 @@ import MagicPills from './items/magic/magicPills';
 import GridBuild from './gridBuild';
 import GridAction from './gridAction';
 //import GridComplete from './gridComplete';
-export default {
+export default function () {
+	return {
 		blocks: {},
 		utils: Utils,
 		boards: [],
@@ -21,8 +22,8 @@ export default {
 		flyTreasureChests: [],
 		swimTreasureChests: [],
 		magicPillsArray: [],
-		gridAction: GridAction,
-		gridBuild: GridBuild,
+		gridAction: GridAction(),
+		gridBuild: GridBuild(),
 		boards: [],
 		init: function () {
 
@@ -108,4 +109,5 @@ export default {
 		animate: function () {
 			this.gridAction.animate(this.utils.root.activeAction.vx, this.utils.root.activeAction.vy)
 		}
+	}
 }

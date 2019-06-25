@@ -1,7 +1,8 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/tweens';
-export default {
+export default function () {
+	return {
 		utils: Utils,
 		slots: [],
 		slotQ: 4, 
@@ -49,4 +50,5 @@ export default {
 			this.cont.y = this.utils.canvasHeight - 100;
 			this.parentCont.addChild(this.cont);
 		}
+	}
 }

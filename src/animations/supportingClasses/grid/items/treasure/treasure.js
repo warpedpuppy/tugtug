@@ -23,7 +23,7 @@ export default function () {
 	fallSpeeds: [2, 4],
 	edgeBuffer: 200,
 	animationHappening: false,
-	treasureAnimation: TreasureAnimation,
+	treasureAnimation: TreasureAnimation(),
 	init: function () {
 		this.treasureAnimation.init();
 	},

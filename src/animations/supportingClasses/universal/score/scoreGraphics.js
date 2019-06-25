@@ -5,7 +5,8 @@ import Config from '../../../animationsConfig';
 import BounceScore from './bounceScore';
 import JumpScore from './jumpScore';
 import GridScore from './gridScore';
-export default {
+export default function () {
+	return {
 	utils: Utils,
 	returnTopBar: function () {
 		//TOP BAR
@@ -101,6 +102,6 @@ export default {
 		this.topBanner.x = (this.utils.canvasWidth - this.topBanner.width) /2;
 	}
 }
-
+}
 
 

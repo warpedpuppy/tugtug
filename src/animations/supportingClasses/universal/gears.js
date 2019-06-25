@@ -1,6 +1,7 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-export default {
+export default function () {
+	return {
 	gears: [],
 	utils: Utils,
 	init: function () {
@@ -51,4 +52,5 @@ export default {
 	      this.gears[i].rotation += this.gears[i].rotate;
 	    }
 	}
+}
 }

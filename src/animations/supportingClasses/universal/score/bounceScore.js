@@ -2,7 +2,8 @@ import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/tweens';
 import Config from '../../../animationsConfig';
-export default {
+export default function () {
+	return {
 	bounceTokenUnlocked: false,
 	bounceRingHit: function () {
 
@@ -33,6 +34,7 @@ export default {
 		
 		
 	}
+}
 }
 
 

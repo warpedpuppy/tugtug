@@ -1,7 +1,8 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
-export default {
+export default function () {
+	return {
 		utils: Utils,
 		// spearHit: function (spear) {
 		// 	let globalPoint1 = this.utils.root.grid.gridBuild.cont.toGlobal(spear);
@@ -71,4 +72,5 @@ export default {
 
 			
 		}
+	}
 }

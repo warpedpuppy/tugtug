@@ -2,7 +2,8 @@ import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Tweens from '../../utils/tweens';
 import Config from '../../animationsConfig';
-export default {
+export default function (){
+	return {
 		utils: Utils,
 		colQ: 4,
 		rowQ: 10,
@@ -262,4 +263,5 @@ export default {
 				this.utils.root.activeAction.vy *= this.gridBuild.wallHit;
 			}
 		}
+	}
 }

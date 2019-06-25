@@ -3,7 +3,8 @@ import Assets from '../../utils/assetCreation';
 import Tweens from '../../utils/tweens';
 import Config from '../../animationsConfig';
 
-export default {
+export default function (){
+    return {
 	 	cont: Assets.Container(),
         utils: Utils,
         dots: [],
@@ -226,7 +227,7 @@ export default {
                 }
             }
         }
-
+}
 
 
 }

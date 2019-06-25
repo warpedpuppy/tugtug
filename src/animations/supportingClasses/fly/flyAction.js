@@ -22,7 +22,7 @@ export default function () {
 		flameCounter: 0,
 		flameOn:false,
 		utils: Utils,
-		triangleOfCollision: TriangleOfCollision,
+		triangleOfCollision: TriangleOfCollision(),
 		init: function (parent, background) {
 			this.parent = parent;
 			this.grid = parent.grid;

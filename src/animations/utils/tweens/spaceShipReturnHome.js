@@ -2,7 +2,8 @@ import Assets from '../assetCreation';
 import Utils from '../utils';
 import Config from '../../animationsConfig';
 import Tweens from '../tweens';
-export default {
+export default function () {
+	return {
 		utils: Utils,
 		spaceShipReturnHome: function (background, maze, ship, onCompleteHandler) {
 
@@ -86,4 +87,5 @@ export default {
 		// 	this.onCompleteHandler,
 		// 	'easeOutBounce')
 		// }
+	}
 }

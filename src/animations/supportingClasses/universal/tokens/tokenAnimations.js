@@ -1,7 +1,8 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/tweens';
-export default {
+export default function () {
+	return {
 		textCont: Assets.Container(),
 		utils: Utils,
 		build: function () {
@@ -38,5 +39,5 @@ export default {
 		removeText: function (cont) {
 			this.utils.app.stage.removeChild(cont);
 		}
-	
+	}
 }

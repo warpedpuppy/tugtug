@@ -2,7 +2,8 @@ import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/tweens';
 import Config from '../../../animationsConfig';
-export default {
+export default function () {
+	return {
 	utils: Utils,
 	treasureIncrease: function () {
 		let activeMode = this.utils.root.activeMode,
@@ -30,4 +31,5 @@ export default {
 		this.treasureChange('down');
 		this.utils.root.grid.gridBuild.addCoinToGrid();
 	}
+}
 }

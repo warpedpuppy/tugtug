@@ -67,7 +67,7 @@ export default class HomeCanvas extends React.Component {
 	}
 	componentWillUnmount(){
 		this.home_page.stop();
-		alert('boom')
+		
 	}
 	loggedInCheck () {
 		this.setState({loggedIn:true})

@@ -3,15 +3,18 @@ import Utils from '../../../utils/utils';
 import Tokens from './tokens';
 import TokenSlots from './tokenSlots';
 import TokenAnimations from './tokenAnimations';
-export default {
+export default function () {
+	return {
 		utils: Utils,
 		tokens: [],
 		init: function () {
-		
-			this.tokens = Tokens.build();
-			this.slotsCont = TokenSlots.build();
-			TokenSlots.addToStage();
-			TokenAnimations.build();
+
+			this.tokenSlots = TokenSlots();
+			this.tokenAnimations = TokenAnimations();
+			this.tokens = Tokens().build();
+			this.slotsCont = this.tokenSlots.build();
+			this.tokenSlots.addToStage();
+			this.tokenAnimations.build();
 				
 		},
 		reset: function () {
@@ -23,11 +26,11 @@ export default {
 			}
 		},
 		fillSlot: function (token) {
-			TokenSlots.fillSlot(token);
-			TokenAnimations.playEarnedTokenAnimation();
+			this.tokenSlots.fillSlot(token);
+			this.tokenAnimations.playEarnedTokenAnimation();
 		},
 		wrongTokenAnimation: function (token) {
-			TokenAnimations.wrongTokenAnimation(token);
+			this.tokenAnimations.wrongTokenAnimation(token);
 		},
 		// clearText: function (){
 		// 	TokenAnimations.clearText();
@@ -43,10 +46,11 @@ export default {
 		resize: function () {
 			this.slotsCont.x = (this.utils.canvasWidth + 50) / 2;
 			this.slotsCont.y = this.utils.canvasHeight - 100;
-			TokenAnimations.textCont.x = this.utils.canvasWidth / 2;
-			TokenAnimations.textCont.y = this.utils.canvasHeight / 2;
+			this.tokenAnimations.textCont.x = this.utils.canvasWidth / 2;
+			this.tokenAnimations.textCont.y = this.utils.canvasHeight / 2;
 		},
 		animate: function () {
 
 		}
+	}
 }

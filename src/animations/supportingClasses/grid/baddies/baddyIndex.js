@@ -15,7 +15,7 @@ export default function () {
 		castlePool: [],
 		spearsPool: [],
 		baddy: Baddy(),
-		baddyAction: BaddyAction,
+		baddyAction: BaddyAction(),
 		init: function (mode) {
 			this.animate = this.animate.bind(this);
 			this.loopingQ = Config[`${mode}BaddyQ`];

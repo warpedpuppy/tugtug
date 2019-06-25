@@ -1,7 +1,8 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 //import Config from './animationsConfig';
-export default {
+export default function () {
+   return {
 	utils: Utils,
 		init: function () {
 			this.testing = Assets.Graphics();
@@ -75,4 +76,5 @@ export default {
 		animateDesktopAndIpad: function () {
 
 		}
+   }
 }

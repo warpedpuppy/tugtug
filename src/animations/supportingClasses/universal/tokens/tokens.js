@@ -1,6 +1,7 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-export default {
+export default function () {
+	return {
 		build: function () {
 			let t,
 			    tokens = [];
@@ -20,4 +21,5 @@ export default {
 			}
 			return tokens;
 		}
+}
 }

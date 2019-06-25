@@ -1,7 +1,8 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Config from '../../animationsConfig';
-export default {
+export default function () {
+    return {
 		utils: Utils,
 		config: Config,
         movementQ: 0.1,
@@ -48,5 +49,6 @@ export default {
 		animate: function () {
 
 		}
+    }
 	
 }

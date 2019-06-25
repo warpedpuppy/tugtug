@@ -1,7 +1,8 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Config from '../../../animationsConfig';
-export default  {
+export default function () {
+	return {
 		cont: Assets.Container(), 
 		items: [],
 		itemQ: 100,
@@ -57,5 +58,6 @@ export default  {
 				
 			
 		}
+	}
 	
 }

@@ -3,23 +3,25 @@ import Utils from '../../../utils/utils';
 import ConcentricCircles from './concentricCircles';
 import Explosion from './explosion';
 // import Config from './animationsConfig';
-export default  {
+export default function (){
+	return {
 		circlesBoolean: false,
 		explosionBoolean: false,
-		explosion: Explosion,
+		explosion: Explosion(),
+		concentricCircles: ConcentricCircles(),
 		init: function () {
 			this.explosion.init();
 			this.animateFunction = function () {};
-			ConcentricCircles.init();
+			this.concentricCircles.init();
 		},
 		circles: function (obj) {
 			
 			if (obj.start) {
 				this.circlesBoolean = true;
-				ConcentricCircles.addToStage(obj.expand);
+				this.concentricCircles.addToStage(obj.expand);
 			} else {
 				this.circlesBoolean = false;
-				ConcentricCircles.removeFromStage();
+				this.concentricCircles.removeFromStage();
 			}
 			
 		},
@@ -38,7 +40,7 @@ export default  {
 		},
 		animate: function () {
 			if (this.circlesBoolean) {
-				ConcentricCircles.animate();
+				this.concentricCircles.animate();
 			}
 			if(this.explosionBoolean){
 				if(!this.explosion.explosionBoolean){
@@ -48,5 +50,6 @@ export default  {
 				Explosion.animate();
 			}
 		}
+	}
 	
 }

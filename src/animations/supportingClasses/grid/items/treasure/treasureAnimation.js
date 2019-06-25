@@ -1,7 +1,8 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import Config from '../../../../animationsConfig';
-export default {
+export default function (){
+	return {
 		ringQ: 0,
 		chestQ: 0,
 		coins: [],
@@ -174,4 +175,5 @@ export default {
 		animate: function (vx, vy) {
 			
 		}
+	}
 }

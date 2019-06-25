@@ -30,11 +30,11 @@ export default function(obj) {
         activeMode: undefined,
         filterContainer: Assets.Container(),
         action: true,
-        gears: Gears,
-        clock: Clock,
+        gears: Gears(),
+        clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation,
+        transitionAnimation: TransitionAnimation(),
         transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
@@ -44,15 +44,15 @@ export default function(obj) {
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
-        tokens: Tokens,
+        tokens: Tokens(),
         controlPanel: ControlPanel(),
-        grid: Grid,
+        grid: Grid(),
         dbData: {},
         storeAction: true,
         timeOut: undefined,
         levelComplete: LevelComplete,
         fullStop: false,
-        animations: Animations,
+        animations: Animations(),
         init: function (isMobile, isMobileOnly) {
 
             if (Config.testingBounce) {
@@ -63,8 +63,7 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            console.log(this.levelComplete);
-            this.levelComplete.init();
+            this.levelComplete().init();
 
          
             if (!this.isMobileOnly) {
@@ -126,7 +125,9 @@ export default function(obj) {
                
                 this.dbData = response.data;
                 if (indexToGet === 0) {
+            
                     this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -171,7 +172,7 @@ export default function(obj) {
             
             this.swim.init(this.stage);
 
-            this.bounce.init(this.stage);
+          // this.bounce.init(this.stage);
 
             this.fly.init(this);
 
@@ -179,7 +180,7 @@ export default function(obj) {
             
             this.transitionAnimation.init(this);
 
-            Animations.init();
+            this.animations.init();
            
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
@@ -222,7 +223,6 @@ export default function(obj) {
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
-            alert("stop")
             window.onresize = undefined;
             if(this.app)this.app.destroy(true);
              if (!this.isMobile && this.keyHandler) {
@@ -417,7 +417,7 @@ export default function(obj) {
 
             this.transitionAnimation.animate();
 
-            Animations.animate();
+            this.animations.animate();
            
 
             if (this.action) {

@@ -34,8 +34,9 @@ export default function () {
 			this.createTotals();
 			
 			this.scoreTexts = this.stringCreate();
-			this.topBanner = ScoreGraphics.returnTopBar();
-			this.popUp = ScoreGraphics.returnMainBar();
+			this.scoreGraphics = ScoreGraphics();
+			this.topBanner = this.scoreGraphics.returnTopBar();
+			this.popUp = this.scoreGraphics.returnMainBar();
 		},
 		hide: function () {
 			ScoreGraphics.hide();
@@ -68,7 +69,7 @@ export default function () {
 			this.scoreTexts.grandTotal.text= `grand total: ${this.grandTotal}`;
 		},
 		switchMode: function () {
-			ScoreGraphics.buildTopBanner();
+			this.scoreGraphics.buildTopBanner();
 		},
 		stringCreate: function (dragon, fish, space, bounce) {
 			this.grandTotal = this.flyPoints + this.swimPoints + this.jumpPoints + this.bouncePoints;

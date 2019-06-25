@@ -5,6 +5,7 @@ import BlastOff from './tweens/spaceShipBlastOff';
 import ReturnHome from './tweens/spaceShipReturnHome';
 import Easing from './tweens/easing';
 export default {
+
 		utils: Utils,
 		allowTween: false,
 		fadeOutBoolean: false,
@@ -102,4 +103,5 @@ export default {
 				})
 			}
 		}
+	
 }

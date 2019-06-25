@@ -1,6 +1,7 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-export default {
+export default function () {
+	return {
 	init: function () {
 		let bitmapText = Assets.BitmapText(`score: ${this.score}`);
 		this.stage.addChild(bitmapText)
@@ -8,6 +9,7 @@ export default {
 	returnString: function (str) {
 
 	}
+}
 }
 
 

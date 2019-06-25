@@ -1,6 +1,7 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-export default {
+export default function () {
+	return {
 		hourToRadians: (1/12) * (2 * Math.PI),
 		minutesToRadians: (1/60) * (2 * Math.PI),
 		secondsToRadians: (1/60) * (2 * Math.PI),
@@ -106,5 +107,6 @@ export default {
 			
 			
 		}
+	}
 	
 }

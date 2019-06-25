@@ -134,7 +134,7 @@ export default function () {
 					// //test.y = 200;
 					// gremlinCont.addChild(test)
 
-					let gremlin = this.spaceGremlin.buildGremlin();
+					let gremlin = this.spaceGremlin().buildGremlin();
 					gremlinCont.speed = this.utils.deg2rad(this.utils.randomNumberBetween(-2, 2));
 					gremlin.y = -cont.width / 2;
 					gremlinCont.gremlin = gremlin;
@@ -150,7 +150,7 @@ export default function () {
 			this.orbsCont.scale.set(this.worldScale)
 
 			// TESTING
-            this.threeInARow = ThreeInARow.init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
+            this.threeInARow = ThreeInARow().init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
             this.threeInARow.completeHandler1();
             
 

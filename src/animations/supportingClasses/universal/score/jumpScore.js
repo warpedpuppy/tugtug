@@ -3,7 +3,8 @@ import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/tweens';
 import Config from '../../../animationsConfig';
 
-export default {
+export default function () {
+	return {
 	utils: Utils,
 	jumpDotHit: function (str) {
 
@@ -30,4 +31,5 @@ export default {
 		let jumpBackground = this.utils.jump.jumpBackground;
 		jumpBackground.tokenLock.removeChild(jumpBackground.tokenLock);
 	}
+}
 }

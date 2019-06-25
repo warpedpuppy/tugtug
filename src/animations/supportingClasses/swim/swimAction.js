@@ -18,7 +18,7 @@ export default function () {
 		percApply: true,
 		airBubbles: AirBubbles(),
 		increment: 5,
-		triangleOfCollision: TriangleOfCollision,
+		triangleOfCollision: TriangleOfCollision(),
 		flameOn: false,
 		init: function (stage) {
 			this.hero = this.utils.hero;

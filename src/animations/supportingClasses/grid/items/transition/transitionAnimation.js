@@ -2,7 +2,8 @@ import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import Tweens from '../../../../utils/tweens';
 import Config from '../../../../animationsConfig';
-export default {
+export default function () {
+    return {
     line: undefined,
     cont: Assets.Container(),
     radialGrow: 0.01,
@@ -186,5 +187,5 @@ export default {
 
         }
     }
-
+}
 }

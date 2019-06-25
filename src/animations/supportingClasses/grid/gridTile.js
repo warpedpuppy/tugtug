@@ -5,7 +5,8 @@ import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddyIndex';
 // import Tokens from '../tokens/levelTokens';
-export default {
+export default function () {
+	return {
 		cont: Assets.ParticleContainer(10000),
 		blockWidth: 0,
 		blockHeight: 0,
@@ -518,4 +519,5 @@ export default {
 	        }
 		}
 	
+	}
 }
