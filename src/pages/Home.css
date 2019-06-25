@@ -28,10 +28,30 @@ div.homePage h1 {
 	color:white;
 	padding:20px;
 }
+.homeMenuButtonDiv {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.homeMenuButton {
+		padding: 20px;
+		font-size: 25px;
+		cursor: pointer;
+		margin: 20px;
+		border-radius: 20px;
+	}
 @media (min-width: 1024px) {
 
 	.textCont {
 		width: 700px;
+	}
+	.homeMenuButtonDiv {
+		display: flex;
+		
+	}
+	.homeMenuButton {
+		padding: 20px;
+		font-size: 25px;
 	}
 
 

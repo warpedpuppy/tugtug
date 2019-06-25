@@ -3,8 +3,9 @@ import './Home.css';
 import Welcome from '../components/loginRegister/Welcome';
 import HomeCanvas from '../components/HomeCanvas';
 import CanvasJump from '../components/canvasJump';
-import canvasFly from '../components/canvasFly';
-import canvasSwim from '../components/canvasSwim';
+import CanvasFly from '../components/canvasFly';
+import CanvasSwim from '../components/canvasSwim';
+//import HomeCanvas from '../components/homeCanvas';
 //import HomeCanvas from '../components/ThreeOfAKindTestCanvas';
 
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ class Home extends React.Component {
 
 	constructor (props) {
 		super(props);
+		this.closeGame = this.closeGame.bind(this);
 		this.state = {
 			active: undefined
 		}
@@ -28,21 +30,46 @@ class Home extends React.Component {
 		this.setState({active: e.target.innerHTML})
 		
 	}
+	closeGame () {
+		this.setState({active: undefined})
+	}
 
 	render () {
 
 		if (!this.state.active) {
 			return (
-			<div>
-				<button onClick={ e => this.changeState(e)}>fly</button>
-				<button onClick={ e => this.changeState(e)}>swim</button>
-				<button onClick={ e => this.changeState(e)}>jump</button>
+			<div className="homeMenuButtonDiv" >
+				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>fly</button>
+				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>swim</button>
+				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>jump</button>
+				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>all three</button>
 			</div>
 			)
 		} else if(this.state.active === 'jump') {
 			return (
 			  <div className='homePage'>
-			  	  <CanvasJump />
+			  	  <CanvasJump closeGame={this.closeGame} />
+				  <Welcome />
+		      </div>
+		    );    
+		} else if(this.state.active === 'fly') {
+			return (
+			  <div className='homePage'>
+			  	  <CanvasFly  closeGame={this.closeGame}  />
+				  <Welcome />
+		      </div>
+		    );    
+		} else if(this.state.active === 'swim') {
+			return (
+			  <div className='homePage'>
+			  	  <CanvasSwim  closeGame={this.closeGame} />
+				  <Welcome />
+		      </div>
+		    );    
+		} else if(this.state.active === 'all three') {
+			return (
+			  <div className='homePage'>
+			  	  <HomeCanvas  closeGame={this.closeGame} />
 				  <Welcome />
 		      </div>
 		    );    

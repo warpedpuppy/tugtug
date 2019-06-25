@@ -108,17 +108,9 @@ export default class HomeCanvas extends React.Component {
 			return (
 				<div>
 				<div id='startGameCanvas' className={startScreenCSS} ></div>
+				<button onClick={() => this.props.closeGame()} className='closeButton'>close</button>
 				<div id='homeCanvas'></div>
 				<h1 id="testOrientation"></h1>
-				{/*<div className="testPanel">
-					<button onClick={() => this.testFilter()}>filter test is {this.state.filterTest}</button>
-					<button onClick={() => this.nightMode()}>night mode {this.state.nightMode}</button>
-					<button onClick={() => this.switchPlayer()}>switch player</button>
-					<button onClick={() => this.switchPlayer()}>transition animation</button>
-					<button onClick={() => this.switchPlayer()}>coin animation</button>
-					<button onClick={() => this.switchPlayer()}>numbered token found</button>
-					<button onClick={() => this.switchPlayer()}>level complete</button>
-				</div>*/}
 				</div>
 			)
 		} else {

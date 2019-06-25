@@ -184,7 +184,7 @@ export default function(obj) {
         stop: function () {
             window.onresize = undefined;
             if(this.app)this.app.destroy(true);
-             if (!this.isMobile) {
+             if (!this.isMobile && this.keyHandler) {
                 this.keyHandler.removeFromStage();
             }
         },

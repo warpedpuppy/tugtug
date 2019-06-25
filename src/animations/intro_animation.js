@@ -175,14 +175,16 @@ export default function(obj) {
 
             this.fly.init(this);
 
+            this.keyHandler = KeyHandler();
+            this.keyHandler.init(this);
+
             this.jump.init(this.stage);
             
             this.transitionAnimation.init(this);
 
             Animations.init();
            
-            this.keyHandler = KeyHandler();
-            this.keyHandler.init(this);
+ 
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
@@ -224,7 +226,7 @@ export default function(obj) {
         stop: function () {
             window.onresize = undefined;
             if(this.app)this.app.destroy(true);
-             if (!this.isMobile) {
+             if (!this.isMobile && this.keyHandler) {
                 this.keyHandler.removeFromStage();
             }
         },

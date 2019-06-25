@@ -51,6 +51,7 @@ export default function () {
 		startScale: 0.25,
 		spaceGremlin: SpaceGremlin,
 		orbListen: true,
+		worldScale: 0.5,
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -144,7 +145,9 @@ export default function () {
 				}
 			}
 
-			//this.orbsCont.scale.set(0.25)
+			//move hero to orbsCont
+			this.utils.hero.cont.scale.set(this.worldScale)
+			this.orbsCont.scale.set(this.worldScale)
 
 			// TESTING
             this.threeInARow = ThreeInARow.init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
@@ -168,13 +171,15 @@ export default function () {
 			}
 
 			this.loopingQ = Math.max(this.orbs.length, this.dotsArray.length);
+
+			// this.testGraphics = Assets.Graphics();
+			// this.utils.root.stage.addChild(this.testGraphics)
 		},
 		buildBoard: function () {
 
 		},
 		listeners: function (boolean) {
 			this.orbListen = boolean;
-			console.log(this.utils.root)
 			this.utils.root.keyHandler.onOff(boolean);
 		},
 		reset: function () {
@@ -369,11 +374,16 @@ export default function () {
 
 			
 			let globalPoint = this.hero.activeHero.body.toGlobal(this.app.stage);
- 
+ 			
+
+
+ 			let radius = (this.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
+
+
 			this.tempCircle = {
 				x: globalPoint.x,
 				y: globalPoint.y,
-				radius: 33
+				radius
 			}
 
 			// this.test.clear();
@@ -444,18 +454,24 @@ export default function () {
 					let orb = this.orbs[i];
 					
 					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
-					let tempCircle2 = {
+					let orbCircle = {
 						x: globalPoint2.x,
 						y: globalPoint2.y,
-						radius: orb.radius
+						radius: (orb.radius * this.orbsCont.scale.x)
 					}
+
+					// this.testGraphics.clear();
+					// this.testGraphics.beginFill(0x333333).drawCircle(0,0,this.tempCircle.radius).endFill();
+					// this.testGraphics.x = this.tempCircle.x;
+					// this.testGraphics.y = this.tempCircle.y;
 
 					let dotsCont = this.dotsContArray[i];
 					dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
 
 					if(orb !== this.currentOrb && 
 						!this.transition && 
-						this.utils.circleToCircleCollisionDetection(this.tempCircle, tempCircle2)[0]) {
+						this.utils.circleToCircleCollisionDetection(this.tempCircle, orbCircle)[0]) {
+
 						this.transition = true;
 						this.switchPlanets(orb, i);
 					}
