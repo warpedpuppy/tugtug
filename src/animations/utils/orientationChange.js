@@ -10,6 +10,7 @@ export default {
 			window.addEventListener("orientationchange", this.orientationChangeHandler);
 		},
 		makeLandscape: function () {
+           
             let scale = window.devicePixelRatio;
             let val1 = window.screen.height * scale,
                 val2 = window.screen.width * scale;

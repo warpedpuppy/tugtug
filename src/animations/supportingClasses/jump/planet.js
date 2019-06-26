@@ -9,11 +9,12 @@ export default function () {
 			let cont = Assets.Container();
 			let s = Assets.Sprite('circleAlpha1.png');
 			s.anchor.set(0.5);
-			//let p = Assets.Sprite('pinWheel.png');
-			//p.anchor.set(0.5);
+			let p = Assets.Sprite('pinWheel.png');
+			p.anchor.set(0.5);
 			cont.addChild(s);
-			//cont.addChild(p);
-			//cont.p = p;
+			cont.addChild(p);
+			cont.p = p;
+			cont.pRotate = this.utils.randomNumberBetween(-0.5, 0.5);
 			let color1, color2;
 			color1 = colors[Math.floor(Math.random()*colors.length)];
 			color2 = colors[Math.floor(Math.random()*colors.length)];

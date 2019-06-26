@@ -22,9 +22,9 @@ export default function () {
 		storeTotal: 0,
 		bounceTokenEarned: false,
 		jumpTokenEarned: false,
-		gridScore: GridScore, 
-		jumpScore: JumpScore,
-		bounceScore: BounceScore,
+		gridScore: GridScore(), 
+		jumpScore: JumpScore(),
+		bounceScore: BounceScore(),
 		init: function () {
 			this.flyTreasureChestQ = Config.flyTreasureChestQ;
 			this.flyCoinsPerTreasureChest = Config.flyCoinsPerTreasureChest;

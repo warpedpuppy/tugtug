@@ -30,11 +30,11 @@ export default function () {
                 let segment;
 
                 if (i !== this.segmentsQ - 1) {
-                	segment = Assets.Sprite('dragonSegment.png');
-                	segment.y = i * (segment.height + 40);
+                	segment = Assets.Sprite('dragonSegment.png', true);
+                	segment.y = i * (1 + 40);
                 	//segment.scale.y = -1;
                 } else { 
-                	segment = Assets.Sprite('dragonTail.png');
+                	segment = Assets.Sprite('dragonTail.png', true);
                 	segment.y = i * (segment.height - 40);
                 }
                 segment.anchor.x = 0.5;

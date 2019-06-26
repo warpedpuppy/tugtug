@@ -23,6 +23,7 @@ export default function () {
 		flameOn:false,
 		utils: Utils,
 		triangleOfCollision: TriangleOfCollision(),
+		rotateFunction: Rotate(),
 		init: function (parent, background) {
 			this.parent = parent;
 			this.grid = parent.grid;
@@ -65,7 +66,7 @@ export default function () {
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
 		rotate: function (str) {
-				let obj = Rotate.rotate(str, this);
+				let obj = this.rotateFunction.rotate(str, this);
 				this.vx = -obj.vx;
 				this.vy = -obj.vy
 		},

@@ -30,11 +30,11 @@ export default function(obj) {
         activeMode: undefined,
         filterContainer: Assets.Container(),
         action: true,
-        gears: Gears,
-        clock: Clock,
+        gears: Gears(),
+        clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation,
+        transitionAnimation: TransitionAnimation(),
         transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
@@ -44,17 +44,17 @@ export default function(obj) {
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
-        tokens: Tokens,
+        tokens: Tokens(),
         controlPanel: ControlPanel(),
-        grid: Grid,
+        grid: Grid(),
         dbData: {},
         storeAction: true,
         timeOut: undefined,
-        levelComplete: LevelComplete,
+        levelComplete: LevelComplete(),
         fullStop: false,
-        animations: Animations,
+        animations: Animations(),
         init: function (isMobile, isMobileOnly) {
-
+             console.log('window.devicePixelRatio', window.devicePixelRatio)
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -171,7 +171,7 @@ export default function(obj) {
             
             this.swim.init(this.stage);
 
-            this.bounce.init(this.stage);
+            //this.bounce.init(this.stage);
 
             this.fly.init(this);
 
@@ -182,7 +182,7 @@ export default function(obj) {
             
             this.transitionAnimation.init(this);
 
-            Animations.init();
+            this.animations.init();
            
  
             if (this.isMobile) {
@@ -418,7 +418,7 @@ export default function(obj) {
 
             this.transitionAnimation.animate();
 
-            Animations.animate();
+            this.animations.animate();
            
 
             if (this.action) {

@@ -118,8 +118,10 @@ export default {
 				return new PIXI.Sprite();
 			} else {
 				if (this.utils.spritesheet && this.utils.spritesheet.textures[str]) {
+					//if(test)console.log('from spritesheet', str)
 					return new PIXI.Sprite(this.utils.spritesheet.textures[str])
 				} else {
+					//if(test)console.log('from directory', str, this.utils.spritesheet)
 					return new PIXI.Sprite.fromImage(`/bmps/${str}`);
 				}
 			}

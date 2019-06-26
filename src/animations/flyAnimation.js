@@ -50,11 +50,11 @@ export default function(obj) {
         dbData: {},
         storeAction: true,
         timeOut: undefined,
-        levelComplete: LevelComplete,
+        levelComplete: LevelComplete(),
         fullStop: false,
         animations: Animations(),
         init: function (isMobile, isMobileOnly) {
-
+             console.log('window.devicePixelRatio', window.devicePixelRatio)
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -63,7 +63,8 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            this.levelComplete().init();
+            console.log(this.levelComplete);
+            this.levelComplete.init();
 
          
             if (!this.isMobileOnly) {
@@ -125,9 +126,7 @@ export default function(obj) {
                
                 this.dbData = response.data;
                 if (indexToGet === 0) {
-            
                     this.grid.boards = [...this.grid.boards, ...response.data.boards];
-                
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -172,18 +171,20 @@ export default function(obj) {
             
             this.swim.init(this.stage);
 
-          // this.bounce.init(this.stage);
+            //this.bounce.init(this.stage);
 
             this.fly.init(this);
 
-            //this.jump.init(this.stage);
+            this.keyHandler = KeyHandler();
+            this.keyHandler.init(this);
+
+            this.jump.init(this.stage);
             
             this.transitionAnimation.init(this);
 
             this.animations.init();
            
-            this.keyHandler = KeyHandler();
-            this.keyHandler.init(this);
+ 
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
@@ -308,7 +309,7 @@ export default function(obj) {
             this.swim.resize();
             this.bounce.resize();
             this.fly.resize();
-           // this.jump.resize();
+            this.jump.resize();
             this.tokens.resize();
             if (this.isMobile) {
                 this.controlPanel.resize();
@@ -347,7 +348,7 @@ export default function(obj) {
         },
         endSpaceShipJourney: function () {
 
-            //this.jump.removeFromStage();
+            this.jump.removeFromStage();
             
             this.switchPlayer(this.storeActiveMode);
            
@@ -363,22 +364,22 @@ export default function(obj) {
 
             this[this.activeMode].endSpaceShipJourney();
         },
-        // makeJumpActive: function () {
-        //     this.jump.jumpBackground.pause = false;
-        //     this.jump.jumpAction.pause = false;
-        //     this.hero.cont.visible = true;
-        //     //this.ship.parent.removeChild(this.ship);
+        makeJumpActive: function () {
+            this.jump.jumpBackground.pause = false;
+            this.jump.jumpAction.pause = false;
+            this.hero.cont.visible = true;
+            //this.ship.parent.removeChild(this.ship);
             
-        //     this.switchPlayer("jump");
-        //     this.jump.jumpBackground.setUp();
+            this.switchPlayer("jump");
+            this.jump.jumpBackground.setUp();
 
-        //      if (Config.testingJump) {
-        //         let background = this.utils.root.jump.jumpBackground.orbsCont;
-        //         background.scale.set(1)
-        //         this.jump.addToStage();
-        //     }
+             if (Config.testingJump) {
+                let background = this.utils.root.jump.jumpBackground.orbsCont;
+                background.scale.set(1)
+                this.jump.addToStage();
+            }
 
-        // },
+        },
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();

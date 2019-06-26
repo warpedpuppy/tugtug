@@ -452,7 +452,7 @@ export default function () {
 			
 				if (this.orbListen && this.orbs[i]) {
 					let orb = this.orbs[i];
-					
+					orb.p.rotation += orb.pRotate;
 					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
 					let orbCircle = {
 						x: globalPoint2.x,

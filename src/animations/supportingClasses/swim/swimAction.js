@@ -20,6 +20,7 @@ export default function () {
 		increment: 5,
 		triangleOfCollision: TriangleOfCollision(),
 		flameOn: false,
+		rotateFunction: Rotate(),
 		init: function (stage) {
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
@@ -48,7 +49,7 @@ export default function () {
 			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
 		},
 		rotate: function (str) {
-				let obj = Rotate.rotate(str, this);
+				let obj = this.rotateFunction.rotate(str, this);
 				this.vx = -obj.vx;
 				this.vy = -obj.vy
 		},

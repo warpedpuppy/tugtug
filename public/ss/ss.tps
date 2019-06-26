@@ -284,6 +284,7 @@
             <filename>../bmps/jewel10.png</filename>
             <filename>../bmps/jewel11.png</filename>
             <filename>../bmps/vortex.png</filename>
+            <filename>../bmps/dragonSegment.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

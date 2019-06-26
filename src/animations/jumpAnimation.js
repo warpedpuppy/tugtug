@@ -2,13 +2,15 @@ import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Tweens from './utils/tweens';
 import OrientationChange from './utils/orientationChange';
+import Clock from './supportingClasses/universal/clock';
+
 //import Swim from './supportingClasses/swim/indexSwim';
 //import Bounce from './supportingClasses/bounce/indexBounce';
 //import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
 import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
-//import Gears from './supportingClasses/universal/gears';
+import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
 import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
@@ -29,11 +31,11 @@ export default function(obj) {
         activeMode: undefined,
         filterContainer: Assets.Container(),
         action: true,
-        //gears: Gears,
-       // clock: Clock,
+        gears: Gears(),
+        clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation,
+        transitionAnimation: TransitionAnimation(),
         transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
@@ -43,15 +45,15 @@ export default function(obj) {
        // bounce: Bounce(),
        // fly: Fly(),
         jump: Jump(),
-        tokens: Tokens,
+        tokens: Tokens(),
         controlPanel: ControlPanel(),
        // grid: Grid,
         dbData: {},
         storeAction: true,
         timeOut: undefined,
-        levelComplete: LevelComplete,
+        levelComplete: LevelComplete(),
         fullStop: false,
-        animations: Animations,
+        animations: Animations(),
         keyHandler: KeyHandler(),
         init: function (isMobile, isMobileOnly) {
 
@@ -139,8 +141,11 @@ export default function(obj) {
             
             this.transitionAnimation.init(this);
 
-            Animations.init();
-           
+            this.animations.init();
+            
+            this.gears.init().addToStage();
+
+            this.clock.init().addToStage();
             
             this.keyHandler.init(this);
             if (this.isMobile) {
@@ -377,7 +382,7 @@ export default function(obj) {
 
             this.transitionAnimation.animate();
 
-            Animations.animate();
+            this.animations.animate();
            
 
             if (this.action) {
@@ -386,9 +391,9 @@ export default function(obj) {
                 } else if(this.rotateRightBoolean) {
                     this.activeAction.rotate('right');
                 }
-              //  this.clock.animate();
+                this.clock.animate();
                 this.filterAnimation.animate();
-               // this.gears.animate();
+                this.gears.animate();
                // this.activeAction.animate();
                 this[this.activeMode].animate();
                
