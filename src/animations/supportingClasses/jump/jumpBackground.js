@@ -454,6 +454,8 @@ export default function () {
 					let orb = this.orbs[i];
 					orb.p.rotation += orb.pRotate;
 					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
+
+					//REDEFINE THIS OUTSIDE OF LOOP AND JUST CHANGE THE PROPERTIES
 					let orbCircle = {
 						x: globalPoint2.x,
 						y: globalPoint2.y,
