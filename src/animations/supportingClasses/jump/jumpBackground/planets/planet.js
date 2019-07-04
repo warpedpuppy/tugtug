@@ -43,7 +43,7 @@ export default function () {
 			// gremlinCont.speed = this.utils.deg2rad(this.utils.randomNumberBetween(-2, 2));
 			// gremlin.y = -background.width / 2;
 			// gremlinCont.gremlin = gremlin;
-			//gremlin.rotation = this.utils.deg2rad(-90);
+			gremlin.rotation = this.utils.deg2rad(-90);
 			gremlin.hit = false;
 			cont.addChild(gremlin);
 			cont.gremlin = gremlin;

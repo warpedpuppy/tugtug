@@ -55,7 +55,7 @@ export default function () {
 			// }
 			//this.hero.activeHero.cont.y = 
 //this.hero.activeHero.floor = -this.currentOrb.background.width;
-			console.log(this.hero.activeHero.cont.y, this.vy, this.hero.activeHero.floor)
+			//console.log(this.hero.activeHero.cont.y, this.vy, this.hero.activeHero.floor)
 			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {

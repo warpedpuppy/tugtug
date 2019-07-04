@@ -355,7 +355,7 @@ export default function () {
 				// }
 		},
 		makeTransitionComplete: function (i) {
-			this.threeInARow.completeHandler1();
+			//this.threeInARow.completeHandler1();
 			this.centerOrbIndex = i;
 			this.pause = false;
 			this.transition = false;
@@ -365,12 +365,12 @@ export default function () {
 			let cont = this.dotsContArray[index];
 			this.currentOrb.dots.forEach((dot, i) => {
 				dot.visible = true;
-				let xDest = cont.dist * Math.cos( ( 2 * Math.PI) * i /  this.dotQ);
-				let yDest = cont.dist * Math.sin( ( 2 * Math.PI) * i /  this.dotQ);
+				// let xDest = dot.dist * Math.cos( ( 2 * Math.PI) * i /  this.dotQ);
+				// let yDest = dot.dist * Math.sin( ( 2 * Math.PI) * i /  this.dotQ);
 				Tweens.tween(dot, 1, 
 				{
-					x: [0, xDest],
-					y: [0, yDest]
+					x: [0, dot.startX],
+					y: [0, dot.startY]
 				}, 
 				this.completeGremlinHit.bind(this, [gremlin, i]),
 				'easeOutBounce');
@@ -433,14 +433,17 @@ export default function () {
 				{
 
 					let dot = this.currentOrb.dots[i]
-					let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
+					let globalPoint2 = dot.toGlobal(this.app.stage);
 					this.dotCollisionDetectObject.x = globalPoint2.x;
 					this.dotCollisionDetectObject.y = globalPoint2.y;
-	
+					//console.log(this.dotEatBoolean, this.heroCollisionDetectObject, this.dotCollisionDetectObject)
+
+					//
 					if(dot.visible &&
 					   this.dotEatBoolean && 
 						this.utils.circleToCircleCollisionDetection(this.heroCollisionDetectObject, this.dotCollisionDetectObject)[0]) 
 					{
+						console.log("hit")
 						dot.visible = false;
 					}
 				}
@@ -469,7 +472,8 @@ export default function () {
 							this.gremlinCollisionDetectObject)[0]
 						) 
 					{
-						//this.gremlinHit(i, this.currentOrb.gremlin);
+						console.log("gremlin hit")
+						this.gremlinHit(i, this.currentOrb.gremlin);
 						this.currentOrb.gremlin.hit = true;
 						this.dotEatBoolean = false;
 					}

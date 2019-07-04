@@ -18,6 +18,7 @@ export default function () {
 			
 			for (let k = 0; k < dotQ; k++) {
 				let dot = this.dot();
+				dot.dist = this.dist;
 	            dot.x = dot.startX =  this.dist * Math.cos( ( 2 * Math.PI) * k /  this.dotQ);
 	            dot.y = dot.startY =  this.dist * Math.sin( ( 2 * Math.PI) * k /  this.dotQ);
 	            //cont.dots.push(dot);

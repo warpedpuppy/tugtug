@@ -12,7 +12,7 @@ export default function () {
             this.jumpAction.init(stage);
             this.jumpBackground.init(stage, this.jumpAction);
 
-            console.log(this.jumpBackground.currentOrb.width)
+            //console.log(this.jumpBackground.currentOrb.width)
             Utils.hero.activeHero.cont.y = this.jumpBackground.currentOrb.background.width / 2
 			Utils.hero.activeHero.floor = -this.jumpBackground.currentOrb.background.width / 2
 		},
