@@ -1,4 +1,7 @@
 import Utils from '../../utils/utils';
+import dotAction from './jumpAction/jumpDotAction';
+import gremlinAction from './jumpAction/jumpGremlinAction';
+import orbAction from './jumpAction/jumpOrbAction';
 export default function () {
 	return {
 		gravity: 0.3,
@@ -44,7 +47,15 @@ export default function () {
 		animate: function () {
 
 			if(this.pause)return;
-			
+
+			// for(let i = 0; i < this.utils.root.jump.jumpBackground.orbsCont.length; i ++){
+			// 	dotAction.animate(i);
+			// 	gremlinAction.animate(i);
+			// 	orbAction.animate(i);
+			// }
+			//this.hero.activeHero.cont.y = 
+//this.hero.activeHero.floor = -this.currentOrb.background.width;
+			console.log(this.hero.activeHero.cont.y, this.vy, this.hero.activeHero.floor)
 			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {

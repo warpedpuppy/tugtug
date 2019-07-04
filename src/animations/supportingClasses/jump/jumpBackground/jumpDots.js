@@ -3,7 +3,7 @@ import Assets from '../../utils/assetCreation';
 import Config from '../../animationsConfig';
 import RainbowSwirls from './rainbowSwirls';
 import Tweens from '../../utils/tweens';
-import Planets from './jumpBackground/planets/planet';
+import Planets from './planet';
 //import JumpPoints from './jumpPoints';
 import JumpTokenUnlockedGraphic from './jumpTokenUnlocked';
 import SpaceGremlin from './spaceGremlin';
@@ -56,7 +56,6 @@ export default function () {
 		orbCollisionDetectObject: {},
 		gremlinCollisionDetectObject: {},
 		dotCollisionDetectObject: {},
-		planets: Planets(),
 		//writeItOut: true,
 		init: function (parentCont, action) {
 			this.hero = this.utils.hero;
@@ -72,7 +71,7 @@ export default function () {
 
 			
 
-			let centerOrb = 2;//this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
+			let centerOrb = this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
 			this.widths = [];
 
@@ -94,69 +93,62 @@ export default function () {
 
 				for (let j = 0; j < this.colQ; j ++) {
 
-					let planet = this.planets.buildPlanet(counter, this.startScale);
-					planet.x = j * this.spacer;
-					planet.y = planet.startY = i * this.spacer;
-					this.orbsCont.addChild(planet);
-					this.orbs.push(planet);
+					let cont = Planets().init(i, j, counter, this.spacer, this.colors, this.startScale);
+					cont.dots = [];
 
+					this.orbsCont.addChild(cont);
+					this.orbs.push(cont);
+					
 					if (counter === centerOrb) {
 						this.centerOrbIndex = centerOrb;
-						this.currentOrb = this.landingOrb = this.centralOrb = planet;
+						this.currentOrb = this.landingOrb = this.centralOrb = cont;
+						//this.currentOrb.alpha = 0.5;
 					}
+
+					let dotQ = this.dotQ = Config.spaceDotsPerPlanet;
+					let dist =  this.dist = cont.radius + 20;
+					let dotsCont = Assets.Container();
+					dotsCont.dist = dist;
+					let gremlinCont = Assets.Container();
+					for (let k = 0; k < dotQ; k++) {
+						let dot = this.dot();
+			            dot.x = dot.startX =  this.dist * Math.cos( ( 2 * Math.PI) * k /  this.dotQ);
+			            dot.y =  dot.startY =  this.dist * Math.sin( ( 2 * Math.PI) * k /  this.dotQ);
+			            cont.dots.push(dot);
+			            dotsCont.addChild(dot);
+			            this.dotOP.push(dot);
+			            this.dotsArray.push(dot);
+			        }
+			        dotsCont.rotate = -cont.rotate;
+			        dotsCont.x = cont.x;
+			        dotsCont.y = cont.y;
+			        this.orbsCont.addChild(dotsCont);
+
+			        gremlinCont.y = cont.y;
+					gremlinCont.x = cont.x;
+					gremlinCont.rotation = this.utils.deg2rad(-90);
+			        this.orbsCont.addChild(gremlinCont);
+
+			        gremlinCont.center = (counter === centerOrb)?true:false;
+
+			        this.dotsContArray.push(dotsCont);
+
 					counter ++;
+					this.widths.push(cont.width);
 
-					// let cont = Planets().init(i, j, counter, this.spacer, this.colors, this.startScale);
-					// cont.dots = [];
+					// let test = Assets.Graphics();
+					// test.beginFill(0xFFFF00).drawCircle(0,0,50).endFill();
+					// //test.y = 200;
+					// gremlinCont.addChild(test)
 
-					// this.orbsCont.addChild(cont);
-					// this.orbs.push(cont);
-					
-					
-
-					// let dotQ = this.dotQ = Config.spaceDotsPerPlanet;
-					// let dist =  this.dist = cont.radius + 20;
-					// let dotsCont = Assets.Container();
-					// dotsCont.dist = dist;
-					
-					// for (let k = 0; k < dotQ; k++) {
-					// 	let dot = this.dot();
-			  //           dot.x = dot.startX =  this.dist * Math.cos( ( 2 * Math.PI) * k /  this.dotQ);
-			  //           dot.y =  dot.startY =  this.dist * Math.sin( ( 2 * Math.PI) * k /  this.dotQ);
-			  //           cont.dots.push(dot);
-			  //           dotsCont.addChild(dot);
-			  //           this.dotOP.push(dot);
-			  //           this.dotsArray.push(dot);
-			  //       }
-			  //       dotsCont.rotate = -cont.rotate;
-			  //       dotsCont.x = cont.x;
-			  //       dotsCont.y = cont.y;
-			  //       this.orbsCont.addChild(dotsCont);
-			  //        this.dotsContArray.push(dotsCont);
-
-			  //       let gremlinCont = Assets.Container();
-			  //       gremlinCont.y = cont.y;
-					// gremlinCont.x = cont.x;
-					// gremlinCont.rotation = this.utils.deg2rad(-90);
-			  //       this.orbsCont.addChild(gremlinCont);
-
-			  //       gremlinCont.center = (counter === centerOrb)?true:false;
-
-			       
-
-					// counter ++;
-					// this.widths.push(cont.width);
-
-					
-
-					// let gremlin = this.spaceGremlin().buildGremlin();
-					// cont.gremlin = gremlinCont;
-					// gremlinCont.speed = this.utils.deg2rad(this.utils.randomNumberBetween(-2, 2));
-					// gremlin.y = -cont.width / 2;
-					// gremlinCont.gremlin = gremlin;
-					// gremlin.hit = false;
-					// gremlinCont.addChild(gremlin);
-					// this.gremlinContsArray.push(gremlinCont)
+					let gremlin = this.spaceGremlin().buildGremlin();
+					cont.gremlin = gremlinCont;
+					gremlinCont.speed = this.utils.deg2rad(this.utils.randomNumberBetween(-2, 2));
+					gremlin.y = -cont.width / 2;
+					gremlinCont.gremlin = gremlin;
+					gremlin.hit = false;
+					gremlinCont.addChild(gremlin);
+					this.gremlinContsArray.push(gremlinCont)
 				
 				}
 			}
@@ -165,9 +157,8 @@ export default function () {
 
 
 			//move hero to orbsCont
-			//this.utils.hero.cont.scale.set(this.worldScale)
-			//this.orbsCont.scale.set(this.worldScale)
-
+			this.utils.hero.cont.scale.set(this.worldScale)
+			this.orbsCont.scale.set(this.worldScale)
 
 			
 			let radius = (this.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
@@ -176,13 +167,11 @@ export default function () {
 			this.gremlinCollisionDetectObject.radius = 15;
 			this.dotCollisionDetectObject.radius = 5
 
-			//this.setUp();
-			
 
 
 			// TESTING
-            // this.threeInARow = ThreeInARow().init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
-            // this.threeInARow.completeHandler1();
+            this.threeInARow = ThreeInARow().init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
+            this.threeInARow.completeHandler1();
             
 
 	
@@ -208,8 +197,6 @@ export default function () {
 			this.testGraphics = Assets.Graphics();
 			this.testGraphics.alpha = 0.5;
 			this.utils.root.stage.addChild(this.testGraphics)
-
-
 		},
 		buildBoard: function () {
 
@@ -260,7 +247,7 @@ export default function () {
 			//this.jumpPoints.addToStage();
 		},
 		setUp: function () {
-			// this.hero.activeHero.cont.y = this.hero.activeHero.floor = this.currentOrb.background.width;
+			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
 			// this.addSpaceShip();
 			// this.addToken();
 		},
@@ -310,23 +297,23 @@ export default function () {
 				this.pause = true;
 				let newX = (this.utils.canvasWidth / 2);
 				let newY = (this.utils.canvasHeight / 2);
-				//this.hero.activeHero.floor = -newPlanet.radius;
+				this.hero.activeHero.floor = -newPlanet.radius;
 				this.currentOrb = newPlanet;
 
 				
 
 				let color1 = oldPlanet.color;
-                let tint1 = oldPlanet.background.tint;
+                let tint1 = oldPlanet.s.tint;
 
                 let color2 = this.currentOrb.color;
-                let tint2 = this.currentOrb.background.tint;
+                let tint2 = this.currentOrb.s.tint;
 
                
                 oldPlanet.color = color2;
-                oldPlanet.background.tint = tint2;
+                oldPlanet.s.tint = tint2;
 
                 this.currentOrb.color = color1;
-                this.currentOrb.background.tint = tint1;
+                this.currentOrb.s.tint = tint1;
 
                  Tweens.tween(oldPlanet, 1.5, {
                     x: [this.currentOrb.x, oldPlanet.x], 
@@ -343,16 +330,16 @@ export default function () {
 
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
 
-				// if (newPlanet === this.spaceShipOrb) {
-				// 	this.hero.activeHero.cont.y = 0;
-				// 	this.pause = true;
-				// 	this.utils.root.jump.jumpAction.pause = true;
-				// 	this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
-				// } else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
+				if (newPlanet === this.spaceShipOrb) {
+					this.hero.activeHero.cont.y = 0;
+					this.pause = true;
+					this.utils.root.jump.jumpAction.pause = true;
+					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
+				} else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
 
-				// 	this.jumpTokenTaken = true;
-				// 	this.utils.root.tokens.fillSlot(this.token);
-				// }
+					this.jumpTokenTaken = true;
+					this.utils.root.tokens.fillSlot(this.token);
+				}
 		},
 		makeTransitionComplete: function (i) {
 			this.threeInARow.completeHandler1();
@@ -408,10 +395,10 @@ export default function () {
 			this.heroCollisionDetectObject.y = globalPoint.y;
 		
 
-			this.testGraphics.clear();
-			this.testGraphics.beginFill(0xFF0000).drawCircle(0,0,this.heroCollisionDetectObject.radius).endFill();
-			this.testGraphics.x = globalPoint.x;
-			this.testGraphics.y = globalPoint.y;
+			// this.testGraphics.clear();
+			// this.testGraphics.beginFill(0xFF0000).drawCircle(0,0,this.heroCollisionDetectObject.radius).endFill();
+			// this.testGraphics.x = globalPoint.x;
+			// this.testGraphics.y = globalPoint.y;
 
 			
 
@@ -445,38 +432,41 @@ export default function () {
 					}
 				}
 
-				//if(this.gremlinContsArray[i]) 
-				//	{
-						//let gremlinCont = this.gremlinContsArray[i];
-
-				this.orbs[i].gremlin.rotation += 0.03;
-
-				if(i === this.centerOrbIndex) 
-				{
-					//gremlinCont.gremlin.alpha = 0.2;
-
-					let gremlinPoint = this.currentOrb.gremlin.body.toGlobal(this.app.stage);
-
-					this.gremlinCollisionDetectObject.x = gremlinPoint.x;
-					this.gremlinCollisionDetectObject.y = gremlinPoint.y;
-
-
-
-
-					if(!this.currentOrb.gremlin.hit && 
-						this.utils.circleToCircleCollisionDetection(
-							this.heroCollisionDetectObject, 
-							this.gremlinCollisionDetectObject)[0]
-						) 
+				if(this.gremlinContsArray[i]) 
 					{
-						//this.gremlinHit(i, this.currentOrb.gremlin);
-						this.currentOrb.gremlin.hit = true;
-						this.dotEatBoolean = false;
+						let gremlinCont = this.gremlinContsArray[i];
+
+						gremlinCont.rotation += gremlinCont.speed;
+
+						if(i === this.centerOrbIndex) 
+						{
+							//gremlinCont.gremlin.alpha = 0.2;
+
+							let gremlinPoint = gremlinCont.gremlin.body.toGlobal(this.app.stage);
+ 
+							this.gremlinCollisionDetectObject.x = gremlinPoint.x;
+							this.gremlinCollisionDetectObject.y = gremlinPoint.y;
+
+// this.testGraphics.clear();
+// this.testGraphics.beginFill(0xFF0000).drawCircle(0,0,this.gremlinCollisionDetectObject.radius).endFill();
+// this.testGraphics.x = gremlinPoint.x;
+// this.testGraphics.y = gremlinPoint.y;
+
+
+							if(!gremlinCont.gremlin.hit && 
+								this.utils.circleToCircleCollisionDetection(
+									this.heroCollisionDetectObject, 
+									this.gremlinCollisionDetectObject)[0]
+								) 
+							{
+								this.gremlinHit(i, gremlinCont.gremlin);
+								gremlinCont.gremlin.hit = true;
+								this.dotEatBoolean = false;
+							}
+
+						} 
+
 					}
-
-				} 
-
-				//	}
 
 				
 
@@ -484,7 +474,7 @@ export default function () {
 			
 				if (this.orbListen && this.orbs[i]) {
 					let orb = this.orbs[i];
-					orb.foreground.rotation += orb.rotate;
+					orb.p.rotation += orb.pRotate;
 					let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
 
 					//REDEFINE THIS OUTSIDE OF LOOP AND JUST CHANGE THE PROPERTIES
@@ -498,7 +488,7 @@ export default function () {
 					// this.testGraphics.y = this.tempCircle.y;
 
 					let dotsCont = this.dotsContArray[i];
-					this.orbs[i].dotsCont.rotation += this.utils.deg2rad(this.orbs[i].dotsCont.rotate);
+					dotsCont.rotation += this.utils.deg2rad(dotsCont.rotate);
 
 					if(orb !== this.currentOrb && 
 						!this.transition && 

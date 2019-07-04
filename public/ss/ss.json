@@ -119,7 +119,7 @@
 },
 "bodySegmentTail.png":
 {
-	"frame": {"x":1006,"y":1435,"w":24,"h":66},
+	"frame": {"x":2022,"y":1160,"w":24,"h":66},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":0,"w":24,"h":66},
@@ -191,7 +191,7 @@
 },
 "dragonHead.png":
 {
-	"frame": {"x":1032,"y":1435,"w":45,"h":65},
+	"frame": {"x":1041,"y":1360,"w":45,"h":65},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":65},
@@ -218,7 +218,7 @@
 },
 "dragonTriangle.png":
 {
-	"frame": {"x":1079,"y":1741,"w":56,"h":101},
+	"frame": {"x":1190,"y":1387,"w":56,"h":101},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":56,"h":101},
@@ -281,7 +281,7 @@
 },
 "headSegment.png":
 {
-	"frame": {"x":1143,"y":1370,"w":44,"h":51},
+	"frame": {"x":1041,"y":1291,"w":44,"h":51},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":51},
@@ -398,11 +398,11 @@
 },
 "jumpBody.png":
 {
-	"frame": {"x":1041,"y":1291,"w":88,"h":88},
+	"frame": {"x":1006,"y":1435,"w":66,"h":66},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":88},
-	"sourceSize": {"w":88,"h":88},
+	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":66},
+	"sourceSize": {"w":66,"h":66},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jumpEye.png":
@@ -650,7 +650,7 @@
 },
 "spaceShip.png":
 {
-	"frame": {"x":1079,"y":1425,"w":172,"h":314},
+	"frame": {"x":1079,"y":1506,"w":172,"h":314},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":172,"h":314},
@@ -677,7 +677,7 @@
 },
 "star.png":
 {
-	"frame": {"x":1164,"y":1817,"w":178,"h":169},
+	"frame": {"x":1164,"y":1822,"w":178,"h":169},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":169},
@@ -704,7 +704,7 @@
 },
 "swimTrans.png":
 {
-	"frame": {"x":1041,"y":1387,"w":100,"h":36},
+	"frame": {"x":1088,"y":1387,"w":100,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":36},
@@ -758,7 +758,7 @@
 },
 "token4.png":
 {
-	"frame": {"x":1131,"y":1291,"w":77,"h":77},
+	"frame": {"x":1074,"y":1427,"w":77,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":2,"w":77,"h":77},
@@ -767,7 +767,7 @@
 },
 "tokenLock.png":
 {
-	"frame": {"x":1137,"y":1741,"w":75,"h":74},
+	"frame": {"x":1088,"y":1291,"w":75,"h":74},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":75,"h":74},
@@ -880,6 +880,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0b794c24c3517d9f3ecfd22c0fb724da:6e26a259e797da8ca88b2d9827bf4423:7a7dafe8686879c23378e53f9469620c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:96bc14b87dc733da1f2b2a22595c4d57:c1bedcf5969a5b4452726ed8f2748948:7a7dafe8686879c23378e53f9469620c$"
 }
 }

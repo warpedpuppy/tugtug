@@ -100,7 +100,7 @@ export default function () {
 			this.cont.addChild(this.feet);
 
 			let body = Assets.Sprite('jumpBody.png');
-			body.scale.set(0.75);
+			//body.scale.set(0.75);
 			body.anchor.set(0.5)
 			body.y = -40;
 			this.body = body;

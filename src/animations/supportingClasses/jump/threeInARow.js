@@ -93,11 +93,11 @@ export default function (){
                             let targetIndex = index - this.colQ;
 
                             if (targetIndex >= 0) {
-                                dot.s.tint = mainArr[targetIndex].s.tint;
+                                dot.background.tint = mainArr[targetIndex].background.tint;
                                 dot.color = mainArr[targetIndex].color;
                             } else {
                                 let item = this.utils.randomItemFromArray(this.rainbowColors);
-                                dot.s.tint = item;
+                                dot.background.tint = item;
                                 dot.color = item;
                             }
 
@@ -126,12 +126,12 @@ export default function (){
                     this.temp.push(dot)
 
                     if (firstNonComboIndex >= 0) {
-                        dot.s.tint = mainArr[firstNonComboIndex].s.tint;
+                        dot.background.tint = mainArr[firstNonComboIndex].background.tint;
                         dot.color = mainArr[firstNonComboIndex].color;
                     } else {
                         let item = this.utils.randomItemFromArray(this.rainbowColors);
 
-                        dot.s.tint = item;//[0];
+                        dot.background.tint = item;//[0];
                         dot.color = item;//1];
                     }
                   
