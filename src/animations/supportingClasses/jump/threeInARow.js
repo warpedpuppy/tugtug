@@ -15,17 +15,15 @@ export default function (){
         delayTimes: 0,
         activeDelayTimes: 500,
         setUp: true,
-        // startScale: 0.5,
         dot1: undefined,
         dot2: undefined,
-       // rainbowColors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
         init: function (arr, spacer, colors, startScale, cont, listeners) {
         	this.done = this.done.bind(this)
         	this.completeHandler1 = this.completeHandler1.bind(this)
         	this.completeHandler2 = this.completeHandler2.bind(this)
         	this.mainArr = arr;
         	this.spacer = spacer;
-        	this.rainbowColors = colors;
+        	this.rainbowColors = Config.colors;
         	this.startScale = startScale;
         	this.cont = cont;
         	this.cont.visible = false;
@@ -33,8 +31,6 @@ export default function (){
         	return this;
         },
 	 	completeHandler1: function () {
-
-
 
             let result = this.lookForThreeOfAKind() || [[], ""];
            
@@ -61,7 +57,7 @@ export default function (){
 
 	            if (!this.setUp) {
 		            arr.forEach(item => {
-		                item.scale.set((this.startScale * 2));
+		                item.scaleIt('big');
 		            })
 		        }
 
@@ -79,7 +75,7 @@ export default function (){
            let mainArr = this.mainArr;
 
             arr.forEach(item => {
-                item.scale.set(this.startScale);
+                item.scaleIt();
             }) 
 
            if (direction === 'horiz') {

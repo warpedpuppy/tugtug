@@ -335,7 +335,7 @@ export default function(obj) {
             //this.ship.parent.removeChild(this.ship);
             
             this.switchPlayer("jump");
-            this.jump.jumpBackground.setUp();
+            //this.jump.jumpBackground.setUp();
 
              if (Config.testingJump) {
                 let background = this.utils.root.jump.jumpBackground.orbsCont;

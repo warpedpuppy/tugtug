@@ -16,12 +16,12 @@ export default function () {
             this.keyUp = this.keyUp.bind(this);
 		},
 		addToStage: function () {
-			window.addEventListener('keydown', this.keyDown);
-            window.addEventListener('keyup', this.keyUp);
+			window.addEventListener('keydown', this.keyDown.bind(this));
+            window.addEventListener('keyup', this.keyUp.bind(this));
 		},
 		removeFromStage: function () {
-			window.removeEventListener('keydown', this.keyDown);
-            window.removeEventListener('keyup', this.keyUp);
+			window.removeEventListener('keydown', this.keyDown.bind(this));
+            window.removeEventListener('keyup', this.keyUp.bind(this));
 		},
         onOff: function (boolean){
             if(boolean){
@@ -73,7 +73,7 @@ export default function () {
             }
         },
 		keyDown: function (e) {
-            //e.preventDefault();
+            e.preventDefault();
             //console.log(e.keyCode)
             switch (e.keyCode) {
                 case 84:

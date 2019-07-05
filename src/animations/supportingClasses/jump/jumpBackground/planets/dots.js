@@ -7,6 +7,8 @@ import Gremlin from './gremlins';
 export default function () {
 	return {
 		utils: Utils,
+		radius: 5, 
+		collisionDetect: {},
 		build: function (planetWidth) {
 
 			let dotsCont = Assets.Container();
@@ -18,6 +20,7 @@ export default function () {
 			
 			for (let k = 0; k < dotQ; k++) {
 				let dot = this.dot();
+				dot.radius = this.radius;
 				dot.dist = this.dist;
 	            dot.x = dot.startX =  this.dist * Math.cos( ( 2 * Math.PI) * k /  this.dotQ);
 	            dot.y = dot.startY =  this.dist * Math.sin( ( 2 * Math.PI) * k /  this.dotQ);
@@ -38,9 +41,22 @@ export default function () {
 		},
 		dot: function () {
 			let dot = Assets.Graphics();
-			dot.beginFill(0xFFFF00).drawCircle(0,0,5).endFill();
+			dot.beginFill(0xFFFF00).drawCircle(0,0,this.radius).endFill();
 			return dot;
 		},
+		// collisionDetect: function (heroObject, dot) {
+		// 	let globalPoint = dot.toGlobal(this.utils.app.stage);
+		// 	this.collisionDetect.x = globalPoint.x
+		// 	this.collisionDetect.y = globalPoint.y;
+		// 	this.collisionDetect.radius = this.radius;
+		// 	if(dot.visible &&
+		// 	   this.dotEatBoolean && 
+		// 		this.utils.circleToCircleCollisionDetection(heroObject, this.collisionDetect)[0]) 
+		// 	{
+		// 		console.log("hit")
+		// 		dot.visible = false;
+		// 	}
+		// },
 		addToStage: function () {
 
 		},

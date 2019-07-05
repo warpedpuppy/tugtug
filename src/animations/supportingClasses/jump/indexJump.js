@@ -30,7 +30,6 @@ export default function () {
 			this.jumpBackground.resize();
 		},
 		animate: function () {
-			this.jumpBackground.animate();
 			this.jumpAction.animate();
 		}
 			
