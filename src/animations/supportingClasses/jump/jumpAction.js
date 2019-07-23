@@ -21,7 +21,7 @@ export default function () {
 			this.canvasHeight = this.utils.canvasHeight;
 			this.stage = stage;
 			this.vx = this.speed;
-			let radius = (this.utils.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
+			let radius = (this.utils.hero.heroJump.cont.width / 2) * this.utils.root.hero.cont.scale.x;
 			this.heroCollisionDetectObject.radius = radius;
 		},
 		rotate: function (str) {
@@ -51,6 +51,7 @@ export default function () {
 		animate: function () {
 
 			if(this.pause)return;
+			
 	
 			for (let i = 0; i < this.bkgd.rainbowSwirlsQ; i ++) {
 				this.bkgd.rainbowSwirlInstances[i].animate();

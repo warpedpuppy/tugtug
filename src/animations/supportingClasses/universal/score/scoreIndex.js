@@ -25,6 +25,7 @@ export default function () {
 		gridScore: GridScore(), 
 		jumpScore: JumpScore(),
 		bounceScore: BounceScore(),
+		scoreGraphics: ScoreGraphics(),
 		init: function () {
 			this.flyTreasureChestQ = Config.flyTreasureChestQ;
 			this.flyCoinsPerTreasureChest = Config.flyCoinsPerTreasureChest;
@@ -34,15 +35,15 @@ export default function () {
 			this.createTotals();
 			
 			this.scoreTexts = this.stringCreate();
-			this.scoreGraphics = ScoreGraphics();
+			//this.scoreGraphics = ScoreGraphics();
 			this.topBanner = this.scoreGraphics.returnTopBar();
 			this.popUp = this.scoreGraphics.returnMainBar();
 		},
 		hide: function () {
-			ScoreGraphics.hide();
+			this.scoreGraphics.hide();
 		},
 		show: function () {
-			ScoreGraphics.show();
+			this.scoreGraphics.show();
 		},
 		createTotals: function () {
 			// dragon

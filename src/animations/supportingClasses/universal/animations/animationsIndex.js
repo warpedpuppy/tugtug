@@ -47,7 +47,7 @@ export default function (){
 					this.explosionBoolean = false;
 					this.explosion.removeFromStage();
 				}
-				Explosion.animate();
+				this.explosion.animate();
 			}
 		}
 	}

@@ -124,6 +124,8 @@ export default function () {
 		},
 		addToStage: function () {
 			//console.log('add hero jump to stage')
+			// let radius = (this.utils.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
+			// this.heroCollisionDetectObject.radius = radius;
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {

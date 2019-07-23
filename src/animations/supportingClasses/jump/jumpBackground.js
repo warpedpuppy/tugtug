@@ -98,7 +98,9 @@ export default function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
+			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.width / 2)) * this.currentOrb.scale.x;
 			//this.jumpPoints.addToStage();
+			this.addSpaceShip();
 		},
 		addSpaceShip: function () {
 			let spaceShipOrbIndex = this.currentOrb.index + 1;
@@ -106,7 +108,7 @@ export default function () {
 			let spaceShip = this.utils.root.grid.gridBuild.spaceShip;
 			spaceShip.x = spaceShip.y = 0;
 			//this.spaceShipOrb.addChild(spaceShip)
-			this.dotsContArray[spaceShipOrbIndex].addChild(spaceShip)
+			this.orbsCont[spaceShipOrbIndex].addChild(spaceShip)
 		},
 		addToken: function () {
 			if (!this.tokenTaken) {

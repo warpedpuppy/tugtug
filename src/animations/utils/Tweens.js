@@ -14,6 +14,8 @@ export default {
 		blastOff: BlastOff,
 		tweens: [],
 		defaultEasing: 'linear',
+		blastOff: BlastOff(),
+		returnHome: ReturnHome(),
 		killAll: function () {
 			
 			let clone = (this.tweens)?this.tweens.slice():[];
@@ -42,10 +44,10 @@ export default {
 			this.tween(hero, 0.5, {y:  [hero.y, -newPlanet.radius]});
 		},
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
-			BlastOff.spaceShipBlastOff(ship, maze, background, onCompleteHandler);
+			this.blastOff.spaceShipBlastOff(ship, maze, background, onCompleteHandler);
 		},
 		spaceShipReturnHome: function (background, maze, ship, onCompleteHandler) {
-			ReturnHome.spaceShipReturnHome(background, maze, ship, onCompleteHandler);
+			this.returnHome.spaceShipReturnHome(background, maze, ship, onCompleteHandler);
 		},
 		tween: function (item, seconds, changePropertiesObject, onComplete, easing) {
 			

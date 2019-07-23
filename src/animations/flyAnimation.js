@@ -126,7 +126,8 @@ export default function(obj) {
                
                 this.dbData = response.data;
                 if (indexToGet === 0) {
-                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    //this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    this.grid.boards = [...this.grid.boards, response.data.boards];
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -178,7 +179,7 @@ export default function(obj) {
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
 
-            this.jump.init(this.stage);
+          //  this.jump.init(this.stage);
             
             this.transitionAnimation.init(this);
 

@@ -110,7 +110,7 @@ export default function (){
 
 		},
 		setLimits: function () {
-
+			console.log("here = ", this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard])
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 

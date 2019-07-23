@@ -42,6 +42,7 @@ export default function () {
 			this.utils.root.score.show();
 			Tweens.killAll();
 			this.utils.root.makeJumpActive();
+			//this.ship.visible = false;
 		},
 		returnHome: function () {
 			this.utils.root.score.hide();

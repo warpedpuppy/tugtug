@@ -6,6 +6,7 @@ export default function () {
 	return {
 		jumpAction: JumpAction(),
 		jumpBackground: JumpBackground(),
+
 		init: function (stage) {
 			this.removeFromStage = this.removeFromStage.bind(this);
 			this.background = this.jumpBackground;
@@ -20,6 +21,7 @@ export default function () {
 			this.jumpBackground.reset();
 		},
 		addToStage: function () {
+			
 			this.jumpBackground.addToStage();
 			return this.jumpAction;
 		},

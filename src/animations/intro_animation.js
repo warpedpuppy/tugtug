@@ -126,7 +126,8 @@ export default function(obj) {
                
                 this.dbData = response.data;
                 if (indexToGet === 0) {
-                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    //this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    this.grid.boards = [...this.grid.boards, response.data.boards];
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -371,7 +372,7 @@ export default function(obj) {
             //this.ship.parent.removeChild(this.ship);
             
             this.switchPlayer("jump");
-            this.jump.jumpBackground.setUp();
+           // this.jump.jumpBackground.addSpace();
 
              if (Config.testingJump) {
                 let background = this.utils.root.jump.jumpBackground.orbsCont;
