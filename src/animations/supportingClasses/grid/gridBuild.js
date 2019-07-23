@@ -223,8 +223,14 @@ export default function () {
 				}
 			}
 
-			this.placeShip();
-			this.placeMircoscope();
+
+			if (this.utils.root.all) {
+				this.placeShip();
+				this.placeMircoscope();
+			}
+			
+
+
 			this.placeItems(this.transitionItemsArray, true);
 			this.placeItems(this[`${mode}TreasureChests`]);
 			this.placeItems(this.magicPillsArray);
