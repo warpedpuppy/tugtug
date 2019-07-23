@@ -1,6 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
-import Tweens from './utils/tweens';
+import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
@@ -53,6 +53,7 @@ export default function(obj) {
         levelComplete: LevelComplete(),
         fullStop: false,
         animations: Animations(),
+        all: true,
         init: function (isMobile, isMobileOnly) {
              console.log('window.devicePixelRatio', window.devicePixelRatio)
             if (Config.testingBounce) {
@@ -172,7 +173,7 @@ export default function(obj) {
             
             this.swim.init(this.stage);
 
-            //this.bounce.init(this.stage);
+            this.bounce.init(this.stage);
 
             this.fly.init(this);
 

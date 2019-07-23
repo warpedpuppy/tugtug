@@ -2,7 +2,7 @@ import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
 import Config from '../../animationsConfig';
 import RainbowSwirls from './rainbowSwirls';
-import Tweens from '../../utils/tweens';
+import Tweens from '../../utils/Tweens';
 import Planets from './jumpBackground/planets/planet';
 import JumpTokenUnlockedGraphic from './jumpTokenUnlocked';
 import ThreeInARow from './threeInARow';
@@ -98,17 +98,18 @@ export default function () {
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
-			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.width / 2)) * this.currentOrb.scale.x;
+			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.background.width / 2));// * this.currentOrb.background.scale.x;
 			//this.jumpPoints.addToStage();
-			this.addSpaceShip();
+			
 		},
 		addSpaceShip: function () {
 			let spaceShipOrbIndex = this.currentOrb.index + 1;
 			this.spaceShipOrb = this.orbs[spaceShipOrbIndex];
 			let spaceShip = this.utils.root.grid.gridBuild.spaceShip;
 			spaceShip.x = spaceShip.y = 0;
-			//this.spaceShipOrb.addChild(spaceShip)
-			this.orbsCont[spaceShipOrbIndex].addChild(spaceShip)
+			spaceShip.scale.set(this.currentOrb.background.scale.x);
+			this.orbs[spaceShipOrbIndex].spaceShip = true;
+			this.orbs[spaceShipOrbIndex].addChild(spaceShip)
 		},
 		addToken: function () {
 			if (!this.tokenTaken) {
@@ -170,15 +171,16 @@ export default function () {
                     y: [oldPlanet.y, this.currentOrb.y]
                 }, undefined, 'easeOutBounce')
 
-
+                 console.log(newPlanet.spaceShip)
 
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
 
-				// if (newPlanet === this.spaceShipOrb) {
-				// 	this.hero.activeHero.cont.y = 0;
-				// 	this.pause = true;
-				// 	this.utils.root.jump.jumpAction.pause = true;
-				// 	this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
+				if (this.utils.root.all && newPlanet.spaceShip) {
+					this.hero.activeHero.cont.y = 0;
+					this.pause = true;
+					this.utils.root.jump.jumpAction.pause = true;
+					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
+				}
 				// } else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
 
 				// 	this.jumpTokenTaken = true;

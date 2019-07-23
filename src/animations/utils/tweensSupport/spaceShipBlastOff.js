@@ -1,7 +1,7 @@
 import Assets from '../assetCreation';
 import Utils from '../utils';
 import Config from '../../animationsConfig';
-import Tweens from '../tweens';
+import Tweens from '../Tweens';
 export default function () {
 	return {
 		utils: Utils,
@@ -27,6 +27,7 @@ export default function () {
 			
 		},
 		spaceShipBlastOff_2: function () {
+
 			this.utils.root.grid.gridBuild.addRemoveVortexes(false);
 			
 			let shipSpace = this.utils.root.grid.gridBuild.shipSpace;
@@ -55,7 +56,6 @@ export default function () {
 
 		},
 		spaceShipBlastOff_3: function () {
-
 			this.background.alpha = 0;
 			Tweens.tween(this.background.scale, 5, 
 			{

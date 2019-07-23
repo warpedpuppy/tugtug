@@ -1,7 +1,7 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 // import Config from '../../../../animationsConfig';
-import Tweens from '../../../../utils/tweens';
+import Tweens from '../../../../utils/Tweens';
 export default function () {
 	return {
 		utils: Utils,
@@ -43,6 +43,7 @@ export default function () {
 			Tweens.killAll();
 			this.utils.root.makeJumpActive();
 			//this.ship.visible = false;
+			this.utils.root.jump.jumpBackground.addSpaceShip()
 		},
 		returnHome: function () {
 			this.utils.root.score.hide();

@@ -1,9 +1,9 @@
 import Assets from './assetCreation';
 import Utils from './utils';
 import Config from '../animationsConfig';
-import BlastOff from './tweens/spaceShipBlastOff';
-import ReturnHome from './tweens/spaceShipReturnHome';
-import Easing from './tweens/easing';
+import BlastOff from './tweensSupport/spaceShipBlastOff';
+import ReturnHome from './tweensSupport/spaceShipReturnHome';
+import Easing from './tweensSupport/easing';
 export default {
 
 		utils: Utils,

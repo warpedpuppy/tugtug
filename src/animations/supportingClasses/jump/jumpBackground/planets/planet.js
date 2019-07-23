@@ -3,7 +3,7 @@ import Utils from '../../../../utils/utils';
 import Config from '../../../../animationsConfig';
 import Dots from './dots';
 import Gremlin from './gremlins';
-import Tweens from '../../../../utils/tweens';
+import Tweens from '../../../../utils/Tweens';
 export default function () {
 	return {
 		utils: Utils,
@@ -11,6 +11,7 @@ export default function () {
 		gremlin: Gremlin(),
 		cont: Assets.Container(),
 		dotEatBoolean: true,
+		spaceShip: false, 
 		buildPlanet: function (counter, scale) {
 			this.scaleIt = this.scaleIt.bind(this)
 
@@ -49,6 +50,7 @@ export default function () {
 			this.cont.bigScale = this.scale * 2;
 			this.cont.smallScale = this.scale;
 			this.cont.classRef = this;
+			this.cont.spaceShip = this.spaceShip;
 			return this.cont;
 		},
 		dotsAndGremlinCollision: function (heroObject) {
