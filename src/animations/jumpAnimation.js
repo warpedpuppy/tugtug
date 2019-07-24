@@ -1,6 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
-import Tweens from './utils/tweens';
+import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 

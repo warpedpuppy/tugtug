@@ -30,6 +30,7 @@ export default function () {
 				c.y = this.utils.randomNumberBetween(0, this.utils.canvasHeight)
 				this.parentCont.addChild(c);
 			}
+			
 		},
 		removeFromStage: function () {
 			for(let i = 0; i < this.cloudQ; i ++){

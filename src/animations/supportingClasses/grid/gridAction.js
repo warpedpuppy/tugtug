@@ -1,6 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import Tweens from '../../utils/tweens';
+import Tweens from '../../utils/Tweens';
 import Config from '../../animationsConfig';
 export default function (){
 	return {
@@ -204,11 +204,16 @@ export default function (){
 						this[`${this.utils.root.activeMode}TreasureChests`].splice(index, 1);
 						this.utils.root.score.gridScore.treasureIncrease();
 					} else if (item.name === 'token') {
-						if (item.mode === this.utils.root.activeMode) {
-							this.gridBuild.cont.removeChild(item)
-			 				this.utils.root.earnToken(item);
+						if (this.utils.root.all) {
+							if (item.mode === this.utils.root.activeMode) {
+								this.gridBuild.cont.removeChild(item)
+				 				this.utils.root.earnToken(item);
+							} else {
+								this.utils.root.tokens.wrongTokenAnimation(item);
+							}
 						} else {
-							this.utils.root.tokens.wrongTokenAnimation(item);
+							this.gridBuild.cont.removeChild(item)
+				 			this.utils.root.earnToken(item);
 						}
 					} else if (item.name === 'spaceship') {
 						this.pause = true;

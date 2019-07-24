@@ -93,8 +93,12 @@ export default function () {
 			}
 			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
 			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
-			// obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
-			// obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
+
+			if (!this.utils.root.all) {
+				obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
+				obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
+			}
+			
 			return obj;
 		},
 		addCoinToGrid: function () {
@@ -436,6 +440,7 @@ export default function () {
 			
 		},
 		placeTokens: function () {
+
 			for (let key in this.tokenData) {
 				let index = key - 1;
 				let t = this.tokens[index];
@@ -447,7 +452,12 @@ export default function () {
 				t.x = this.tokenData[key].x + this.blockWidth / 2;
 				t.y = this.tokenData[key].y + this.blockHeight / 2;
 				//this.tokens.push(t);
-				if(t.num < 4)this.cont.addChild(t);
+				if (!this.utils.root.all) {
+					this.cont.addChild(t);
+				} else if (t.num < 3) {
+					this.cont.addChild(t);
+				}
+				
 			}
 		},
 		placeHero: function () {

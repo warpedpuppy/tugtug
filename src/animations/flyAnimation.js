@@ -1,6 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
-import Tweens from './utils/tweens';
+import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
@@ -123,11 +123,11 @@ export default function(obj) {
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
-               
+               console.log(response.data)
                 this.dbData = response.data;
                 if (indexToGet === 0) {
-                    //this.grid.boards = [...this.grid.boards, ...response.data.boards];
-                    this.grid.boards = [...this.grid.boards, response.data.boards];
+                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    //this.grid.boards = [...this.grid.boards, response.data.boards];
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -384,8 +384,8 @@ export default function(obj) {
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
-            this.jump.reset();
-            this.bounce.reset();
+           // this.jump.reset();
+            //this.bounce.reset();
 
             this[this.activeMode].removeFromStage();
             this.switchPlayer(this.mode[0]);

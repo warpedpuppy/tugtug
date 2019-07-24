@@ -79,7 +79,6 @@ export default function () {
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
-			console.log(this.boards)
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 			this.gridBuild.resetBaddies();
 			this.gridAction.setLimits();
