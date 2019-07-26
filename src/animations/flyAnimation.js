@@ -123,7 +123,6 @@ export default function(obj) {
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
-               console.log(response.data)
                 this.dbData = response.data;
                 if (indexToGet === 0) {
                     this.grid.boards = [...this.grid.boards, ...response.data.boards];
@@ -307,10 +306,7 @@ export default function(obj) {
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
-            this.swim.resize();
-            this.bounce.resize();
             this.fly.resize();
-            this.jump.resize();
             this.tokens.resize();
             if (this.isMobile) {
                 this.controlPanel.resize();

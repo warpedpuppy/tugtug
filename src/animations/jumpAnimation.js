@@ -265,15 +265,15 @@ export default function(obj) {
             if (this.activeMode === 'fly' || this.activeMode === 'swim') {
                 this.grid.resize();
             }
-            this.score.resize();
+            //this.score.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
-            this.swim.resize();
-            this.bounce.resize();
-            this.fly.resize();
+            //this.swim.resize();
+            //this.bounce.resize();
+           // this.fly.resize();
             this.jump.resize();
-            this.tokens.resize();
+            //this.tokens.resize();
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    

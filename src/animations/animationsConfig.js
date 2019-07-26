@@ -14,7 +14,7 @@ export default {
 	spaceColQ: 6,
 	spaceDotsPerPlanet: 10,
 	magicPillsQ: 20,
-	transitionItemsQ: 0,
+	transitionItemsQ: 100,
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
 	flyBlockSize: [400, 400],

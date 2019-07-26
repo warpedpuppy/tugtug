@@ -127,8 +127,8 @@ export default function(obj) {
                
                 this.dbData = response.data;
                 if (indexToGet === 0) {
-                    //this.grid.boards = [...this.grid.boards, ...response.data.boards];
-                    this.grid.boards = [...this.grid.boards, response.data.boards];
+                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    //this.grid.boards = [...this.grid.boards, response.data.boards];
                     this.buildGame();
                  } else {
                     if (response.data.boards) {

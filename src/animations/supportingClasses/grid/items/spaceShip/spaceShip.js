@@ -44,6 +44,7 @@ export default function () {
 			this.utils.root.makeJumpActive();
 			//this.ship.visible = false;
 			this.utils.root.jump.jumpBackground.addSpaceShip()
+			
 		},
 		returnHome: function () {
 			this.utils.root.score.hide();

@@ -93,13 +93,14 @@ export default function () {
 
 			this.currentOrb = this.landingOrb;
 			this.orbsCont.pivot = Assets.Point(this.landingOrb.x, this.landingOrb.y)
-			this.orbsCont.x = (this.wh.canvasWidth / 2);
-			this.orbsCont.y = (this.wh.canvasHeight / 2);
+			this.orbsCont.x = (this.utils.canvasWidth / 2);
+			this.orbsCont.y = (this.utils.canvasHeight / 2);
 			this.hero.cont.y = this.utils.canvasHeight / 2;
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
 			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.background.width / 2));// * this.currentOrb.background.scale.x;
 			//this.jumpPoints.addToStage();
+			console.log("jump background add to stage")
 			
 		},
 		addSpaceShip: function () {
@@ -109,7 +110,9 @@ export default function () {
 			spaceShip.x = spaceShip.y = 0;
 			spaceShip.scale.set(this.currentOrb.background.scale.x);
 			this.orbs[spaceShipOrbIndex].spaceShip = true;
-			this.orbs[spaceShipOrbIndex].addChild(spaceShip)
+			this.orbs[spaceShipOrbIndex].addChild(spaceShip);
+
+			console.log("add space ship", this.utils.canvasWidth, this.orbsCont.x)
 		},
 		addToken: function () {
 			if (!this.tokenTaken) {
@@ -132,15 +135,18 @@ export default function () {
 		},
 		resize: function () {
 
-			//this.jumpPoints.resize();
 			this.background.clear();
 			this.background.beginFill(0x000066).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
 			this.orbsCont.x = (this.utils.canvasWidth / 2);
 			this.orbsCont.y = (this.utils.canvasHeight / 2);
+
+			this.cont.x = 0;
+			this.cont.y = 0;
+
 		},
 		switchPlanets: function (newPlanet, i) {
-				
+
 				let oldPlanet = this.currentOrb;
 
 				this.pause = true;

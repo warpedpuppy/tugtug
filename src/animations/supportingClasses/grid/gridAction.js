@@ -110,7 +110,7 @@ export default function (){
 
 		},
 		setLimits: function () {
-			console.log("here = ", this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard])
+			//console.log("here = ", this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard])
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
@@ -124,6 +124,12 @@ export default function (){
 		
 			this.rightBorder = this.rightEdge = this.boardWidth - this.leftEdge;
 			this.bottomBorder = this.bottomEdge = this.boardHeight - this.topBorder;
+
+			 this.heroCollisionDetector = {
+				x: this.utils.canvasWidth / 2,
+				y: this.utils.canvasHeight / 2,
+				radius: 10
+			}
 		},
 		itemHitDetect: function (item) {
 			let globalPoint = this.gridBuild.cont.toGlobal(item);

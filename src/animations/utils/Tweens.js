@@ -51,7 +51,7 @@ export default {
 		},
 		tween: function (item, seconds, changePropertiesObject, onComplete, easing) {
 			
-			if(item.isTweening)return;
+			if(!item || item.isTweening)return;
 
 			item.id = this.utils.randomIntBetween(10, 20);
 			

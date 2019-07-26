@@ -234,8 +234,10 @@ export default function () {
 			}
 			
 
-
-			this.placeItems(this.transitionItemsArray, true);
+			if (this.utils.root.all) {
+				this.placeItems(this.transitionItemsArray, true);
+			}
+			
 			this.placeItems(this[`${mode}TreasureChests`]);
 			this.placeItems(this.magicPillsArray);
 
@@ -360,6 +362,8 @@ export default function () {
 		},
 		placeItems: function (array, isTransitionItem) {
 			
+			if(!array)return;
+
 			array.forEach((item, index) => {
 				if (!this.freeSpaces.length) return;
 
@@ -524,6 +528,7 @@ export default function () {
 				this.saveJ = block.j;
 			}
 
+
 			this.cont.alpha = 0;
 			window.clearTimeout(this.timeOut);
 			this.timeOut = setTimeout(this.resized.bind(this), 200)
@@ -542,6 +547,10 @@ export default function () {
 
 			this.utils.root.grid.gridAction.pause = false;
 			this.utils.root.action = true;
+
+			this.placeItems(this[`${this.utils.root.activeMode}TreasureChests`]);
+			this.placeItems(this.magicPillsArray);
+
 			window.clearTimeout(this.timeOut);
 		},
 		assignAboveBelowRightLeftCovered: function () {
