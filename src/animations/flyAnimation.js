@@ -188,13 +188,13 @@ export default function(obj) {
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
-                this.testButton = Assets.Sprite('redTile.png');
-                this.testButton.x = 10;
-                this.testButton.y = 140;
-                this.testButton.interactive = true;
+                // this.testButton = Assets.Sprite('redTile.png');
+                // this.testButton.x = 10;
+                // this.testButton.y = 140;
+                // this.testButton.interactive = true;
                 let that = this;
-                this.testButton.pointerdown = function(){that.switchPlayer()};
-                this.stage.addChild(this.testButton)
+                // this.testButton.pointerdown = function(){that.switchPlayer()};
+                // this.stage.addChild(this.testButton)
             } 
                
             if (this.isMobileOnly) {
