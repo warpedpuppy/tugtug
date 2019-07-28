@@ -38,11 +38,13 @@ class Home extends React.Component {
 
 		if (!this.state.active) {
 			return (
-			<div className="homeMenuButtonDiv" >
-				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>fly</button>
-				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>swim</button>
-				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>jump</button>
-				<button className="homeMenuButton" onClick={ e => this.changeState(e)}>all three</button>
+			<div className="buttonDivCont">
+				<div className="homeMenuButtonDiv" >
+					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>fly</button>
+					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>swim</button>
+					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>jump</button>
+					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>all three</button>
+				</div>
 			</div>
 			)
 		} else if(this.state.active === 'jump') {

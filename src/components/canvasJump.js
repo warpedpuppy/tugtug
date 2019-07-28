@@ -110,7 +110,7 @@ export default class HomeCanvas extends React.Component {
 				<div>
 				<div id='startGameCanvas' className={startScreenCSS} ></div>
 				<div id='homeCanvas'></div>
-				<button onClick={() => this.props.closeGame()} className='closeButton'>close</button>
+				<button onClick={() => this.props.closeGame()} className='closeButton'></button>
 				<h1 id="testOrientation"></h1>
 				</div>
 			)

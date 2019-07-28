@@ -92,8 +92,8 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
         
-            const fpsCounter = new PixiFps();
-            app.stage.addChild(fpsCounter);
+            const fpsCounter = this.fpsCounter = new PixiFps();
+            
 
             this.stage.addChild(this.filterContainer);
 
@@ -222,7 +222,7 @@ export default function(obj) {
             if (Config.testingJump) {
                 this.makeJumpActive();
             }
-
+            this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
@@ -380,7 +380,7 @@ export default function(obj) {
                 background.scale.set(1)
                 this.jump.addToStage();
             }
-
+            this.app.stage.addChild(this.fpsCounter);
         },
         reset: function () {
             this.score.nextLevel();
@@ -396,6 +396,8 @@ export default function(obj) {
             this.getDatabaseData();
 
             this.fullStop = false;
+
+            this.app.stage.addChild(this.fpsCounter);
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();

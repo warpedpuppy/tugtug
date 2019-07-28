@@ -93,8 +93,8 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
         
-            const fpsCounter = new PixiFps();
-            app.stage.addChild(fpsCounter);
+            const fpsCounter = this.fpsCounter = new PixiFps();
+            
 
             this.stage.addChild(this.filterContainer);
 
@@ -342,7 +342,7 @@ export default function(obj) {
                 background.scale.set(1)
                 this.jump.addToStage();
             }
-
+            this.app.stage.addChild(this.fpsCounter);
         },
         reset: function () {
             this.score.nextLevel();

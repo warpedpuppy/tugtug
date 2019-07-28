@@ -66,6 +66,9 @@ export default function () {
 			this.segments = this.fish;
 			
 		},
+		hit: function () {
+
+		},
 		fishBodySegment: function (radius, color, num, str) {
 			let cont = Assets.Container();
             cont.radius = radius;

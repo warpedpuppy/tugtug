@@ -91,7 +91,7 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
         
-            const fpsCounter = new PixiFps();
+            const fpsCounter = this.fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
             this.stage.addChild(this.filterContainer);
@@ -221,7 +221,8 @@ export default function(obj) {
             if (Config.testingJump) {
                 this.makeJumpActive();
             }
-
+            
+            this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
