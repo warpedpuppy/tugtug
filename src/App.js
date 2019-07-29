@@ -25,7 +25,7 @@ class App extends React.Component {
     super(props);
     this.loggedInCheck = this.loggedInCheck.bind(this);
     this.state = {
-      loggedIn: true,
+      loggedIn: false,
       showStartScreen: true
     }
   }
