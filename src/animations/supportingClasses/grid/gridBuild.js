@@ -2,6 +2,7 @@ import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Tweens from '../../utils/Tweens';
 import SpaceShip from './items/spaceShip/spaceShip';
+import Microscope from './items/spaceShip/microscope';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddyIndex';
 import Coins from './items/flyAndSwimCoins/Coins';
@@ -48,6 +49,7 @@ export default function () {
 		vortexes: Vortexes(),
 		gridResizeHandler: GridResizeHandler(),
 		gridItems: GridItems(),
+		microscopeClass: Microscope(),
 		init: function () {
 			//this.moveItem = this.moveItem.bind(this);
 
@@ -55,10 +57,11 @@ export default function () {
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 			
 			if (this.utils.root.all) {
-				this.microscope = Assets.Sprite('microscope.png');
-				this.microscope.anchor.set(0.5);
-				this.microscope.scale.set(0.5);
-				this.microscope.name = 'bounce';
+				this.microscope = this.microscopeClass.build();
+				// this.microscope = Assets.Sprite('microscope.png');
+				// this.microscope.anchor.set(0.5);
+				// this.microscope.scale.set(0.5);
+				// this.microscope.name = 'bounce';
 				this.spaceShip = SpaceShip().init()
 			}
 		
@@ -210,8 +213,8 @@ export default function () {
 
 
 			if (this.utils.root.all) {
-				this.placeShip();
-				this.placeMircoscope();
+				this.spaceShip.classRef.placeShip();
+				this.microscopeClass.place();
 			}
 			
 
@@ -239,34 +242,6 @@ export default function () {
 			this.cont.calculatedHeight = data.rows * this.blockHeight;
 			//this.changeBackground(this.utils.root.activeMode)
 
-		},
-		placeShip: function () {
-			// for now just place space ship here
-			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 0;
-			//console.log('ship space = ', this.freeSpaces[index])
-			this.shipSpace = this.freeSpaces[index];
-			this.spaceShip.x = this.spaceShip.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
-			this.spaceShip.y = this.spaceShip.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
-			this.freeSpaces.splice(index, 1)
-			this.cont.addChild(this.spaceShip);
-			this.shipSpace[2].alpha = 0;
-			this.shipSpace[5].alpha = 0;
-
-			if(this.vortexes.vortexArray.length < 2)this.vortexes.createVortex(0.15, this.spaceShip)
-			
-			this.spaceShipPoint = {x: this.spaceShip.x, y: this.spaceShip.y, item: this.spaceShip}
-		},
-		placeMircoscope: function () {
-			// for now just place space ship here
-			let index = (!Config.testing)? Math.floor(Math.random()*this.freeSpaces.length) : 1;
-			this.microscope.x = this.microscope.storeX = this.freeSpaces[index][0] + this.blockWidth / 2;
-			this.microscope.y = this.microscope.storeY = this.freeSpaces[index][1] + this.blockHeight / 2;
-			this.freeSpaces.splice(index, 1);
-			this.microscope.hit = false;
-			this.cont.addChild(this.microscope);
-
-			if(this.vortexes.vortexArray.length < 2)this.vortexes.createVortex(-0.15, this.microscope)
-		
 		},
 		placeHero: function () {
 

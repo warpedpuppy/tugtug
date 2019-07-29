@@ -1,6 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
-// import Config from '../../../../animationsConfig';
+import Config from '../../../../animationsConfig';
 import Tweens from '../../../../utils/Tweens';
 export default function () {
 	return {
@@ -87,6 +87,23 @@ export default function () {
 
 			this.utils.root.endSpaceShipJourney();
 			this.utils.root.animations.circles({start: false, expand: true});
+		},
+		placeShip: function () {
+			// for now just place space ship here
+			let gridBuild = this.utils.root.grid.gridBuild;
+			let index = (!Config.testing)? Math.floor(Math.random()*gridBuild.freeSpaces.length) : 0;
+			//console.log('ship space = ', this.freeSpaces[index])
+			gridBuild.shipSpace = gridBuild.freeSpaces[index];
+			gridBuild.spaceShip.x = gridBuild.spaceShip.storeX = gridBuild.freeSpaces[index][0] + gridBuild.blockWidth / 2;
+			gridBuild.spaceShip.y = gridBuild.spaceShip.storeY = gridBuild.freeSpaces[index][1] + gridBuild.blockHeight / 2;
+			gridBuild.freeSpaces.splice(index, 1)
+			gridBuild.cont.addChild(gridBuild.spaceShip);
+			gridBuild.shipSpace[2].alpha = 0;
+			gridBuild.shipSpace[5].alpha = 0;
+
+			if(gridBuild.vortexes.vortexArray.length < 2)gridBuild.vortexes.createVortex(0.15, gridBuild.spaceShip)
+			
+			gridBuild.spaceShipPoint = {x: gridBuild.spaceShip.x, y: gridBuild.spaceShip.y, item: gridBuild.spaceShip}
 		},
 		addToStage: function () {
 
