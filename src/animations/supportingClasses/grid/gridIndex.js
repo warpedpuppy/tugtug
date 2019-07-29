@@ -88,21 +88,22 @@ export default function () {
 			// 	this.parent.dbData.boards.push(newData.boards);
 			// } 
 		},
-
 		addToStage: function (index) {
-			console.log('add to stage called')
 			this.gridAction.pause = false;
 			this.parentCont.addChildAt(this.gridBuild.cont, index)
-			this.gridBuild.addRemoveVortexes(true)
-			
+			if (this.utils.root.all) {
+				this.gridBuild.vortexes.addRemoveVortexes(true)
+			}
 		},
 		removeFromStage: function () {
 			this.gridAction.pause = true;
 			this.parentCont.removeChild(this.gridBuild.cont);
-			this.gridBuild.addRemoveVortexes(false);
+			if (this.utils.root.all) {
+				this.gridBuild.vortexes.addRemoveVortexes(false);
+			}
 		},
 		resize: function () {
-			this.gridBuild.resize();
+			this.gridBuild.gridResizeHandler.resize();
 			this.gridAction.setLimits();
 		},
 		animate: function () {

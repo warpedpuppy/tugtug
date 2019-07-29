@@ -150,7 +150,7 @@ export default function (){
 
 			if(this.pause)return;
 
-			this.gridBuild.vortexes.forEach(v => {
+			this.gridBuild.vortexes.vortexArray.forEach(v => {
 				v.vortex.rotation += v.vortex.rotationQ;
 				let gp = this.gridBuild.cont.toGlobal(v.item),
 				    x = gp.x,
@@ -168,7 +168,7 @@ export default function (){
 			this[`${this.utils.root.activeMode}Baddies`].animate();
 
 			//keeping this out of the above loop because items will continue being added and subtracted from it
-			this.gridBuild.onGridCoins[this.utils.root.activeMode].forEach((item, index) => {
+			this.gridBuild.coins.onGridCoins[this.utils.root.activeMode].forEach((item, index) => {
 
 				item.x = this.utils.cosWave(item.startPointX, item.differential, item.speed);
 				item.y = this.utils.cosWave(item.startPointY, item.differential, item.speed)
@@ -184,7 +184,7 @@ export default function (){
 						this.utils.root.score.gridScore.treasureChange('up');
 
 						//splice from array
-						this.gridBuild.onGridCoins[this.utils.root.activeMode].splice(index, 1);
+						this.gridBuild.coins.onGridCoins[this.utils.root.activeMode].splice(index, 1);
 					}
 					
 				}
@@ -235,7 +235,7 @@ export default function (){
 					//console.log(item.counter, item.counterLimit, item.isTweening)
 					if (item.counter >= item.counterLimit && !item.isTweening) {
 						item.isTweening = true;
-						this.gridBuild.moveItem1(item);
+						this.gridBuild.gridItems.moveItem1(item);
 					} else {
 						if(item.name === 'treasureChest'){
 							//console.log(item)

@@ -1,11 +1,11 @@
 export default {
-	itemLifeSpan: [600, 1200], 
+	itemLifeSpan: [50, 100], 
 	jumpTokenUnlockPoints: 10,
 	bounceTotalPoints: 200,
 	swimVelocities: [1, 2],
 	flyVelocity: 6,
 	swimVelocity: 6,
-	flyTreasureChestQ: 100,
+	flyTreasureChestQ: 200,
 	flyCoinsPerTreasureChest: 100,
 	flyBaddyHitCost: 1,
 	swimTreasureChestQ: 10,
@@ -31,7 +31,7 @@ export default {
 	testingJump: false,
 	testingBounce: false,
 	baddyHealth: 1,
-	flyBaddyQ: 100, 
+	flyBaddyQ: 200, 
 	swimBaddyQ: 100,
 	colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 	rainbowColors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000]

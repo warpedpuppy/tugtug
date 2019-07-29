@@ -11,21 +11,13 @@
 	background: transparent;
 
 }
-/*.closeButton {
-	position: fixed;
-	z-index: 1000;
-	width:50px;
-	height:50px;
-	top:0;
-	left:0;
-	cursor:pointer;
-}*/
+
 .closeButton {
   position: absolute;
   right: 32px;
   top: 32px;
-  width: 32px;
-  height: 32px;
+  width: 33px;
+  height: 33px;
   opacity: 0.3;
   cursor: pointer;
 }

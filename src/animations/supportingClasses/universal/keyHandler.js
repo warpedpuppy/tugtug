@@ -68,7 +68,7 @@ export default function () {
                 (this.parent.activeMode === 'fly'  || this.parent.activeMode === 'swim') 
                 && this.parent.activeAction.fire)
             {
-                this.parent.swim.swimAction.fire(true)
+                if(this.parent.swim)this.parent.swim.swimAction.fire(true)
                 this.parent.activeAction.fire(false);
             }
         },

@@ -96,34 +96,16 @@ export default class HomeCanvas extends React.Component {
 	}
 	render () {
 		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
-		// if (isMobileOnly) {
-		// 	return (
-		// 		<div className="mobileOnlyApology">
-		// 			<h1>please view this content on either an ipad or a computer!</h1>
-		// 		</div>
-		// 	)
-		// } else 
-
-		if (this.state.loggedIn) {
-			return (
-				<div>
-				<div id='startGameCanvas' className={startScreenCSS} ></div>
-				<button 
-					onClick={() => this.props.closeGame()} 
-					className='closeButton'
-					></button>
-				<div id='homeCanvas'></div>
-				<h1 id="testOrientation"></h1>
-				</div>
-			)
-		} else {
-			return (
-				<div>
-				
-				<TempLogIn loggedInFunction={this.loggedInCheck}/>
-				</div>
-			)
-		}
-		
+		return (
+			<div>
+			<div id='startGameCanvas' className={startScreenCSS} ></div>
+			<button 
+				onClick={() => this.props.closeGame()} 
+				className='closeButton'
+				></button>
+			<div id='homeCanvas'></div>
+			<h1 id="testOrientation"></h1>
+			</div>
+		)
 	}
 }

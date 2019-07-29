@@ -4,7 +4,11 @@ import Tweens from '../../utils/Tweens';
 import SpaceShip from './items/spaceShip/spaceShip';
 import Config from '../../animationsConfig';
 import Baddies from './baddies/baddyIndex';
-// import Tokens from '../tokens/levelTokens';
+import Coins from './items/flyAndSwimCoins/Coins';
+import Vortexes from './items/vortexes/vortexes';
+import GridResizeHandler from './gridResizeHandler';
+import GridItems from './items/gridItems';
+
 export default function () {
 	return {
 		cont: Assets.ParticleContainer(10000),
@@ -35,47 +39,40 @@ export default function () {
 		// solderPerGridSquareQ: 1,
 		flyBaddies: Baddies(),
 		swimBaddies: Baddies(),
-		onGridCoins: {},
+		//onGridCoins: {},
 		omnibusArray: [],
 		flyColors: [0x5713B8, 0xFF0F59, 0x4A34FF, 0x60B800, 0x0122FA],
 		shipSpace: [],
-		vortexes: [],
+		//vortexesArray: [],
+		coins: Coins(),
+		vortexes: Vortexes(),
+		gridResizeHandler: GridResizeHandler(),
+		gridItems: GridItems(),
 		init: function () {
 			//this.moveItem = this.moveItem.bind(this);
 
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 			
-			this.microscope = Assets.Sprite('microscope.png');
-			this.microscope.anchor.set(0.5);
-			this.microscope.scale.set(0.5);
-			this.microscope.name = 'bounce';
-		  	//items to be distributed around board
-			this.spaceShip = SpaceShip().init()
+			if (this.utils.root.all) {
+				this.microscope = Assets.Sprite('microscope.png');
+				this.microscope.anchor.set(0.5);
+				this.microscope.scale.set(0.5);
+				this.microscope.name = 'bounce';
+				this.spaceShip = SpaceShip().init()
+			}
+		
 			this.tokens = this.utils.root.tokens.tokens;
 			this.magicPillsArray = this.utils.root.grid.magicPillsArray;
 			this.flyTreasureChests = this.utils.root.grid.flyTreasureChests;
 			this.swimTreasureChests = this.utils.root.grid.swimTreasureChests;
 			this.transitionItemsArray = this.utils.root.grid.transitionItemsArray;
 
-			// this.omnibusArray = [
-			// 	...this.magicPillsArray, 
-			// 	...this.flyTreasureChests, 
-			// 	...this.swimTreasureChests, 
-			// 	...this.transitionItemsArray,
-			// 	...this.tokens, 
-			// 	this.spaceShip, 
-			// 	this.microscope
-			// ];
-
-  			//this.boards = this.utils.root.dbData.boards;
-  			// console.log('this grid build init')
-			// this.buildGrid(this.boards[this.currentBoard]);
-
+			
 			this.flyBaddies.init('fly');
 			this.swimBaddies.init('swim');
 
-			this.onGridCoins = {
+			this.coins.onGridCoins = {
 				fly: [],
 				swim: []
 			}
@@ -100,27 +97,6 @@ export default function () {
 			}
 			
 			return obj;
-		},
-		addCoinToGrid: function () {
-
-			let coinsInArray = this.onGridCoins[this.utils.root.activeMode].length;
-			let totalCoins = this.utils.root.score[`${this.utils.root.activeMode}Total`];
-
-			if (coinsInArray < totalCoins) {
-				let num = Math.ceil(Math.random()*11);
-				let coin = Assets.Sprite(`jewel${num}.png`);
-				coin.hit = false;
-
-				
-				coin.anchor.set(0.5);
-				coin.tint = 0xB29700;
-				this.onGridCoins[this.utils.root.activeMode].push(coin);
-
-				//add to stage
-				this.placeCoin(coin);
-			}
-
-			
 		},
 		buildGrid: function (data) {
 
@@ -147,11 +123,16 @@ export default function () {
 			this.omnibusArray = [
 				...this.magicPillsArray, 
 				...this[`${mode}TreasureChests`], 
-				...this.transitionItemsArray,
-				...this.tokens, 
-				this.spaceShip, 
-				this.microscope
+				...this.tokens
 			];
+
+			if (this.utils.root.all) {
+				this.omnibusArray = [
+				...this.omnibusArray, 
+				this.spaceShip, 
+				this.microscope, 
+				...this.transitionItemsArray]
+			}
 			
 
 
@@ -235,19 +216,19 @@ export default function () {
 			
 
 			if (this.utils.root.all) {
-				this.placeItems(this.transitionItemsArray, true);
+				this.gridItems.placeItems(this.transitionItemsArray, true);
 			}
 			
-			this.placeItems(this[`${mode}TreasureChests`]);
-			this.placeItems(this.magicPillsArray);
+			this.gridItems.placeItems(this[`${mode}TreasureChests`]);
+			this.gridItems.placeItems(this.magicPillsArray);
 
-			this.placeCoins(this.onGridCoins[mode])
+			this.coins.placeCoins(this.coins.onGridCoins[mode])
 
 			this[`${mode}Baddies`].placeCastlesAndSoldiers(this);
 
 			this.assignAboveBelowRightLeftCovered();
 			
-			this.placeTokens();
+			this.utils.root.tokens.tokensClass.placeTokens();
 			this.heroJ = data.hero.j;
 			this.heroI = data.hero.i;
 			this.placeHero();
@@ -258,27 +239,6 @@ export default function () {
 			this.cont.calculatedHeight = data.rows * this.blockHeight;
 			//this.changeBackground(this.utils.root.activeMode)
 
-		},
-		createVortex: function (rotateQ, item) {
-
-
-			let mask = Assets.Graphics();
-			mask.beginFill(0xFF3300).drawRect(0, 0, 400, 400).endFill();
-			let vortex = Assets.Sprite('vortex.png');
-			vortex.alpha = 0.5;
-			vortex.rotationQ = rotateQ;
-			vortex.anchor.set(0.5);
-			vortex.mask = mask;
-			this.vortexes.push({vortex, mask, item});
-		},
-		addRemoveVortexes: function(add) {
-			this.vortexes.forEach(v => {
-				if (add) {
-					this.utils.app.stage.addChildAt(v.vortex, 0);
-				} else {
-					this.utils.app.stage.removeChild(v.vortex);
-				}
-			})
 		},
 		placeShip: function () {
 			// for now just place space ship here
@@ -292,7 +252,7 @@ export default function () {
 			this.shipSpace[2].alpha = 0;
 			this.shipSpace[5].alpha = 0;
 
-			if(this.vortexes.length < 2)this.createVortex(0.15, this.spaceShip)
+			if(this.vortexes.vortexArray.length < 2)this.vortexes.createVortex(0.15, this.spaceShip)
 			
 			this.spaceShipPoint = {x: this.spaceShip.x, y: this.spaceShip.y, item: this.spaceShip}
 		},
@@ -305,164 +265,8 @@ export default function () {
 			this.microscope.hit = false;
 			this.cont.addChild(this.microscope);
 
-			if(this.vortexes.length < 2)this.createVortex(-0.15, this.microscope)
+			if(this.vortexes.vortexArray.length < 2)this.vortexes.createVortex(-0.15, this.microscope)
 		
-		},
-		placeCoin: function (coin) {
-			//this needs its own function
-			let coinSpacePossible = false;
-			if (this.coinSpaces.length) {
-				coinSpacePossible = true;
-			}
-			//if there are coinSpaces and random 10 < 5, use one of those spaces
-			let coinSpaceUse = Math.floor(Math.random()* 10) < 5;
-			if (this.freeSpaces.length === 0 || (coinSpacePossible && coinSpaceUse)) {
-				//add coin to space which currently has other coins
-				//console.log('add coin to new already used coin space')
-				let i = Math.floor(Math.random()*this.coinSpaces.length);
-				coin.x = this.coinSpaces[i][0] + this.blockWidth / 2;
-				coin.y = this.coinSpaces[i][1] + this.blockHeight / 2;
-				coin.currentSpace = this.freeSpaces[i];
-				this.cont.addChild(coin);
-			} else {
-				//console.log('add coin to new free space')
-				//place it on a free space
-
-
-
-				let i = Math.floor(Math.random()*this.freeSpaces.length);
-				console.log(this.freeSpaces.length, i)
-
-				coin.x = this.freeSpaces[i][0] + this.blockWidth / 2;
-				coin.y = this.freeSpaces[i][1] + this.blockHeight / 2;
-				
-				coin.currentSpace = this.freeSpaces[i];
-				this.coinSpaces.push(this.freeSpaces[i])
-				this.freeSpaces.splice(i, 1);
-				this.cont.addChild(coin);
-
-			}
-
-			//coin.scale.set(this.utils.randomNumberBetween(0.075, 0.25));
-
-			coin.startPointX = coin.x; 
-			coin.differential = this.utils.randomNumberBetween(10, 30);
-			coin.speed = this.utils.randomNumberBetween(0.001, 0.005);
-
-			coin.startPointY = coin.y; 
-			coin.differential = this.utils.randomNumberBetween(10, 30);
-			coin.speed = this.utils.randomNumberBetween(0.001, 0.005);
-
-		},
-		placeCoins: function (array) {
-			//this needs its own function because coins can share spaces
-			array.forEach((coin, index) => {
-				this.placeCoin(coin);
-			})
-		},
-		placeItems: function (array, isTransitionItem) {
-			
-			if(!array)return;
-
-			array.forEach((item, index) => {
-				if (!this.freeSpaces.length) return;
-
-				if (isTransitionItem) {
-
-					if (item.name === this.utils.root.activeMode) {
-						if (this.utils.root.activeMode === "fly") {
-							item.texture = this.utils.spritesheet.textures["swimTrans.png"];
-							item.name = "swim";
-						} else if (this.utils.root.activeMode === "swim") {
-							item.texture = this.utils.spritesheet.textures["flyTrans.png"];
-							item.name = "fly";
-						}
-					}
-				}
-				item.hit = false;
-				let i = Math.floor(Math.random()*this.freeSpaces.length);
-				item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
-				item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
-				item.storeScaleX = item.scale.x;
-				item.storeScaleY = item.scale.y;
-				item.counter = 0;
-            	item.counterLimit = this.utils.randomIntBetween(Config.itemLifeSpan[0], Config.itemLifeSpan[1]);
-            	//item.isTweening = false;
-				//this.freeSpaces.push([b.x, b.y, b, i, j]);
-				item.currentSpace = this.freeSpaces[i];
-				this.freeSpaces.splice(i, 1);
-				this.cont.addChild(item);
-			})
-		},
-		moveItem1: function (item) {
-			//	alert("shrink")
-			item.hit = true;
-
-			//this.moveItem2 = this.moveItem2.bind(this);
-			//let onCompleteHandler = ;
-			Tweens.tween(item.scale, 1, 
-				{
-					x: [item.scale.x,0], 
-					y: [item.scale.y,0]
-				}, 
-				this.moveItem2.bind(this, item), 
-				'easeOutBounce'
-				)
-			
-		},
-		moveItem2: function (item) {
-			//alert("grow")
-			//console.log("two hit")
-			//let onCompleteHandler = ;
-			Tweens.tween(item.scale, 1, 
-				{
-					x: [0,item.storeScaleX], 
-					y: [0,item.storeScaleY]
-				}, 
-				this.moveItem3.bind(this, item), 
-				'easeOutBounce'
-				)
-
-
-			this.freeSpaces.push(item.currentSpace);
-
-
-			//get new space for item
-			let i = Math.floor(Math.random() * this.freeSpaces.length);
-			item.x = this.freeSpaces[i][0] + this.blockWidth / 2;
-			item.y = this.freeSpaces[i][1] + this.blockHeight / 2;
-			item.currentSpace = this.freeSpaces[i];
-			this.freeSpaces.splice(i, 1);
-			//this.cont.addChild(item);
-			
-		},
-		moveItem3: function (item) {
-			//alert("reset")
-			item.hit = false;
-			item.counter = 0;
-			item.isTweening = false;
-			
-		},
-		placeTokens: function () {
-
-			for (let key in this.tokenData) {
-				let index = key - 1;
-				let t = this.tokens[index];
-				if (t.placed) {
-					continue;
-				}
-				t.anchor.set(0.5)
-				t.num = key;
-				t.x = this.tokenData[key].x + this.blockWidth / 2;
-				t.y = this.tokenData[key].y + this.blockHeight / 2;
-				//this.tokens.push(t);
-				if (!this.utils.root.all) {
-					this.cont.addChild(t);
-				} else if (t.num < 3) {
-					this.cont.addChild(t);
-				}
-				
-			}
 		},
 		placeHero: function () {
 
@@ -515,43 +319,6 @@ export default function () {
 			} else {
 				return  undefined;
 			}
-		},
-		resize: function () {
-			
-			 this.utils.root.grid.gridAction.pause = true;
-			 this.utils.root.action = false;
-		
-			if (!this.calcResize) {
-				this.calcResize = true;
-				let block = this.utils.root.grid.gridAction.storeCurrent;
-				this.saveI = block.i;
-				this.saveJ = block.j;
-			}
-
-
-			this.cont.alpha = 0;
-			window.clearTimeout(this.timeOut);
-			this.timeOut = setTimeout(this.resized.bind(this), 200)
-
-		},
-		resized: function () {
-	
-			this.calcResize = false;
-			this.cont.alpha = 1;
-			this.saveI++;
-			this.saveJ++;
-			let halfWidth = this.utils.canvasWidth / 2;
-			let halfHeight = this.utils.canvasHeight / 2;
-			this.cont.x = halfWidth - (this.saveJ * this.blockWidth) + (this.blockWidth / 2);
-			this.cont.y = halfHeight - (this.saveI * this.blockHeight) + (this.blockHeight /2);
-
-			this.utils.root.grid.gridAction.pause = false;
-			this.utils.root.action = true;
-
-			this.placeItems(this[`${this.utils.root.activeMode}TreasureChests`]);
-			this.placeItems(this.magicPillsArray);
-
-			window.clearTimeout(this.timeOut);
 		},
 		assignAboveBelowRightLeftCovered: function () {
 		

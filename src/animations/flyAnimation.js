@@ -25,7 +25,7 @@ import Animations from './supportingClasses/universal/animations/animationsIndex
 
 export default function(obj) {
     return {
-        mode: ['fly','swim'],
+        mode: ['fly'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -40,10 +40,7 @@ export default function(obj) {
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
-        swim: Swim(),
-        bounce: Bounce(),
         fly: Fly(),
-        jump: Jump(),
         tokens: Tokens(),
         controlPanel: ControlPanel(),
         grid: Grid(),
@@ -54,19 +51,13 @@ export default function(obj) {
         fullStop: false,
         animations: Animations(),
         init: function (isMobile, isMobileOnly) {
-             console.log('window.devicePixelRatio', window.devicePixelRatio)
-            if (Config.testingBounce) {
-                this.mode = ['bounce'];
-            }
-
+         
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            console.log(this.levelComplete);
             this.levelComplete.init();
 
-         
             if (!this.isMobileOnly) {
                 this.utils.getWidthAndHeight();
             } else {
@@ -169,7 +160,7 @@ export default function(obj) {
 
             this.filterAnimation.init(this.filterContainer);
             
-            this.swim.init(this.stage);
+            //this.swim.init(this.stage);
 
             //this.bounce.init(this.stage);
 
@@ -244,29 +235,29 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];    
             return this.activeMode;  
         },
-        switchPlayerWithAnimation: function (mode) {
+        // switchPlayerWithAnimation: function (mode) {
            
-            if (!this.transitionAnimationPlaying) {
+        //     if (!this.transitionAnimationPlaying) {
 
 
 
-                this.transitionAnimationPlaying = true;
-                this.action = false;
+        //         this.transitionAnimationPlaying = true;
+        //         this.action = false;
 
-                let oldActiveModeString = this.activeMode;
-                this[this.activeMode].removeFromStage();
+        //         let oldActiveModeString = this.activeMode;
+        //         this[this.activeMode].removeFromStage();
 
-                this.activeMode = (mode)?mode:this.increaseIndex();
-                let newActiveModeString = this.activeMode;
+        //         this.activeMode = (mode)?mode:this.increaseIndex();
+        //         let newActiveModeString = this.activeMode;
 
-                if (this.activeMode === 'bounce') {
-                    this.grid.removeFromStage();
-                }
+        //         if (this.activeMode === 'bounce') {
+        //             this.grid.removeFromStage();
+        //         }
             
-                this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
-            }
+        //         this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
+        //     }
 
-        },
+        // },
         switchPlayer: function (str) {
            
             if (str) {
@@ -276,19 +267,11 @@ export default function(obj) {
             }
  
            this.hero.switchPlayer(this.activeMode);
-
-           if (this.activeMode === 'jump') {
-                this.activeAction = this.jump.jumpAction;
-            } else {
-                this.activeAction = this[this.activeMode].addToStage();   
-            }
+           this.activeAction = this[this.activeMode].addToStage();   
+           
 
             if (this.isMobile) {
-                if (this.activeMode === 'bounce') {
-                    this.controlPanel.removeFromStage();
-                } else {
-                    this.controlPanel.addToStage();
-                }
+                this.controlPanel.addToStage();
             }
           
             this.transitionAnimationPlaying = false;
@@ -322,7 +305,7 @@ export default function(obj) {
 
             this.action = false;
 
-            if(this.timeOut){
+            if (this.timeOut) {
                 clearTimeout(this.timeOut);
             }
             this.timeOut = setTimeout(this.resized.bind(this), 200)
@@ -334,47 +317,47 @@ export default function(obj) {
             clearTimeout(this.timeOut);
            
         },
-        startSpaceShipJourney: function () {
-            this.storeActiveMode = this.activeMode;
-            this.hero.cont.visible = false;
-            this.activeAction.vx = this.activeAction.vy = 0;
-            this.grid.gridAction.pause = true;
-            this[this.activeMode].startSpaceShipJourney();
-        },
-        endSpaceShipJourney: function () {
+        // startSpaceShipJourney: function () {
+        //     this.storeActiveMode = this.activeMode;
+        //     this.hero.cont.visible = false;
+        //     this.activeAction.vx = this.activeAction.vy = 0;
+        //     this.grid.gridAction.pause = true;
+        //     this[this.activeMode].startSpaceShipJourney();
+        // },
+        // endSpaceShipJourney: function () {
 
-            this.jump.removeFromStage();
+        //     this.jump.removeFromStage();
             
-            this.switchPlayer(this.storeActiveMode);
+        //     this.switchPlayer(this.storeActiveMode);
            
-            this.grid.gridBuild.placeHero();
+        //     this.grid.gridBuild.placeHero();
   
-            this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
+        //     this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
 
-            this.grid.gridAction.pause = false;
+        //     this.grid.gridAction.pause = false;
        
-            this.activeAction.vx = this.activeAction.vy = 0;
+        //     this.activeAction.vx = this.activeAction.vy = 0;
 
-            this.activeAction.radius = this.activeAction.storeRadius = 0;
+        //     this.activeAction.radius = this.activeAction.storeRadius = 0;
 
-            this[this.activeMode].endSpaceShipJourney();
-        },
-        makeJumpActive: function () {
-            this.jump.jumpBackground.pause = false;
-            this.jump.jumpAction.pause = false;
-            this.hero.cont.visible = true;
-            //this.ship.parent.removeChild(this.ship);
+        //     this[this.activeMode].endSpaceShipJourney();
+        // },
+        // makeJumpActive: function () {
+        //     this.jump.jumpBackground.pause = false;
+        //     this.jump.jumpAction.pause = false;
+        //     this.hero.cont.visible = true;
+        //     //this.ship.parent.removeChild(this.ship);
             
-            this.switchPlayer("jump");
-            this.jump.jumpBackground.setUp();
+        //     this.switchPlayer("jump");
+        //     this.jump.jumpBackground.setUp();
 
-             if (Config.testingJump) {
-                let background = this.utils.root.jump.jumpBackground.orbsCont;
-                background.scale.set(1)
-                this.jump.addToStage();
-            }
+        //      if (Config.testingJump) {
+        //         let background = this.utils.root.jump.jumpBackground.orbsCont;
+        //         background.scale.set(1)
+        //         this.jump.addToStage();
+        //     }
 
-        },
+        // },
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
@@ -402,8 +385,6 @@ export default function(obj) {
         },
         levelCompleteHandler: function () {
             this.levelComplete.boardComplete();
-
-
         },
         animate: function () {
 
@@ -427,9 +408,9 @@ export default function(obj) {
                 this.gears.animate();
                // this.activeAction.animate();
                 this[this.activeMode].animate();
-                if (this.activeMode === 'swim' || this.activeMode === 'fly') {
-                    this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-                }
+                
+                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+                
                
             }
         }

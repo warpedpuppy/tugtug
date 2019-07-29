@@ -29,7 +29,7 @@ export default function () {
 
 		if(this.utils.root.score[`${this.utils.root.activeMode}Points`] <= 0)return;
 		this.treasureChange('down');
-		this.utils.root.grid.gridBuild.addCoinToGrid();
+		this.utils.root.grid.gridBuild.coins.addCoinToGrid();
 	}
 }
 }

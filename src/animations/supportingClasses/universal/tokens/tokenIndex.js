@@ -11,7 +11,8 @@ export default function () {
 
 			this.tokenSlots = TokenSlots();
 			this.tokenAnimations = TokenAnimations();
-			this.tokens = Tokens().build();
+			this.tokensClass = Tokens();
+			this.tokens = this.tokensClass.build();
 			this.slotsCont = this.tokenSlots.build();
 			this.tokenSlots.addToStage();
 			this.tokenAnimations.build();
