@@ -76,7 +76,7 @@ export default class TempLoginForm extends React.Component {
 			</form>
 			</fieldset>:
 			<div>
-				<p>Tugtug is launching June 2019.</p>
+				<p>TugTug is launching September 2019.</p>
 			</div>
 			;
 		let clickValue = (this.state.login)?"hide log in":"log in";

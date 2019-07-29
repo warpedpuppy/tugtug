@@ -1,8 +1,7 @@
-import Assets from '../../utils/assetCreation';
-import Utils from '../../utils/utils';
-import Config from './animationsConfig';
-export default function () {
-	return {
+import Assets from '../../../utils/assetCreation';
+import Utils from '../../../utils/utils';
+// import Config from './animationsConfig';
+export default  {
 		init: function (parentCont) {
 		},
 		addToStage: function () {
@@ -17,5 +16,5 @@ export default function () {
 		animate: function () {
 
 		}
-	}
+	
 }

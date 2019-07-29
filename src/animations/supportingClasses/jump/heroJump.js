@@ -100,7 +100,7 @@ export default function () {
 			this.cont.addChild(this.feet);
 
 			let body = Assets.Sprite('jumpBody.png');
-			body.scale.set(0.75);
+			//body.scale.set(0.75);
 			body.anchor.set(0.5)
 			body.y = -40;
 			this.body = body;
@@ -119,9 +119,13 @@ export default function () {
 			this.mouth.y = -25;
 			this.cont.addChild(this.mouth);
 
+			this.grimaceMouth();
+
 		},
 		addToStage: function () {
-			console.log('add hero jump to stage')
+			//console.log('add hero jump to stage')
+			// let radius = (this.utils.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
+			// this.heroCollisionDetectObject.radius = radius;
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {

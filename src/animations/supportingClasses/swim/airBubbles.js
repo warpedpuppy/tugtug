@@ -34,6 +34,8 @@ export default function () {
 			this.lilypads = this.utils.lilypads.array;
 		},
 		fishExhale: function () {
+			//console.log(this.lilypads)
+			if(!this.lilypads)return
 			for(let j = 0; j < this.lilypads.length; j ++){
 				let ab = this.expand[0];
 				ab.radius = ab.r = ab.width / 2;

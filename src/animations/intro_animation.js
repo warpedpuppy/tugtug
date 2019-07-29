@@ -1,75 +1,73 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
-import Clock from './supportingClasses/clock';
+import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
 import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
 import Jump from './supportingClasses/jump/indexJump';
-import Pellets from './supportingClasses/pellets';
-import Treasure from '../animations/supportingClasses/treasure';
-import MagicPills from './supportingClasses/magicPills';
-import TransitionItems from './supportingClasses/transitionItems';
-import TransitionAnimation from './supportingClasses/transitionAnimation';
-import FilterAnimation from './supportingClasses/filterAnimation';
-import Gears from './supportingClasses/gears';
-import Hero from './supportingClasses/hero';
-import Score from '../animations/supportingClasses/score';
-import ControlPanel from './supportingClasses/controlPanel';
-import LevelSlots from './supportingClasses/level/levelSlots';
-//import IntroScreen from './supportingClasses/introScreen';
+import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
+import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
+import Gears from './supportingClasses/universal/gears';
+import Hero from './supportingClasses/universal/hero';
+import Score from '../animations/supportingClasses/universal/score/scoreIndex';
+import ControlPanel from './supportingClasses/universal/controlPanel';
+import LevelComplete from './supportingClasses/universal/levelComplete';
+import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
-import KeyHandler from './supportingClasses/keyHandler';
+import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
-//import Animate from './supportingClasses/action/animate';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
+import Animations from './supportingClasses/universal/animations/animationsIndex';
+
 export default function(obj) {
     return {
-        idle: true,
-        vx: 0,
-        vy: 5,
-        rotateLeftBoolean: false,
-        rotateRightBoolean: false,
-        renderTextureTestBoolean: false,
-        inc: 90,
-        mode: ['fly', 'swim','jump', 'bounce'],
+        mode: ['fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
-        backgroundCont: Assets.Container(),
-        foregroundCont: Assets.Container(),
         filterContainer: Assets.Container(),
-        ripples: undefined,
         action: true,
-        spriteSheet: undefined,
-        gears: Gears,
-        clock: Clock,
-        pellets: Pellets(),
-        magicPills: MagicPills(),
+        gears: Gears(),
+        clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionItems: TransitionItems(),
-        transitionAnimation: TransitionAnimation,
+        transitionAnimation: TransitionAnimation(),
+        transitionAnimationPlaying: false,
         utils: Utils,
-        treasure: Treasure(),
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
-        config: Config,
         swim: Swim(),
         bounce: Bounce(),
         fly: Fly(),
         jump: Jump(),
-        levelSlots: LevelSlots(),
-        screen: Assets.Graphics(),
+        tokens: Tokens(),
         controlPanel: ControlPanel(),
-        transitionAnimationPlaying: false,
-        grid: Grid,
+        grid: Grid(),
+        dbData: {},
+        storeAction: true,
+        timeOut: undefined,
+        levelComplete: LevelComplete(),
+        fullStop: false,
+        animations: Animations(),
+        all: true,
         init: function (isMobile, isMobileOnly) {
-            this.cropHeight = 100;
+             console.log('window.devicePixelRatio', window.devicePixelRatio)
+            if (Config.testingBounce) {
+                this.mode = ['bounce'];
+            }
+
+            this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
+            console.log(this.levelComplete);
+            this.levelComplete.init();
 
+         
             if (!this.isMobileOnly) {
                 this.utils.getWidthAndHeight();
             } else {
@@ -85,167 +83,210 @@ export default function(obj) {
                     OrientationChange.makePortrait();
                 }
             }
+
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
                 false
             );
             document.getElementById('homeCanvas').appendChild(app.view);
-
             this.stage = app.stage;
         
-            const fpsCounter = new PixiFps();
-            app.stage.addChild(fpsCounter);
+            const fpsCounter = this.fpsCounter = new PixiFps();
+            
 
-            this.stage.addChild(this.backgroundCont);
             this.stage.addChild(this.filterContainer);
-            this.stage.addChild(this.foregroundCont);
 
+            this.getDatabaseData = this.getDatabaseData.bind(this);
+            this.buildGame = this.buildGame.bind(this);
+            this.startGame = this.startGame.bind(this);
+            this.switchPlayer = this.switchPlayer.bind(this);
+            this.animate = this.animate.bind(this);
+            this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
+            this.animateMobile = this.animateMobile.bind(this)
 
-           
-
-            this.start = this.start.bind(this);
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    .load(this.start);
+                    .load(this.getDatabaseData)
             } else {
-                this.start();
+                this.getDatabaseData();
             }
 
- 
-
- 
-
         },
-        start: function () {
+        getDatabaseData: function () {
 
-        
-            this.spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
+           let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
+           let next = indexToGet + 1;
+           let requestBoardNumber = (indexToGet === 0)?1:next;
+           let that = this;
+           axios
+           .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
+           .then(response => {
+               
+                this.dbData = response.data;
+                if (indexToGet === 0) {
+                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
+                    //this.grid.boards = [...this.grid.boards, response.data.boards];
+                    this.buildGame();
+                 } else {
+                    if (response.data.boards) {
+                        this.grid.boards = [...this.grid.boards, response.data.boards];
+                    }
+                    this.grid.addNewBoardData(this.dbData)
+                 }
+              
+            })
+            .catch(err => console.error(err));  
+        },
+        buildGame: function () {
+            
+            let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
             this.utils.setProperties({
-                spritesheet: this.spritesheet,
+                spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
-                app: this.app
+                app: this.app,
+                root: this
             })
 
             Assets.init();
 
+            this.gears.init().addToStage();
+
+            this.clock.init().addToStage();
+
+            //this.levelSlots.init(this).addToStage();
+            this.tokens.init();
+
+            this.grid.init();
+
+            this.score.init()
+
             this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
 
             this.utils.setHero(this.hero);
-        
-
-            this.gears.init(this.stage);
-
-            this.clock.init(this.stage);
-
-            //this.pellets.init(this.app, this.wh, this.stage, this.activeMode, this.spritesheet);
-
-            this.magicPills.init(this.filterTest.bind(this), this.backgroundCont);
 
             this.filterAnimation.init(this.filterContainer);
-
-            this.transitionItems.init(
-                this.mode, 
-                this.stage, 
-                this.switchPlayer.bind(this)).build();
-
-            this.treasure.init(this.stage);
             
             this.swim.init(this.stage);
 
             this.bounce.init(this.stage);
 
-            this.fly.init(this.stage);
-
-            this.jump.init(this.stage);
-            
-            this.levelSlots.init(this.stage).addToStage();
-            this.startGame = this.startGame.bind(this);
-            //this.introScreen.init(this.stage, this.startGame).addToStage();
-
-            this.switchPlayer = this.switchPlayer.bind(this);
-
-            this.screen.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight);
-            this.stage.addChild(this.screen);
+            this.fly.init(this);
 
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
+
+            this.jump.init(this.stage);
+            
+            this.transitionAnimation.init(this);
+
+            this.animations.init();
+           
+ 
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
-                this.testButton = Assets.Sprite('redTile.png');
-                this.testButton.x = 10;
-                this.testButton.y = 140;
-                this.testButton.interactive = true;
+                // this.testButton = Assets.Sprite('redTile.png');
+                // this.testButton.x = 10;
+                // this.testButton.y = 140;
+                // this.testButton.interactive = true;
                 let that = this;
-                this.testButton.pointerdown = function(){that.switchPlayer()};
-                this.stage.addChild(this.testButton)
+                // this.testButton.pointerdown = function(){that.switchPlayer()};
+                // this.stage.addChild(this.testButton)
             } 
-           
-            this.startGame();
-            
-            if(this.isMobileOnly){
+               
+            if (this.isMobileOnly) {
                 //mobile
                 OrientationChange.init(this);
-                // this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
-         
-                // window.addEventListener("orientationchange", this.orientationChangeHandler);
             } else {
                  window.onresize = this.resizeHandler.bind(this);
             }
+            
+            this.startGame();
         },
         startGame: function () {
-            //this.mode = this.utils.shuffle(this.mode);
-            //this.introScreen.removeFromStage();
+
             this.switchPlayer(this.mode[this.activeModeIndex]);
-            this.app.ticker.add(this.animate.bind(this));
-            this.stage.removeChild(this.screen);
-            this.clock.addToStage();
 
             if (!this.isMobile) {
-                this.app.ticker.add(this.animateDesktopIpad.bind(this));
+                this.app.ticker.add(this.animateDesktopIpad);
                 this.keyHandler.addToStage();
             } else {
-                this.app.ticker.add(this.animateMobile.bind(this)); 
+                this.app.ticker.add(this.animateMobile); 
             }
 
-
-            this.transitionAnimation.init(this);
-            this.grid.init(this.stage);
-            let index = this[this.activeMode].background.gridIndex + 1;
-            console.log("index = ", index)
-            this.grid.addToStage(index);
-
-    
+            if (Config.testingJump) {
+                this.makeJumpActive();
+            }
+            this.app.stage.addChild(this.fpsCounter);
+            //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
             window.onresize = undefined;
             if(this.app)this.app.destroy(true);
-             if (!this.isMobile) {
+             if (!this.isMobile && this.keyHandler) {
                 this.keyHandler.removeFromStage();
             }
         },
-        switchPlayer: function (str) {
+        earnToken: function (t) {
+            //console.log('level complete');
+            this.action = false;
+            this.tokens.fillSlot(t);
+            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
+        },
+        resumePlayAfterEarnToken: function () {
+           // this.tokens.clearText();
+            this.action = true;
+        },
+        increaseIndex: function() {
+            this.activeModeIndex ++;
+            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
+            this.activeMode = this.mode[this.activeModeIndex];    
+            return this.activeMode;  
+        },
+        switchPlayerWithAnimation: function (mode) {
+           
+            if (!this.transitionAnimationPlaying) {
 
-            if (this[this.activeMode]) this[this.activeMode].removeFromStage();
+
+
+                this.transitionAnimationPlaying = true;
+                this.action = false;
+
+                let oldActiveModeString = this.activeMode;
+                this[this.activeMode].removeFromStage();
+
+                this.activeMode = (mode)?mode:this.increaseIndex();
+                let newActiveModeString = this.activeMode;
+
+                if (this.activeMode === 'bounce') {
+                    this.grid.removeFromStage();
+                }
             
+                this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
+            }
+
+        },
+        switchPlayer: function (str) {
+           
             if (str) {
                 this.activeMode = str;
             } else {
                 this.increaseIndex();
             }
-            
+ 
+           this.hero.switchPlayer(this.activeMode);
 
+           if (this.activeMode === 'jump') {
+                this.activeAction = this.jump.jumpAction;
+            } else {
+                this.activeAction = this[this.activeMode].addToStage();   
+            }
 
-            this.hero.switchPlayer(this.activeMode);
-            this.activeAction = this[this.activeMode].addToStage();
-            this.pellets.changeMode(this.activeMode);
-            this.grid.setAction(this.activeAction);
-            
             if (this.isMobile) {
                 if (this.activeMode === 'bounce') {
                     this.controlPanel.removeFromStage();
@@ -253,35 +294,17 @@ export default function(obj) {
                     this.controlPanel.addToStage();
                 }
             }
-        },
-        increaseIndex: function() {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];
-        },
-        switchPlayerMaskedAction: function () {
-            //this[this.activeMode].background.cont.alpha = 0.5;
-            if (!this.transitionAnimationPlaying) {
-                this.action = false;
-                this.transitionAnimationPlaying = true;
-                let oldActiveMode = this[this.activeMode];
-                oldActiveMode.removeFromStage();
-                // this.stage.setChildIndex(oldBackground.background.cont, 0);
-
-                this.increaseIndex();
           
+            this.transitionAnimationPlaying = false;
+            this.action = true;
 
-                let newActiveMode = this[this.activeMode];
-
-                // this.hero.switchPlayer(this.activeMode);
-                // this.activeAction = this[this.activeMode].addToStage();
-                this.transitionAnimation.start(newActiveMode, Grid);
-
-            }
-            
-
+            this.score.switchMode();
         },
         resizeBundle: function () {
+            if (this.activeMode === 'fly' || this.activeMode === 'swim') {
+                this.grid.resize();
+            }
+            this.score.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
@@ -289,17 +312,10 @@ export default function(obj) {
             this.bounce.resize();
             this.fly.resize();
             this.jump.resize();
-            this.levelSlots.resize();
-            if(this.isMobile){
+            this.tokens.resize();
+            if (this.isMobile) {
                 this.controlPanel.resize();
-            }
-            // this.magicPills.resize(wh);
-            // this.treasure.resize(wh);
-            // this.transitionItems.resize(wh);
-            // this.filterAnimation.resize(wh);
-            // this.pellets.resize(wh);
-            // this.hero.resize(wh);
-            // if(this.bouncePlatform)this.bouncePlatform.resize(wh);            
+            }    
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
@@ -309,13 +325,79 @@ export default function(obj) {
 
             this.resizeBundle();
            
-         
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+
+            this.action = false;
+
+            if(this.timeOut){
+                clearTimeout(this.timeOut);
+            }
+            this.timeOut = setTimeout(this.resized.bind(this), 200)
+
         },
-        nightMode: function () {
-            this.pellets.change();
-            this.app._options.backgroundColor = '0x000000';
-           // console.log(this.app._options.backgroundColor)
+        resized: function () {
+
+            this.action = true;
+            clearTimeout(this.timeOut);
+           
+        },
+        startSpaceShipJourney: function () {
+            this.storeActiveMode = this.activeMode;
+            this.hero.cont.visible = false;
+            this.activeAction.vx = this.activeAction.vy = 0;
+            this.grid.gridAction.pause = true;
+            this[this.activeMode].startSpaceShipJourney();
+        },
+        endSpaceShipJourney: function () {
+
+            this.jump.removeFromStage();
+            
+            this.switchPlayer(this.storeActiveMode);
+           
+            this.grid.gridBuild.placeHero();
+  
+            this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
+
+            this.grid.gridAction.pause = false;
+       
+            this.activeAction.vx = this.activeAction.vy = 0;
+
+            this.activeAction.radius = this.activeAction.storeRadius = 0;
+
+            this[this.activeMode].endSpaceShipJourney();
+        },
+        makeJumpActive: function () {
+            this.jump.jumpBackground.pause = false;
+            this.jump.jumpAction.pause = false;
+            this.hero.cont.visible = true;
+            //this.ship.parent.removeChild(this.ship);
+            
+            this.switchPlayer("jump");
+           // this.jump.jumpBackground.addSpace();
+
+             if (Config.testingJump) {
+                let background = this.utils.root.jump.jumpBackground.orbsCont;
+                background.scale.set(1)
+                this.jump.addToStage();
+            }
+            this.app.stage.addChild(this.fpsCounter);
+        },
+        reset: function () {
+            this.score.nextLevel();
+            this.tokens.reset();
+            this.jump.reset();
+            this.bounce.reset();
+
+            this[this.activeMode].removeFromStage();
+            this.switchPlayer(this.mode[0]);
+           
+            this.grid.nextBoard(); 
+            this.keyHandler.addToStage();  
+            this.getDatabaseData();
+
+            this.fullStop = false;
+
+            this.app.stage.addChild(this.fpsCounter);
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();
@@ -327,54 +409,38 @@ export default function(obj) {
         animateDesktopIpad: function () {
             this.animate();
         },
+        levelCompleteHandler: function () {
+            this.levelComplete.boardComplete();
+
+
+        },
         animate: function () {
 
+            Tweens.animate();
+
+            if(this.fullStop)return;
+
             this.transitionAnimation.animate();
-            if (this.transitionAnimation.done) {
-                this.transitionAnimation.reset();
-            }
-            this.score.animate();
 
-            if (this.treasure.hit || this.transitionItems.hit) {
-                if(this.action){
-                    this.filterAnimation.shutOff();
-                    this.action = false;
-                }
-                if (this.treasure.hit) {
-                    this.score.increase(100);
-                    this.treasure.animateSpecial();
-                } else {
-                    this.transitionItems.animateSpecial();
-                }
-
-            } else {
-               // this.action = true;
-            }
+            this.animations.animate();
+           
 
             if (this.action) {
-
-                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-
-                if(this.rotateLeftBoolean)this.activeAction.rotate('left');
-                if(this.rotateRightBoolean)this.activeAction.rotate('right');
+                if(this.rotateLeftBoolean) {
+                    this.activeAction.rotate('left');
+                } else if(this.rotateRightBoolean) {
+                    this.activeAction.rotate('right');
+                }
                 this.clock.animate();
                 this.filterAnimation.animate();
-                
                 this.gears.animate();
-                
-                this.pellets.animate(this.activeAction.vx, this.activeAction.vy);
-                this.treasure.animate(this.activeAction.vx, this.activeAction.vy);
-                this.transitionItems.animate(this.activeAction.vx, this.activeAction.vy);
-                this.magicPills.animate(this.activeAction.vx, this.activeAction.vy);
-
-                this.activeAction.animate();
+               // this.activeAction.animate();
                 this[this.activeMode].animate();
-            
+                if (this.activeMode === 'swim' || this.activeMode === 'fly') {
+                    this.grid.animate(this.activeAction.vx, this.activeAction.vy);
+                }
+               
             }
-            
-            
-
-
         }
     }
 }

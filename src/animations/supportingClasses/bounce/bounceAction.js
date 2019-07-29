@@ -1,7 +1,7 @@
 import Utils from '../../utils/utils';
 export default function () {
 	return {
-		speedLimit: 7,
+		speedLimit: 5,
 		vx: 0,
 		vy: 0,
 		angle: 0,
@@ -9,11 +9,15 @@ export default function () {
 		legCounter: 0,
 		legCounterLimit: 10,
 		utils: Utils,
+		gravity: 0.5,
 		init: function (bouncePlatform) {
 			this.hero = this.utils.hero;
 			this.bouncePlatform = bouncePlatform;
 			this.canvasWidth = this.utils.canvasWidth;
 			this.canvasHeight = this.utils.canvasHeight;
+
+			
+
 		},
 		resize: function (wh) {
 			this.canvasWidth = wh.canvasWidth;
@@ -22,6 +26,7 @@ export default function () {
 		rotate: function () {
 
 		},
+		
 		animate: function () {
 			//this.hero.vy += 0.25;
 
@@ -39,14 +44,14 @@ export default function () {
 				}
 
 				if (this.vy < this.speedLimit) {
-		            this.vy += 0.5;
+		            this.vy += this.gravity;
 		        } 
 				
-
+		        
 		        if(this.vy > 0) {
 		        	//console.log('up');
 		        	if (this.vy > this.speedLimit) {
-		                this.vy -= 0.5;
+		                this.vy -= this.gravity;
 		            }
 		        } else {
 		        	//console.log('down')
@@ -73,7 +78,7 @@ export default function () {
 		        let B = {x: this.bouncePlatform.dot2.x, y: this.bouncePlatform.dot2.y};
 		        let C = {x: this.utils.canvasWidth / 2, y: this.utils.canvasHeight / 2};
 		        if (this.bouncePlatform.mouseDown !== true && this.utils.lineIntersectCircle(A, B, C, 20)) {
-		        	
+		        	this.hero.y -= 10;
 		         	this.hero.activeHero.bounce(true);
 		            let delta_x = dot1.x - dot2.x;
 					let delta_y = dot1.y - dot2.y;

@@ -189,17 +189,13 @@
         <key>fileList</key>
         <array>
             <filename>../bmps/flyTrans.png</filename>
-            <filename>../bmps/jumpTrans.png</filename>
-            <filename>../bmps/bounceTrans.png</filename>
             <filename>../bmps/swimTrans.png</filename>
             <filename>../bmps/bouncePlatformBall.png</filename>
             <filename>../bmps/bouncePlatformLine.png</filename>
-            <filename>../bmps/leftWing.png</filename>
             <filename>../bmps/LightRotate1.png</filename>
             <filename>../bmps/LightRotate2.png</filename>
             <filename>../bmps/line.png</filename>
             <filename>../bmps/pellet.png</filename>
-            <filename>../bmps/rightWing.png</filename>
             <filename>../bmps/star.png</filename>
             <filename>../bmps/treasureChest.png</filename>
             <filename>../bmps/treasureRing.png</filename>
@@ -243,7 +239,6 @@
             <filename>../bmps/wingPart1.png</filename>
             <filename>../bmps/wingPart2.png</filename>
             <filename>../bmps/dragonHead.png</filename>
-            <filename>../bmps/dragonSegment.png</filename>
             <filename>../bmps/dragonTail.png</filename>
             <filename>../bmps/dragonTriangle.png</filename>
             <filename>../bmps/slot.png</filename>
@@ -253,6 +248,43 @@
             <filename>../bmps/redGradient.png</filename>
             <filename>../bmps/pinkGradient.png</filename>
             <filename>../bmps/transparentRing.png</filename>
+            <filename>../bmps/whiteTile.png</filename>
+            <filename>../bmps/token1.png</filename>
+            <filename>../bmps/token2.png</filename>
+            <filename>../bmps/token3.png</filename>
+            <filename>../bmps/token4.png</filename>
+            <filename>../bmps/castle.png</filename>
+            <filename>../bmps/horse.png</filename>
+            <filename>../bmps/soldier.png</filename>
+            <filename>../bmps/nextMaze.png</filename>
+            <filename>../bmps/spaceShip.png</filename>
+            <filename>../bmps/swipeScreen.png</filename>
+            <filename>../bmps/spike.png</filename>
+            <filename>../bmps/unlocked.png</filename>
+            <filename>../bmps/tokenLock.png</filename>
+            <filename>../bmps/microscope.png</filename>
+            <filename>../bmps/arrow.png</filename>
+            <filename>../bmps/scoreBackground.png</filename>
+            <filename>../bmps/mustBeDragon.png</filename>
+            <filename>../bmps/mustBeFish.png</filename>
+            <filename>../bmps/gridCircle600.png</filename>
+            <filename>../bmps/soldierWalking1.png</filename>
+            <filename>../bmps/soldierWalking2.png</filename>
+            <filename>../bmps/spear.png</filename>
+            <filename>../bmps/openTreasureChest.png</filename>
+            <filename>../bmps/jewel1.png</filename>
+            <filename>../bmps/jewel2.png</filename>
+            <filename>../bmps/jewel3.png</filename>
+            <filename>../bmps/jewel4.png</filename>
+            <filename>../bmps/jewel5.png</filename>
+            <filename>../bmps/jewel6.png</filename>
+            <filename>../bmps/jewel7.png</filename>
+            <filename>../bmps/jewel8.png</filename>
+            <filename>../bmps/jewel9.png</filename>
+            <filename>../bmps/jewel10.png</filename>
+            <filename>../bmps/jewel11.png</filename>
+            <filename>../bmps/vortex.png</filename>
+            <filename>../bmps/dragonSegment.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

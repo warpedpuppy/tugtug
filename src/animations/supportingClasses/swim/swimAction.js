@@ -1,6 +1,8 @@
 import Utils from '../../utils/utils';
+import Assets from '../../utils/assetCreation';
 import AirBubbles from '../swim/airBubbles';
 import Rotate from '../action/rotate';
+import TriangleOfCollision from '../action/triangleOfCollision';
 export default function () {
 	return {
 		radius: 0,
@@ -16,26 +18,70 @@ export default function () {
 		percApply: true,
 		airBubbles: AirBubbles(),
 		increment: 5,
+		triangleOfCollision: TriangleOfCollision(),
+		flameOn: false,
+		rotateFunction: Rotate(),
 		init: function (stage) {
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
 			this.stage = stage;
-			this.vx = this.utils.randomNumberBetween(1,2); 
-            this.vy = this.utils.randomNumberBetween(1,2);
+			// this.vx = this.utils.randomNumberBetween(1,2); 
+   //          this.vy = this.utils.randomNumberBetween(1,2);
             this.airBubbles.setupBubbles(stage);
+            this.triangleOfCollision.init();
+            this.flames = Assets.ParticleContainer(this.flameQ);
 		},
 		start: function() {
+
+			this.createPool();
 			this.maxLength = this.increment * this.hero.activeHero.segmentsQ;
 		},
+		createPool: function () {
+			let obj = Assets.createPool(
+				this.flames, 
+				'transparentRing.png', 
+				[0xadd8e6, 0xFFFF00]
+			);
+
+			this.flameArray = obj.flameArray;
+			this.flameQ = obj.flameQ;
+			this.flames.visible = false;
+			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
+		},
 		rotate: function (str) {
-				let obj = Rotate.rotate(str, this);
+				let obj = this.rotateFunction.rotate(str, this);
 				this.vx = -obj.vx;
 				this.vy = -obj.vy
 		},
 		resize: function () {
 			this.airBubbles.resize();
 		},
+		fire: function (boolean) {
+
+			this.flameOn = this.flames.visible = boolean;
+		},
 		animate: function () {
+
+			if (this.flameOn) {
+	   			this.triangleOfCollision.fireHit();
+
+	   			for(let i = 0; i < this.flameQ; i ++) {
+		        	let item = this.flameArray[i];
+			        let determineContinue = Math.floor(Math.random()*10);
+					if(determineContinue < 9) continue;
+			        	item.x += item.vx;
+			        	item.y += item.vy;
+			        	item.alpha -= item.fade;
+			        	if (Math.abs(item.y) > item.maxDistance) {
+			        		item.x = 0;
+			        		item.y = 0;
+			        		item.alpha = 1;
+			        	}
+		         }
+
+	        }
+	        this.hero.activeHero.headCont.rotation = this.radius;
+
 
 			if(!this.spinning){
 				this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);

@@ -8,7 +8,9 @@ export default function () {
         mouseDown:false, 
         startMode: true,
         utils: Utils,
-        init: function (cont) {
+        init: function (cont, instructions) {
+
+            this.instructions = instructions;
             let spritesheet = this.utils.spritesheet;
             this.cont = cont;
             this.line.height = 10;
@@ -31,9 +33,9 @@ export default function () {
             this.on(true);
             
         },
-        resize: function (wh) {
-            if(this.startMode){
-                this.start(wh.canvasWidth, wh.canvasHeight)
+        resize: function () {
+            if (this.startMode) {
+                this.start(this.utils.canvasWidth, this.utils.canvasHeight)
             }
         },
         start: function (canvasWidth, canvasHeight) {
@@ -57,6 +59,7 @@ export default function () {
                 this.line.width = disAngle[0];
         },
         on: function (trueFalse) {
+
             this.placeFirstDot = this.placeFirstDot.bind(this);
             this.onMouseMove = this.onMouseMove.bind(this)
             this.releaseMouse = this.releaseMouse.bind(this)
@@ -73,7 +76,8 @@ export default function () {
                 this.cont.mouseup =  this.cont.touchend = null;
             }
         },
-        placeFirstDot: function(touchData) {
+        placeFirstDot: function (touchData) {
+            this.instructions.removeFromStage();
             this.startMode = false;
             let mouse = touchData.data.global,
                 mouseX = mouse.x,
@@ -91,7 +95,7 @@ export default function () {
             this.mouseDown = true;
             //cont.removeChild(gv.swipeText);
         },
-        onMouseMove: function(touchData){
+        onMouseMove: function (touchData) {
             if (this.mouseDown === true) {
                 let mouse = touchData.data.global,
                     mouseX = mouse.x,

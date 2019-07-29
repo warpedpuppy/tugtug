@@ -16,9 +16,23 @@ import axios from 'axios';
 import { API_BASE_URL } from './config';
 import { addToken, addUserdata } from './actions/tokenActions.js';
 import { addItems } from './actions/avatarActions.js';
+import TempLogIn from './components/loginRegister/tempLogin';
 require('../node_modules/normalize.css/normalize.css');
 
 class App extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.loggedInCheck = this.loggedInCheck.bind(this);
+    this.state = {
+      loggedIn: true,
+      showStartScreen: true
+    }
+  }
+
+  loggedInCheck () {
+    this.setState({loggedIn:true})
+  }
 
   tokenHandler () {
 
@@ -56,31 +70,37 @@ class App extends React.Component {
     this.tokenHandler();
   }
   componentDidMount () {
-    // testing:
-    // localStorage.clear();
     this.tokenHandler();
   }
   render () {
-    return (
-      <Router>
-        <div className="App">
-          <header>
-            <Menu token={this.props.token} />
-          </header>
-          <main>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/Experiments" component={Experiments} />
-            <Route exact path="/About" component={About} />
-            <Route exact path="/Contact" component={Contact} />
-            <Route exact path="/Spiral" component={Spiral} />
-            <Route exact path="/Game" component={Game} />
-            <Route exact path="/Admin" component={Admin} />
-            <Route exact path="/Store" component={Store} />
-          </main>
-          <Footer />
+    if (this.state.loggedIn) {
+      return (
+        <Router>
+          <div className="App">
+            <header>
+              <Menu token={this.props.token} />
+            </header>
+            <main>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/Experiments" component={Experiments} />
+              <Route exact path="/About" component={About} />
+              <Route exact path="/Contact" component={Contact} />
+              <Route exact path="/Spiral" component={Spiral} />
+              <Route exact path="/Game" component={Game} />
+              <Route exact path="/Admin" component={Admin} />
+              <Route exact path="/Store" component={Store} />
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      );
+    } else {
+      return (
+        <div>
+          <TempLogIn loggedInFunction={this.loggedInCheck}/>
         </div>
-      </Router>
-    );
+      )
+    }
   }
 }
 

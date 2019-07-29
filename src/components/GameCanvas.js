@@ -37,7 +37,7 @@ class GameCanvas extends React.Component {
 	}
 	startGame(data){
 
-		if(this.props.testMode){
+		if(this.props.testMode){ 
 			// change data to non database
 			data = {users: [{
 				username: this.props.username,

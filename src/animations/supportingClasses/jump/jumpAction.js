@@ -1,4 +1,7 @@
 import Utils from '../../utils/utils';
+import dotAction from './jumpAction/jumpDotAction';
+import gremlinAction from './jumpAction/jumpGremlinAction';
+import orbAction from './jumpAction/jumpOrbAction';
 export default function () {
 	return {
 		gravity: 0.3,
@@ -9,18 +12,22 @@ export default function () {
 		jumpTimer: 0,
 		jumpTimeLimit: 21,
 		utils: Utils,
+		pause: false,
+		heroCollisionDetectObject: {},
 		init: function (stage) {
+			this.bkgd = this.utils.root.jump.jumpBackground;
 			this.hero = this.utils.hero;
 			this.canvasWidth = this.utils.canvasWidth;
 			this.canvasHeight = this.utils.canvasHeight;
 			this.stage = stage;
 			this.vx = this.speed;
+			let radius = (this.utils.hero.heroJump.cont.width / 2) * this.utils.root.hero.cont.scale.x;
+			this.heroCollisionDetectObject.radius = radius;
 		},
 		rotate: function (str) {
 			this.move(str);
 		},
 		jump: function () {
-			console.log('jump')
 			this.vy = -6;
 			this.jumpTimer = 1;
 			//this.hero.heroJump.bounce();
@@ -42,6 +49,24 @@ export default function () {
 			}
 		},
 		animate: function () {
+
+			if(this.pause)return;
+			
+	
+			for (let i = 0; i < this.bkgd.rainbowSwirlsQ; i ++) {
+				this.bkgd.rainbowSwirlInstances[i].animate();
+			}
+
+			let globalPoint = this.utils.hero.activeHero.body.toGlobal(this.utils.app.stage);
+			this.heroCollisionDetectObject.x = globalPoint.x;
+			this.heroCollisionDetectObject.y = globalPoint.y;
+		
+			this.bkgd.currentOrb.classRef.dotsAndGremlinCollision(this.heroCollisionDetectObject);
+
+			for (let i = 0; i < this.bkgd.loopingQ; i ++) {
+				this.bkgd.orbs[i].classRef.animate(this.bkgd, this.heroCollisionDetectObject);
+			}
+
 			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {

@@ -11,6 +11,34 @@
 	background: transparent;
 
 }
+
+.closeButton {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 33px;
+  height: 33px;
+  opacity: 0.3;
+  cursor: pointer;
+}
+.closeButton:hover {
+  opacity: 1;
+}
+.closeButton:before, .closeButton:after {
+  position: absolute;
+  left: 13px;
+  top: 0px;
+  content: ' ';
+  height: 33px;
+  width: 5px;
+  background-color: #FF00FF;
+}
+.closeButton:before {
+  transform: rotate(45deg);
+}
+.closeButton:after {
+  transform: rotate(-45deg);
+}
 #testOrientation {
 	position: fixed;
 	top:0;

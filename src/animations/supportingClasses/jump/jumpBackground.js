@@ -1,7 +1,11 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
+import Config from '../../animationsConfig';
 import RainbowSwirls from './rainbowSwirls';
-import { TweenMax, Elastic } from 'gsap';
+import Tweens from '../../utils/Tweens';
+import Planets from './jumpBackground/planets/planet';
+import JumpTokenUnlockedGraphic from './jumpTokenUnlocked';
+import ThreeInARow from './threeInARow';
 export default function () {
 	return {
 		cont: Assets.Container(),
@@ -9,26 +13,22 @@ export default function () {
 		foreground: Assets.Graphics(),
 		orbsCont: Assets.Container(),
 		ground: Assets.Graphics(),
-		colSpacing: 200,
-		colQ: 10,
-		rowQ: 10,
-		tileColQ: 4,
-		cols: {},
-		columns: [],
-		activeBrick: undefined,
-		brickHeight: 50,
-		groundHeight: 150,
-		centralOrb: undefined,
+		colQ: Config.spaceColQ,
+		rowQ: Config.spaceRowQ,
+		rainbowSwirlsQ: 4,
+		rainbowSwirlInstances: [],
 		transition: false,
 		currentOrb: undefined,
+		landingOrb: undefined,
 		orbs: [],
 		utils: Utils,
-		pauseCounter: 0,
-		delay: 10,
-		colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
-		gridIndex: 5,
+		pause: false,
+		dotEatBoolean: true,
+		spacer: 250,
+		startScale: 0.25,
+		orbListen: true,
+		heroCollisionDetectObject: {},	
 		init: function (parentCont, action) {
-
 			this.hero = this.utils.hero;
 			this.app = this.utils.app;
 			this.parentCont = parentCont;
@@ -38,147 +38,166 @@ export default function () {
 
 			this.makeTransitionComplete = this.makeTransitionComplete.bind(this);
 
-
-			let centerOrb = this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
+			let centerOrb = 2;//this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
-			this.widths = [];
-			for(let i = 0; i < this.rowQ; i ++){
 
-				for(let j = 0; j < this.colQ; j ++){
-					let cont = Assets.Container();
-					let s = Assets.Sprite('circleAlpha1.png');
-					s.anchor.set(0.5);
-					let p = Assets.Sprite('pinWheel.png');
-					p.anchor.set(0.5);
-					cont.addChild(s);
-					cont.addChild(p);
-					cont.p = p;
-					let color1, color2;
-					color1 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					while(color2 === color1){
-						color2 = this.colors[Math.floor(Math.random()*this.colors.length)];
-					}
-					s.tint = color1;
-					p.tint = color2;
-					cont.rotate = this.utils.randomNumberBetween(-10, 10);
-					let scale = this.utils.randomNumberBetween(0.25, 0.8);
-					cont.scale.set(scale);
+			let totalPlanets = this.rowQ * this.colQ;
 
-					cont.radius = cont.r = cont.width / 2;
-					cont.x = j * 350;//this.utils.randomNumberBetween(300, 400);
-					cont.y = i * 350;//this.utils.randomNumberBetween(300, 400);
-					cont.index = counter;
-					this.orbsCont.addChild(cont);
-					this.orbs.push(cont);
-					
-					if(counter === centerOrb){
+			for (let i = 0; i < this.rowQ; i ++) {
+				for (let j = 0; j < this.colQ; j ++) {
+					let planet = Planets().buildPlanet(counter, this.startScale);
+					planet.x = j * this.spacer;
+					planet.y = planet.startY = i * this.spacer;
+					this.orbsCont.addChild(planet);
+					this.orbs.push(planet);
+					if (counter === centerOrb) {
 						this.centerOrbIndex = centerOrb;
-						this.currentOrb = this.centralOrb = cont;
-						//this.currentOrb.alpha = 0.5;
+						this.currentOrb = this.landingOrb = this.centralOrb = planet;
 					}
 					counter ++;
-					this.widths.push(cont.width);
-				
 				}
 			}
-	
-			
-			this.orbsCont.x = (this.wh.canvasWidth / 2) - this.currentOrb.x;
-			this.orbsCont.y = (this.wh.canvasHeight / 2) - this.currentOrb.y;
 
+			// let radius = (this.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
+			// this.heroCollisionDetectObject.radius = radius;
+	
+            this.threeInARow = ThreeInARow().init(this.orbs, this.spacer, this.colors, this.startScale, this.orbsCont, this.listeners);
+            this.threeInARow.completeHandler1();
+            
 
 			this.background.beginFill(0x000066).drawRect(0,0,this.wh.canvasWidth, this.wh.canvasHeight).endFill();
-
 			this.cont.addChild(this.background);
+
 			this.cont.addChild(this.orbsCont);
 
+
 			this.startXs = ["TL", "BL", "TR", "BR"];
-			for(let i = 0; i < this.tileColQ; i ++){
+			for (let i = 0; i < this.rainbowSwirlsQ; i ++) {
 				this.tileColumn = RainbowSwirls();
 				this.tileColumn.init(this.cont, this.startXs[i], action);
 				this.tileColumn.addToStage();
-				this.columns.push(this.tileColumn);
+				this.rainbowSwirlInstances.push(this.tileColumn);
 			}
 
-			
+			this.loopingQ = Math.max(this.orbs.length);
+
+		},
+		buildBoard: function () {
+
+		},
+		listeners: function (boolean) {
+			this.orbListen = boolean;
+			this.utils.root.keyHandler.onOff(boolean);
 		},
 		addToStage: function () {
+
+			this.currentOrb = this.landingOrb;
+			this.orbsCont.pivot = Assets.Point(this.landingOrb.x, this.landingOrb.y)
+			this.orbsCont.x = (this.utils.canvasWidth / 2);
+			this.orbsCont.y = (this.utils.canvasHeight / 2);
 			this.hero.cont.y = this.utils.canvasHeight / 2;
-			this.hero.activeHero.cont.y = this.hero.activeHero.floor = -(this.widths[this.currentOrb.index] / 2);
-			console.log('set jump hero y')
-			this.cont.addChild(this.orbsCont);
+			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
-			//this.parentCont.addChildAt(this.orbsCont, this.parentCont.children.length - 2);
+			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.background.width / 2));// * this.currentOrb.background.scale.x;
+			//this.jumpPoints.addToStage();
+			console.log("jump background add to stage")
+			
+		},
+		addSpaceShip: function () {
+			let spaceShipOrbIndex = this.currentOrb.index + 1;
+			this.spaceShipOrb = this.orbs[spaceShipOrbIndex];
+			let spaceShip = this.utils.root.grid.gridBuild.spaceShip;
+			spaceShip.x = spaceShip.y = 0;
+			spaceShip.scale.set(this.currentOrb.background.scale.x);
+			this.orbs[spaceShipOrbIndex].spaceShip = true;
+			this.orbs[spaceShipOrbIndex].addChild(spaceShip);
+
+			console.log("add space ship", this.utils.canvasWidth, this.orbsCont.x)
+		},
+		addToken: function () {
+			if (!this.tokenTaken) {
+				let tokenOrbIndex = this.currentOrb.index - 1;
+				this.tokenOrb = this.orbs[tokenOrbIndex];
+				this.token = this.utils.root.grid.gridBuild.tokens[3];
+				this.token.x = this.token.y = 0;
+				this.dotsContArray[tokenOrbIndex].addChild(this.token)
+				this.tokenLock = Assets.Sprite("tokenLock.png");
+				this.tokenLock.anchor.set(0.5);
+				this.dotsContArray[tokenOrbIndex].addChild(this.tokenLock)
+			}
 		},
 		removeFromStage: function () {
-			TweenMax.killAll();
+			Tweens.killAll();
+
 			this.parentCont.removeChild(this.cont);
+			//this.jumpPoints.removeFromStage();
 			//this.parentCont.removeChild(this.orbsCont);
 		},
 		resize: function () {
+
 			this.background.clear();
 			this.background.beginFill(0x000066).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 
-			this.orbsCont.x = (this.utils.canvasWidth / 2) - this.currentOrb.x;
-			this.orbsCont.y = (this.utils.canvasHeight / 2) - this.currentOrb.y;
-		},
-		switchPlanets: function (newPlanet) {
+			this.orbsCont.x = (this.utils.canvasWidth / 2);
+			this.orbsCont.y = (this.utils.canvasHeight / 2);
 
-			let newX = (this.wh.canvasWidth / 2) - newPlanet.x;
-			let newY = (this.wh.canvasHeight / 2) - newPlanet.y;
-			this.hero.activeHero.floor = -newPlanet.radius;
-			this.currentOrb = newPlanet;
-			TweenMax.to(this.orbsCont, 1.5, {x: newX, y: newY, ease: Elastic.easeOut, onComplete: this.makeTransitionComplete})
-			TweenMax.to(this.hero.activeHero.cont, 1.5, {y:  -newPlanet.radius, ease: Elastic.easeOut})
-		},
-		makeTransitionComplete: function () {
+			this.cont.x = 0;
+			this.cont.y = 0;
 
+		},
+		switchPlanets: function (newPlanet, i) {
+
+				let oldPlanet = this.currentOrb;
+
+				this.pause = true;
+				let newX = (this.utils.canvasWidth / 2);
+				let newY = (this.utils.canvasHeight / 2);
+				this.currentOrb = newPlanet;
+
+				let color1 = oldPlanet.color;
+                let tint1 = oldPlanet.background.tint;
+
+                let color2 = this.currentOrb.color;
+                let tint2 = this.currentOrb.background.tint;
+               
+                oldPlanet.color = color2;
+                oldPlanet.background.tint = tint2;
+
+                this.currentOrb.color = color1;
+                this.currentOrb.background.tint = tint1;
+
+                 Tweens.tween(oldPlanet, 1.5, {
+                    x: [this.currentOrb.x, oldPlanet.x], 
+                    y: [this.currentOrb.y, oldPlanet.y]
+                }, undefined, 'easeOutBounce')
+
+            
+                 Tweens.tween(this.currentOrb, 1.5, {
+                    x: [oldPlanet.x, this.currentOrb.x],
+                    y: [oldPlanet.y, this.currentOrb.y]
+                }, undefined, 'easeOutBounce')
+
+                 console.log(newPlanet.spaceShip)
+
+				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
+
+				if (this.utils.root.all && newPlanet.spaceShip) {
+					this.hero.activeHero.cont.y = 0;
+					this.pause = true;
+					this.utils.root.jump.jumpAction.pause = true;
+					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
+				}
+				// } else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
+
+				// 	this.jumpTokenTaken = true;
+				// 	this.utils.root.tokens.fillSlot(this.token);
+				// }
+		},
+		makeTransitionComplete: function (i) {
+			this.threeInARow.completeHandler1();
+			this.centerOrbIndex = i;
+			this.pause = false;
 			this.transition = false;
-		},
-		animate: function () {
-			// this.centralContainer.rotation += this.utils.deg2rad(this.action.vx);
-
-			for (let i = 0; i < this.tileColQ; i ++) {
-				this.columns[i].animate();
-			}
-
-
-			
-			let globalPoint = this.hero.activeHero.body.toGlobal(this.app.stage, undefined, true);
-			let tempCircle = {
-				x: globalPoint.x,
-				y: globalPoint.y,
-				radius: 33
-			}
-
-			if (this.pauseCounter < this.delay){
-				this.pauseCounter ++;
-				return;
-			}
-
-			for (let i = 0; i < this.orbs.length; i ++) {
-				let orb = this.orbs[i];
-				orb.p.rotation += this.utils.deg2rad(orb.rotate);
-				let globalPoint2 = orb.toGlobal(this.app.stage, undefined, true);
-				let tempCircle2 = {
-					x: globalPoint2.x,
-					y: globalPoint2.y,
-					radius: orb.radius
-				}
-
-				if(orb !== this.currentOrb && 
-					!this.transition && 
-					this.utils.circleToCircleCollisionDetection(tempCircle, tempCircle2)[0]) {
-					this.transition = true;
-					this.switchPlanets(orb);
-				}
-			}
-
-		
-		
-		
-			
 		}
 	}
 }

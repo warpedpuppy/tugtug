@@ -1,5 +1,8 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Tweens from '../../utils/Tweens';
+import FishSchool from './fishSchool';
+import LilypadsLotuses from './lilypadsLotuses';
 export default function () {
 	return {
 		texture: 'waterSmall.png',
@@ -10,19 +13,17 @@ export default function () {
 		sizeIncrement: 2,
 		utils: Utils,
 		gridIndex: 5,
+		lilypadLotuses: LilypadsLotuses(),
+		fishSchool: FishSchool(),
 		init: function () {
 			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;
+			this.lilypadLotuses.init(this.parentCont);
+			this.fishSchool.init(this.parentCont);
+			
 
-			let arr = [
-				[0,0,1,1],
-				[2000, 0, -1,1],
-				[0,1000,1,-1],
-				[2000,1000,-1,-1]
-			]
-
-			this.cont = this.build(arr);
-			this.cont2 = this.build(arr);
+			this.cont = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
+			this.cont2 = Assets.quadrupleSpriteSize(this.texture);//this.build(arr);
 			
 			this.cont.width = this.wh.canvasWidth * this.sizeIncrement;
 			this.cont.height = this.wh.canvasHeight * this.sizeIncrement;
@@ -55,30 +56,44 @@ export default function () {
 			this.background.clear();
 			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
-		build: function (arr) {
-			let s, cont = Assets.Container();
-			for(let i = 0; i < 4; i ++){
-				s = Assets.Sprite(this.texture);
-				s.x = arr[i][0];
-				s.y = arr[i][1];
-				s.scale.x = arr[i][2];
-				s.scale.y = arr[i][3];
-				cont.addChild(s);
-			}
-			return cont;
-		},
 		addToStage: function () {
 			//this.cont.addChildAt(this.sprite2, 0);
-			this.parentCont.addChildAt(this.background, 1);
+			this.fishSchool.addToStage();
+			
+			this.parentCont.addChildAt(this.background, 0);
 			this.parentCont.addChildAt(this.cont2, 2);
-			this.parentCont.addChildAt(this.cont, this.parentCont.children.length - 2);
+			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
+			this.parentCont.addChildAt(this.cont, index);
+			this.lilypadLotuses.addToStage();
+			//this.parentCont.setChildIndex(this.utils.hero.cont, index - 1);
 		},
 		removeFromStage: function () {
+			this.fishSchool.removeFromStage();
+			this.lilypadLotuses.removeFromStage();
 			this.parentCont.removeChild(this.background);
 			this.parentCont.removeChild(this.cont2);
 			this.parentCont.removeChild(this.cont);
 		},
+		startSpaceShipJourney: function () {
+		
+   		    Tweens.tween(this.fishSchool.fishCont, 1, {alpha: [1,0]});
+			Tweens.tween(this.fishSchool.sharkCont, 1, {alpha: [1,0]});
+            Tweens.tween(this.lilypadLotuses.cont, 1, {alpha: [1,0]});
+            Tweens.tween(this.cont, 1, {alpha:[1,0]});
+            Tweens.tween(this.cont2, 1, {alpha: [1,0]});
+        },
+        endSpaceShipJourney: function () {
+     
+     	   Tweens.tween(this.fishSchool.fishCont, 1, {alpha: [0,1]});
+		   Tweens.tween(this.fishSchool.sharkCont, 1, {alpha: [0,1]});
+           Tweens.tween(this.lilypadLotuses.cont, 1, {alpha: [0,1]});
+           Tweens.tween(this.cont, 1,{alpha: [0,0.15]});
+           Tweens.tween(this.cont2, 1, {alpha: [0,0.5]});
+        },
 		animate: function () {
+			this.fishSchool.animate();
+			
+			this.lilypadLotuses.animate();
 
 
 			this.cont2.x += this.cont2.vx;
