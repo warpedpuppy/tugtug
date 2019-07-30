@@ -46,7 +46,7 @@ class App extends React.Component {
           { headers: {"Authorization" : `Bearer ${lsToken}`} }
         )
         .then(function(response){
-          
+          console.log('this is the response', response)
           if(response.data.valid) {
 
             //set store token & userdata
@@ -63,6 +63,7 @@ class App extends React.Component {
           }
         })
         .catch((err) => {
+          localStorage.removeItem('token')
           console.error('ERROR IS HERE',err)
         });  
     }
