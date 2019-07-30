@@ -22,20 +22,9 @@ export default function () {
 			this.parent = parent;
 			this.app = this.utils.app;
 			this.parentCont = parent.stage;
-
 			this.hero = this.utils.hero;
-			//let wh = this.wh = this.utils.wh;
 			this.spritesheet = this.utils.spritesheet;
-
-			//this.lightningBoltsBuild();
-			// this.lightningStorm = this.lightningStorm.bind(this);
-			// this.clearLightening = this.clearLightening.bind(this);
-			//this.timer = setTimeout(this.lightningStorm, 1500)
-
-			//this.buildCastlesAndSoldiers();
 			this.clouds.init(parent.stage)
-			
-
 		},
 		lightningStorm: function () {
 			this.foreground.visible = true;

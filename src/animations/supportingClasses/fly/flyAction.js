@@ -51,7 +51,7 @@ export default function () {
 			this.flameArray = obj.flameArray;
 			this.flameQ = obj.flameQ;
 			this.flames.visible = false;
-			this.flames.y = -50;
+			this.flames.y = -180;
 			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
 		},
 		resize: function () {
