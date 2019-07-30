@@ -9,6 +9,7 @@ import Coins from './items/flyAndSwimCoins/Coins';
 import Vortexes from './items/vortexes/vortexes';
 import GridResizeHandler from './gridResizeHandler';
 import GridItems from './items/gridItems';
+import SetTileLimits from './tiles/setTileLimits';
 
 export default function () {
 	return {
@@ -24,7 +25,6 @@ export default function () {
 		tokenData: {},
 		freeSpaces: [],
 		coveredSpaces: [],
-		//boards: [],
 		currentBoard: 0,
 		blockPool: [],
 		gridCirclePool: [],
@@ -34,34 +34,24 @@ export default function () {
 		treasureChests: [],
 		magicPillsArray: [],
 		itemLoopingQ: 0,
-		// soldiers: [],
-		// castles: [],
-		// spears: [],
-		// solderPerGridSquareQ: 1,
 		flyBaddies: Baddies(),
 		swimBaddies: Baddies(),
-		//onGridCoins: {},
 		omnibusArray: [],
 		flyColors: [0x5713B8, 0xFF0F59, 0x4A34FF, 0x60B800, 0x0122FA],
 		shipSpace: [],
-		//vortexesArray: [],
 		coins: Coins(),
 		vortexes: Vortexes(),
 		gridResizeHandler: GridResizeHandler(),
 		gridItems: GridItems(),
 		microscopeClass: Microscope(),
 		init: function () {
-			//this.moveItem = this.moveItem.bind(this);
+			
 
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 			
 			if (this.utils.root.all) {
 				this.microscope = this.microscopeClass.build();
-				// this.microscope = Assets.Sprite('microscope.png');
-				// this.microscope.anchor.set(0.5);
-				// this.microscope.scale.set(0.5);
-				// this.microscope.name = 'bounce';
 				this.spaceShip = SpaceShip().init()
 			}
 		
@@ -137,8 +127,6 @@ export default function () {
 				...this.transitionItemsArray]
 			}
 			
-
-
 			if (mode === 'fly') {
 				texture = this.flyTexture;
 			} 
@@ -150,7 +138,7 @@ export default function () {
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
 
 					if (!this.blockPool[counter]) {
-						b = Assets.Sprite()
+						b = Assets.Sprite();
 						gridCircle = Assets.Sprite('gridCircle600.png');
 						gridCircle.anchor.set(0.5);
 
@@ -160,8 +148,6 @@ export default function () {
 						b = this.blockPool[counter];
 						gridCircle = this.gridCirclePool[counter];
 					}
-
-				
 
 					b.width = this.blockWidth;
 					b.height = this.blockHeight;
@@ -175,9 +161,7 @@ export default function () {
 					gridCircle.width = this.blockWidth;
 					gridCircle.height = this.blockHeight;
 					gridCircle.x = j * this.blockWidth + (this.blockWidth / 2);
-					gridCircle.y = i * this.blockHeight + (this.blockHeight / 2);
-					
-					
+					gridCircle.y = i * this.blockHeight + (this.blockHeight / 2);				
 
 					let token = false;
 					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
@@ -195,6 +179,7 @@ export default function () {
 
 					if (bool) {
 						b.texture = this.whiteSquare;
+						b.alpha = 1;
 						//b.tint = 0x003300;
 						this.coveredSpaces.push(b)
 					} else {
@@ -210,7 +195,6 @@ export default function () {
 					counter ++;
 				}
 			}
-
 
 			if (this.utils.root.all) {
 				this.spaceShip.classRef.placeShip();
@@ -229,7 +213,7 @@ export default function () {
 
 			this[`${mode}Baddies`].placeCastlesAndSoldiers(this);
 
-			this.assignAboveBelowRightLeftCovered();
+			SetTileLimits.assignAboveBelowRightLeftCovered();
 			
 			this.utils.root.tokens.tokensClass.placeTokens();
 			this.heroJ = data.hero.j;
@@ -254,75 +238,6 @@ export default function () {
 			let halfHeight = this.utils.canvasHeight / 2;
 			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth / 2);
 			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
-		},
-		returnAbove: function (i,j) {
-			let newi = (i - 1 >= 0)?(i - 1):undefined;
-			let newj = j;
-			
-			if(newi !== undefined && newj !== undefined){
-				return this.blocks[newi][newj];
-			} else {
-				return undefined;
-			}
-			
-		},
-		returnBelow: function (i,j) {
-			let newi = (i + 1 < (this.rowQ))?(i + 1):undefined;
-			let newj = j;
-
-			if(newi !== undefined && newj !== undefined){
-				return this.blocks[newi][newj];
-			} else {
-				return  undefined;
-			}
-		},
-		returnLeft: function (i,j) {
-			let newi = i;
-			let newj = (j - 1 >= 0)?(j - 1):undefined;
-			if(newi !== undefined && newj !== undefined){
-				return this.blocks[newi][newj];
-			} else {
-				return  undefined;
-			}
-		},
-		returnRight: function (i,j) {
-			let newi = i;
-			let newj = (j + 1 < (this.colQ))?(j + 1):undefined;
-			
-			if(newi !== undefined && newj !== undefined){
-				return this.blocks[newi][newj];
-			} else {
-				return  undefined;
-			}
-		},
-		assignAboveBelowRightLeftCovered: function () {
-		
-	        for (let i = 0; i < this.rowQ; i ++) {
-	            for (let j = 0; j < this.colQ; j ++) {
-	                
-	                let above = this.returnAbove(i, j)
-	                if(!above)continue
-	                this.blocks[i][j].above = above;
-	                this.blocks[i][j].aboveCovered = above.covered;
-	               
-	                let below = this.returnBelow(i, j)
-	                if(!below)continue
-	                this.blocks[i][j].below = below;
-	                this.blocks[i][j].belowCovered = below.covered;
-	                
-	                let right = this.returnRight(i, j)
-	                if(!right)continue
-	                this.blocks[i][j].right = right;
-	                this.blocks[i][j].rightCovered = right.covered;
-	                
-	                let left = this.returnLeft(i, j)
-	                if(!left)continue
-	                this.blocks[i][j].left = left;
-	                this.blocks[i][j].leftCovered = left.covered;
-
-	               // console.log(above, right, left, below)
-	            }
-	        }
 		}
 	}
 }

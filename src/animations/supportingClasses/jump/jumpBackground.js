@@ -147,6 +147,14 @@ export default function () {
 		},
 		switchPlanets: function (newPlanet, i) {
 
+				if (this.utils.root.all && newPlanet.spaceShip) {
+					this.hero.activeHero.cont.y = 0;
+					this.pause = true;
+					this.utils.root.jump.jumpAction.pause = true;
+					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
+					return;
+				}
+
 				let oldPlanet = this.currentOrb;
 
 				this.pause = true;
@@ -181,12 +189,7 @@ export default function () {
 
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
 
-				if (this.utils.root.all && newPlanet.spaceShip) {
-					this.hero.activeHero.cont.y = 0;
-					this.pause = true;
-					this.utils.root.jump.jumpAction.pause = true;
-					this.utils.root.grid.gridBuild.spaceShip.classRef.returnHome();
-				}
+				
 				// } else if (newPlanet === this.tokenOrb && this.jumpTokenUnlocked && !this.jumpTokenTaken) {
 
 				// 	this.jumpTokenTaken = true;

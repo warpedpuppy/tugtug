@@ -18,7 +18,6 @@ export default function () {
 		gridIndex: 1,
 		sizeIncrement: 1,
 		clouds: Clouds(),
-		
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;

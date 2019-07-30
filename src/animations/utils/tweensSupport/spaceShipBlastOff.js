@@ -8,7 +8,7 @@ export default function () {
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
 
 			this.utils.root.animations.circles({start: true, expand: false});
-
+			this.utils.root.fly.flyBackground.clouds.removeFromStage();
 			this.storeX = maze.x;
 			this.storeY = maze.y;
 			this.storeShipScale = ship.scale.x;
@@ -28,7 +28,7 @@ export default function () {
 		},
 		spaceShipBlastOff_2: function () {
 
-			this.utils.root.grid.gridBuild.addRemoveVortexes(false);
+			this.utils.root.grid.gridBuild.vortexes.addRemoveVortexes(false);
 			
 			let shipSpace = this.utils.root.grid.gridBuild.shipSpace;
 			this.utils.root.grid.gridBuild.cont.pivot = Assets.Point(shipSpace[0], shipSpace[1])

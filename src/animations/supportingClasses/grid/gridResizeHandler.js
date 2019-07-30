@@ -39,8 +39,8 @@ export default function GridResizeHandler() {
 			this.utils.root.grid.gridAction.pause = false;
 			this.utils.root.action = true;
 
-			gridBuild.placeItems(gridBuild[`${this.utils.root.activeMode}TreasureChests`]);
-			gridBuild.placeItems(gridBuild.magicPillsArray);
+			gridBuild.gridItems.placeItems(gridBuild[`${this.utils.root.activeMode}TreasureChests`]);
+			gridBuild.gridItems.placeItems(gridBuild.magicPillsArray);
 
 			window.clearTimeout(this.timeOut);
 		},

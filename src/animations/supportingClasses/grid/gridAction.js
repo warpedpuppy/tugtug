@@ -86,13 +86,12 @@ export default function (){
 
 			//console.log(above.covered, right.covered, left.covered, below.covered)
 
-			if(!above || above.covered){
+			if (!above || above.covered) {
 				this.topBorder = this.topEdge - (this.blockHeight * i);
 			} else {
 				this.topBorder = this.topEdge;
-
 			}
-			if(!below || below.covered){
+			if (!below || below.covered) {
 				this.bottomBorder = ((i+1) * this.blockHeight) - this.topEdge;	
 			} else {
 				this.bottomBorder = this.bottomEdge;

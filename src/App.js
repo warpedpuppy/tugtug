@@ -21,7 +21,7 @@ require('../node_modules/normalize.css/normalize.css');
 
 class App extends React.Component {
 
-  constructor(props){
+  constructor (props) {
     super(props);
     this.loggedInCheck = this.loggedInCheck.bind(this);
     this.state = {
