@@ -38,32 +38,33 @@ class App extends React.Component {
 
     let lsToken = localStorage.getItem('token')
     let that = this;
+    console.log("lsToken", lsToken, this.props.token)
     if (this.props.token === 'blank' && lsToken) {
+        console.log('check token')
+        axios
+        .get(`${API_BASE_URL}/api/auth/validate`, 
+          { headers: {"Authorization" : `Bearer ${lsToken}`} }
+        )
+        .then(function(response){
+          
+          if(response.data.valid) {
 
-      axios
-      .get(`${API_BASE_URL}/api/auth/validate`, 
-        { headers: {"Authorization" : `Bearer ${lsToken}`} }
-      )
-      .then(function(response){
-        
-        if(response.data.valid) {
+            //set store token & userdata
+            that.props.dispatch(addUserdata(response.data.user));
+            that.props.dispatch(addToken(lsToken));
 
-          //set store token & userdata
-          that.props.dispatch(addUserdata(response.data.user));
-          that.props.dispatch(addToken(lsToken));
+            if (response.data.user) {
+             console.log('appjs = ', response.data.user.accessories)
+             that.props.dispatch(addItems(response.data.user.accessories));
+            }
 
-          if (response.data.user) {
-           console.log('appjs = ', response.data.user.accessories)
-           that.props.dispatch(addItems(response.data.user.accessories));
+          } else {
+            localStorage.removeItem('token')
           }
-
-        } else {
-          localStorage.removeItem('token')
-        }
-      })
-      .catch((err) => {
-        //console.error(err)
-      });  
+        })
+        .catch((err) => {
+          console.error('ERROR IS HERE',err)
+        });  
     }
   }
   componentDidUpdate () {
