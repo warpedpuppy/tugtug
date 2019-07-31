@@ -89,7 +89,7 @@ class Menu extends Component {
 			<div>
 				{redirect}
 				<nav>
-				{/*
+		
 					<div className="not-links">
 						<Link className="homeLink" to="/">
 							<LogoGraphic passedClasses={classes}/>
@@ -116,7 +116,7 @@ class Menu extends Component {
 						<a className={showLogOut} onClick={this.logOut}>log out</a>
 						<EditMode />
 					</div>
-					 */}
+					
 				</nav>
 				
 				<LoginRegisterContainer 

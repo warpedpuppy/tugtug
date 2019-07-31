@@ -1,14 +1,10 @@
-import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Config from '../../animationsConfig';
-import axios from 'axios';
-import { API_BASE_URL } from '../../../config';
 import TransitionItems from './items/transition/transitionItems';
 import Treasure from './items/treasure/treasure';
 import MagicPills from './items/magic/magicPills';
 import GridBuild from './gridBuild';
 import GridAction from './gridAction';
-//import GridComplete from './gridComplete';
 export default function () {
 	return {
 		blocks: {},
@@ -24,7 +20,6 @@ export default function () {
 		magicPillsArray: [],
 		gridAction: GridAction(),
 		gridBuild: GridBuild(),
-		boards: [],
 		init: function () {
 
 			this.parent = this.utils.root;

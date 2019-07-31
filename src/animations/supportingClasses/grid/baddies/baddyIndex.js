@@ -1,5 +1,4 @@
 import Utils from '../../../utils/utils';
-import Assets from '../../../utils/assetCreation';
 import Config from '../../../animationsConfig';
 import Baddy from './baddy';
 import BaddyAction from './baddyAction';
@@ -20,7 +19,7 @@ export default function () {
 			this.animate = this.animate.bind(this);
 			this.loopingQ = Config[`${mode}BaddyQ`];
 			//this.baddyAction = BaddyAction(this.soldiers, this.spears, gridBuild);
-			let soldierCounter = 0;
+			
 			
 			for (let i = 0; i < this.loopingQ; i ++) {
 				//make castle array
@@ -66,7 +65,7 @@ export default function () {
 			// console.log('There are  ', this.castles.length, ' castles left')
 			// console.log('There are  ', this.soldiers.length, ' soldiers left')
 			let freeSpaces = gridBuild.freeSpaces,
-			    soldierCounter = 0,
+			   
 			    bw = Config[`${this.utils.root.activeMode}BlockSize`][0],
 			    bh = Config[`${this.utils.root.activeMode}BlockSize`][1];
 

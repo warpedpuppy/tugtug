@@ -22,6 +22,7 @@ import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import Animations from './supportingClasses/universal/animations/animationsIndex';
+import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 
 export default function(obj) {
     return {
@@ -94,6 +95,8 @@ export default function(obj) {
             const fpsCounter = this.fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
+            LoadingAnimation.start(this.stage);
+
             this.stage.addChild(this.filterContainer);
 
             this.getDatabaseData = this.getDatabaseData.bind(this);
@@ -119,7 +122,6 @@ export default function(obj) {
            let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
-           let that = this;
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
@@ -189,13 +191,6 @@ export default function(obj) {
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
-                this.testButton = Assets.Sprite('redTile.png');
-                this.testButton.x = 10;
-                this.testButton.y = 140;
-                this.testButton.interactive = true;
-                let that = this;
-                this.testButton.pointerdown = function(){that.switchPlayer()};
-                this.stage.addChild(this.testButton)
             } 
                
             if (this.isMobileOnly) {
@@ -224,13 +219,18 @@ export default function(obj) {
             
             this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
+            LoadingAnimation.stop(this.stage);
         },
         stop: function () {
             window.onresize = undefined;
-            if(this.app)this.app.destroy(true);
-             if (!this.isMobile && this.keyHandler) {
+            
+            if (this.app) this.app.destroy(true);
+
+            if (!this.isMobile && this.keyHandler) {
                 this.keyHandler.removeFromStage();
             }
+
+            Tweens.killAll();
         },
         earnToken: function (t) {
             //console.log('level complete');

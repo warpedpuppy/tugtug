@@ -1,6 +1,5 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import Tweens from '../../utils/Tweens';
 import SpaceShip from './items/spaceShip/spaceShip';
 import Microscope from './items/spaceShip/microscope';
 import Config from '../../animationsConfig';
@@ -97,7 +96,6 @@ export default function () {
 			    obj = this.createObj(data),
 			    counter = 0,
 			    b,
-			    texture,
 			    gridCircle;
 			this.cont.scale.set(1);
 			this.cont.pivot = Assets.Point(0, 0);
@@ -127,9 +125,9 @@ export default function () {
 				...this.transitionItemsArray]
 			}
 			
-			if (mode === 'fly') {
-				texture = this.flyTexture;
-			} 
+			// if (mode === 'fly') {
+			// 	texture = this.flyTexture;
+			// } 
 			
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];

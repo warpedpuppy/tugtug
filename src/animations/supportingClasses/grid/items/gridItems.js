@@ -1,4 +1,3 @@
-import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tweens from '../../../utils/Tweens';
 import Config from '../../../animationsConfig';
@@ -40,11 +39,7 @@ export default function GridItems () {
 			})
 		},
 		moveItem1: function (item) {
-			//	alert("shrink")
 			item.hit = true;
-
-			//this.moveItem2 = this.moveItem2.bind(this);
-			//let onCompleteHandler = ;
 			Tweens.tween(item.scale, 1, 
 				{
 					x: [item.scale.x,0], 
@@ -56,9 +51,6 @@ export default function GridItems () {
 			
 		},
 		moveItem2: function (item) {
-			//alert("grow")
-			//console.log("two hit")
-			//let onCompleteHandler = ;
 			Tweens.tween(item.scale, 1, 
 				{
 					x: [0,item.storeScaleX], 

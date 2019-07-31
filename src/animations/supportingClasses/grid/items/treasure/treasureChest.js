@@ -1,7 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import TreasureAnimation from './treasureAnimation';
-import Config from '../../../../animationsConfig';
 export default function () {
 	return {
 	chests: [],

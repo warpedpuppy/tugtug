@@ -1,6 +1,5 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-import Config from '../../../animationsConfig';
 export default function () {
 	return {
 		cont: Assets.Container(), 
@@ -14,7 +13,6 @@ export default function () {
 		expand: true,
 		absValueRate: 0.025,
 		init: function () {
-			let counter = 0;
 			for (let i = 0; i < this.ringQ; i ++) {
 				let ring = Assets.Sprite('whiteConcentricCircle.png');
 				ring.anchor.set(0.5);

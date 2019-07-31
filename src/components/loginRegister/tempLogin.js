@@ -23,7 +23,7 @@ export default class TempLoginForm extends React.Component {
 	}
 	login (e) {
 		e.preventDefault();
-		let hex = Utils.randomHex();
+
 		this.setState({
 			color1: Utils.randomHex(),
 			color2: Utils.randomHex(),
@@ -84,7 +84,7 @@ export default class TempLoginForm extends React.Component {
 		return (
 			<div className="tempLogin">
 				<div className="inner">
-					<img src="/bmps/tugtug.png" />
+					<img alt="crappy temporary logo" src="/bmps/tugtug.png" />
 						{content}
 					<span 
 					onClick={(e) => this.toggleLogin()}

@@ -1,6 +1,5 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import Tweens from '../../utils/Tweens';
 
 export default function () {
 	return {

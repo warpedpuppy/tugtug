@@ -77,8 +77,6 @@ export default function () {
 
 			this.clouds.animate();
 			
-
-		
 			this.hero.activeHero.eyeCont.rotation = this.radius;
 			this.hero.activeHero.headCont.rotation = this.radius;
 		

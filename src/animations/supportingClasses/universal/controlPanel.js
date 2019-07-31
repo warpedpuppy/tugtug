@@ -12,18 +12,10 @@ export default function () {
                   this.uiCont = Assets.Container();
                   
                   this.upButton = Assets.Sprite('redTile.png');
-                  let spacer = this.spacer = 10;
-                  let spacerPlusHeight = this.spacerPlusHeight = this.upButton.height + spacer;
+                  
+                
 
-                  //
-                  // this.upButton.interactive = true;
-                  // this.upButton.buttonMode = true;
-                  // this.upButton.x = 10;
-                  // this.upButton.pointerdown = parent.keyHandler.upHit;
-                  // this.upButton.pointerup = parent.keyHandler.keyRelease;
-                  // this.uiCont.addChild(this.upButton);
-
-                  //this.leftButton = Assets.Sprite('redTile.png');
+          
                   this.leftButton = Assets.Graphics();
                   this.leftButton.lineStyle(5, 0x000000, 1).beginFill(0xFFFF00).drawRoundedRect(
                         -this.halfHeight, 
@@ -38,16 +30,7 @@ export default function () {
                   this.leftButton.pointerup = parent.keyHandler.keyRelease;
                   this.uiCont.addChild(this.leftButton);
 
-                  // this.downButton = Assets.Sprite('redTile.png');
-                  // this.downButton.interactive = true;
-                  // this.downButton.buttonMode = true;
-                  // this.downButton.x = 10;
-                  // this.downButton.y = this.leftButton.y + spacerPlusHeight;
-                  // this.downButton.pointerdown = parent.keyHandler.downHit;
-                  // this.downButton.pointerup = parent.keyHandler.keyRelease;
-                  // this.uiCont.addChild(this.downButton);
-
-                 // this.spaceButton = Assets.Sprite('redTile.png');
+                
 
 
                   this.rightButton = Assets.Graphics();
@@ -87,33 +70,11 @@ export default function () {
                  this.rightButton.x = halfWidth + this.halfHeight + 10;
 
                  this.uiCont.addChild(this.spaceButton);
-
-                  // this.upButton2 = Assets.Sprite('redTile.png');
-                  // this.upButton2.interactive = true;
-                  // this.upButton2.buttonMode = true;
-                  // this.upButton2.x = this.spaceButton.x + this.spaceButton.width + this.spacer;
-                  // this.upButton2.pointerdown = parent.keyHandler.upHit;
-                  // this.upButton2.pointerup = parent.keyHandler.keyRelease;
-                  // this.uiCont.addChild(this.upButton2);
-
-
-                  // this.downButton2 = Assets.Sprite('redTile.png');
-                  // this.downButton2.interactive = true;
-                  // this.downButton2.buttonMode = true;
-                  // this.downButton2.x = this.upButton2.x;
-                  // this.downButton2.y = this.spaceButton.y;
-                  // this.downButton2.pointerdown = parent.keyHandler.downHit;
-                  // this.downButton2.pointerup = parent.keyHandler.keyRelease;
-                  // this.uiCont.addChild(this.downButton2);
-                  
                 	this.place();
             
 		},
 		place: function () {
-			//this.spaceButton.width = this.utils.canvasWidth - (this.spacerPlusHeight * 3);
-			//this.upButton2.x = this.spaceButton.x + this.spaceButton.width + this.spacer;
-			//this.rightButton.x = this.upButton2.x;
-			//this.downButton2.x = this.upButton2.x;
+			
 
                   let width = this.utils.canvasWidth - (this.spacerPlusHeight * 3);
                   let halfWidth = width / 2;

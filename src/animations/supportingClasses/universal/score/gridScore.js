@@ -1,6 +1,4 @@
-import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-import Tweens from '../../../utils/Tweens';
 import Config from '../../../animationsConfig';
 export default function () {
 	return {
@@ -9,7 +7,6 @@ export default function () {
 		let activeMode = this.utils.root.activeMode,
 			score = this.utils.root.score;
 		score[`${activeMode}Points`] += Config[`${activeMode}CoinsPerTreasureChest`];
-		//console.log(activeMode,this[`${activeMode}Points`],  Config[`${activeMode}CoinsPerTreasureChest`])
 		score.scoreTexts[`${activeMode}Text`].text = `dragon points: ${score[`${activeMode}Points`]} / ${score[`${activeMode}Total`]}`;
 	},
 	treasureChange: function (str) {

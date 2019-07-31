@@ -4,9 +4,8 @@ import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 
-//import Swim from './supportingClasses/swim/indexSwim';
-//import Bounce from './supportingClasses/bounce/indexBounce';
-//import Fly from './supportingClasses/fly/indexFly';
+import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
+
 import Jump from './supportingClasses/jump/indexJump';
 import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
@@ -19,9 +18,6 @@ import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
-import Grid from './supportingClasses/grid/gridIndex';
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
 import Animations from './supportingClasses/universal/animations/animationsIndex';
 
 export default function(obj) {
@@ -56,7 +52,7 @@ export default function(obj) {
         animations: Animations(),
         keyHandler: KeyHandler(),
         init: function (isMobile, isMobileOnly) {
-
+            
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -93,7 +89,9 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
         
-            const fpsCounter = this.fpsCounter = new PixiFps();
+            LoadingAnimation.start(this.stage);
+
+            this.fpsCounter = new PixiFps();
             
 
             this.stage.addChild(this.filterContainer);
@@ -183,7 +181,7 @@ export default function(obj) {
           
             this.makeJumpActive();
            
-
+             LoadingAnimation.stop(this.stage);
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
@@ -224,9 +222,9 @@ export default function(obj) {
                 this.activeMode = (mode)?mode:this.increaseIndex();
                 let newActiveModeString = this.activeMode;
 
-                if (this.activeMode === 'bounce') {
-                    this.grid.removeFromStage();
-                }
+                // if (this.utils.root.all && this.activeMode === 'bounce') {
+                //     this.grid.removeFromStage();
+                // }
             
                 this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
             }
@@ -262,9 +260,9 @@ export default function(obj) {
             //this.score.switchMode();
         },
         resizeBundle: function () {
-            if (this.activeMode === 'fly' || this.activeMode === 'swim') {
-                this.grid.resize();
-            }
+            // if (this.activeMode === 'fly' || this.activeMode === 'swim') {
+            //     this.grid.resize();
+            // }
             //this.score.resize();
             this.clock.resize();
             this.gears.resize();
@@ -302,31 +300,31 @@ export default function(obj) {
             clearTimeout(this.timeOut);
            
         },
-        startSpaceShipJourney: function () {
-            this.storeActiveMode = this.activeMode;
-            this.hero.cont.visible = false;
-            this.activeAction.vx = this.activeAction.vy = 0;
-            this.grid.gridAction.pause = true;
-            this[this.activeMode].startSpaceShipJourney();
-        },
-        endSpaceShipJourney: function () {
+        // startSpaceShipJourney: function () {
+        //     this.storeActiveMode = this.activeMode;
+        //     this.hero.cont.visible = false;
+        //     this.activeAction.vx = this.activeAction.vy = 0;
+        //     this.grid.gridAction.pause = true;
+        //     this[this.activeMode].startSpaceShipJourney();
+        // },
+        // endSpaceShipJourney: function () {
 
-            this.jump.removeFromStage();
+        //     this.jump.removeFromStage();
             
-            this.switchPlayer(this.storeActiveMode);
+        //     this.switchPlayer(this.storeActiveMode);
            
-            this.grid.gridBuild.placeHero();
+        //     this.grid.gridBuild.placeHero();
   
-            this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
+        //     this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
 
-            this.grid.gridAction.pause = false;
+        //     this.grid.gridAction.pause = false;
        
-            this.activeAction.vx = this.activeAction.vy = 0;
+        //     this.activeAction.vx = this.activeAction.vy = 0;
 
-            this.activeAction.radius = this.activeAction.storeRadius = 0;
+        //     this.activeAction.radius = this.activeAction.storeRadius = 0;
 
-            this[this.activeMode].endSpaceShipJourney();
-        },
+        //     this[this.activeMode].endSpaceShipJourney();
+        // },
         makeJumpActive: function () {
             this.jump.addToStage();
             this.jump.jumpBackground.pause = false;
@@ -353,7 +351,7 @@ export default function(obj) {
             this[this.activeMode].removeFromStage();
             this.switchPlayer(this.mode[0]);
            
-            this.grid.nextBoard(); 
+           // this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
             this.getDatabaseData();
 

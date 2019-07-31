@@ -4,7 +4,6 @@ import Config from '../../animationsConfig';
 import RainbowSwirls from './rainbowSwirls';
 import Tweens from '../../utils/Tweens';
 import Planets from './jumpBackground/planets/planet';
-import JumpTokenUnlockedGraphic from './jumpTokenUnlocked';
 import ThreeInARow from './threeInARow';
 export default function () {
 	return {
@@ -41,7 +40,7 @@ export default function () {
 			let centerOrb = 2;//this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
 
-			let totalPlanets = this.rowQ * this.colQ;
+			//let totalPlanets = this.rowQ * this.colQ;
 
 			for (let i = 0; i < this.rowQ; i ++) {
 				for (let j = 0; j < this.colQ; j ++) {
@@ -158,8 +157,7 @@ export default function () {
 				let oldPlanet = this.currentOrb;
 
 				this.pause = true;
-				let newX = (this.utils.canvasWidth / 2);
-				let newY = (this.utils.canvasHeight / 2);
+				
 				this.currentOrb = newPlanet;
 
 				let color1 = oldPlanet.color;

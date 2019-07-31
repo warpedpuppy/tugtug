@@ -1,7 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import Config from '../../../../animationsConfig';
-import Tweens from '../../../../utils/Tweens';
 export default function () {
 	return {
 		utils: Utils,

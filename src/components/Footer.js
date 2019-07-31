@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import twitter from '../svgs/Twitter.svg';
 import './Footer.css';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
+import twitter from '../svgs/Twitter.svg';
 function Footer (props) {
 
 	if(props.token === 'blank') {
 		return (
 			<footer>
-			{/*
 			<Link to="/about">
 				<span>about</span>
 			</Link>
@@ -16,13 +15,12 @@ function Footer (props) {
 			<a href="https://twitter.com/TugboatMcPuppy" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
-			*/}
+			
 		</footer>
 		)
 	} else {
 		return (
 		<footer>
-	{/*
 			<Link to="/admin">
 				<span>admin</span>
 			</Link> | 
@@ -35,7 +33,6 @@ function Footer (props) {
 			<a href="https://twitter.com/" rel="noopener noreferrer" target="_blank">
 				<img src={twitter}  className="twitter" alt="twitter" />
 			</a>
-			*/}
 		</footer>
 	)
 	}

@@ -1,5 +1,5 @@
 export default {
-	itemLifeSpan: [50, 100], 
+	itemLifeSpan: [100, 900], 
 	jumpTokenUnlockPoints: 10,
 	bounceTotalPoints: 200,
 	swimVelocities: [1, 2],

@@ -2,12 +2,7 @@ import React from 'react';
 import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/jumpAnimation';
-//import viewPortSize from '../animations/viewportSize';
-//import start_canvas from '../animations/startGameAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
-
-import axios from 'axios';
-import {API_BASE_URL} from '../config';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -97,27 +92,18 @@ export default class HomeCanvas extends React.Component {
 	}
 	render () {
 		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
-		// if (isMobileOnly) {
-		// 	return (
-		// 		<div className="mobileOnlyApology">
-		// 			<h1>please view this content on either an ipad or a computer!</h1>
-		// 		</div>
-		// 	)
-		// } else 
-
 		if (this.state.loggedIn) {
 			return (
 				<div>
 				<div id='startGameCanvas' className={startScreenCSS} ></div>
 				<div id='homeCanvas'></div>
 				<button onClick={() => this.props.closeGame()} className='closeButton'></button>
-				<h1 id="testOrientation"></h1>
+				<h1 id="testOrientation">orientation</h1>
 				</div>
 			)
 		} else {
 			return (
 				<div>
-				
 				<TempLogIn loggedInFunction={this.loggedInCheck}/>
 				</div>
 			)

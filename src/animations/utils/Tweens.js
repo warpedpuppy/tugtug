@@ -1,25 +1,21 @@
-import Assets from './assetCreation';
 import Utils from './utils';
-import Config from '../animationsConfig';
 import BlastOff from './tweensSupport/spaceShipBlastOff';
 import ReturnHome from './tweensSupport/spaceShipReturnHome';
 import Easing from './tweensSupport/easing';
 export default {
-
 		utils: Utils,
 		allowTween: false,
 		fadeOutBoolean: false,
 		fadeInBoolean: false,
 		tweenArray: [],
-		blastOff: BlastOff,
-		tweens: [],
+		//tweens: [],
 		defaultEasing: 'linear',
 		blastOff: BlastOff(),
 		returnHome: ReturnHome(),
 		killAll: function () {
 			
-			let clone = (this.tweens)?this.tweens.slice():[];
-			this.tweens.length = 0;
+			let clone = (this.tweenArray)?this.tweenArray.slice():[];
+			this.tweenArray.length = 0;
 
 			clone.forEach((item, index) => {
 				for(let property in item.obj) {
@@ -31,8 +27,6 @@ export default {
 			})
 		},
 		planetJump: function (orbsCont, hero, newPlanet, onCompleteFunction) {
-			let newX = (this.utils.canvasWidth / 2);
-			let newY = (this.utils.canvasHeight / 2);
 			this.tween(orbsCont.pivot, 1.5, 
 				{
 					x: [orbsCont.pivot.x, newPlanet.x], 
@@ -78,7 +72,7 @@ export default {
 				this.tweenArray.forEach((item, index) => {
 					if (!item.obj) {
 						item.isTweening = false;
-						 if(item.onComplete) {
+						 if (item.onComplete) {
 							item.onComplete();
 						}
 						this.tweenArray.splice(index, 1)
@@ -88,7 +82,7 @@ export default {
 							let b = item.obj[property][0];
 							let c = item.obj[property][1];
 							let d = item.seconds * 1000;
-							let e = c - b;
+							//let e = c - b;
 							let percentage = t / d;
 							//console.log(t, d)
 							let easing = (!item.easing)?this.defaultEasing:item.easing;

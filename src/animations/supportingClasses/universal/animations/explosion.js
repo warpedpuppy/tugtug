@@ -1,6 +1,5 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
-import Config from '../../../animationsConfig';
 export default function () {
 	return {
 		cont: Assets.Container(), 
@@ -33,7 +32,6 @@ export default function () {
 			this.timeLimit = this.totalSeconds * 60;
 			this.cont.x = this.utils.canvasWidth / 2;
 			this.cont.y = this.utils.canvasHeight / 2;
-			let index = this.utils.app.stage.getChildIndex(this.utils.hero.cont) - 1;
 			this.utils.app.stage.addChild(this.cont);
 			this.explosionBoolean = true;
 		},

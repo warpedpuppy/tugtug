@@ -1,16 +1,11 @@
 import React from 'react';
 import './HomeCanvas.css';
-import TempLogIn from './loginRegister/tempLogin';
-import home_page from '../animations/intro_animation';
-//import viewPortSize from '../animations/viewportSize';
-//import start_canvas from '../animations/startGameAnimation';
+import home_page from '../animations/allFour_animation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 
-import axios from 'axios';
-import {API_BASE_URL} from '../config';
 export default class HomeCanvas extends React.Component {
 
-	constructor(props){
+	constructor (props) {
 		super(props);
 		this.home_page = {};
 		this.testFilter = this.testFilter.bind(this);
@@ -24,42 +19,13 @@ export default class HomeCanvas extends React.Component {
 		
 	}
 	componentDidMount () {
-		// this.test = viewPortSize();
-		// this.test.init()
-		
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
 			this.home_page.init(isMobile, isMobileOnly);
-			
-			// this.start_canvas = start_canvas();
-			// this.start_canvas.init(this.startGame);
 		}
-		
 	}
 	componentWillMount () {
-		
 		this.getGameData();
-	}
-	getGameData () {
-		// console.log('get game data')
-		// let that = this;
-		// axios
-	 //      .get(`${API_BASE_URL}/admin/gameLoadGrids`)
-	 //      .then(response => {
-	 //      	console.log('home canvas response = ', response)
-	 //       	//that.buildGrid(response.data.board)
-	 //      })
-	 //      .catch((err) => {
-	 //        console.error(err)
-	 //      });  
-		// let that = this;
-		// return axios.get(`${API_BASE_URL}/api/users`)
-		//   .then(function(response){
-		//   	//that.startGame(response.data);
-		//   })
-		//   .catch((err) => {
-		//   	//console.log(err)
-		//   });  
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
@@ -104,7 +70,7 @@ export default class HomeCanvas extends React.Component {
 				className='closeButton'
 				></button>
 			<div id='homeCanvas'></div>
-			<h1 id="testOrientation"></h1>
+			<h1 id="testOrientation">orientation</h1>
 			</div>
 		)
 	}

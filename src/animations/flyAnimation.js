@@ -3,10 +3,7 @@ import Assets from './utils/assetCreation';
 import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
-import Swim from './supportingClasses/swim/indexSwim';
-import Bounce from './supportingClasses/bounce/indexBounce';
 import Fly from './supportingClasses/fly/indexFly';
-import Jump from './supportingClasses/jump/indexJump';
 import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
@@ -15,8 +12,8 @@ import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
+import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import PixiFps from "pixi-fps";
-import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
@@ -50,8 +47,10 @@ export default function(obj) {
         levelComplete: LevelComplete(),
         fullStop: false,
         animations: Animations(),
+        counter: 0,
+        
         init: function (isMobile, isMobileOnly) {
-         
+
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
@@ -82,8 +81,13 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
         
-            const fpsCounter = this.fpsCounter = new PixiFps();
+            this.fpsCounter = new PixiFps();
             
+            LoadingAnimation.start(this.stage);
+            
+
+            
+
 
             this.stage.addChild(this.filterContainer);
 
@@ -110,7 +114,7 @@ export default function(obj) {
            let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
-           let that = this;
+
            axios
            .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
            .then(response => {
@@ -179,13 +183,6 @@ export default function(obj) {
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
-                // this.testButton = Assets.Sprite('redTile.png');
-                // this.testButton.x = 10;
-                // this.testButton.y = 140;
-                // this.testButton.interactive = true;
-                let that = this;
-                // this.testButton.pointerdown = function(){that.switchPlayer()};
-                // this.stage.addChild(this.testButton)
             } 
                
             if (this.isMobileOnly) {
@@ -211,6 +208,7 @@ export default function(obj) {
             this.app.stage.addChild(this.fpsCounter);
 
             //this.animations.circles({start: true, expand: true});
+           LoadingAnimation.stop(this.stage);
         },
         stop: function () {
             window.onresize = undefined;

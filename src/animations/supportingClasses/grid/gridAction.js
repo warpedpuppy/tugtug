@@ -1,4 +1,3 @@
-import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
 import Tweens from '../../utils/Tweens';
 import Config from '../../animationsConfig';
@@ -61,7 +60,6 @@ export default function (){
 				let blocks = this.utils.root.grid.gridBuild.blocks;
 				let currentBlock = blocks[this.glow.obj.i][this.glow.obj.j]
 				Tweens.tween(currentBlock, 0.15, {alpha: [0.75,0.25]});
-				let gc = currentBlock.gridCircle;
 				let ninetyDegrees = this.utils.deg2rad(90);
 				Tweens.tween(currentBlock.gridCircle, 3, {rotation: [ninetyDegrees,0]}
 					, undefined,'easeOutBounce');
@@ -141,29 +139,31 @@ export default function (){
 			return x[0];
 		},
 		animate: function (vx, vy) {
+
 			if (this.treasure.animationHappening) {
 				this.treasure.animateSpecial();			
 			} else {
 				this.treasure.animate();
 			}
 
-			if(this.pause)return;
+			if (this.pause) return;
 
-			this.gridBuild.vortexes.vortexArray.forEach(v => {
-				v.vortex.rotation += v.vortex.rotationQ;
-				let gp = this.gridBuild.cont.toGlobal(v.item),
-				    x = gp.x,
-				    y = gp.y,
-				    x2 = gp.x - this.gridBuild.blockWidth / 2,
-				    y2 = gp.y - this.gridBuild.blockHeight / 2;
-				v.vortex.x = x;
-				v.vortex.y = y;
-				v.mask.clear();
-				v.mask.beginFill(0xFF3300).drawRect(x2 ,y2, this.blockWidth, this.blockHeight).endFill();
+			if (this.utils.root.all) {
+				this.gridBuild.vortexes.vortexArray.forEach(v => {
+					v.vortex.rotation += v.vortex.rotationQ;
+					let gp = this.gridBuild.cont.toGlobal(v.item),
+					    x = gp.x,
+					    y = gp.y,
+					    x2 = gp.x - this.gridBuild.blockWidth / 2,
+					    y2 = gp.y - this.gridBuild.blockHeight / 2;
+					v.vortex.x = x;
+					v.vortex.y = y;
+					v.mask.clear();
+					v.mask.beginFill(0xFF3300).drawRect(x2 ,y2, this.blockWidth, this.blockHeight).endFill();
 
-			})
+				})
+			}
 
-			let ballB;
 			this[`${this.utils.root.activeMode}Baddies`].animate();
 
 			//keeping this out of the above loop because items will continue being added and subtracted from it
@@ -195,7 +195,7 @@ export default function (){
 				
 				if (this.itemHitDetect(item)) {
 					this.utils.root.filterAnimation.shutOff();
-					if(item.name === 'swim' || item.name === 'fly' || item.name === 'bounce' && !item.hit) {
+					if((item.name === 'swim' || item.name === 'fly' || item.name === 'bounce') && !item.hit) {
 						item.hit = true;
 			 			this.utils.root.switchPlayerWithAnimation(item.name);
 					} else if (item.name === 'magicPill' && !this.utils.root.filterAnimation.enabled) {

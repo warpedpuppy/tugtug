@@ -1,7 +1,4 @@
 import Utils from '../../utils/utils';
-import dotAction from './jumpAction/jumpDotAction';
-import gremlinAction from './jumpAction/jumpGremlinAction';
-import orbAction from './jumpAction/jumpOrbAction';
 export default function () {
 	return {
 		gravity: 0.3,

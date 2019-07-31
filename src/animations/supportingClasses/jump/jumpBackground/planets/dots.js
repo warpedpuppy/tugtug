@@ -1,8 +1,6 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
 import Config from '../../../../animationsConfig';
-import Dots from './dots';
-import Gremlin from './gremlins';
 
 export default function () {
 	return {

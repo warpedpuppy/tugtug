@@ -1,4 +1,3 @@
-import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
 import Tokens from './tokens';
 import TokenSlots from './tokenSlots';
