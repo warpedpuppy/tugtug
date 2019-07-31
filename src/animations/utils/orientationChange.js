@@ -15,7 +15,7 @@ export default {
             this.canvasWidth = Math.max(val1, val2);
             this.canvasHeight = Math.min(val1, val2);
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-            document.getElementById('testOrientation').innerHTML = "landscape";
+           // document.getElementById('testOrientation').innerHTML = "landscape";
         },
         makePortrait: function () {
            
@@ -25,7 +25,7 @@ export default {
             this.canvasWidth = Math.min(val1, val2);
             this.canvasHeight = Math.max(val1, val2);
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-            document.getElementById('testOrientation').innerHTML = "portrait";
+            //document.getElementById('testOrientation').innerHTML = "portrait";
         },
          determinePortraitOrLandscape: function () {
             // console.log('determine h', this.utils.returnCanvasHeight());

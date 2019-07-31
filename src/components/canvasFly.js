@@ -31,10 +31,6 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
-	componentWillMount () {
-		
-		this.getGameData();
-	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
 		this.home_page.startGame();
@@ -74,7 +70,6 @@ export default class HomeCanvas extends React.Component {
 				<div id='startGameCanvas' className={startScreenCSS} ></div>
 				<button onClick={() => this.props.closeGame()} className='closeButton'></button>
 				<div id='homeCanvas'></div>
-				<h1 id="testOrientation">orientation</h1>
 				</div>
 			)
 		} else {

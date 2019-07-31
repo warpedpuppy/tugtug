@@ -24,9 +24,6 @@ export default class HomeCanvas extends React.Component {
 			this.home_page.init(isMobile, isMobileOnly);
 		}
 	}
-	componentWillMount () {
-		this.getGameData();
-	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
 		this.home_page.startGame();
@@ -38,8 +35,6 @@ export default class HomeCanvas extends React.Component {
 		this.setState({loggedIn:true})
 		this.home_page = home_page();
 		this.home_page.init(isMobile, isMobileOnly);
-		// this.start_canvas = start_canvas();
-		// this.start_canvas.init(this.startGame);
 	}
 	testFilter () {
 		this.home_page.filterTest();
@@ -70,7 +65,6 @@ export default class HomeCanvas extends React.Component {
 				className='closeButton'
 				></button>
 			<div id='homeCanvas'></div>
-			<h1 id="testOrientation">orientation</h1>
 			</div>
 		)
 	}

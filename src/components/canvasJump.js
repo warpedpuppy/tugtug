@@ -31,31 +31,6 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
-	componentWillMount () {
-		
-		this.getGameData();
-	}
-	getGameData () {
-		// console.log('get game data')
-		// let that = this;
-		// axios
-	 //      .get(`${API_BASE_URL}/admin/gameLoadGrids`)
-	 //      .then(response => {
-	 //      	console.log('home canvas response = ', response)
-	 //       	//that.buildGrid(response.data.board)
-	 //      })
-	 //      .catch((err) => {
-	 //        console.error(err)
-	 //      });  
-		// let that = this;
-		// return axios.get(`${API_BASE_URL}/api/users`)
-		//   .then(function(response){
-		//   	//that.startGame(response.data);
-		//   })
-		//   .catch((err) => {
-		//   	//console.log(err)
-		//   });  
-	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
 		this.home_page.startGame();
@@ -98,7 +73,6 @@ export default class HomeCanvas extends React.Component {
 				<div id='startGameCanvas' className={startScreenCSS} ></div>
 				<div id='homeCanvas'></div>
 				<button onClick={() => this.props.closeGame()} className='closeButton'></button>
-				<h1 id="testOrientation">orientation</h1>
 				</div>
 			)
 		} else {
