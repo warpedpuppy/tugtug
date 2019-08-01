@@ -3,12 +3,10 @@ import { Link, Redirect } from 'react-router-dom';
 import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
-import LoginRegisterContainer from './loginRegister/LoginRegisterContainer';
 import { deleteToken, testUser } from '../actions/tokenActions.js';
 import { deleteAll } from '../actions/avatarActions.js';
 import { toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
-import EditMode from './editMode';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
 
@@ -78,11 +76,8 @@ class Menu extends Component {
 	  
 	  render() {
 
-	  	let showDropDownClass = (this.props.menuOpen)?'open':'';
 	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
 	  	let classes = `logoGraphic ${raiseGraphic}`;
-	  	let showLogin = (this.props.token === 'blank')?'':'hide';
-	  	let showLogOut = (this.props.token === 'blank')?'hide':'';
 	  	let redirect = (this.state.redirect && window.location.pathname !== '/')?<Redirect to='/' />:''; 
 
 	    return (
@@ -95,34 +90,8 @@ class Menu extends Component {
 							<LogoGraphic passedClasses={classes}/>
 							<img src={TugTug} alt="tugtug" />
 							</Link>
-						<div className="hamburger" onClick={() => this.showDropDown()}>
-							<span></span>
-							<span></span>
-							<span></span>
-						</div>
-						
 					</div>
-
-					<div className={`links  ${showDropDownClass}`}>
-						
-						<Link className={showLogOut} to="/game">
-						<span>game</span>
-						</Link>
-						<Link className={showLogOut} to="/store">
-						<span>store</span>
-						</Link>
-						<a className={showLogin} onClick={e => this.testUser(e)} >enter as a test user</a>
-						<a className={showLogin} onClick={this.toggleLogin}>login/register</a>
-						<a className={showLogOut} onClick={this.logOut}>log out</a>
-						<EditMode />
-					</div>
-					
 				</nav>
-				
-				<LoginRegisterContainer 
-					hideDropDownAndLogin={this.hideDropDownAndLogin} 
-					showLogin={this.state.showLogin}
-				/>
 			</div>
 	    );
 		

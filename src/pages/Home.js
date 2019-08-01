@@ -1,13 +1,10 @@
 import React from 'react';
 import './Home.css';
-import Welcome from '../components/loginRegister/Welcome';
 import HomeCanvas from '../components/HomeCanvas';
 import CanvasJump from '../components/canvasJump';
 import CanvasFly from '../components/canvasFly';
 import CanvasSwim from '../components/canvasSwim';
-//import HomeCanvas from '../components/homeCanvas';
-//import HomeCanvas from '../components/ThreeOfAKindTestCanvas';
-
+import SideMenu from '../components/sideMenu';
 import { connect } from 'react-redux';
 import { changePage } from '../actions/themeActions.js';
 
@@ -16,6 +13,7 @@ class Home extends React.Component {
 	constructor (props) {
 		super(props);
 		this.closeGame = this.closeGame.bind(this);
+		this.changeState = this.changeState.bind(this);
 		this.state = {
 			active: undefined
 		}
@@ -28,6 +26,8 @@ class Home extends React.Component {
 	changeState (e) {
 		e.preventDefault();
 		this.setState({active: e.target.innerHTML})
+
+		//destroy game instance
 		
 	}
 	closeGame () {
@@ -36,46 +36,23 @@ class Home extends React.Component {
 
 	render () {
 
-		if (!this.state.active) {
-			return (
-			<div className="buttonDivCont">
-				<div className="homeMenuButtonDiv" >
-					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>fly</button>
-					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>swim</button>
-					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>jump</button>
-					<button className="homeMenuButton" onClick={ e => this.changeState(e)}>all three</button>
-				</div>
-			</div>
-			)
-		} else if(this.state.active === 'jump') {
-			return (
-			  <div className='homePage'>
-			  	  <CanvasJump closeGame={this.closeGame} />
-				  <Welcome />
-		      </div>
-		    );    
+		let activeCanvas = "";
+		if(this.state.active === 'jump') {
+			  activeCanvas = <CanvasJump closeGame={this.closeGame} />   
 		} else if(this.state.active === 'fly') {
-			return (
-			  <div className='homePage'>
-			  	  <CanvasFly  closeGame={this.closeGame}  />
-				  <Welcome />
-		      </div>
-		    );    
+			  activeCanvas = <CanvasFly  closeGame={this.closeGame}  />  
 		} else if(this.state.active === 'swim') {
-			return (
-			  <div className='homePage'>
-			  	  <CanvasSwim  closeGame={this.closeGame} />
-				  <Welcome />
-		      </div>
-		    );    
+			  activeCanvas = <CanvasSwim  closeGame={this.closeGame} />
 		} else if(this.state.active === 'all three') {
-			return (
-			  <div className='homePage'>
-			  	  <HomeCanvas  closeGame={this.closeGame} />
-				  <Welcome />
-		      </div>
-		    );    
+			  activeCanvas = <HomeCanvas  closeGame={this.closeGame} />
 		}
+
+		return (
+			<div className="homeCont">
+				<SideMenu changeState={this.changeState}/>
+				{ activeCanvas }
+			</div>
+		)
 	
 	}
 	

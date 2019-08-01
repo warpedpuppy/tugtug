@@ -1,0 +1,33 @@
+.homeMenuButtonDiv {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.homeMenuButton {
+		padding: 20px;
+		font-size: 15px;
+		cursor: pointer;
+		margin: 5px;
+		background-color: black;
+		color: white;
+		text-align: right;
+		width: 150px;
+	}
+.homeMenuButton:hover {
+	background-color: white;
+	color: black;
+	font-weight: bold;
+}
+@media (min-width: 1024px) {
+
+	.buttonDivCont {
+		position: fixed;
+		left: 0;
+		top: 100px;
+	}
+
+
+
+}
