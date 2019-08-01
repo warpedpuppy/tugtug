@@ -18,6 +18,12 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
+	pauseGame (bool) {
+		if (this.home_page.pause) {
+			this.home_page.pause(bool)
+		}
+
+	}
 	componentDidMount () {
 		if (this.state.loggedIn) {
 			this.home_page = home_page();
@@ -56,16 +62,9 @@ export default class HomeCanvas extends React.Component {
 		this.home_page.switchPlayer();
 	}
 	render () {
-		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
+		this.pauseGame(this.props.action)
 		return (
-			<div>
-			<div id='startGameCanvas' className={startScreenCSS} ></div>
-			<button 
-				onClick={() => this.props.closeGame()} 
-				className='closeButton'
-				></button>
 			<div id='homeCanvas'></div>
-			</div>
 		)
 	}
 }

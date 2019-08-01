@@ -109,6 +109,9 @@ export default function(obj) {
             }
 
         },
+        pause: function (boolean) {
+            this.action = boolean
+        },
         getDatabaseData: function () {
 
            let indexToGet = (this.grid.boards)?this.grid.boards.length:0;

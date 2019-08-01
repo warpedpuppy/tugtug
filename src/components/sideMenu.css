@@ -1,32 +1,80 @@
+.buttonDivCont {
+	position: relative;
+	width: 300px;
+	left: 0;
+	top: 120px;
+	transition: left 0.25s ease-in-out;
+	z-index: 4;
+}
+.buttonDivCont.hideMenu {
+  	left: -300px;
+	transition: left 0.25s ease-in-out;
+}
 .homeMenuButtonDiv {
 	display: flex;
-	align-items: center;
 	flex-direction: column;
-	justify-content: center;
+	
+}
+.toggleSideMenu {
+	width: 20px;
+	height: 250px;
+	position: absolute;
+	right:-20px;
+	top: 0;
+	cursor: pointer;
 }
 
+
+.buttonDivCont .toggleSideMenu {
+	background: rgb(140,6,12);
+	background: linear-gradient(90deg, rgba(140,6,12,1) 0%, rgba(251,36,7,1) 47%, rgba(170,11,2,1) 100%);
+}
+.buttonDivCont.hideMenu .toggleSideMenu {
+	background: rgb(24,106,3);
+	background: linear-gradient(90deg, rgba(24,106,3,1) 0%, rgba(7,251,32,1) 47%, rgba(20,122,3,1) 100%);
+}
+
+.buttonDivCont .toggleSideMenu:hover, 
+.buttonDivCont.hideMenu .toggleSideMenu:hover {
+	border: 5px solid white;
+}
+
+.buttonDivCont .toggleSideMenu:active {
+	background: rgb(250,27,6);
+	background: linear-gradient(90deg, rgba(250,27,6,1) 0%, rgba(142,12,7,1) 47%, rgba(249,11,6,1) 100%);
+}
+
+.buttonDivCont.hideMenu .toggleSideMenu:active {
+	background: rgb(71,250,6);
+	background: linear-gradient(90deg, rgba(71,250,6,1) 0%, rgba(22,142,7,1) 47%, rgba(128,249,6,1) 100%);
+}
+
+
 .homeMenuButton {
-		padding: 20px;
-		font-size: 15px;
-		cursor: pointer;
-		margin: 5px;
-		background-color: black;
-		color: white;
-		text-align: right;
-		width: 150px;
-	}
+	padding: 2px 20px 2px 2px;
+	margin:0;
+	font-size: 15px;
+	cursor: pointer;
+	display: block;
+	background-color: black;
+	color: white;
+	text-align: right;
+	height: 50px;
+	
+}
 .homeMenuButton:hover {
 	background-color: white;
 	color: black;
 	font-weight: bold;
 }
+
 @media (min-width: 1024px) {
 
-	.buttonDivCont {
+	/*.buttonDivCont {
 		position: fixed;
 		left: 0;
 		top: 100px;
-	}
+	}*/
 
 
 
