@@ -1,3 +1,4 @@
+
 .buttonDivCont {
 	position: relative;
 	width: 300px;
@@ -60,6 +61,7 @@
 	color: white;
 	text-align: right;
 	height: 50px;
+	border-left: none;
 	
 }
 .homeMenuButton:hover {
