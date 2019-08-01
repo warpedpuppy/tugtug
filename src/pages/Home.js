@@ -14,9 +14,14 @@ class Home extends React.Component {
 		super(props);
 		this.closeGame = this.closeGame.bind(this);
 		this.changeState = this.changeState.bind(this);
+		this.toggleAction = this.toggleAction.bind(this);
 		this.state = {
-			active: undefined
+			active: undefined,
+			action: false
 		}
+	}
+	toggleAction () {
+		this.setState({action: !this.state.action})
 	}
 	componentWillMount () {
 		console.log('home mounting');
@@ -38,18 +43,18 @@ class Home extends React.Component {
 
 		let activeCanvas = "";
 		if(this.state.active === 'jump') {
-			  activeCanvas = <CanvasJump closeGame={this.closeGame} />   
+			  activeCanvas = <CanvasJump closeGame={this.closeGame} action={this.state.action} />  
 		} else if(this.state.active === 'fly') {
-			  activeCanvas = <CanvasFly  closeGame={this.closeGame}  />  
+			  activeCanvas = <CanvasFly  closeGame={this.closeGame} action={this.state.action}  />
 		} else if(this.state.active === 'swim') {
-			  activeCanvas = <CanvasSwim  closeGame={this.closeGame} />
+			  activeCanvas = <CanvasSwim  closeGame={this.closeGame} action={this.state.action} />
 		} else if(this.state.active === 'all three') {
-			  activeCanvas = <HomeCanvas  closeGame={this.closeGame} />
+			  activeCanvas = <HomeCanvas  closeGame={this.closeGame} action={this.state.action} />
 		}
 
 		return (
 			<div className="homeCont">
-				<SideMenu changeState={this.changeState}/>
+				<SideMenu changeState={this.changeState} toggleAction={this.toggleAction}/>
 				{ activeCanvas }
 			</div>
 		)

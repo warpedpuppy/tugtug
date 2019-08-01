@@ -1,7 +1,7 @@
 import React from 'react';
 import './HomeCanvas.css';
 import TempLogIn from './loginRegister/tempLogin';
-import home_page from '../animations/flyAnimation';
+import FlyAnimation from '../animations/flyAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {
 
@@ -9,7 +9,8 @@ export default class HomeCanvas extends React.Component {
 		super(props);
 		this.home_page = {};
 		this.testFilter = this.testFilter.bind(this);
-		this.loggedInCheck = this.loggedInCheck.bind(this);
+		//this.loggedInCheck = this.loggedInCheck.bind(this);
+		this.pauseGame = this.pauseGame.bind(this)
 		this.state = {
 			filterTest: "off",
 			nightMode: "off",
@@ -19,29 +20,23 @@ export default class HomeCanvas extends React.Component {
 		
 	}
 	componentDidMount () {
-		// this.test = viewPortSize();
-		// this.test.init()
-		
 		if (this.state.loggedIn) {
-			this.home_page = home_page();
+			this.home_page = FlyAnimation();
 			this.home_page.init(isMobile, isMobileOnly);
-			
-			// this.start_canvas = start_canvas();
-			// this.start_canvas.init(this.startGame);
 		}
-		
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
 		this.home_page.startGame();
 	}
+	pauseGame (bool) {
+		if (this.home_page.pause) {
+			this.home_page.pause(bool)
+		}
+
+	}
 	componentWillUnmount(){
 		this.home_page.stop();
-	}
-	loggedInCheck () {
-		this.setState({loggedIn:true})
-		this.home_page = home_page();
-		this.home_page.init(isMobile, isMobileOnly);
 	}
 	testFilter () {
 		this.home_page.filterTest();
@@ -63,23 +58,9 @@ export default class HomeCanvas extends React.Component {
 		this.home_page.switchPlayer();
 	}
 	render () {
-		let startScreenCSS = (this.state.showStartScreen)?'':'startScreenHide';
-		if (this.state.loggedIn) {
-			return (
-				<div>
-				<div id='startGameCanvas' className={startScreenCSS} ></div>
-				<button onClick={() => this.props.closeGame()} className='closeButton'></button>
+			this.pauseGame(this.props.action)
+			return (			
 				<div id='homeCanvas'></div>
-				</div>
 			)
-		} else {
-			return (
-				<div>
-				
-				<TempLogIn loggedInFunction={this.loggedInCheck}/>
-				</div>
-			)
-		}
-		
 	}
 }

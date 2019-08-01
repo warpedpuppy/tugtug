@@ -1,4 +1,4 @@
-#startGameCanvas {
+/*#startGameCanvas {
 	position: relative;
 	z-index: 10;
 	flex-direction: row;
@@ -7,11 +7,14 @@
 }
 #startGameCanvas canvas{
 	width: 100vw;
-	height: 100vh;
+	height: calc(100vh-60px);
 	background: transparent;
+	position: absolute;
+	top:30px;
+	left: 0;
 
 }
-
+*/
 .closeButton {
   position: absolute;
   right: 32px;
@@ -56,6 +59,10 @@
 
 #homeCanvas canvas{
 	width:100vw;
+	position: absolute;
+	top:30px;
+	left:0;
+	z-index: 3;
 	/*width:calc(100vw);*/
 	/*width: 300px;
 	height: 600px;*/

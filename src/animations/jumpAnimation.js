@@ -114,6 +114,9 @@ export default function(obj) {
             }
            
         },
+         pause: function (boolean) {
+            this.action = boolean
+        },
         buildGame: function () {
             
             let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
