@@ -1,0 +1,10 @@
+.welcomeDiv {
+	border:10px solid black;
+	background: rgba(255,255,255,0.5);
+	margin: -100px auto;
+	width: 450px;
+	text-align: center;
+	font-size: 70px;
+	padding: 30px;
+	border-radius: 20px;
+}

@@ -3,16 +3,18 @@ import './Footer.css';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 function Footer (props) {
+		let arr = ["home", "about", "contact"]
+		let printVal = arr.map((item, index) => {
+			let link = (item === "home")?"/":"/"+item;
+			return (
+			<Link key={index} to={link}>
+				<span>{item}</span>
+			</Link>
+			)
+		})
 		return (
-			<footer>
-			<Link to="/about">
-				<span>about</span>
-			</Link>
-			<span> | </span>
-			<Link to="/contact">
-				<span>contact</span>
-			</Link>
-			
+		<footer>
+			{ printVal }
 		</footer>
 		)
 }

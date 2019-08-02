@@ -5,6 +5,7 @@ import CanvasJump from '../components/canvasJump';
 import CanvasFly from '../components/canvasFly';
 import CanvasSwim from '../components/canvasSwim';
 import SideMenu from '../components/sideMenu';
+import Welcome from '../components/welcome';
 import { connect } from 'react-redux';
 import { changePage } from '../actions/themeActions.js';
 
@@ -42,7 +43,9 @@ class Home extends React.Component {
 	render () {
 
 		let activeCanvas = "";
-		if(this.state.active === 'jump') {
+		if (!this.state.active){
+			activeCanvas = <Welcome />
+		} else if(this.state.active === 'jump') {
 			  activeCanvas = <CanvasJump closeGame={this.closeGame} action={this.state.action} />  
 		} else if(this.state.active === 'fly') {
 			  activeCanvas = <CanvasFly  closeGame={this.closeGame} action={this.state.action}  />

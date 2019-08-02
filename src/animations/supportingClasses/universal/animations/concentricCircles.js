@@ -57,9 +57,13 @@ export default function () {
 			this.rings.forEach((ring, index) => {
 				ring.scale.x += this.rate;
 			 	ring.scale.y += this.rate;
-			 	if (ring.scale.x < 0){
+			 	
+			 	if (!this.expand && ring.scale.x < 0){
 			 		ring.scale.set(1)
-			 	} 
+			 	}  else if (this.expand && ring.scale.x > 1) {
+			 		ring.scale.set(0)
+			 		console.log(ring.scale.x)
+			 	}
 			 	// if (!this.expand && ring.scale.x < 0) {
 					// //ring.scale.set(this.setMaxScale);
 					// ring.scale.set(0.5);
