@@ -26,13 +26,21 @@ export default class SideMenu extends React.Component {
 		let className = (this.state.open)?"buttonDivCont":"buttonDivCont hideMenu";
 		return (
 			<div className={ className }>
-				<button className="toggleSideMenu" onClick={ () => this.toggleMenu() }></button>
+				<button className="toggleSideMenu" onClick={ () => this.toggleMenu() }>
+					<div className="arrow"></div>
+				</button>
 				<div className="homeMenuButtonDiv" >
-					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}>home</button>
-					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}>fly</button>
-					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}>swim</button>
-					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}>jump</button>
-					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}>all three</button>
+					<button className="homeMenuButton">
+						<div></div>
+						<span onClick={ e => this.buttonClickHandler(e)}>home</span>
+					</button>
+					<button className="homeMenuButton">
+						<div></div>
+						<span onClick={ e => this.buttonClickHandler(e)}>fly</span>
+					</button>
+					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>swim</span></button>
+					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>jump</span></button>
+					<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>all three</span></button>
 				</div>
 			</div>
 			)

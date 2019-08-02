@@ -221,6 +221,7 @@ export default function (){
 				 			this.utils.root.earnToken(item);
 						}
 					} else if (item.name === 'spaceship') {
+						console.log('spaceshit hit')
 						this.pause = true;
 						this.spaceShip.classRef.blastOff();
 					}

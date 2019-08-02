@@ -68,6 +68,7 @@ export default {
 		    return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
 		 },
 		animate: function () {
+			//console.log(this.tweenArray.length)
 			if (this.tweenArray.length) {
 				this.tweenArray.forEach((item, index) => {
 					if (!item.obj) {

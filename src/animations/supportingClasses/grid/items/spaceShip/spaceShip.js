@@ -18,6 +18,7 @@ export default function () {
 
 		},
 		blastOff: function () {
+			console.log("space ship blast off")
 			this.utils.root.score.hide();
 			this.utils.root.startSpaceShipJourney();
 

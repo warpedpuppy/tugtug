@@ -5,7 +5,7 @@ export default function () {
 	return {
 		utils: Utils,
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
-
+			console.log('ship blast off call')
 			this.utils.root.animations.circles({start: true, expand: false});
 			this.utils.root.fly.flyBackground.clouds.removeFromStage();
 			this.storeX = maze.x;

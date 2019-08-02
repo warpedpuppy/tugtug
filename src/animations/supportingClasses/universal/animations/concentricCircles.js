@@ -1,11 +1,12 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
+
 export default function () {
 	return {
-		cont: Assets.Container(), 
+		cont: Assets.ParticleContainer(1000), 
 		rings: [],
 		expandingRings: [],
-		ringQ: 20,
+		ringQ: 10,
 		utils: Utils, 
 		counter: 0,
 		ringCounter: 0,
@@ -14,7 +15,7 @@ export default function () {
 		absValueRate: 0.025,
 		init: function () {
 			for (let i = 0; i < this.ringQ; i ++) {
-				let ring = Assets.Sprite('whiteConcentricCircle.png');
+				let ring = Assets.Sprite('gear.png');
 				ring.anchor.set(0.5);
 				this.rings.push(ring);
 				this.cont.addChild(ring);
@@ -25,7 +26,7 @@ export default function () {
 			return this.rings[0].scale.x;
 		},
 		addToStage: function (expand) {
-
+			
 			this.expand = expand;
 			this.maxRingSize = Math.max(this.utils.canvasWidth, this.utils.canvasHeight) * 1.2;
 			this.setMaxScale = this.setMaxScaleHandler();
@@ -52,16 +53,21 @@ export default function () {
 
 		},
 		animate: function () {
+			//console.log('rings length ', this.rings.length)
 			this.rings.forEach((ring, index) => {
 				ring.scale.x += this.rate;
 			 	ring.scale.y += this.rate;
-			 	if (!this.expand && ring.scale.x < 0) {
-					ring.scale.set(this.setMaxScale);
-					ring.width = ring.height = this.maxRingSize;
-			 	} else if (this.expand && ring.scale.x > this.setMaxScale) {
-			 		ring.scale.set(0);
-			 		ring.width = ring.height = 0;
-			 	}
+			 	if (ring.scale.x < 0){
+			 		ring.scale.set(1)
+			 	} 
+			 	// if (!this.expand && ring.scale.x < 0) {
+					// //ring.scale.set(this.setMaxScale);
+					// ring.scale.set(0.5);
+					// //ring.width = ring.height = this.maxRingSize;
+			 	// } else if (this.expand && ring.scale.x > this.setMaxScale) {
+			 	// 	ring.scale.set(0);
+			 	// 	ring.width = ring.height = 0;
+			 	// }
 			})
 		
 		}
