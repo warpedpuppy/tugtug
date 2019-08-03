@@ -63,8 +63,7 @@ export default function () {
 			},
 			this.onCompleteHandler,
 			'easeOutBounce'
-			)
-			
+			)			
 		},
 		// spaceShipReturnHome_4: function () {
 		// 	Tweens.tween(this.ship, 1, 

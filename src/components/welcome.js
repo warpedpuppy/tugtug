@@ -4,7 +4,8 @@ import './welcome.css';
 export default function Welcome (props) {
 		return (
 		<div className="welcomeDiv">
-			welcome.
+			<p>welcome.</p>
+			<p>just, fucking welcome.</p>
 		</div>
 		)
 }

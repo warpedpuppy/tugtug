@@ -89,7 +89,7 @@ export default function () {
 			this.utils.root.keyHandler.onOff(boolean);
 		},
 		addToStage: function () {
-
+			this.transition = false;
 			this.currentOrb = this.landingOrb;
 			this.orbsCont.pivot = Assets.Point(this.landingOrb.x, this.landingOrb.y)
 			this.orbsCont.x = (this.utils.canvasWidth / 2);
@@ -98,8 +98,8 @@ export default function () {
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
 			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.background.width / 2));// * this.currentOrb.background.scale.x;
-			//this.jumpPoints.addToStage();
-			console.log("jump background add to stage")
+			this.orbsCont.alpha = 1;
+			console.log("jump background add to stage", this.cont.alpha, this.cont.visible, this.orbsCont.alpha, this.orbsCont.visible)
 			
 		},
 		addSpaceShip: function () {
@@ -111,7 +111,7 @@ export default function () {
 			this.orbs[spaceShipOrbIndex].spaceShip = true;
 			this.orbs[spaceShipOrbIndex].addChild(spaceShip);
 
-			console.log("add space ship", this.utils.canvasWidth, this.orbsCont.x)
+			//console.log("add space ship", this.utils.canvasWidth, this.orbsCont.x)
 		},
 		addToken: function () {
 			if (!this.tokenTaken) {

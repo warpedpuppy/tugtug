@@ -45,7 +45,9 @@ export default function () {
 			this.utils.root.makeJumpActive();
 			//this.ship.visible = false;
 			this.utils.root.jump.jumpBackground.addSpaceShip()
-			
+			console.log("jumpBackground = ", this.utils.root.jump.jumpBackground)
+			console.log("testing alpha of orbs cont = ", this.utils.root.jump.jumpBackground.orbsCont.alpha)
+			this.utils.root.jump.jumpBackground.orbsCont.alpha = 1;
 		},
 		returnHome: function () {
 			this.utils.root.score.hide();
@@ -76,6 +78,7 @@ export default function () {
 				//maze.x = this.storeX;
 				this.ship.scale.set(0.25);
 				this.ship.rotation = 0;
+				console.log("background = ", background)
 
 			}
 

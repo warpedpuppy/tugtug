@@ -63,6 +63,7 @@ export default function () {
 			}, 
 			this.blastOffComplete,
 			'linear');
+			
 			Tweens.tween(this.background, 5, 
 			{
 				alpha: [0, 1]
@@ -71,25 +72,6 @@ export default function () {
 			'linear');
 
 		},
-		// spaceShipBlastOff_4: function () {
-		// 	//console.log("4")
-		// 	//this.mazeWidth = this.maze.width;
-		// 	Tweens.tween(this.maze, 2, 
-		// 	{
-		// 		x: [this.maze.x, -this.mazeWidth]
-		// 	}, 
-		// 	this.spaceShipBlastOff_5.bind(this),
-		// 	'easeOutBounce');
-		// },
-		// spaceShipBlastOff_5: function () {
-		// 	console.log("5")
-		// 	Tweens.tween(this.background.scale, 2, 
-		// 	{
-		// 		x: [this.background.scale.x, 1], 
-		// 		y: [this.background.scale.y, 1]
-		// 	}, 
-		// 	this.blastOffComplete,
-		// 	'easeOutBounce');
-		// }
+		
 	}
 }

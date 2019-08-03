@@ -87,6 +87,7 @@ export default function () {
 			this.cont.foreground.rotation += 0.003;
 			let gp = this.cont.toGlobal(this.utils.app.stage, undefined, true);
 			let po ={x:gp.x, y: gp.y, radius: this.cont.radius}
+			
 
 			if(this.cont !== c.currentOrb && !c.transition && this.utils.ccc(hero,po)){
 				c.transition = true;
