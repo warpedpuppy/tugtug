@@ -4,7 +4,7 @@ import './welcome.css';
 export default function Welcome (props) {
 		return (
 		<div className="welcomeDiv">
-			welcome!
+			welcome.
 		</div>
 		)
 }

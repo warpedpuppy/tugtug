@@ -24,15 +24,19 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.loggedInCheck = this.loggedInCheck.bind(this);
+    this.pageChange = this.pageChange.bind(this);
     this.state = {
       loggedIn: false,
-      showStartScreen: true
+      showStartScreen: true,
+      page: 'page'
     }
   }
 
   loggedInCheck () {
     this.setState({loggedIn:true})
   }
+
+
 
   tokenHandler () {
 
@@ -70,11 +74,17 @@ class App extends React.Component {
   }
   componentDidUpdate () {
     this.tokenHandler();
+    console.log("here")
   }
   componentDidMount () {
     this.tokenHandler();
+    this.pageChange();
+  }
+  pageChange () {
+    this.setState({page: window.location.pathname})
   }
   render () {
+
     if (this.state.loggedIn) {
       return (
         <Router>
@@ -83,16 +93,22 @@ class App extends React.Component {
               <Menu token={this.props.token} />
             </header>
             <main>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/Experiments" component={Experiments} />
-              <Route exact path="/About" component={About} />
-              <Route exact path="/Contact" component={Contact} />
-              <Route exact path="/Spiral" component={Spiral} />
-              <Route exact path="/Game" component={Game} />
-              <Route exact path="/Admin" component={Admin} />
-              <Route exact path="/Store" component={Store} />
+              <Route 
+                exact 
+                path="/" 
+                render={(props) => <Home pageChange={this.pageChange}/>}  
+              />
+              <Route 
+                path="/about"  
+                render={(props) => <About pageChange={this.pageChange}/>}  
+              />
+              <Route 
+                path="/contact"  
+                render={(props) => <Contact pageChange={this.pageChange}/>}  
+              />
+            
             </main>
-            <Footer />
+            <Footer page={ this.state.page } />
           </div>
         </Router>
       );

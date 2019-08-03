@@ -2,24 +2,22 @@ import React from 'react';
 import './Footer.css';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
-function Footer (props) {
-		let arr = ["home", "about", "contact"]
+export default function Footer (props) {
+		let arr = [["/", "home"], ["/about", "about"], ["/contact", "contact"]]
 		let printVal = arr.map((item, index) => {
-			let link = (item === "home")?"/":"/"+item;
-			return (
-			<Link key={index} to={link}>
-				<span>{item}</span>
-			</Link>
-			)
+			if (item[0] !== props.page) {
+				return (
+					<Link key={index} to={item[0]}>
+						<span>{item[1]}</span>
+					</Link>
+				)
+			}
+			
 		})
 		return (
-		<footer>
-			{ printVal }
-		</footer>
+			<footer>
+				{ printVal }
+			</footer>
 		)
 }
-export const mapStateToProps = state => ({
-    token: state.tokenReducer.token
-});
 
-export default connect(mapStateToProps)(Footer);

@@ -12,7 +12,9 @@ export default class Contact extends React.Component {
 			results: ''
 		}
 	}
-
+	componentDidMount () {
+		this.props.pageChange();
+	}
 	onSubmitHandler (e) {
 		e.preventDefault();
 		let that = this;
@@ -22,7 +24,6 @@ export default class Contact extends React.Component {
 		axios
 		.post(`${API_BASE_URL}/api/mail`, obj)
 		.then(function(response){
-			//console.log(response);
 			that.setState({
 				message: '',
 				results: 'message sent'
@@ -43,19 +44,11 @@ export default class Contact extends React.Component {
 	render() {
 		 return (
 		    <div className="contactPage">
-		    <div className="inner">	
-		      <h1>Contact</h1>
-		      <form onSubmit={e => this.onSubmitHandler(e) }>
-			      <textarea 
-				      value={this.state.message} 
-				      onChange={(e) => this.onChangeHandler(e)}>
-			      </textarea>
-			      <input type="text" className="tester" placeholder='do not type here' />
-			      <button type='submit'>submit form</button>
-			      <div className="results">{this.state.results}</div>
-		      </form>	
-		      </div>
-		      </div>
+			    <div className="innerContact">	
+			      <p>Why on fucking earth do you want to contact me?</p>
+			      <p>I don&apos;t even want to contact my fucking self.</p>
+			    </div>
+		    </div>
 		   );
 	}
    

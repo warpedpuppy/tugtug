@@ -2,27 +2,15 @@
 	background-color: #333;
 	position:relative;
 	height:100vh;
-	padding-top: 75px;
 	text-align: center;
 }
 .aboutPage h2 {
 	font-size: 20px;
 }
-.starsCont {
-	position:relative;
-	display: inline-block;
-	opacity: 0.15;
-	z-index: 0;
-}
-.starCont {
-	position: absolute;
-	top:0;
-	left:0;
-	width:100%;
-}
+
 .aboutPageText {
-	padding:5px;
-	margin:0px auto;
+	padding:5px 15px;
+	margin:150px auto;
 	background-color: rgba(255,255,255,0.75);
 	border:5px solid black;
 	border-radius: 20px;
@@ -36,11 +24,24 @@
 	margin: 10px 0;
 	font-size: 10px;
 }
+
+.starsCont {
+	position:relative;
+	display: inline-block;
+	opacity: 0.15;
+	z-index: 0;
+	width: 2000px;
+}
+.starCont {
+	position: absolute;
+	top:-500px;
+	left:-10%;
+	width:100%;
+}
 .star1 {
 	width: 100%;
 	display:block;
 	margin:0 auto;
-
 }
 
 .star2 {
@@ -71,6 +72,7 @@
 .counterClockwise2 {
 	animation: rotatingReverse 40s linear infinite;
 }
+/*
 @media (min-width: 1024px) {
 	
 }
@@ -89,4 +91,4 @@
 	.aboutPageText {
 		top:-550px;
 	}
-}
+}*/

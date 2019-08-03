@@ -24,10 +24,8 @@ class Home extends React.Component {
 	toggleAction () {
 		this.setState({action: !this.state.action})
 	}
-	componentWillMount () {
-		console.log('home mounting');
-		this.props.dispatch(changePage());
-
+	componentDidMount () {
+		this.props.pageChange();
 	}
 	changeState (e) {
 		e.preventDefault();
