@@ -21,7 +21,7 @@ class App extends React.Component {
     this.loggedInCheck = this.loggedInCheck.bind(this);
     this.pageChange = this.pageChange.bind(this);
     this.state = {
-      loggedIn: true,
+      loggedIn: false,
       showStartScreen: true,
       page: 'page'
     }
