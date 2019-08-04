@@ -7,8 +7,6 @@ import CanvasSwim from '../components/canvasSwim';
 import SideMenu from '../components/sideMenu';
 import Welcome from '../components/welcome';
 import { connect } from 'react-redux';
-import { changePage } from '../actions/themeActions.js';
-
 class Home extends React.Component {
 
 	constructor (props) {
@@ -17,8 +15,8 @@ class Home extends React.Component {
 		this.changeState = this.changeState.bind(this);
 		this.toggleAction = this.toggleAction.bind(this);
 		this.state = {
-			active: undefined,
-			action: false
+			active: 'home',
+			action: true
 		}
 	}
 	toggleAction () {
@@ -41,7 +39,7 @@ class Home extends React.Component {
 	render () {
 
 		let activeCanvas = "";
-		if (!this.state.active){
+		if (this.state.active === 'home') {
 			activeCanvas = <Welcome />
 		} else if(this.state.active === 'jump') {
 			  activeCanvas = <CanvasJump closeGame={this.closeGame} action={this.state.action} />  

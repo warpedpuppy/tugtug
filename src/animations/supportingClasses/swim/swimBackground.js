@@ -16,6 +16,7 @@ export default function () {
 		lilypadLotuses: LilypadsLotuses(),
 		fishSchool: FishSchool(),
 		init: function () {
+			
 			this.parentCont = this.utils.app.stage;
 			this.wh = this.utils.wh;
 			this.lilypadLotuses.init(this.parentCont);
@@ -57,15 +58,15 @@ export default function () {
 			this.background.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
 		},
 		addToStage: function () {
-			//this.cont.addChildAt(this.sprite2, 0);
-			this.fishSchool.addToStage();
-			
-			this.parentCont.addChildAt(this.background, 0);
-			this.parentCont.addChildAt(this.cont2, 2);
-			let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
-			this.parentCont.addChildAt(this.cont, index);
-			this.lilypadLotuses.addToStage();
-			//this.parentCont.setChildIndex(this.utils.hero.cont, index - 1);
+			 this.fishSchool.addToStage();
+			 this.parentCont.addChildAt(this.background, 0);
+			 //THIS IS HACKY AND SHOULD BE FIXED
+			 if (!this.utils.root.all) {
+				 this.parentCont.addChildAt(this.cont2, 2);
+				 let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
+				 this.parentCont.addChildAt(this.cont, index);
+			}
+			 this.lilypadLotuses.addToStage();
 		},
 		removeFromStage: function () {
 			this.fishSchool.removeFromStage();

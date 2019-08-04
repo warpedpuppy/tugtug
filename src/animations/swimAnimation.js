@@ -55,7 +55,6 @@ export default function(obj) {
         fullStop: false,
         animations: Animations(),
         init: function (isMobile, isMobileOnly) {
-             console.log('window.devicePixelRatio', window.devicePixelRatio)
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -64,7 +63,6 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            console.log(this.levelComplete);
             this.levelComplete.init();
 
          
@@ -236,7 +234,6 @@ export default function(obj) {
             Tweens.killAll();
         },
         earnToken: function (t) {
-            //console.log('level complete');
             this.action = false;
             this.tokens.fillSlot(t);
             setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)

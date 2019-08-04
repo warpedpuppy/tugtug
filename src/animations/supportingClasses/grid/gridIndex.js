@@ -48,10 +48,9 @@ export default function () {
 
 		},
 		clearGrid: function () {
-			console.log('clear ', this.utils.root.activeMode)
 			this.gridBuild[`${this.utils.root.activeMode}Baddies`].removeCastlesAndSoldiers();
 		},
-		changeGridSize: function(){
+		changeGridSize: function () {
 
 			let w = Config[`${this.parent.activeMode}BlockSize`][0];
 			let h = Config[`${this.parent.activeMode}BlockSize`][1];
@@ -59,18 +58,16 @@ export default function () {
 			this.gridBuild.blockWidth = w;
 			this.gridBuild.blockHeight = h;
 
-			this.gridBuild.cont.removeChildren();
+			
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 
 			this.gridAction.setLimits();
 		},
 		nextBoard: function () {
 			
-			//console.log('NEXT BOARD')
 			this.gridBuild.tokens.forEach((item, index) => {
 				item.placed = false;
 			})
-			//console.log(this.parent.dbData)
 			this.gridBuild.currentBoard = this.boards.length - 1;
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};

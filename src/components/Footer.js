@@ -1,6 +1,5 @@
 import React from 'react';
 import './Footer.css';
-import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 export default function Footer (props) {
 		let arr = [["/", "home"], ["/about", "about"], ["/contact", "contact"]]
@@ -11,7 +10,10 @@ export default function Footer (props) {
 						<span>{item[1]}</span>
 					</Link>
 				)
+			} else {
+				return <span key={index}></span>
 			}
+			
 			
 		})
 		return (

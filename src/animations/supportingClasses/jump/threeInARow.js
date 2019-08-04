@@ -42,7 +42,7 @@ export default function (){
             this.listeners(false);
             if(!arr.length) {
                 //this.touchPower(true);
-                console.log("done");
+               // console.log("done");
                 this.listeners(true);
                 if (this.setUp) {
                     this.setUp = false;

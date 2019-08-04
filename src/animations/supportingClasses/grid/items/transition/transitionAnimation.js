@@ -95,22 +95,18 @@ export default function () {
             Tweens.tween(this.utils.root.grid.gridBuild.cont.scale, 2, 
                 {
                     x: [currentScale, newScale], 
-                    y: [currentScale, newScale]}, 
-                 this.continueAnimation.bind(this),
-                 'easeOutBounce'
-                 )
+                    y: [currentScale, newScale]
+                }, 
+                this.continueAnimation.bind(this),
+                'easeOutBounce'
+                )
             
         } else {
-
             this.continueAnimation();
         }
-       
 
         //tween the proportions
-        this.newActiveMode = this.utils.root[newActiveModeString];//newActiveMode;
-        // this.newActiveMode = newActiveMode;
-        // this.setUp();
-        // this.runAnimation = true;
+        this.newActiveMode = this.utils.root[newActiveModeString];
 
     },
     continueAnimation: function () {

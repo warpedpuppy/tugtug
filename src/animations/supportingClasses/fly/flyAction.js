@@ -74,7 +74,6 @@ export default function () {
 			this.flameOn = this.flames.visible = boolean;
 		},
 		animate: function () {
-
 			this.clouds.animate();
 			
 			this.hero.activeHero.eyeCont.rotation = this.radius;
@@ -113,7 +112,6 @@ export default function () {
 
 
 	        } else if (!this.spinning) {
-	        	//console.log(this.radius)
 	        	this.radius = this.utils.cosWave(this.storeRadius, 0.15, 0.01);
 	        }
 	       

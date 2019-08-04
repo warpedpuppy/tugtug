@@ -104,8 +104,8 @@ export default function () {
 			this.castles.forEach((c, i) => {
 				c.classRef.removeFromStage();
 			})
-			// this.castles.length = 0;
-			// this.soldiers.length = 0;
+			this.castles.length = 0;
+			this.soldiers.length = 0;
 		},
 		animate: function () {
 			if(this.pause)return;

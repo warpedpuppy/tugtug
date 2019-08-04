@@ -91,7 +91,8 @@ export default function () {
 			return obj;
 		},
 		buildGrid: function (data) {
-
+			
+			this.cont.removeChildren();
 			let mode = this.utils.root.activeMode,
 			    obj = this.createObj(data),
 			    counter = 0,
@@ -99,7 +100,7 @@ export default function () {
 			    gridCircle;
 			this.cont.scale.set(1);
 			this.cont.pivot = Assets.Point(0, 0);
-			this[`${mode}Baddies`].removeCastlesAndSoldiers(); 
+			//this[`${mode}Baddies`].removeCastlesAndSoldiers(); 
 			this.wallHit = Config[`${mode}WallHit`];
 			this.buffer = Config[`${mode}Buffer`];    
 			this.blockWidth = Config[`${mode}BlockSize`][0];
@@ -109,7 +110,7 @@ export default function () {
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
 			this.coinSpaces = [];
-
+			this.blocks = {};
 			
 			this.omnibusArray = [
 				...this.magicPillsArray, 
@@ -119,15 +120,13 @@ export default function () {
 
 			if (this.utils.root.all) {
 				this.omnibusArray = [
-				...this.omnibusArray, 
-				this.spaceShip, 
-				this.microscope, 
-				...this.transitionItemsArray]
+					...this.omnibusArray, 
+					this.spaceShip, 
+					this.microscope, 
+					...this.transitionItemsArray
+				]
 			}
-			
-			// if (mode === 'fly') {
-			// 	texture = this.flyTexture;
-			// } 
+			//console.log(this.blocks)
 			
 			for (let i = 0; i < data.rows; i ++) {
 				this.blocks[i] = [];
@@ -136,6 +135,7 @@ export default function () {
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
 
 					if (!this.blockPool[counter]) {
+						//console.log("create new")
 						b = Assets.Sprite();
 						gridCircle = Assets.Sprite('gridCircle600.png');
 						gridCircle.anchor.set(0.5);
@@ -143,6 +143,7 @@ export default function () {
 						this.blockPool.push(b);
 						this.gridCirclePool.push(gridCircle);	
 					} else {
+						//console.log("use old")
 						b = this.blockPool[counter];
 						gridCircle = this.gridCirclePool[counter];
 					}
@@ -178,11 +179,9 @@ export default function () {
 					if (bool) {
 						b.texture = this.whiteSquare;
 						b.alpha = 1;
-						//b.tint = 0x003300;
 						this.coveredSpaces.push(b)
 					} else {
 						b.texture = this.whiteSquare;
-						//b.tint = this.utils.randomItemFromArray(this.flyColors);
 						b.alpha = 0.25;
 						b.gridCircle = gridCircle;
 						gridCircle.alpha = 0.25;
@@ -206,14 +205,12 @@ export default function () {
 			
 			this.gridItems.placeItems(this[`${mode}TreasureChests`]);
 			this.gridItems.placeItems(this.magicPillsArray);
-
 			this.coins.placeCoins(this.coins.onGridCoins[mode])
-
+			this.utils.root.tokens.tokensClass.placeTokens();
 			this[`${mode}Baddies`].placeCastlesAndSoldiers(this);
 
 			SetTileLimits.assignAboveBelowRightLeftCovered();
 			
-			this.utils.root.tokens.tokensClass.placeTokens();
 			this.heroJ = data.hero.j;
 			this.heroI = data.hero.i;
 			this.placeHero();

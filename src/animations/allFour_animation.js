@@ -56,7 +56,6 @@ export default function(obj) {
         animations: Animations(),
         all: true,
         init: function (isMobile, isMobileOnly) {
-             console.log('window.devicePixelRatio', window.devicePixelRatio)
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -65,7 +64,6 @@ export default function(obj) {
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-            console.log(this.levelComplete);
             this.levelComplete.init();
 
          
@@ -231,7 +229,6 @@ export default function(obj) {
             }
         },
         earnToken: function (t) {
-            //console.log('level complete');
             this.action = false;
             this.tokens.fillSlot(t);
             setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
@@ -250,10 +247,12 @@ export default function(obj) {
            
             if (!this.transitionAnimationPlaying) {
 
-
-
                 this.transitionAnimationPlaying = true;
                 this.action = false;
+
+                if(this.all && (this.activeMode === "fly" || this.activeMode === "swim")) {
+                    this.grid.gridBuild[`${this.activeMode}Baddies`].removeCastlesAndSoldiers(); 
+                }
 
                 let oldActiveModeString = this.activeMode;
                 this[this.activeMode].removeFromStage();

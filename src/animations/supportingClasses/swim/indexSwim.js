@@ -29,8 +29,8 @@ export default function () {
 			
 			this.swimAction.vx = this.swimAction.vy = 0;
 			
-            
 			return this.swimAction;
+			
 		},
 		removeFromStage: function () {
 			this.ripples.on(false);

@@ -98,9 +98,7 @@ export default function () {
 			this.pause = false;
 			this.parentCont.addChildAt(this.cont, 1);
 			this.utils.root.hero.heroJump.floor = (-(this.currentOrb.background.width / 2));// * this.currentOrb.background.scale.x;
-			this.orbsCont.alpha = 1;
-			console.log("jump background add to stage", this.cont.alpha, this.cont.visible, this.orbsCont.alpha, this.orbsCont.visible)
-			
+			this.orbsCont.alpha = 1;			
 		},
 		addSpaceShip: function () {
 			let spaceShipOrbIndex = this.currentOrb.index + 1;
@@ -182,8 +180,6 @@ export default function () {
                     x: [oldPlanet.x, this.currentOrb.x],
                     y: [oldPlanet.y, this.currentOrb.y]
                 }, undefined, 'easeOutBounce')
-
-                 console.log(newPlanet.spaceShip)
 
 				Tweens.planetJump(this.orbsCont, this.hero.activeHero.cont, newPlanet, this.makeTransitionComplete.bind(this, i));
 

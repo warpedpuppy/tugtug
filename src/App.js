@@ -3,14 +3,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Menu from './components/Menu.js';
 import Home from './pages/Home.js';
-import Experiments from './pages/Experiments.js';
 import About from './pages/About.js';
-import Spiral from './pages/Spiral.js';
 import Contact from './pages/Contact.js';
-import Admin from './pages/Admin.js';
-import Game from './pages/Game.js';
 import Footer from './components/Footer.js';
-import Store from './pages/Store.js';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
@@ -26,7 +21,7 @@ class App extends React.Component {
     this.loggedInCheck = this.loggedInCheck.bind(this);
     this.pageChange = this.pageChange.bind(this);
     this.state = {
-      loggedIn: false,
+      loggedIn: true,
       showStartScreen: true,
       page: 'page'
     }
@@ -42,15 +37,12 @@ class App extends React.Component {
 
     let lsToken = localStorage.getItem('token')
     let that = this;
-    console.log("lsToken", lsToken, this.props.token)
     if (this.props.token === 'blank' && lsToken) {
-        console.log('check token')
         axios
         .get(`${API_BASE_URL}/api/auth/validate`, 
           { headers: {"Authorization" : `Bearer ${lsToken}`} }
         )
         .then(function(response){
-          console.log('this is the response', response)
           if(response.data.valid) {
 
             //set store token & userdata
@@ -58,7 +50,6 @@ class App extends React.Component {
             that.props.dispatch(addToken(lsToken));
 
             if (response.data.user) {
-             console.log('appjs = ', response.data.user.accessories)
              that.props.dispatch(addItems(response.data.user.accessories));
             }
 
@@ -68,13 +59,11 @@ class App extends React.Component {
         })
         .catch((err) => {
           localStorage.removeItem('token')
-          console.error('ERROR IS HERE',err)
         });  
     }
   }
   componentDidUpdate () {
     this.tokenHandler();
-    console.log("here")
   }
   componentDidMount () {
     this.tokenHandler();

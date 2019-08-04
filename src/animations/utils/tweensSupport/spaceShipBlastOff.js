@@ -5,7 +5,6 @@ export default function () {
 	return {
 		utils: Utils,
 		spaceShipBlastOff: function (ship, maze, background, onCompleteHandler) {
-			console.log('ship blast off call')
 			this.utils.root.animations.circles({start: true, expand: false});
 			this.utils.root.fly.flyBackground.clouds.removeFromStage();
 			this.storeX = maze.x;
@@ -31,8 +30,6 @@ export default function () {
 			
 			let shipSpace = this.utils.root.grid.gridBuild.shipSpace;
 			this.utils.root.grid.gridBuild.cont.pivot = Assets.Point(shipSpace[0], shipSpace[1])
-			//console.log(shipSpace)
-			//console.log(this.utils.root.grid.gridBuild.cont.pivot)
 
 			this.maze.x = this.utils.canvasWidth / 2;
 			this.maze.y = this.utils.canvasHeight / 2;
@@ -56,6 +53,7 @@ export default function () {
 		},
 		spaceShipBlastOff_3: function () {
 			this.background.alpha = 0;
+			this.background.isTweening = false;
 			Tweens.tween(this.background.scale, 5, 
 			{
 				x: [10, 1], 
@@ -63,7 +61,7 @@ export default function () {
 			}, 
 			this.blastOffComplete,
 			'linear');
-			
+
 			Tweens.tween(this.background, 5, 
 			{
 				alpha: [0, 1]

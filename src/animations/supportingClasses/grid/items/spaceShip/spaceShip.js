@@ -18,7 +18,6 @@ export default function () {
 
 		},
 		blastOff: function () {
-			console.log("space ship blast off")
 			this.utils.root.score.hide();
 			this.utils.root.startSpaceShipJourney();
 
@@ -45,9 +44,6 @@ export default function () {
 			this.utils.root.makeJumpActive();
 			//this.ship.visible = false;
 			this.utils.root.jump.jumpBackground.addSpaceShip()
-			console.log("jumpBackground = ", this.utils.root.jump.jumpBackground)
-			console.log("testing alpha of orbs cont = ", this.utils.root.jump.jumpBackground.orbsCont.alpha)
-			this.utils.root.jump.jumpBackground.orbsCont.alpha = 1;
 		},
 		returnHome: function () {
 			this.utils.root.score.hide();
@@ -78,8 +74,6 @@ export default function () {
 				//maze.x = this.storeX;
 				this.ship.scale.set(0.25);
 				this.ship.rotation = 0;
-				console.log("background = ", background)
-
 			}
 
 			this.utils.hero.cont.visible = true;
@@ -96,7 +90,6 @@ export default function () {
 			// for now just place space ship here
 			let gridBuild = this.utils.root.grid.gridBuild;
 			let index = (!Config.testing)? Math.floor(Math.random()*gridBuild.freeSpaces.length) : 0;
-			//console.log('ship space = ', this.freeSpaces[index])
 			gridBuild.shipSpace = gridBuild.freeSpaces[index];
 			gridBuild.spaceShip.x = gridBuild.spaceShip.storeX = gridBuild.freeSpaces[index][0] + gridBuild.blockWidth / 2;
 			gridBuild.spaceShip.y = gridBuild.spaceShip.storeY = gridBuild.freeSpaces[index][1] + gridBuild.blockHeight / 2;

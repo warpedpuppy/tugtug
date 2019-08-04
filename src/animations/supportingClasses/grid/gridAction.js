@@ -190,7 +190,6 @@ export default function (){
 			})
 
 			
-
 			this.gridBuild.omnibusArray.forEach((item, i) => {
 				
 				if (this.itemHitDetect(item)) {
@@ -232,7 +231,6 @@ export default function (){
 					item.name === 'fly' || 
 					item.name === 'treasureChest' 
 					) {
-					//console.log(item.counter, item.counterLimit, item.isTweening)
 					if (item.counter >= item.counterLimit && !item.isTweening) {
 						item.isTweening = true;
 						this.gridBuild.gridItems.moveItem1(item);

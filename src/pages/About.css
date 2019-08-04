@@ -7,14 +7,22 @@
 .aboutPage h2 {
 	font-size: 20px;
 }
+.aboutPageTextOuter {
+	position:absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+	width:100vw;
+	height: 100vh;
 
+}
 .aboutPageText {
 	padding:5px 15px;
 	margin:150px auto;
 	background-color: rgba(255,255,255,0.75);
 	border:5px solid black;
 	border-radius: 20px;
-	position: relative;
+	
 	display: inline-block;
 	text-align: left;
 	font-weight: bold;
@@ -26,39 +34,55 @@
 }
 
 .starsCont {
-	position:relative;
+	width: 25%;
+	margin: 100px auto;
+	height: 200px;
 	display: inline-block;
 	opacity: 0.15;
 	z-index: 0;
-	width: 2000px;
+	position: relative;
+
 }
-.starCont {
+.starsCont2 {
+	width: 100%;
 	position: absolute;
-	top:-500px;
-	left:-10%;
-	width:100%;
+	top:0;
+	left:0;
+
+}
+.starCont:nth-child(1) {
+	position: absolute;
+	top:-75px;
+	left:-75px;
+}
+.starCont:nth-child(2) {
+	position: absolute;
+	top:-50px;
+	right:-50px;
+}
+.starCont:nth-child(3) {
+	position: absolute;
+	bottom:-250px;
+	right:-250px;
+}
+.starCont:nth-child(4) {
+	position: absolute;
+	bottom:-25px;
+	left:-25px;
 }
 .star1 {
-	width: 100%;
-	display:block;
-	margin:0 auto;
+	width:150px;
 }
 
 .star2 {
-	width: 90%;
-	display:block;
-	margin:5% auto;
+	width: 100px;
 }
 
 .star3 {
-	width: 80%;
-	display:block;
-	margin:10% auto;
+	width:500px;	
 }
 .star4 {
-	width: 70%;
-	display:block;
-	margin:15% auto;
+	width: 50px;
 }
 .clockwise {
 	animation: rotating 20s linear infinite;

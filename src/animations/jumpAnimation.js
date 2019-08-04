@@ -53,6 +53,7 @@ export default function(obj) {
         keyHandler: KeyHandler(),
         init: function (isMobile, isMobileOnly) {
             
+            Tweens.killAll();
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }

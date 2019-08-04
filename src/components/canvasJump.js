@@ -1,6 +1,5 @@
 import React from 'react';
 import './HomeCanvas.css';
-import TempLogIn from './loginRegister/tempLogin';
 import home_page from '../animations/jumpAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 export default class HomeCanvas extends React.Component {

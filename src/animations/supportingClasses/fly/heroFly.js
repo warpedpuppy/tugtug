@@ -119,7 +119,7 @@ export default function () {
 			this.cont.radius = 0;
 			this.cont.addChildAt(this.wingCont, 0);
 			this.segments = this.dragon;
-
+			this.cont.scale.set(0.5);
 			this.dye(0x000000);
 		},
 		dye: function (color) {

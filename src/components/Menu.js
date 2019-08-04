@@ -84,12 +84,11 @@ class Menu extends Component {
 			<div>
 				{redirect}
 				<nav>
-		
 					<div className="not-links">
 						<Link className="homeLink" to="/">
 							<LogoGraphic passedClasses={classes}/>
 							<img src={TugTug} alt="tugtug" />
-							</Link>
+						</Link>
 					</div>
 				</nav>
 			</div>
