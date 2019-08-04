@@ -98,7 +98,7 @@ repeating-linear-gradient(
 repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);
 
 
-
+  width: 100vw;
 	height: 100vh;
 }
 

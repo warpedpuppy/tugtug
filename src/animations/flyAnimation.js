@@ -154,7 +154,6 @@ export default function(obj) {
 
             this.clock.init().addToStage();
 
-            //this.levelSlots.init(this).addToStage();
             this.tokens.init();
 
             this.grid.init();
@@ -166,17 +165,11 @@ export default function(obj) {
             this.utils.setHero(this.hero);
 
             this.filterAnimation.init(this.filterContainer);
-            
-            //this.swim.init(this.stage);
-
-            //this.bounce.init(this.stage);
 
             this.fly.init(this);
 
             this.keyHandler = KeyHandler();
             this.keyHandler.init(this);
-
-          //  this.jump.init(this.stage);
             
             this.transitionAnimation.init(this);
 
@@ -210,7 +203,6 @@ export default function(obj) {
 
             this.app.stage.addChild(this.fpsCounter);
 
-            //this.animations.circles({start: true, expand: true});
            LoadingAnimation.stop(this.stage);
         },
         stop: function () {
@@ -236,29 +228,6 @@ export default function(obj) {
             this.activeMode = this.mode[this.activeModeIndex];    
             return this.activeMode;  
         },
-        // switchPlayerWithAnimation: function (mode) {
-           
-        //     if (!this.transitionAnimationPlaying) {
-
-
-
-        //         this.transitionAnimationPlaying = true;
-        //         this.action = false;
-
-        //         let oldActiveModeString = this.activeMode;
-        //         this[this.activeMode].removeFromStage();
-
-        //         this.activeMode = (mode)?mode:this.increaseIndex();
-        //         let newActiveModeString = this.activeMode;
-
-        //         if (this.activeMode === 'bounce') {
-        //             this.grid.removeFromStage();
-        //         }
-            
-        //         this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
-        //     }
-
-        // },
         switchPlayer: function (str) {
            
             if (str) {
@@ -266,7 +235,7 @@ export default function(obj) {
             } else {
                 this.increaseIndex();
             }
- 
+
            this.hero.switchPlayer(this.activeMode);
            this.activeAction = this[this.activeMode].addToStage();   
            
@@ -296,7 +265,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) - 60;
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
@@ -318,47 +287,6 @@ export default function(obj) {
             clearTimeout(this.timeOut);
            
         },
-        // startSpaceShipJourney: function () {
-        //     this.storeActiveMode = this.activeMode;
-        //     this.hero.cont.visible = false;
-        //     this.activeAction.vx = this.activeAction.vy = 0;
-        //     this.grid.gridAction.pause = true;
-        //     this[this.activeMode].startSpaceShipJourney();
-        // },
-        // endSpaceShipJourney: function () {
-
-        //     this.jump.removeFromStage();
-            
-        //     this.switchPlayer(this.storeActiveMode);
-           
-        //     this.grid.gridBuild.placeHero();
-  
-        //     this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
-
-        //     this.grid.gridAction.pause = false;
-       
-        //     this.activeAction.vx = this.activeAction.vy = 0;
-
-        //     this.activeAction.radius = this.activeAction.storeRadius = 0;
-
-        //     this[this.activeMode].endSpaceShipJourney();
-        // },
-        // makeJumpActive: function () {
-        //     this.jump.jumpBackground.pause = false;
-        //     this.jump.jumpAction.pause = false;
-        //     this.hero.cont.visible = true;
-        //     //this.ship.parent.removeChild(this.ship);
-            
-        //     this.switchPlayer("jump");
-        //     this.jump.jumpBackground.setUp();
-
-        //      if (Config.testingJump) {
-        //         let background = this.utils.root.jump.jumpBackground.orbsCont;
-        //         background.scale.set(1)
-        //         this.jump.addToStage();
-        //     }
-
-        // },
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();

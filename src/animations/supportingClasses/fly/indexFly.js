@@ -14,7 +14,6 @@ export default function () {
 			this.flyAction.init(parent, this.background);
 		},
 		addToStage: function () {
-
 			this.utils.root.grid.changeGridSize();
 			let index = this.utils.root.stage.getChildIndex(this.utils.root.clock.cont) + 1;
 			this.utils.root.grid.addToStage(index);

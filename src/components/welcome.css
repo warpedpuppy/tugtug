@@ -1,12 +1,15 @@
+.welcomeDivOuter {
+	text-align: center;
+}
 .welcomeDiv {
-	border:10px solid black;
+	border:5px solid black;
 	background: rgba(255,255,255,0.5);
 	margin: -100px auto;
-	width: 450px;
 	text-align: left;
 	font-size: 15px;
-	padding: 10px 20px;
+	padding: 5px 15px;
 	border-radius: 20px;
+	display: inline-block;
 }
 .welcomeDiv p {
 	margin: 15px 0;

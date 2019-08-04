@@ -13,7 +13,7 @@ export default {
             let val1 = window.screen.height * scale,
                 val2 = window.screen.width * scale;
             this.canvasWidth = Math.max(val1, val2);
-            this.canvasHeight = Math.min(val1, val2);
+            this.canvasHeight = Math.min(val1, val2) - 60;
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
            // document.getElementById('testOrientation').innerHTML = "landscape";
         },
@@ -23,7 +23,7 @@ export default {
                 val2 =  this.utils.returnCanvasHeight();
 
             this.canvasWidth = Math.min(val1, val2);
-            this.canvasHeight = Math.max(val1, val2);
+            this.canvasHeight = Math.max(val1, val2) - 60;
             this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
             //document.getElementById('testOrientation').innerHTML = "portrait";
         },
