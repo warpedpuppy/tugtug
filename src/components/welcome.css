@@ -11,6 +11,9 @@
 	border-radius: 20px;
 	display: inline-block;
 }
+.mobileOnlyWelcome {
+	padding-top: 300px;
+}
 .welcomeDiv p {
 	margin: 15px 0;
 	font-size: 12px;
