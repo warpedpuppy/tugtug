@@ -41,7 +41,7 @@ export default class About extends React.Component {
 				</div>
 				<div className="aboutPageTextOuter">
 					<div className="aboutPageText">
-						 <p>I don&apos;t fucking know what this is about.</p>
+						 <p>I don&apos;t know what this is about.</p>
 						 <p>Do you?</p>
 					</div>
 				</div>

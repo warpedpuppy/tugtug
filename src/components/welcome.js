@@ -3,7 +3,7 @@ import './welcome.css';
 
 
 export default function Welcome (props) {
-		let message = (!props.isMobileOnly)?<p>just, fucking welcome.</p> : <p>sorry, this site if for ipads or computers.</p> ;	
+		let message = (!props.isMobileOnly)?<p>just, welcome.</p> : <p>sorry, this site if for ipads or computers.</p> ;	
 		let classAddOn = (props.isMobileOnly)? "welcomeDivOuter mobileOnlyWelcome" : "welcomeDivOuter";
 		return (
 		<div className={classAddOn}>

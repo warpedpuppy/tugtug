@@ -45,8 +45,8 @@ export default class Contact extends React.Component {
 		 return (
 		    <div className="contactPage">
 			    <div className="innerContact">	
-			      <p>Why on fucking earth do you want to contact me?</p>
-			      <p>I don&apos;t even want to contact my fucking self.</p>
+			      <p>Why on earth do you want to contact me?</p>
+			      <p>I don&apos;t even want to contact my self.</p>
 			    </div>
 		    </div>
 		   );
