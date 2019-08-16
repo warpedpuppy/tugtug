@@ -9,7 +9,7 @@ export default function Welcome (props) {
 		<div className={classAddOn}>
 		<div className="welcomeDiv">
 			<p>welcome.</p>
-			<p>{ message }</p>
+			<img src="/bmps/welcomeArrow.png" />
 		</div>
 		</div>
 		)

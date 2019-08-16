@@ -52,7 +52,7 @@ class Home extends React.Component {
 			  activeCanvas = <HomeCanvas  closeGame={this.closeGame} action={this.state.action} />
 		}
 
-		let sideMenuVar = (isMobileOnly)? <span></span> : <SideMenu changeState={this.changeState} toggleAction={this.toggleAction}/>;
+		let sideMenuVar =  <SideMenu changeState={this.changeState} toggleAction={this.toggleAction}/>;
 
 		return (
 			<div className="homeCont">
