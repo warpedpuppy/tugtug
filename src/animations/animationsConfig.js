@@ -34,7 +34,7 @@ export default {
 	flyBaddyQ: 200, 
 	swimBaddyQ: 100,
 	// mobileOnlyDimensions: [450, 250],
-	mobileOnlyDimensionsLandscape: [450, 280],
+	mobileOnlyDimensionsLandscape: [450, 230],
 	mobileOnlyDimensionsPortrait: [300, 450],
 	colors: [0xFF00FF, 0xFF0000, 0xFFFF00, 0xFF9900, 0x33FF00],
 	rainbowColors: [0x9400D3, 0x4B0082, 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF7F00, 0xFF0000]
