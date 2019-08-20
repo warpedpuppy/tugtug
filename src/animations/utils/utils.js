@@ -32,7 +32,8 @@ export default {
     getWidthAndHeight: function () {
         this.setWidthAndHeight(
             this.returnCanvasWidth(),
-            this.returnCanvasHeight());
+            this.returnCanvasHeight()
+        );
     },
     setHero: function (hero) {
         this.hero = hero;
@@ -444,12 +445,12 @@ export default {
         return this.intersects;
     },
     returnCanvasWidth: function () {
-        let scale = window.devicePixelRatio;
-        return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
+            let scale = (window.devicePixelRatio < 3)?1:window.devicePixelRatio;
+            return ((window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * scale);
     },
-    returnCanvasHeight: function (){
-        let scale = window.devicePixelRatio;
-        return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale);
+    returnCanvasHeight: function () {
+            let scale = (window.devicePixelRatio < 3)?1:window.devicePixelRatio;
+            return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale) - 60;
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;

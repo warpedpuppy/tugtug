@@ -50,6 +50,7 @@ export default function () {
             //this.vy = 0;
         },
         leftHit: function () {
+            console.log("keyhanlder hit")
             this.parent.activeAction.spinning = true;
             this.parent.rotateLeftBoolean = true;
         },

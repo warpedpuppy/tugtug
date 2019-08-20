@@ -2,14 +2,13 @@ import React from 'react';
 import './welcome.css';
 
 
-export default function Welcome (props) {
-		let message = (!props.isMobileOnly)?<p>just, welcome.</p> : <p>sorry, this site if for ipads or computers.</p> ;	
+export default function Welcome (props) {	
 		let classAddOn = (props.isMobileOnly)? "welcomeDivOuter mobileOnlyWelcome" : "welcomeDivOuter";
 		return (
 		<div className={classAddOn}>
 		<div className="welcomeDiv">
 			<p>welcome.</p>
-			<img src="/bmps/welcomeArrow.png" />
+			<img src="/bmps/welcomeArrow.png" alt="left pointing arrow" />
 		</div>
 		</div>
 		)

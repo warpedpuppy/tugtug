@@ -1,10 +1,13 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import {isMobile, isMobileOnly} from 'react-device-detect';
 export default function () {
       return {
             utils: Utils,
-            height: 70,
+            height: 35,
             init: function (parent) {
+
+                  this.height = (!isMobileOnly)?this.height:20;
 
                   this.halfHeight = this.height / 2;
                   this.parent = parent;
@@ -64,21 +67,53 @@ export default function () {
             },
             place: function () {
                   this.uiCont.x = this.utils.canvasWidth / 2;
-                  this.uiCont.y = this.utils.canvasHeight - 60 - (this.height * 2);
 
-                  let width = this.utils.canvasWidth - (this.height * 3);
-                  let halfWidth = width / 2;
-                  
-                  this.spaceButton.clear();
-                  this.spaceButton.lineStyle(5, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
-                        -halfWidth, 
-                        -this.halfHeight, 
-                        width,
-                        this.height, 
+                  if (isMobileOnly) {
+
+
+                        this.uiCont.y = this.utils.canvasHeight - (this.height / 2);
+
+                        let width = this.utils.canvasWidth - (this.height * 3);
+                        let halfWidth = width / 2;
+
+                        this.spaceButton.clear();
+                        this.spaceButton.lineStyle(5, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
+                              -halfWidth, 
+                              -this.halfHeight, 
+                              width,
+                              this.height, 
                         10).endFill();
-                 
-                 this.leftButton.x = -halfWidth - this.halfHeight - 10;
-                 this.rightButton.x = halfWidth + this.halfHeight + 10;
+
+                        this.leftButton.x = -halfWidth - this.halfHeight - 10;
+                        this.rightButton.x = halfWidth + this.halfHeight + 10;
+
+
+
+
+
+
+
+
+
+                  } else {
+                        this.uiCont.y = this.utils.canvasHeight- (this.height / 2);
+                        console.log(this.uiCont.y)
+
+                        let width = this.utils.canvasWidth - (this.height * 3);
+                        let halfWidth = width / 2;
+                        
+                        this.spaceButton.clear();
+                        this.spaceButton.lineStyle(5, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
+                              -halfWidth, 
+                              -this.halfHeight, 
+                              width,
+                              this.height, 
+                              10).endFill();
+                       
+                       this.leftButton.x = -halfWidth - this.halfHeight - 10;
+                       this.rightButton.x = halfWidth + this.halfHeight + 10;
+                  }
+                
                   
             },
             addToStage: function () {
