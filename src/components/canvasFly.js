@@ -45,6 +45,21 @@ export default class HomeCanvas extends React.Component {
 			this.setState({filterTest: "off"})
 		}
 	}
+	leftHit (e) {
+		e.preventDefault()
+		console.log("left down")
+		this.home_page.keyHandler.leftHit(e);
+	}
+	rightHit (e) {
+		this.home_page.keyHandler.rightHit(e);
+	}
+	spaceHit (e) {
+		this.home_page.keyHandler.spaceHit(e);
+	}
+	mouseUpHandler (e) {
+		console.log("mouse up")
+		//this.home_page.keyHandler.keyUp(e);
+	}
 	nightMode () {
 		this.home_page.nightMode();
 		if(this.state.nightMode === "off") {
@@ -58,8 +73,17 @@ export default class HomeCanvas extends React.Component {
 	}
 	render () {
 			this.pauseGame(this.props.action)
-			return (			
-				<div id='homeCanvas'></div>
+			let canvasClass = (isMobileOnly)?"canvasParent isMobileOnly":"canvasParent";
+			return (
+				<div className={canvasClass}>
+					<div id='homeCanvas'></div>
+					<div className="mobileButtons">
+						<button className="leftButton" onMouseDown={ (e) => this.leftHit(e) } >left</button>
+						<button className="centerButton" onMouseDown={ (e) => this.spaceHit(e) } onMouseUp={(e) => this.mouseUpHandler(e) }>center</button>
+						<button className="rightButton" onMouseDown={ (e) => this.rightHit(e) } onMouseUp={(e) => this.mouseUpHandler(e) }>right</button>
+					</div>
+				</div>
+
 			)
 	}
 }

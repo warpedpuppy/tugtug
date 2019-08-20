@@ -1,9 +1,13 @@
-
+.sideMenuFlexContainer {
+	display: flex;
+	height: 100vh;
+	align-items: center;
+}
 .buttonDivCont {
 	position: relative;
 	width: 300px;
 	left: 0;
-	top: 120px;
+/*	top: 120px;*/
 	transition: left 0.25s ease-in-out;
 	z-index: 4;
 }

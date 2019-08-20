@@ -7,7 +7,7 @@ import CanvasSwim from '../components/canvasSwim';
 import SideMenu from '../components/sideMenu';
 import Welcome from '../components/welcome';
 import { connect } from 'react-redux';
-import {isMobile, isMobileOnly} from 'react-device-detect';
+import {isMobileOnly} from 'react-device-detect';
 class Home extends React.Component {
 
 	constructor (props) {
@@ -39,7 +39,7 @@ class Home extends React.Component {
 
 	render () {
 
-		let activeCanvas = "", sideMenu = "";
+		let activeCanvas = "";
 		if (this.state.active === 'home') {
 			activeCanvas = <Welcome isMobileOnly={isMobileOnly}/>
 		} else if(this.state.active === 'jump') {

@@ -58,18 +58,47 @@
 }
 
 #homeCanvas canvas{
-	width:100vw;
+	/*width:100vw;*/
 	position: absolute;
 	top:30px;
 	left:0;
 	z-index: 3;
-	/*width:calc(100vw);*/
-	/*width: 300px;
-	height: 600px;*/
-	/*position:fixed;
-	top:20px;
-	left:0;*/
 }
+
+.canvasParent.isMobileOnly {
+	position: absolute;
+	top: 35px;
+	width: 100vw;
+	text-align: center;
+}
+
+.canvasParent.isMobileOnly #homeCanvas {
+	background-color: transparent;
+	margin: 0 auto;
+}
+
+
+
+.canvasParent.isMobileOnly #homeCanvas canvas {
+	position: static;
+	z-index: 3;
+}
+
+.mobileButtons {
+	display:none;
+}
+.canvasParent.isMobileOnly #homeCanvas + .mobileButtons {
+	/*display: block;*/
+}
+
+.canvasParent.isMobileOnly #homeCanvas + .mobileButtons button{
+	font-size: 30px;
+	border-radius: 10px;
+	background-color: red;
+	padding:3px 5px;
+	margin: 3px;
+}
+
 
 .fpsCheckerShell {
 	text-align: center;

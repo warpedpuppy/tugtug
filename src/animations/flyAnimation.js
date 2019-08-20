@@ -48,8 +48,10 @@ export default function(obj) {
         fullStop: false,
         animations: Animations(),
         counter: 0,
-        
+        orientationChange: OrientationChange,
         init: function (isMobile, isMobileOnly) {
+
+            
 
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
@@ -60,6 +62,7 @@ export default function(obj) {
             if (!this.isMobileOnly) {
                 this.utils.getWidthAndHeight();
             } else {
+              
                 let test1 = this.utils.returnCanvasWidth(),
                     test2 = this.utils.returnCanvasHeight();
 
@@ -72,7 +75,7 @@ export default function(obj) {
                     OrientationChange.makePortrait();
                 }
             }
-
+            console.log('dimensions = ', this.utils.canvasWidth, this.utils.canvasHeight);
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
@@ -264,8 +267,8 @@ export default function(obj) {
             }    
         },
         resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) - 60;
+            this.canvasWidth =  this.utils.returnCanvasWidth();
+            this.canvasHeight = this.utils.returnCanvasHeight() - 60;
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
