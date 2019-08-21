@@ -82,6 +82,9 @@
 .canvasParent.isMobileOnly #homeCanvas canvas {
 	position: static;
 	z-index: 3;
+	box-sizing: content-box;
+	background-color: transparent;
+	background: transparent;
 }
 
 .mobileButtons {

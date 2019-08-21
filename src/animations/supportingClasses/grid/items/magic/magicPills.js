@@ -31,6 +31,11 @@ export default function () {
             	s.scale.set(this.utils.randomNumberBetween(0.5, 0.6));
             	s.rotate = this.utils.randomNumberBetween(-4, 4);
             	s.radius = s.width;
+
+            	if(this.utils.isMobileOnly){
+            		let newScale = s.scale.x * Config.mobileOnlyScaling;
+            		s.scale.set(newScale);
+            	}
             	this.pills.push(s);
             }
             this.bottomEdge = this.utils.wh.canvasHeight + this.edgeBuffer;

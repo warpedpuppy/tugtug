@@ -1,4 +1,5 @@
 import Utils from './utils';
+import Assets from './assetCreation';
 import Config from '../animationsConfig';
 
 export default {
@@ -16,6 +17,11 @@ export default {
           this.canvasWidth = Math.max(val1, val2);
           this.canvasHeight = Math.min(val1, val2);
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
+
+           if (this.utils.isMobileOnly) {
+                this.utils.root.setMask();
+              
+            }
       },
       makePortrait: function () {
 
@@ -26,6 +32,11 @@ export default {
           this.canvasHeight = Math.max(val1, val2);
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
           //document.getElementById('testOrientation').innerHTML = "portrait";
+
+           if (this.utils.isMobileOnly) {
+                this.utils.root.setMask();
+              
+            }
       },
        determinePortraitOrLandscape: function () {
 

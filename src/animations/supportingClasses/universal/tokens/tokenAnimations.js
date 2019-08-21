@@ -1,5 +1,6 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
+import Config from '../../../animationsConfig';
 import Tweens from '../../../utils/Tweens';
 export default function () {
 	return {
@@ -17,6 +18,10 @@ export default function () {
 			this.textCont.addChild(this.token);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
+
+			if (this.utils.isMobileOnly) {
+				this.textCont.scale.set(Config.mobileOnlyScaling)
+			}
 
 			this.mustBeFish = Assets.Sprite('mustBeFish.png');
 			this.mustBeFish.anchor.set(0.5);

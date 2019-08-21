@@ -1,5 +1,6 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
+import Config from './animationsConfig';
 import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
@@ -49,6 +50,7 @@ export default function(obj) {
         animations: Animations(),
         counter: 0,
         orientationChange: OrientationChange,
+        kingCont: Assets.Container(),
         init: function (isMobile, isMobileOnly) {
 
             
@@ -75,24 +77,34 @@ export default function(obj) {
                     OrientationChange.makePortrait();
                 }
             }
-            console.log('dimensions = ', this.utils.canvasWidth, this.utils.canvasHeight);
+            
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
-                false
+                true
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
+
+            this.stage.addChild(this.kingCont);
+            let kingContBackground = Assets.Graphics();
+            kingContBackground.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+            this.kingCont.addChild(kingContBackground)
+
+            if (this.isMobileOnly) {
+              this.setMask();
+              
+            }
         
             this.fpsCounter = new PixiFps();
             
-            LoadingAnimation.start(this.stage);
+            LoadingAnimation.start(this.kingCont);
             
 
             
 
 
-            this.stage.addChild(this.filterContainer);
+            this.kingCont.addChild(this.filterContainer);
 
             this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
@@ -111,6 +123,16 @@ export default function(obj) {
                 this.getDatabaseData();
             }
 
+        },
+        setMask: function () {
+           this.kingCont.mask = null;
+            let mask = Assets.Graphics();
+            let border = 25;
+            let halfBorder = border / 2;
+            let maskWidth = this.utils.canvasWidth - border;
+            let maskHeight = this.utils.canvasHeight - border;
+            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
+            this.kingCont.mask = mask;
         },
         pause: function (boolean) {
             this.action = boolean
@@ -144,6 +166,8 @@ export default function(obj) {
             let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
             this.utils.setProperties({
+                isMobileOnly: this.isMobileOnly,
+                isMobile: this.isMobile,
                 spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
@@ -163,8 +187,12 @@ export default function(obj) {
 
             this.score.init()
 
-            this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
+            this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
 
+            if (this.isMobileOnly) {
+                this.hero.cont.scale.set(Config.mobileOnlyScaling)
+            }
+            
             this.utils.setHero(this.hero);
 
             this.filterAnimation.init(this.filterContainer);
@@ -206,7 +234,7 @@ export default function(obj) {
 
             this.app.stage.addChild(this.fpsCounter);
 
-           LoadingAnimation.stop(this.stage);
+           LoadingAnimation.stop(this.kingCont);
         },
         stop: function () {
             window.onresize = undefined;

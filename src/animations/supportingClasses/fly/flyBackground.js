@@ -21,10 +21,10 @@ export default function () {
 		init: function (parent) {
 			this.parent = parent;
 			this.app = this.utils.app;
-			this.parentCont = parent.stage;
+			this.parentCont = parent.kingCont;
 			this.hero = this.utils.hero;
 			this.spritesheet = this.utils.spritesheet;
-			this.clouds.init(parent.stage)
+			this.clouds.init(parent.kingCont)
 		},
 		lightningStorm: function () {
 			this.foreground.visible = true;

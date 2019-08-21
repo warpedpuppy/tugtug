@@ -45,7 +45,7 @@ export default function () {
 		microscopeClass: Microscope(),
 		init: function () {
 			
-
+			
 			this.flyTexture = this.utils.spritesheet.textures['grassSquareSmall.png'];
 			this.whiteSquare = this.utils.spritesheet.textures['whiteTile.png'];
 			

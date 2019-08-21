@@ -7,7 +7,10 @@ export default function () {
             height: 35,
             init: function (parent) {
 
-                  this.height = (!isMobileOnly)?this.height:20;
+                  this.height = (!isMobileOnly)?this.height:30;
+                  this.leftRightWidth = this.height * 2;
+                  this.halfLeftRightWidth = this.leftRightWidth / 2;
+
 
                   this.halfHeight = this.height / 2;
                   this.parent = parent;
@@ -15,10 +18,10 @@ export default function () {
                   this.uiCont = Assets.Container();
                   
                   this.leftButton = Assets.Graphics();
-                  this.leftButton.lineStyle(5, 0x000000, 1).beginFill(0xFFFF00).drawRoundedRect(
+                  this.leftButton.lineStyle(1, 0x000000, 1).beginFill(0xFFFF00).drawRoundedRect(
+                        -this.halfLeftRightWidth, 
                         -this.halfHeight, 
-                        -this.halfHeight, 
-                        this.height, 
+                        this.leftRightWidth, 
                         this.height, 10).endFill();
                   this.leftButton.interactive = true;
                   this.leftButton.buttonMode = true;
@@ -28,10 +31,10 @@ export default function () {
                   this.uiCont.addChild(this.leftButton);
 
                   this.rightButton = Assets.Graphics();
-                  this.rightButton.lineStyle(5, 0x000000, 1).beginFill(0xFFFF00).drawRoundedRect(
+                  this.rightButton.lineStyle(1, 0x000000, 1).beginFill(0xFFFF00).drawRoundedRect(
+                        -this.halfLeftRightWidth, 
                         -this.halfHeight, 
-                        -this.halfHeight, 
-                        this.height, 
+                        this.leftRightWidth, 
                         this.height, 10).endFill();
                   this.rightButton.interactive = true;
                   this.rightButton.buttonMode = true;
@@ -42,10 +45,10 @@ export default function () {
 
 
                   this.spaceButton = Assets.Graphics();
-                  let width = this.utils.canvasWidth - (this.height * 3);
+                  let width = this.utils.canvasWidth - (this.leftRightWidth * 4);
                   let halfWidth = width / 2;
                   
-                  this.spaceButton.lineStyle(5, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
+                  this.spaceButton.lineStyle(1, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
                         -halfWidth, 
                         -this.halfHeight, 
                         width,
@@ -56,8 +59,8 @@ export default function () {
                   this.spaceButton.pointerdown = parent.keyHandler.spaceHit;
                   this.spaceButton.pointerup = parent.keyHandler.keyRelease;
 
-                 this.leftButton.x = -halfWidth - this.halfHeight - 10;
-                 this.rightButton.x = halfWidth + this.halfHeight + 10;
+                 this.leftButton.x = -halfWidth - this.halfHeight - 30;
+                 this.rightButton.x = halfWidth + this.halfHeight + 30;
 
                  this.uiCont.addChild(this.spaceButton);
                 this.place();
@@ -73,19 +76,19 @@ export default function () {
 
                         this.uiCont.y = this.utils.canvasHeight - (this.height / 2);
 
-                        let width = this.utils.canvasWidth - (this.height * 3);
+                        let width = this.utils.canvasWidth - (this.leftRightWidth * 4);
                         let halfWidth = width / 2;
 
                         this.spaceButton.clear();
-                        this.spaceButton.lineStyle(5, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
+                        this.spaceButton.lineStyle(1, 0x000000, 1).beginFill(0xFF0000).drawRoundedRect(
                               -halfWidth, 
                               -this.halfHeight, 
                               width,
                               this.height, 
                         10).endFill();
 
-                        this.leftButton.x = -halfWidth - this.halfHeight - 10;
-                        this.rightButton.x = halfWidth + this.halfHeight + 10;
+                        this.leftButton.x = -halfWidth - this.halfHeight - 30;
+                        this.rightButton.x = halfWidth + this.halfHeight + 30;
 
 
 

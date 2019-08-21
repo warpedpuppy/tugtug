@@ -14,6 +14,8 @@ export default {
         this.canvasWidth = obj.canvasWidth;
         this.canvasHeight = obj.canvasHeight;
         this.spritesheet = obj.spritesheet;
+        this.isMobile = obj.isMobile;
+        this.isMobileOnly = obj.isMobileOnly
         this.app = obj.app;
         this.wh = {
             canvasHeight: obj.canvasHeight,

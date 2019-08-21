@@ -54,6 +54,7 @@ export default function () {
             this.heroFly.init(this.cont);
             this.heroBounce.init(this.cont);
 
+
             return this;
 		},
 		resize: function (){

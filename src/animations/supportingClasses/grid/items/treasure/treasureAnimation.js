@@ -77,6 +77,10 @@ export default function (){
 				r.vx = this.utils.randomNumberBetween(this.vxs[0], this.vxs[1]);
 				r.rotate = this.utils.randomNumberBetween(-4, 4);
 				r.floor = this.halfHeight - r.height;
+
+				if(this.utils.isMobileOnly){
+					r.scale.set(Config.mobileOnlyScaling)
+				}
 				this.ringsPC.addChild(r);
 
 			}

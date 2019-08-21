@@ -121,6 +121,8 @@ export default function () {
 			this.segments = this.dragon;
 			this.cont.scale.set(0.5);
 			this.dye(0x000000);
+
+			
 		},
 		dye: function (color) {
 			for(let part of this.dyeLot){

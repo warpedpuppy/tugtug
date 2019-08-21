@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 		hourToRadians: (1/12) * (2 * Math.PI),
@@ -10,7 +11,7 @@ export default function () {
 		demo: false,
 		utils: Utils,
 		init: function () {
-			this.parentCont = this.utils.app.stage;
+			this.parentCont = this.utils.root.kingCont;
 			let hourhand = this.hourhand = Assets.Sprite('/hourhand.png');
 			hourhand.anchor.set(0.5);
 			//hourhand.tint = 0xFF0000;
@@ -43,8 +44,12 @@ export default function () {
 
 			this.cont.alpha = 0.25;
          	this.cont.scale.set(0.5);
-         	this.cont.x = this.utils.wh.canvasWidth / 2;
-         	this.cont.y = this.utils.wh.canvasHeight / 2;
+         	this.cont.x = this.utils.canvasWidth / 2;
+         	this.cont.y = this.utils.canvasHeight / 2;
+         	if (this.utils.isMobileOnly) {
+         		let newScale = this.cont.scale.x * Config.mobileOnlyScaling;
+         		this.cont.scale.set(newScale)
+         	}
 
          	return this;
 		},

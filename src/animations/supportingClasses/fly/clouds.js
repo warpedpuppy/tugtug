@@ -8,6 +8,9 @@ export default function () {
 		utils: Utils,
 		init: function (parentCont) {
 			this.parentCont = parentCont;
+			if (this.utils.isMobileOnly){
+				this.cloudQ = 2;
+			}
 			for(let i = 0; i < this.cloudQ; i ++){
 				let c = Assets.Sprite('cloud.png');
 				c.anchor.set(0.5);

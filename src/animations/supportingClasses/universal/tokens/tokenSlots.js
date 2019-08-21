@@ -12,7 +12,7 @@ export default function () {
 		build: function () {
 			let cont = Assets.Container();
 			this.parent = this.utils.root;
-			this.parentCont = this.utils.app.stage;
+			this.parentCont = this.utils.root.kingCont;
 			let s;
 			for (let i = 0; i < this.slotQ; i ++) {
 				let c = Assets.Container();
@@ -24,7 +24,13 @@ export default function () {
 				this.slots.push(c);
 				cont.addChild(c);
 			}
-			cont.pivot = Assets.Point(cont.width / 2, cont.height / 2);
+
+			cont.pivot = Assets.Point(cont.width  / 2, cont.height * 0.5  / 2);
+				
+			if (this.utils.isMobileOnly) {
+				cont.scale.set(0.5);
+			} 
+			
 			this.cont = cont;
 			return cont;
 		},
@@ -34,7 +40,7 @@ export default function () {
 			this.utils.app.stage.addChild(this.textCont);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
-			Tweens.tween(token.scale, 1, {x: [0,1], y: [0,1]}, undefined, 'easeOutBounce')
+			Tweens.tween(token.scale, 1, {x: [0,0.5], y: [0,0.5]}, undefined, 'easeOutBounce')
 			this.tokenCounter ++;
 			token.x = token.y = 0;
 			let index = token.num - 1;
@@ -46,8 +52,13 @@ export default function () {
 			}
 		},
 		addToStage: function () {
-			this.cont.x = (this.utils.canvasWidth + 50) / 2;
-			this.cont.y = this.utils.canvasHeight - 100;
+			this.cont.x = this.utils.canvasWidth / 2;
+			if (!this.utils.isMobileOnly) {
+				this.cont.y = this.utils.canvasHeight - 100;
+			} else {
+				this.cont.y = this.utils.canvasHeight - 40;
+			}
+			
 			this.parentCont.addChild(this.cont);
 		}
 	}

@@ -1,5 +1,6 @@
 import Assets from '../../../utils/assetCreation';
 import Utils from '../../../utils/utils';
+import Config from '../../../animationsConfig';
 export default function () {
 	return {
 		utils: Utils,
@@ -13,7 +14,11 @@ export default function () {
 				} else if(i === 2) {
 					t.mode = 'swim';
 				}
-				t.anchor.set(0.5)
+
+				t.anchor.set(0.5);
+				if(this.utils.root.isMobileOnly){
+					t.scale.set(Config.mobileOnlyScaling)
+				}
 				t.name = 'token';
 				t.placed = false;
 				t.num = i;

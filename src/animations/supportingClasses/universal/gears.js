@@ -1,5 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
+import Config from '../../animationsConfig';
 export default function () {
 	return {
 	gears: [],
@@ -19,14 +20,16 @@ export default function () {
 		    gear.y = corners[i][1];
 		    gear.alpha = 0.15;
 		    gear.rotate = (Math.random()*0.01)+0.01;
-		    
+		    if(this.utils.isMobileOnly){
+		    	gear.scale.set(Config.mobileOnlyScaling)
+		    }
 		    this.gears.push(gear);
 		}
 		return this;
 	},
 	addToStage: function () {
 		for(let i = 0; i < 4;i++){
-			this.utils.app.stage.addChild(this.gears[i]);
+			this.utils.root.kingCont.addChild(this.gears[i]);
 		}
 	},
 	removeFromStage: function () {

@@ -18,6 +18,7 @@ export default function () {
 		this.button.finalDest = 0;
 		this.button.rotateSpeed = 0.5;
 		this.utils.app.stage.addChild(this.topBanner);
+		this.topBanner.visible = false;
 		return this.topBanner;
 	},
 	returnMainBar: function () {

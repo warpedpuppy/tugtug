@@ -24,7 +24,7 @@ export default function () {
 
 			this.parent = this.utils.root;
 
-			this.parentCont = this.parent.stage;
+			this.parentCont = this.parent.kingCont;
 
 		    //this.boards = this.parent.dbData.boards;
 		    
