@@ -61,8 +61,8 @@ export default function () {
         }
         this.cont.x = this.utils.canvasWidth / 2;
         this.cont.y = this.utils.canvasHeight / 2;
-        let contIndex = this.utils.app.stage.getChildIndex(this.utils.hero.cont);
-        this.utils.app.stage.addChildAt(this.cont, contIndex - 1);
+        let contIndex = this.utils.root.kingCont.getChildIndex(this.utils.hero.cont);
+        this.utils.root.kingCont.addChildAt(this.cont, contIndex - 1);
        // this.utils.app.stage.addChildAt(this.cont, contIndex - 3);
         this.circle.tint = this.colors[this.colorCounter];
         this.colorCounter ++;

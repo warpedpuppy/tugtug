@@ -40,6 +40,10 @@ export default function () {
 			let centerOrb = 2;//this.test = Math.floor((this.rowQ * this.colQ) / 2) + 5;
 			let counter = 0;
 
+			if (this.utils.isMobileOnly) {
+				this.spacer = 100;
+			}
+
 			//let totalPlanets = this.rowQ * this.colQ;
 
 			for (let i = 0; i < this.rowQ; i ++) {

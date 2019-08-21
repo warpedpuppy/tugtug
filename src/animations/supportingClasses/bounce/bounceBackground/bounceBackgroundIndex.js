@@ -36,7 +36,7 @@ export default function () {
 			this.points = points;
 			this.hero = this.utils.hero;
 			this.app = this.utils.app;
-			this.parentCont = this.app.stage;
+			this.parentCont = this.utils.root.kingCont;
 			this.wh = this.utils.wh;
 			this.spritesheet = this.utils.spritesheet;
 			this.action = action;
@@ -124,7 +124,7 @@ export default function () {
 			this.parentCont.addChildAt(this.cont, 1);
 			this.bounceRings.addToStage();
 			if(this.token){
-				this.utils.app.stage.addChild(this.token);
+				this.utils.root.kingCont.addChild(this.token);
 			}
 		},
 		removeFromStage: function () {
@@ -133,7 +133,7 @@ export default function () {
 			this.parentCont.removeChild(this.cont);
 
 			if(this.token){
-				this.utils.app.stage.removeChild(this.token);
+				this.utils.root.kingCont.removeChild(this.token);
 			}
 		},
 		resize: function () {
@@ -174,7 +174,7 @@ export default function () {
 			this.token = this.utils.root.tokens.tokens[2];
 			this.token.radius = 30;
 			this.token.speedAdjust = this.utils.randomNumberBetween(0.1, 0.65);
-			this.utils.app.stage.addChild(this.token);
+			this.utils.root.kingCont.addChild(this.token);
 			
 
 		},

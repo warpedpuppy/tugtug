@@ -51,6 +51,11 @@ export default function () {
 			this.cont.smallScale = this.scale;
 			this.cont.classRef = this;
 			this.cont.spaceShip = this.spaceShip;
+
+			if (this.utils.isMobileOnly) {
+				this.cont.scale.set(Config.mobileOnlyScaling)
+			}
+
 			return this.cont;
 		},
 		dotsAndGremlinCollision: function (heroObject) {

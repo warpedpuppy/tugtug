@@ -39,9 +39,9 @@ export default {
 			this.goodCont.y = this.utils.canvasHeight / 2;
 			this.badCont.x = this.utils.canvasWidth / 2;
 			this.badCont.y = this.utils.canvasHeight / 2;
-			let index = this.utils.app.stage.getChildIndex(this.utils.hero.cont) - 1;
-			this.utils.app.stage.addChildAt(this.badCont, index);
-			this.utils.app.stage.addChildAt(this.goodCont, index);
+			let index = this.utils.root.kingCont.getChildIndex(this.utils.hero.cont) - 1;
+			this.utils.root.kingCont.addChildAt(this.badCont, index);
+			this.utils.root.kingCont.addChildAt(this.goodCont, index);
 		},
 		removeFromStage: function () {
 

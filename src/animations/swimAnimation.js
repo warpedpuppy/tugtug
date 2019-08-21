@@ -104,7 +104,7 @@ export default function(obj) {
             const fpsCounter = this.fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
-            LoadingAnimation.start(this.stage);
+            LoadingAnimation.start(this.kingCont);
 
             this.kingCont.addChild(this.filterContainer);
 
@@ -136,7 +136,7 @@ export default function(obj) {
             let halfBorder = border / 2;
             let maskWidth = this.utils.canvasWidth - border;
             let maskHeight = this.utils.canvasHeight - border;
-            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
+            mask.beginFill(0xFF00FF).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
             this.kingCont.mask = mask;
 
             this.kingContBackground.clear();
@@ -258,7 +258,7 @@ export default function(obj) {
             
             this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
-            LoadingAnimation.stop(this.stage);
+            LoadingAnimation.stop(this.kingCont);
         },
         stop: function () {
             window.onresize = undefined;

@@ -51,6 +51,9 @@ export default function(obj) {
         fullStop: false,
         animations: Animations(),
         keyHandler: KeyHandler(),
+        kingCont: Assets.Container(),
+        frame: Assets.Graphics(),
+        kingContBackground: Assets.Graphics(),
         init: function (isMobile, isMobileOnly) {
             
             Tweens.killAll();
@@ -89,8 +92,15 @@ export default function(obj) {
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
+
+             this.stage.addChild(this.kingCont);
+            
+          
+            if (this.isMobileOnly) {
+              this.setMask();
+            }
         
-            LoadingAnimation.start(this.stage);
+            LoadingAnimation.start(this.kingCont);
 
             this.fpsCounter = new PixiFps();
             
@@ -115,6 +125,27 @@ export default function(obj) {
             }
            
         },
+         setMask: function () {
+           this.kingCont.mask = null;
+            let mask = Assets.Graphics();
+            let border = 25;
+            let halfBorder = border / 2;
+            let maskWidth = this.utils.canvasWidth - border;
+            let maskHeight = this.utils.canvasHeight - border;
+            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
+            this.kingCont.mask = mask;
+
+            this.kingContBackground.clear();
+            this.kingContBackground.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+            this.kingCont.addChildAt(this.kingContBackground, 0)
+
+            this.frame.clear();
+            let frameWidth = 5;
+            let frameBoxWidth = maskWidth + frameWidth;
+            let frameBoxHeight = maskHeight + frameWidth;
+            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameWidth * 2, frameWidth * 2, frameBoxWidth, frameBoxHeight, 5).endFill();
+            this.stage.addChildAt(this.frame, 0)
+        },
          pause: function (boolean) {
             this.action = boolean
         },
@@ -122,7 +153,9 @@ export default function(obj) {
             
             let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
-            this.utils.setProperties({
+              this.utils.setProperties({
+                isMobileOnly: this.isMobileOnly,
+                isMobile: this.isMobile,
                 spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
@@ -135,11 +168,14 @@ export default function(obj) {
          
 
             this.hero.init(undefined, this.stage).switchPlayer('jump');
+            if (this.isMobileOnly) {
+                this.hero.cont.scale.set(Config.mobileOnlyScaling)
+            }
 
             this.utils.setHero(this.hero);
 
 
-            this.jump.init(this.stage);
+            this.jump.init(this.kingCont);
             
             this.transitionAnimation.init(this);
 
@@ -178,7 +214,7 @@ export default function(obj) {
           
             this.makeJumpActive();
            
-             LoadingAnimation.stop(this.stage);
+             LoadingAnimation.stop(this.kingCont);
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
