@@ -20,7 +20,7 @@ export default {
 
            if (this.utils.isMobileOnly) {
                 this.utils.root.setMask();
-              
+                this.utils.root.tokens.resize();
             }
       },
       makePortrait: function () {
@@ -35,7 +35,7 @@ export default {
 
            if (this.utils.isMobileOnly) {
                 this.utils.root.setMask();
-              
+                 this.utils.root.tokens.resize();
             }
       },
        determinePortraitOrLandscape: function () {

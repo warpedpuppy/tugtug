@@ -13,17 +13,17 @@ export default function () {
 		init: function (cont) {
 			this.background = this.swimBackground;
 			this.swimBackground.init(cont);
-			this.ripples.init();
+			if(!this.utils.isMobile)this.ripples.init();
 			this.swimAction.init(cont);
 			
 		},
 		addToStage: function () {
 
 			this.utils.root.grid.changeGridSize();
-			let index = this.utils.root.stage.getChildIndex(this.utils.root.clock.cont) + 1;
+			let index = this.utils.root.kingCont.getChildIndex(this.utils.root.clock.cont) + 1;
 			this.utils.root.grid.addToStage(index);
 
-			this.ripples.on(true);
+			if(!this.utils.isMobile)this.ripples.on(true);
 			this.swimBackground.addToStage();
 			this.swimAction.start();
 			
@@ -33,7 +33,7 @@ export default function () {
 			
 		},
 		removeFromStage: function () {
-			this.ripples.on(false);
+			if(!this.utils.isMobile)this.ripples.on(false);
 			this.swimBackground.removeFromStage();
 			this.swimAction.airBubbles.resetAirBubbles();
 
@@ -48,15 +48,15 @@ export default function () {
 
 		},
 		startSpaceShipJourney: function () {
-			this.ripples.on(false);
+			if(!this.utils.isMobile)this.ripples.on(false);
             this.swimBackground.startSpaceShipJourney();
         },
         endSpaceShipJourney: function () {
-        	this.ripples.on(true);
+        	if(!this.utils.isMobile)this.ripples.on(true);
             this.swimBackground.endSpaceShipJourney();
         },
 		animate: function () {
-			this.ripples.animate();
+			if(!this.utils.isMobile)this.ripples.animate();
 			this.swimBackground.animate();
 			this.swimAction.animate();
 			

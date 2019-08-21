@@ -77,11 +77,6 @@ export default class HomeCanvas extends React.Component {
 			return (
 				<div className={canvasClass}>
 					<div id='homeCanvas'></div>
-					<div className="mobileButtons">
-						<button className="leftButton" onMouseDown={ (e) => this.leftHit(e) } >left</button>
-						<button className="centerButton" onMouseDown={ (e) => this.spaceHit(e) } onMouseUp={(e) => this.mouseUpHandler(e) }>center</button>
-						<button className="rightButton" onMouseDown={ (e) => this.rightHit(e) } onMouseUp={(e) => this.mouseUpHandler(e) }>right</button>
-					</div>
 				</div>
 
 			)

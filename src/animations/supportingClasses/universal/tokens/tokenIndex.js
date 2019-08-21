@@ -32,20 +32,11 @@ export default function () {
 		wrongTokenAnimation: function (token) {
 			this.tokenAnimations.wrongTokenAnimation(token);
 		},
-		// clearText: function (){
-		// 	TokenAnimations.clearText();
-		// },
-		// addToStage: function () {
-		// 	this.slotsCont.x = (this.utils.canvasWidth + 50) / 2;
-		// 	this.slotsCont.y = this.utils.canvasHeight - 100;
-		// 	this.utils.stage.addChild(this.slotsCont);
-		// },
 		removeFromStage: function () {
 
 		},
 		resize: function () {
-			this.slotsCont.x = (this.utils.canvasWidth + 50) / 2;
-			this.slotsCont.y = this.utils.canvasHeight - 100;
+			this.tokenSlots.resize();
 			this.tokenAnimations.textCont.x = this.utils.canvasWidth / 2;
 			this.tokenAnimations.textCont.y = this.utils.canvasHeight / 2;
 		},

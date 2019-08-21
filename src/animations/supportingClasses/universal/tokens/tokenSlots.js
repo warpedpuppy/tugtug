@@ -37,7 +37,7 @@ export default function () {
 		fillSlot: function (token) {
 			token.scale.set(0);
 			token.placed = true;
-			this.utils.app.stage.addChild(this.textCont);
+			this.utils.root.kingCont.addChild(this.textCont);
 			this.textCont.x = this.utils.canvasWidth / 2;
 			this.textCont.y = this.utils.canvasHeight / 2;
 			Tweens.tween(token.scale, 1, {x: [0,0.5], y: [0,0.5]}, undefined, 'easeOutBounce')
@@ -50,6 +50,17 @@ export default function () {
 			if (this.tokenCounter === this.totalTokens) {
 				this.parent.levelCompleteHandler();
 			}
+		},
+		resize: function () {
+			console.log(this.utils.canvasWidth)
+			this.cont.x = this.utils.canvasWidth / 2;
+			console.log('slots x', this.cont.x)
+			if (!this.utils.isMobileOnly) {
+				this.cont.y = this.utils.canvasHeight - 100;
+			} else {
+				this.cont.y = this.utils.canvasHeight - 40;
+			}
+			console.log('slots x', this.cont.x, this.cont.y)
 		},
 		addToStage: function () {
 			this.cont.x = this.utils.canvasWidth / 2;

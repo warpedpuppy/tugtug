@@ -54,7 +54,12 @@ export default function(obj) {
         levelComplete: LevelComplete(),
         fullStop: false,
         animations: Animations(),
+        kingCont: Assets.Container(),
+        frame: Assets.Graphics(),
+        kingContBackground: Assets.Graphics(),
         init: function (isMobile, isMobileOnly) {
+
+           
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -89,13 +94,19 @@ export default function(obj) {
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
+            this.stage.addChild(this.kingCont);
+            
+          
+            if (this.isMobileOnly) {
+              this.setMask();
+            }
         
             const fpsCounter = this.fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
 
             LoadingAnimation.start(this.stage);
 
-            this.stage.addChild(this.filterContainer);
+            this.kingCont.addChild(this.filterContainer);
 
             this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
@@ -117,6 +128,27 @@ export default function(obj) {
         },
          pause: function (boolean) {
             this.action = boolean
+        },
+         setMask: function () {
+           this.kingCont.mask = null;
+            let mask = Assets.Graphics();
+            let border = 25;
+            let halfBorder = border / 2;
+            let maskWidth = this.utils.canvasWidth - border;
+            let maskHeight = this.utils.canvasHeight - border;
+            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
+            this.kingCont.mask = mask;
+
+            this.kingContBackground.clear();
+            this.kingContBackground.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
+            this.kingCont.addChildAt(this.kingContBackground, 0)
+
+            this.frame.clear();
+            let frameWidth = 5;
+            let frameBoxWidth = maskWidth + frameWidth;
+            let frameBoxHeight = maskHeight + frameWidth;
+            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameWidth * 2, frameWidth * 2, frameBoxWidth, frameBoxHeight, 5).endFill();
+            this.stage.addChildAt(this.frame, 0)
         },
         getDatabaseData: function () {
 
@@ -146,7 +178,9 @@ export default function(obj) {
             
             let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
 
-            this.utils.setProperties({
+             this.utils.setProperties({
+                isMobileOnly: this.isMobileOnly,
+                isMobile: this.isMobile,
                 spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
@@ -167,13 +201,17 @@ export default function(obj) {
 
             this.score.init()
 
-            this.hero.init(undefined, this.stage).switchPlayer(this.mode[this.activeModeIndex]);
+            this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
+
+            if (this.isMobileOnly) {
+                this.hero.cont.scale.set(Config.mobileOnlyScaling)
+            }
 
             this.utils.setHero(this.hero);
 
             this.filterAnimation.init(this.filterContainer);
             
-            this.swim.init(this.stage);
+            this.swim.init(this.kingCont);
 
             //this.bounce.init(this.stage);
 

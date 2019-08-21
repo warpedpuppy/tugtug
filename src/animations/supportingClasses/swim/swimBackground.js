@@ -17,7 +17,7 @@ export default function () {
 		fishSchool: FishSchool(),
 		init: function () {
 			
-			this.parentCont = this.utils.app.stage;
+			this.parentCont = this.utils.root.kingCont;
 			this.wh = this.utils.wh;
 			this.lilypadLotuses.init(this.parentCont);
 			this.fishSchool.init(this.parentCont);
@@ -63,7 +63,7 @@ export default function () {
 			 //THIS IS HACKY AND SHOULD BE FIXED
 			 if (!this.utils.root.all) {
 				 this.parentCont.addChildAt(this.cont2, 2);
-				 let index = this.utils.app.stage.getChildIndex(this.utils.root.score.topBanner) - 1;
+				 let index = 0;//this.utils.root.kingCont.getChildIndex(this.utils.root.score.topBanner) - 1;
 				 this.parentCont.addChildAt(this.cont, index);
 			}
 			 this.lilypadLotuses.addToStage();
