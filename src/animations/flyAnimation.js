@@ -12,6 +12,7 @@ import Hero from './supportingClasses/universal/hero';
 import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
+import MobileMask from './supportingClasses/universal/mobileMask';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import PixiFps from "pixi-fps";
@@ -19,7 +20,6 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
-import Animations from './supportingClasses/universal/animations/animationsIndex';
 
 export default function(obj) {
     return {
@@ -47,7 +47,6 @@ export default function(obj) {
         timeOut: undefined,
         levelComplete: LevelComplete(),
         fullStop: false,
-        animations: Animations(),
         counter: 0,
         orientationChange: OrientationChange,
         kingCont: Assets.Container(),
@@ -91,9 +90,7 @@ export default function(obj) {
             this.stage.addChild(this.kingCont);
             
           
-            if (this.isMobileOnly) {
-              this.setMask();
-            }
+           
         
             this.fpsCounter = new PixiFps();
             
@@ -123,27 +120,6 @@ export default function(obj) {
             }
 
         },
-        setMask: function () {
-           this.kingCont.mask = null;
-            let mask = Assets.Graphics();
-            let border = 25;
-            let halfBorder = border / 2;
-            let maskWidth = this.utils.canvasWidth - border;
-            let maskHeight = this.utils.canvasHeight - border;
-            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
-            this.kingCont.mask = mask;
-
-            this.kingContBackground.clear();
-            this.kingContBackground.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
-            this.kingCont.addChildAt(this.kingContBackground, 0)
-
-            this.frame.clear();
-            let frameWidth = 5;
-            let frameBoxWidth = maskWidth + frameWidth;
-            let frameBoxHeight = maskHeight + frameWidth;
-            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameWidth * 2, frameWidth * 2, frameBoxWidth, frameBoxHeight, 5).endFill();
-            this.stage.addChildAt(this.frame, 0)
-        },
         pause: function (boolean) {
             this.action = boolean
         },
@@ -159,7 +135,6 @@ export default function(obj) {
                 this.dbData = response.data;
                 if (indexToGet === 0) {
                     this.grid.boards = [...this.grid.boards, ...response.data.boards];
-                    //this.grid.boards = [...this.grid.boards, response.data.boards];
                     this.buildGame();
                  } else {
                     if (response.data.boards) {
@@ -184,7 +159,12 @@ export default function(obj) {
                 app: this.app,
                 root: this
             })
-
+            
+             if (this.isMobileOnly) {
+                this.mobileMask = MobileMask();
+                this.backgroundColor = 0x000000;
+                this.mobileMask.setMask();
+            }
             Assets.init();
 
             this.gears.init().addToStage();
@@ -210,12 +190,8 @@ export default function(obj) {
             this.fly.init(this);
 
             this.keyHandler = KeyHandler();
-            this.keyHandler.init(this);
-            
-            this.transitionAnimation.init(this);
 
-            this.animations.init();
-           
+            this.keyHandler.init(this);
  
             if (this.isMobile) {
                 //ipad and mobile
@@ -254,13 +230,11 @@ export default function(obj) {
             }
         },
         earnToken: function (t) {
-            //console.log('level complete');
             this.action = false;
             this.tokens.fillSlot(t);
             setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
         },
         resumePlayAfterEarnToken: function () {
-           // this.tokens.clearText();
             this.action = true;
         },
         increaseIndex: function() {
@@ -291,9 +265,8 @@ export default function(obj) {
             this.score.switchMode();
         },
         resizeBundle: function () {
-            if (this.activeMode === 'fly' || this.activeMode === 'swim') {
-                this.grid.resize();
-            }
+            
+            this.grid.resize();
             this.score.resize();
             this.clock.resize();
             this.gears.resize();
@@ -331,16 +304,11 @@ export default function(obj) {
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
-           // this.jump.reset();
-            //this.bounce.reset();
-
             this[this.activeMode].removeFromStage();
-            this.switchPlayer(this.mode[0]);
-           
+            //this.switchPlayer(this.mode[0]);
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
             this.getDatabaseData();
-
             this.fullStop = false;
         },
         filterTest: function () {
@@ -361,12 +329,7 @@ export default function(obj) {
             Tweens.animate();
 
             if(this.fullStop)return;
-
-            this.transitionAnimation.animate();
-
-            this.animations.animate();
            
-
             if (this.action) {
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');
@@ -376,12 +339,8 @@ export default function(obj) {
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-               // this.activeAction.animate();
                 this[this.activeMode].animate();
-                
                 this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-                
-               
             }
         }
     }

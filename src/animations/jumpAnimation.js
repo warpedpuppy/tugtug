@@ -3,11 +3,9 @@ import Assets from './utils/assetCreation';
 import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
-
+import MobileMask from './supportingClasses/universal/mobileMask';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
-
 import Jump from './supportingClasses/jump/indexJump';
-import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
@@ -18,11 +16,9 @@ import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
-import Animations from './supportingClasses/universal/animations/animationsIndex';
 
 export default function(obj) {
     return {
-       // mode: ['fly','swim'],
         activeModeIndex: 0,
         activeMode: undefined,
         filterContainer: Assets.Container(),
@@ -31,25 +27,19 @@ export default function(obj) {
         clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation(),
         transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
-       // swim: Swim(),
-       // bounce: Bounce(),
-       // fly: Fly(),
         jump: Jump(),
         tokens: Tokens(),
         controlPanel: ControlPanel(),
-       // grid: Grid,
         dbData: {},
         storeAction: true,
         timeOut: undefined,
         levelComplete: LevelComplete(),
         fullStop: false,
-        animations: Animations(),
         keyHandler: KeyHandler(),
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
@@ -57,15 +47,14 @@ export default function(obj) {
         init: function (isMobile, isMobileOnly) {
             
             Tweens.killAll();
+
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
 
-           // this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
-           // console.log(this.levelComplete);
             this.levelComplete.init();
 
          
@@ -96,18 +85,14 @@ export default function(obj) {
              this.stage.addChild(this.kingCont);
             
           
-            if (this.isMobileOnly) {
-              this.setMask();
-            }
+         
         
             LoadingAnimation.start(this.kingCont);
 
             this.fpsCounter = new PixiFps();
             
-
             this.stage.addChild(this.filterContainer);
 
-            //this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
             this.switchPlayer = this.switchPlayer.bind(this);
@@ -125,28 +110,7 @@ export default function(obj) {
             }
            
         },
-         setMask: function () {
-           this.kingCont.mask = null;
-            let mask = Assets.Graphics();
-            let border = 25;
-            let halfBorder = border / 2;
-            let maskWidth = this.utils.canvasWidth - border;
-            let maskHeight = this.utils.canvasHeight - border;
-            mask.beginFill(0x000000).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
-            this.kingCont.mask = mask;
-
-            this.kingContBackground.clear();
-            this.kingContBackground.beginFill(0x000000).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
-            this.kingCont.addChildAt(this.kingContBackground, 0)
-
-            this.frame.clear();
-            let frameWidth = 5;
-            let frameBoxWidth = maskWidth + frameWidth;
-            let frameBoxHeight = maskHeight + frameWidth;
-            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameWidth * 2, frameWidth * 2, frameBoxWidth, frameBoxHeight, 5).endFill();
-            this.stage.addChildAt(this.frame, 0)
-        },
-         pause: function (boolean) {
+        pause: function (boolean) {
             this.action = boolean
         },
         buildGame: function () {
@@ -163,9 +127,12 @@ export default function(obj) {
                 root: this
             })
 
+               if (this.isMobileOnly) {
+                this.mobileMask = MobileMask();
+                this.backgroundColor = 0x000000;
+                this.mobileMask.setMask();
+            }
             Assets.init();
-
-         
 
             this.hero.init(undefined, this.stage).switchPlayer('jump');
             if (this.isMobileOnly) {
@@ -174,12 +141,7 @@ export default function(obj) {
 
             this.utils.setHero(this.hero);
 
-
             this.jump.init(this.kingCont);
-            
-            this.transitionAnimation.init(this);
-
-            this.animations.init();
             
             this.gears.init().addToStage();
 
@@ -211,10 +173,9 @@ export default function(obj) {
                 this.app.ticker.add(this.animateMobile); 
             }
           
-          
             this.makeJumpActive();
            
-             LoadingAnimation.stop(this.kingCont);
+            LoadingAnimation.stop(this.kingCont);
             //this.animations.circles({start: true, expand: true});
         },
         stop: function () {
@@ -223,45 +184,6 @@ export default function(obj) {
              if (!this.isMobile && this.keyHandler) {
                 this.keyHandler.removeFromStage();
             }
-        },
-        earnToken: function (t) {
-            //console.log('level complete');
-            this.action = false;
-            this.tokens.fillSlot(t);
-            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
-        },
-        resumePlayAfterEarnToken: function () {
-           // this.tokens.clearText();
-            this.action = true;
-        },
-        increaseIndex: function() {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];    
-            return this.activeMode;  
-        },
-        switchPlayerWithAnimation: function (mode) {
-           
-            if (!this.transitionAnimationPlaying) {
-
-
-
-                this.transitionAnimationPlaying = true;
-                this.action = false;
-
-                let oldActiveModeString = this.activeMode;
-                this[this.activeMode].removeFromStage();
-
-                this.activeMode = (mode)?mode:this.increaseIndex();
-                let newActiveModeString = this.activeMode;
-
-                // if (this.utils.root.all && this.activeMode === 'bounce') {
-                //     this.grid.removeFromStage();
-                // }
-            
-                this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
-            }
-
         },
         switchPlayer: function (str) {
            
@@ -290,21 +212,12 @@ export default function(obj) {
             this.transitionAnimationPlaying = false;
             this.action = true;
 
-            //this.score.switchMode();
         },
         resizeBundle: function () {
-            // if (this.activeMode === 'fly' || this.activeMode === 'swim') {
-            //     this.grid.resize();
-            // }
-            //this.score.resize();
             this.clock.resize();
             this.gears.resize();
             this.hero.resize();
-            //this.swim.resize();
-            //this.bounce.resize();
-           // this.fly.resize();
             this.jump.resize();
-            //this.tokens.resize();
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    
@@ -328,45 +241,16 @@ export default function(obj) {
 
         },
         resized: function () {
-
             this.action = true;
             clearTimeout(this.timeOut);
-           
         },
-        // startSpaceShipJourney: function () {
-        //     this.storeActiveMode = this.activeMode;
-        //     this.hero.cont.visible = false;
-        //     this.activeAction.vx = this.activeAction.vy = 0;
-        //     this.grid.gridAction.pause = true;
-        //     this[this.activeMode].startSpaceShipJourney();
-        // },
-        // endSpaceShipJourney: function () {
-
-        //     this.jump.removeFromStage();
-            
-        //     this.switchPlayer(this.storeActiveMode);
-           
-        //     this.grid.gridBuild.placeHero();
-  
-        //     this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
-
-        //     this.grid.gridAction.pause = false;
-       
-        //     this.activeAction.vx = this.activeAction.vy = 0;
-
-        //     this.activeAction.radius = this.activeAction.storeRadius = 0;
-
-        //     this[this.activeMode].endSpaceShipJourney();
-        // },
         makeJumpActive: function () {
             this.jump.addToStage();
             this.jump.jumpBackground.pause = false;
             this.jump.jumpAction.pause = false;
             this.hero.cont.visible = true;
-            //this.ship.parent.removeChild(this.ship);
-            
+ 
             this.switchPlayer("jump");
-            //this.jump.jumpBackground.setUp();
 
              if (Config.testingJump) {
                 let background = this.utils.root.jump.jumpBackground.orbsCont;
@@ -411,11 +295,6 @@ export default function(obj) {
 
             if(this.fullStop)return;
 
-            this.transitionAnimation.animate();
-
-            this.animations.animate();
-           
-
             if (this.action) {
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');
@@ -425,9 +304,7 @@ export default function(obj) {
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-               // this.activeAction.animate();
                 this[this.activeMode].animate();
-               
                
             }
         }

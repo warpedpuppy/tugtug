@@ -19,8 +19,7 @@ export default {
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
 
            if (this.utils.isMobileOnly) {
-                this.utils.root.setMask();
-                //this.utils.root.tokens.resize();
+                this.utils.root.mobileMask.setMask();
             }
       },
       makePortrait: function () {
@@ -31,11 +30,9 @@ export default {
           this.canvasWidth = Math.min(val1, val2);
           this.canvasHeight = Math.max(val1, val2);
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-          //document.getElementById('testOrientation').innerHTML = "portrait";
 
            if (this.utils.isMobileOnly) {
-                this.utils.root.setMask();
-                 //this.utils.root.tokens.resize();
+                this.utils.root.mobileMask.setMask();
             }
       },
        determinePortraitOrLandscape: function () {

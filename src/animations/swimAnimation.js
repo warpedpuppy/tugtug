@@ -4,10 +4,6 @@ import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
-import Bounce from './supportingClasses/bounce/indexBounce';
-import Fly from './supportingClasses/fly/indexFly';
-import Jump from './supportingClasses/jump/indexJump';
-import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
@@ -21,8 +17,8 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
-import Animations from './supportingClasses/universal/animations/animationsIndex';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
+import MobileMask from './supportingClasses/universal/mobileMask';
 
 export default function(obj) {
     return {
@@ -35,16 +31,12 @@ export default function(obj) {
         clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation(),
         transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
         swim: Swim(),
-        bounce: Bounce(),
-        fly: Fly(),
-        jump: Jump(),
         tokens: Tokens(),
         controlPanel: ControlPanel(),
         grid: Grid(),
@@ -53,13 +45,11 @@ export default function(obj) {
         timeOut: undefined,
         levelComplete: LevelComplete(),
         fullStop: false,
-        animations: Animations(),
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         init: function (isMobile, isMobileOnly) {
 
-           
             if (Config.testingBounce) {
                 this.mode = ['bounce'];
             }
@@ -97,9 +87,7 @@ export default function(obj) {
             this.stage.addChild(this.kingCont);
             
           
-            if (this.isMobileOnly) {
-              this.setMask();
-            }
+           
         
             const fpsCounter = this.fpsCounter = new PixiFps();
             app.stage.addChild(fpsCounter);
@@ -128,27 +116,6 @@ export default function(obj) {
         },
          pause: function (boolean) {
             this.action = boolean
-        },
-         setMask: function () {
-           this.kingCont.mask = null;
-            let mask = Assets.Graphics();
-            let border = 25;
-            let halfBorder = border / 2;
-            let maskWidth = this.utils.canvasWidth - border;
-            let maskHeight = this.utils.canvasHeight - border;
-            mask.beginFill(0xFF00FF).drawRect(halfBorder,halfBorder,maskWidth, maskHeight).endFill();
-            this.kingCont.mask = mask;
-
-            this.kingContBackground.clear();
-            this.kingContBackground.beginFill(0x3399ff).drawRect(0,0,this.utils.canvasWidth, this.utils.canvasHeight).endFill();
-            this.kingCont.addChildAt(this.kingContBackground, 0)
-
-            this.frame.clear();
-            let frameWidth = 5;
-            let frameBoxWidth = maskWidth + frameWidth;
-            let frameBoxHeight = maskHeight + frameWidth;
-            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameWidth * 2, frameWidth * 2, frameBoxWidth, frameBoxHeight, 5).endFill();
-            this.stage.addChildAt(this.frame, 0)
         },
         getDatabaseData: function () {
 
@@ -188,13 +155,17 @@ export default function(obj) {
                 root: this
             })
 
+            if (this.isMobileOnly) {
+                this.mobileMask = MobileMask();
+                this.backgroundColor = 0x000000;
+                this.mobileMask.setMask();
+            }
             Assets.init();
 
             this.gears.init().addToStage();
 
             this.clock.init().addToStage();
 
-            //this.levelSlots.init(this).addToStage();
             this.tokens.init();
 
             this.grid.init();
@@ -213,22 +184,12 @@ export default function(obj) {
             
             this.swim.init(this.kingCont);
 
-            //this.bounce.init(this.stage);
-
-            this.fly.init(this);
-
             this.keyHandler = KeyHandler();
+
             this.keyHandler.init(this);
-
-           // this.jump.init(this.stage);
-            
-            this.transitionAnimation.init(this);
-
-            this.animations.init();
            
- 
             if (this.isMobile) {
-                //ipad and mobile
+
                 this.controlPanel.init(this);
             } 
                
@@ -452,11 +413,6 @@ export default function(obj) {
             Tweens.animate();
 
             if(this.fullStop)return;
-
-            this.transitionAnimation.animate();
-
-            this.animations.animate();
-           
 
             if (this.action) {
                 if(this.rotateLeftBoolean) {
