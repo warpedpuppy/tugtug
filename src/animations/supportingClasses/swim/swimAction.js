@@ -40,12 +40,14 @@ export default function () {
 			let obj = Assets.createPool(
 				this.flames, 
 				'transparentRing.png', 
-				[0xadd8e6, 0xFFFF00]
+				[0xadd8e6, 0xFFFF00], 
+				[0.095, 0.5]
 			);
 
 			this.flameArray = obj.flameArray;
 			this.flameQ = obj.flameQ;
 			this.flames.visible = false;
+			this.flames.y = -40;
 			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
 		},
 		rotate: function (str) {

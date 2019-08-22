@@ -52,15 +52,12 @@ export default function () {
 			}
 		},
 		resize: function () {
-			console.log(this.utils.canvasWidth)
 			this.cont.x = this.utils.canvasWidth / 2;
-			console.log('slots x', this.cont.x)
 			if (!this.utils.isMobileOnly) {
 				this.cont.y = this.utils.canvasHeight - 100;
 			} else {
 				this.cont.y = this.utils.canvasHeight - 40;
 			}
-			console.log('slots x', this.cont.x, this.cont.y)
 		},
 		addToStage: function () {
 			this.cont.x = this.utils.canvasWidth / 2;

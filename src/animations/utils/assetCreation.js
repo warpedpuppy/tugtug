@@ -131,15 +131,15 @@ export default {
 		Graphics: function () {
 			return new PIXI.Graphics();
 		},
-		createPool: function (cont, str, colors) {
+		createPool: function (cont, str, colors, scaleArray) {
 			let flameArray = this.returnObjectPool(str);
             let flameQ = flameArray.length;
             let colorCounter = 0;
 			let item;
 			for (let i = 0; i < flameQ; i ++) {
 				item = flameArray[i];
-				item.scale.x = this.utils.randomNumberBetween(0.01, 0.05);
-				item.scale.y = this.utils.randomNumberBetween(0.75, 2);
+				let scale = this.utils.randomNumberBetween(scaleArray[0], scaleArray[0]);
+				item.scale.set(scale);
 				item.anchor.set(0.5);
 				item.angle = this.utils.deg2rad(this.utils.randomNumberBetween(-110, -70));
 				item.fade = this.utils.randomNumberBetween(0.001, 0.01);

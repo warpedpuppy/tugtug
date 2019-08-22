@@ -60,14 +60,14 @@
 #homeCanvas canvas{
 	/*width:100vw;*/
 	position: absolute;
-	top:30px;
+	top:20px;
 	left:0;
 	z-index: 3;
 }
 
 .canvasParent.isMobileOnly {
 	position: absolute;
-	top: 35px;
+	top: 30px;
 	width: 100vw;
 	text-align: center;
 }

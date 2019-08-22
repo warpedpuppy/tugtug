@@ -27,17 +27,14 @@ export default class SideMenu extends React.Component {
 						<div className="arrow"></div>
 					</button>
 					<div className="homeMenuButtonDiv" >
-						<button className="homeMenuButton">
-							<div></div>
-							<span onClick={ e => this.buttonClickHandler(e)}>home</span>
-						</button>
+						
 						<button className="homeMenuButton">
 							<div></div>
 							<span onClick={ e => this.buttonClickHandler(e)}>fly</span>
 						</button>
 						<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>swim</span></button>
 						<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>jump</span></button>
-						<button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>all three</span></button>
+						{/* <button className="homeMenuButton" onClick={ e => this.buttonClickHandler(e)}><div></div><span>all three</span></button>*/}
 					</div>
 				</div>
 			</div>

@@ -3,11 +3,24 @@ nav {
 	top:0;
 	left:0;
 	width:100%;
-	font-size: 20px;
-	height:30px;
+	
+	height:20px;
 	z-index: 5;
 	border-bottom:5px solid black;
-	display:none;
+	background-color: white;
+	text-align: center;
+}
+nav a {
+	font-size: 18px;
+	font-weight: bold;
+	position: relative;
+	top:-3px;
+	text-decoration: none;
+	color: #333;
+}
+nav span {
+	display: inline-block;
+	margin: 0 20px;
 }
 nav img {
 	font-size: 35px;
@@ -106,6 +119,7 @@ nav .logoGraphic.raised {
 	nav {
 		text-align: left;
 		background-color: white;
+		padding-left: 20px;
 	}
 	nav img {
 		font-size: 25px;

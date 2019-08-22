@@ -16,7 +16,6 @@ export default function () {
 		percApply: true,
 		increment: 5,
 		colors: [0xFF0000, 0xFFFF00, 0xFF9900],
-		// colorCounter:0,
 		flameArray: [],
 		shootingFlames: [],
 		flameCounter: 0,
@@ -28,37 +27,27 @@ export default function () {
 			this.parent = parent;
 			this.grid = parent.grid;
 			this.background = background;
-			// this.soldiers = background.soldiers;
-			// this.spears = background.spears;
-			// this.soldierQ = background.soldiers.length;
-			// this.spearQ = background.spears.length;
 			this.clouds = background.clouds;
 			this.hero = this.utils.hero;
 			this.wh = this.utils.wh;
 			this.stage = this.utils.app.stage;
-			//this.vx = this.utils.randomNumberBetween(1,2); 
-           // this.vy = this.utils.randomNumberBetween(1,2);
-            //this.flameQ = (Assets.webgl)? 500 : 10;
             this.flames = Assets.ParticleContainer(this.flameQ);
-
- 		this.triangleOfCollision.init();
+ 			this.triangleOfCollision.init();
 
 		},
 		createPool: function () {
-	
-
-			let obj = Assets.createPool(this.flames, 'star.png', this.colors);
+			let obj = Assets.createPool(this.flames, 'star.png', this.colors, [0.025, 0.5]);
 			this.flameArray = obj.flameArray;
 			this.flameQ = obj.flameQ;
 			this.flames.visible = false;
-			this.flames.y = -180;
+			this.flames.y = -100;
 			this.hero.activeHero.headCont.addChildAt(this.flames, 0);
 		},
 		resize: function () {
-			if(this.flames){
-				this.flames.x = this.utils.canvasWidth / 2;
-			    this.flames.y = this.utils.canvasHeight / 2;
-			}
+			// if (this.flames) {
+			// 	this.flames.x = this.utils.canvasWidth / 2;
+			//     this.flames.y = this.utils.canvasHeight / 2;
+			// }
 			
 		},
 		switchMode: function(mode) {

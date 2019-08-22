@@ -356,7 +356,7 @@ export default {
         ball.x += ball.vx;
         ball.y += ball.vy;
         ball.rotation += this.deg2rad(ball.rotate);
-        if(ball.x > this.canvasWidth - ball.r) {
+        if (ball.x > this.canvasWidth - ball.r) {
             ball.x = this.canvasWidth - ball.r;
             ball.vx *= -1;
         } else if(ball.x < ball.r) {
@@ -452,7 +452,7 @@ export default {
     },
     returnCanvasHeight: function () {
             let scale = (window.devicePixelRatio < 3)?1:window.devicePixelRatio;
-            return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale) - 60;
+            return ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) * scale) ;
     },
     centerOnStage: function (mc, canvasWidth, canvasHeight) {
         mc.body.x = (canvasWidth - mc.body.getBounds().width) / 2;

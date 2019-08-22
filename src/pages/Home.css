@@ -38,8 +38,8 @@ div.buttonDivCont {
 background-color:hsla(274, 100%, 31%, 1);
 background-image: 
   
-/*   horizontals */
-  repeating-linear-gradient(
+ repeating-linear-gradient(
+    140deg,
     transparent, 
     transparent 40px, 
     rgba(0,0,0,.4) 40px, 
@@ -71,7 +71,7 @@ background-image:
   
 /*  verticals */
 repeating-linear-gradient(
-  270deg, 
+  -140deg, 
   transparent, 
   transparent 50px, 
   rgba(0,0,0,.4) 50px, 
@@ -95,8 +95,7 @@ repeating-linear-gradient(
   transparent 232px),
  
 /*   diagonals */
-repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);
-
+repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);
 
   width: 100vw;
 	height: 100vh;

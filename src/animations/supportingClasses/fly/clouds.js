@@ -46,7 +46,24 @@ export default function () {
 		},
 		animate: function () {
 			for (var cloud of this.clouds) {
-				this.utils.update(cloud);
+				//this.utils.update(cloud);
+				cloud.x += cloud.vx;
+		        cloud.y += cloud.vy;
+		        
+		        if (cloud.x > this.canvasWidth - cloud.r) {
+		            cloud.x = this.canvasWidth - cloud.r;
+		            cloud.vx *= -1;
+		        } else if(cloud.x < cloud.r) {
+		            cloud.x = cloud.r;
+		            cloud.vx *= -1;
+		        }
+		        if(cloud.y > this.canvasHeight - cloud.r) {
+		            cloud.y = this.canvasHeight - cloud.r;
+		            cloud.vy *= -1;
+		        } else if(cloud.y < cloud.r) {
+		            cloud.y = cloud.r + 1;
+		            cloud.vy *= -1;
+		        }
 			}
 		}
 }

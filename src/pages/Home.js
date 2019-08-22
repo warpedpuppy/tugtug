@@ -16,7 +16,7 @@ class Home extends React.Component {
 		this.changeState = this.changeState.bind(this);
 		this.toggleAction = this.toggleAction.bind(this);
 		this.state = {
-			active: 'fly',
+			active: 'swim',
 			action: true
 		}
 	}
