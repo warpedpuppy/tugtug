@@ -73,9 +73,9 @@ export default function () {
                   this.uiCont.x = this.utils.canvasWidth / 2;
 
                   if (isMobileOnly) {
-                        this.uiCont.y = this.utils.canvasHeight - (this.height / 2);
+                        this.uiCont.y = this.utils.canvasHeight - (this.height / 2) - 1;
 
-                        let width = this.utils.canvasWidth - (this.leftRightWidth * 4);
+                        let width = this.utils.canvasWidth - (this.leftRightWidth * 3);
                         let halfWidth = width / 2;
 
                         this.spaceButton.clear();
@@ -86,8 +86,8 @@ export default function () {
                               this.height, 
                         10).endFill();
 
-                        this.leftButton.x = -halfWidth - this.halfHeight - 30;
-                        this.rightButton.x = halfWidth + this.halfHeight + 30;
+                        this.leftButton.x = -(this.utils.canvasWidth / 2) + this.leftRightWidth /2 + 1;
+                        this.rightButton.x = (this.utils.canvasWidth / 2) - this.leftRightWidth / 2 - 1;
 
                   } else {
                         this.uiCont.y = this.utils.canvasHeight- (this.height / 2);
