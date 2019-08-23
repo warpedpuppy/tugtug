@@ -51,15 +51,24 @@ nav .logoGraphic.raised {
 .logInForm h1 {
 	font-size: 50px;
 }
-.links {
+.side-links {
 	position: absolute;
+	right: 0;
+}
+.side-links a {
+	font-size: 12px;
+	display: inline-block;
+	margin: 10px 5px;
+}
+.links {
+	/*position: absolute;
 	left:0;
 	top:-150px;
 	width:100%;
 	margin:0;
 	padding:0;
 	transition: top 0.5s;
-	z-index: 4993;
+	z-index: 4993;*/
 }
 .homeLink:visited {
 	color:#333;
@@ -67,6 +76,9 @@ nav .logoGraphic.raised {
 .not-links {
 	position:relative;
 	z-index: 4999;
+	display: inline-block;
+	position: absolute;
+	left: 0;
 	/*background-color: white;*/
 	height:25px;
 }

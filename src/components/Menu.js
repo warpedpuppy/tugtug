@@ -88,6 +88,10 @@ class Menu extends Component {
 							<img src={TugTug} alt="tugtug" />
 						</Link>
 					</div>
+					<div className="side-links">
+						<Link to="/about">about</Link>
+						<Link to="/contact">contact</Link>
+					</div>
 				</nav>
 			</div>
 	    );
