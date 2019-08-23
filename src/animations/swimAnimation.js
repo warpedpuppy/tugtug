@@ -90,6 +90,7 @@ export default function(obj) {
            
         
             const fpsCounter = this.fpsCounter = new PixiFps();
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             app.stage.addChild(fpsCounter);
 
             LoadingAnimation.start(this.kingCont);
@@ -250,6 +251,7 @@ export default function(obj) {
             this.hero.resize();
             this.swim.resize();
             this.tokens.resize();
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    
@@ -276,7 +278,7 @@ export default function(obj) {
 
             this.action = true;
             clearTimeout(this.timeOut);
-           
+            
         },
         startSpaceShipJourney: function () {
             this.storeActiveMode = this.activeMode;

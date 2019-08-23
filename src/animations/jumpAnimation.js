@@ -90,7 +90,7 @@ export default function(obj) {
             LoadingAnimation.start(this.kingCont);
 
             this.fpsCounter = new PixiFps();
-            
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             this.stage.addChild(this.filterContainer);
 
             this.buildGame = this.buildGame.bind(this);
@@ -218,6 +218,7 @@ export default function(obj) {
             this.gears.resize();
             this.hero.resize();
             this.jump.resize();
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    
@@ -231,7 +232,6 @@ export default function(obj) {
             this.resizeBundle();
            
             this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-
             this.action = false;
 
             if(this.timeOut){
