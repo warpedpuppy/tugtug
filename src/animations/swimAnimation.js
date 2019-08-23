@@ -99,7 +99,6 @@ export default function(obj) {
             this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
-            this.switchPlayer = this.switchPlayer.bind(this);
             this.animate = this.animate.bind(this);
             this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
             this.animateMobile = this.animateMobile.bind(this)
@@ -157,7 +156,7 @@ export default function(obj) {
 
             if (this.isMobileOnly) {
                 this.mobileMask = MobileMask();
-                this.backgroundColor = 0x000000;
+                this.backgroundColor = 0x000099;
                 this.mobileMask.setMask();
             }
             Assets.init();
@@ -187,10 +186,12 @@ export default function(obj) {
             this.keyHandler = KeyHandler();
 
             this.keyHandler.init(this);
+
+            this.activeAction = this[this.activeMode].addToStage(); 
            
             if (this.isMobile) {
-
                 this.controlPanel.init(this);
+                this.controlPanel.addToStage();
             } 
                
             if (this.isMobileOnly) {
@@ -203,8 +204,6 @@ export default function(obj) {
             this.startGame();
         },
         startGame: function () {
-
-            this.switchPlayer(this.mode[this.activeModeIndex]);
 
             if (!this.isMobile) {
                 this.app.ticker.add(this.animateDesktopIpad);
@@ -241,64 +240,6 @@ export default function(obj) {
            // this.tokens.clearText();
             this.action = true;
         },
-        increaseIndex: function() {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];    
-            return this.activeMode;  
-        },
-        switchPlayerWithAnimation: function (mode) {
-           
-            if (!this.transitionAnimationPlaying) {
-
-
-
-                this.transitionAnimationPlaying = true;
-                this.action = false;
-
-                let oldActiveModeString = this.activeMode;
-                this[this.activeMode].removeFromStage();
-
-                this.activeMode = (mode)?mode:this.increaseIndex();
-                let newActiveModeString = this.activeMode;
-
-                if (this.activeMode === 'bounce') {
-                    this.grid.removeFromStage();
-                }
-            
-                this.transitionAnimation.start(oldActiveModeString, newActiveModeString); 
-            }
-
-        },
-        switchPlayer: function (str) {
-           
-            if (str) {
-                this.activeMode = str;
-            } else {
-                this.increaseIndex();
-            }
- 
-           this.hero.switchPlayer(this.activeMode);
-
-           if (this.activeMode === 'jump') {
-                this.activeAction = this.jump.jumpAction;
-            } else {
-                this.activeAction = this[this.activeMode].addToStage();   
-            }
-
-            if (this.isMobile) {
-                if (this.activeMode === 'bounce') {
-                    this.controlPanel.removeFromStage();
-                } else {
-                    this.controlPanel.addToStage();
-                }
-            }
-          
-            this.transitionAnimationPlaying = false;
-            this.action = true;
-
-            this.score.switchMode();
-        },
         resizeBundle: function () {
             if (this.activeMode === 'fly' || this.activeMode === 'swim') {
                 this.grid.resize();
@@ -315,7 +256,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) - 60;
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
@@ -381,12 +322,9 @@ export default function(obj) {
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
-            this.jump.reset();
-            this.bounce.reset();
 
             this[this.activeMode].removeFromStage();
-            this.switchPlayer(this.mode[0]);
-           
+          
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
             this.getDatabaseData();

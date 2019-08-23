@@ -82,6 +82,12 @@ class Menu extends Component {
 
 	    return (
 			<div>
+			<nav>
+			<Link to="/">tugtug</Link><span>|</span>
+			<Link to="/about">about</Link><span>|</span>
+			<Link to="/contact">contact</Link>
+			</nav>
+			{ /*
 				<nav>
 					<div className="not-links">
 						<Link className="homeLink" to="/">
@@ -90,6 +96,7 @@ class Menu extends Component {
 						</Link>
 					</div>
 				</nav>
+				*/ }
 			</div>
 	    );
 		

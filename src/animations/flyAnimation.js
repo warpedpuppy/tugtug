@@ -5,7 +5,6 @@ import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
 import Clock from './supportingClasses/universal/clock';
 import Fly from './supportingClasses/fly/indexFly';
-import TransitionAnimation from './supportingClasses/grid/items/transition/transitionAnimation';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
@@ -32,8 +31,6 @@ export default function(obj) {
         clock: Clock(),
         filterAnimation: FilterAnimation(),
         hero: Hero(),
-        transitionAnimation: TransitionAnimation(),
-        transitionAnimationPlaying: false,
         utils: Utils,
         score: Score(),
         loader: Assets.Loader(),
@@ -43,7 +40,6 @@ export default function(obj) {
         controlPanel: ControlPanel(),
         grid: Grid(),
         dbData: {},
-        storeAction: true,
         timeOut: undefined,
         levelComplete: LevelComplete(),
         fullStop: false,
@@ -53,8 +49,6 @@ export default function(obj) {
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         init: function (isMobile, isMobileOnly) {
-
-            
 
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
@@ -93,6 +87,7 @@ export default function(obj) {
            
         
             this.fpsCounter = new PixiFps();
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             
             LoadingAnimation.start(this.kingCont);
             
@@ -105,7 +100,6 @@ export default function(obj) {
             this.getDatabaseData = this.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
-            this.switchPlayer = this.switchPlayer.bind(this);
             this.animate = this.animate.bind(this);
             this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
             this.animateMobile = this.animateMobile.bind(this)
@@ -192,10 +186,13 @@ export default function(obj) {
             this.keyHandler = KeyHandler();
 
             this.keyHandler.init(this);
+
+            this.activeAction = this[this.activeMode].addToStage();   
  
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
+                this.controlPanel.addToStage();
             } 
                
             if (this.isMobileOnly) {
@@ -208,8 +205,6 @@ export default function(obj) {
             this.startGame();
         },
         startGame: function () {
-
-            this.switchPlayer(this.mode[this.activeModeIndex]);
 
             if (!this.isMobile) {
                 this.app.ticker.add(this.animateDesktopIpad);
@@ -237,33 +232,6 @@ export default function(obj) {
         resumePlayAfterEarnToken: function () {
             this.action = true;
         },
-        increaseIndex: function() {
-            this.activeModeIndex ++;
-            if(this.activeModeIndex >= this.mode.length)this.activeModeIndex = 0;
-            this.activeMode = this.mode[this.activeModeIndex];    
-            return this.activeMode;  
-        },
-        switchPlayer: function (str) {
-           
-            if (str) {
-                this.activeMode = str;
-            } else {
-                this.increaseIndex();
-            }
-
-           this.hero.switchPlayer(this.activeMode);
-           this.activeAction = this[this.activeMode].addToStage();   
-           
-
-            if (this.isMobile) {
-                this.controlPanel.addToStage();
-            }
-          
-            this.transitionAnimationPlaying = false;
-            this.action = true;
-
-            this.score.switchMode();
-        },
         resizeBundle: function () {
             
             this.grid.resize();
@@ -273,13 +241,14 @@ export default function(obj) {
             this.hero.resize();
             this.fly.resize();
             this.tokens.resize();
+            this.fpsCounter.x = this.utils.canvasWidth - 75;
             if (this.isMobile) {
                 this.controlPanel.resize();
             }    
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight() - 60;
+            this.canvasHeight = this.utils.returnCanvasHeight();
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
@@ -296,16 +265,13 @@ export default function(obj) {
 
         },
         resized: function () {
-
             this.action = true;
             clearTimeout(this.timeOut);
-           
         },
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
             this[this.activeMode].removeFromStage();
-            //this.switchPlayer(this.mode[0]);
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
             this.getDatabaseData();

@@ -3,11 +3,10 @@ nav {
 	top:0;
 	left:0;
 	width:100%;
-	
-	height:20px;
+	height:30px;
 	z-index: 5;
-	border-bottom:5px solid black;
-	background-color: white;
+	/*border-bottom:5px solid black;*/
+	background-color: rgba(255,255,255,0.75);
 	text-align: center;
 }
 nav a {
@@ -31,13 +30,13 @@ nav img {
 	transition: left 0.5s;
 	position:absolute;
 	/*top:-10px;*/
-	left: calc(50% - 75px);
+	left: 0;
 }
 nav .logoGraphic {
 	position:absolute;
 	top:0;
 	transition: all 1.5s;
-	left: calc(50% - 75px);
+	left: 0;
 }
 nav .logoGraphic.raised {
 	position:absolute;
@@ -68,8 +67,8 @@ nav .logoGraphic.raised {
 .not-links {
 	position:relative;
 	z-index: 4999;
-	background-color: white;
-	height:30px;
+	/*background-color: white;*/
+	height:25px;
 }
 .links.open {
 	top:50px;

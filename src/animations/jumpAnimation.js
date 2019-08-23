@@ -224,7 +224,7 @@ export default function(obj) {
         },
         resizeHandler: function () {
             this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly) - 60;
+            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 

@@ -1,6 +1,5 @@
 import Utils from '../../utils/utils';
 import Assets from '../../utils/assetCreation';
-import Config from '../../animationsConfig';
 export default function () {
     return {
         border: 25,

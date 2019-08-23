@@ -1,6 +1,6 @@
 import Assets from '../../utils/assetCreation';
 import Utils from '../../utils/utils';
-import {isMobile, isMobileOnly} from 'react-device-detect';
+import {isMobileOnly} from 'react-device-detect';
 export default function () {
       return {
             utils: Utils,

@@ -1,5 +1,4 @@
 import Utils from './utils';
-import Assets from './assetCreation';
 import Config from '../animationsConfig';
 
 export default {
