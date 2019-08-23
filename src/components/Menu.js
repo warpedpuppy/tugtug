@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
 import LogoGraphic from './LogoGraphic';
@@ -78,7 +78,6 @@ class Menu extends Component {
 
 	  	let raiseGraphic = (this.state.showDropDown)?'raised':'';
 	  	let classes = `logoGraphic ${raiseGraphic}`;
-	  	let redirect = (this.state.redirect && window.location.pathname !== '/')?<Redirect to='/' />:''; 
 
 	    return (
 			<div>
