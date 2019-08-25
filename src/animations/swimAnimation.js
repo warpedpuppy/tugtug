@@ -19,7 +19,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import MobileMask from './supportingClasses/universal/mobileMask';
-
+import Resize from './supportingClasses/swim/swimResize';
 export default function(obj) {
     return {
         mode: ['swim'],
@@ -48,12 +48,11 @@ export default function(obj) {
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
+        resize: Resize(),
+        orientationChange: OrientationChange(),
         init: function (isMobile, isMobileOnly) {
 
-            if (Config.testingBounce) {
-                this.mode = ['bounce'];
-            }
-
+            this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
@@ -69,11 +68,11 @@ export default function(obj) {
 
                 if (test1 > test2) {
                     //landscape
-                    OrientationChange.makeLandscape();
+                    this.orientationChange.makeLandscape();
                     
                 } else {
                     // portrait
-                    OrientationChange.makePortrait();
+                    this.orientationChange.makePortrait();
                 }
             }
 
@@ -197,9 +196,9 @@ export default function(obj) {
                
             if (this.isMobileOnly) {
                 //mobile
-                OrientationChange.init(this);
+                this.orientationChange.init(this);
             } else {
-                 window.onresize = this.resizeHandler.bind(this);
+                 window.onresize = this.resize.resizeHandler.bind(this.resize);
             }
             
             this.startGame();
@@ -241,45 +240,43 @@ export default function(obj) {
            // this.tokens.clearText();
             this.action = true;
         },
-        resizeBundle: function () {
-            if (this.activeMode === 'fly' || this.activeMode === 'swim') {
-                this.grid.resize();
-            }
-            this.score.resize();
-            this.clock.resize();
-            this.gears.resize();
-            this.hero.resize();
-            this.swim.resize();
-            this.tokens.resize();
-            this.fpsCounter.x = this.utils.canvasWidth - 75;
-            if (this.isMobile) {
-                this.controlPanel.resize();
-            }    
-        },
-        resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+        // resizeBundle: function () {
+        //     this.grid.resize();
+        //     this.score.resize();
+        //     this.clock.resize();
+        //     this.gears.resize();
+        //     this.hero.resize();
+        //     this.swim.resize();
+        //     this.tokens.resize();
+        //     this.fpsCounter.x = this.utils.canvasWidth - 75;
+        //     if (this.isMobile) {
+        //         this.controlPanel.resize();
+        //     }    
+        // },
+        // resizeHandler: function () {
+        //     this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+        //     this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-            this.utils.resize(this.canvasWidth, this.canvasHeight);
+        //     this.utils.resize(this.canvasWidth, this.canvasHeight);
 
-            this.resizeBundle();
+        //     this.resizeBundle();
            
-            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+        //     this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 
-            this.action = false;
+        //     this.action = false;
 
-            if(this.timeOut){
-                clearTimeout(this.timeOut);
-            }
-            this.timeOut = setTimeout(this.resized.bind(this), 200)
+        //     if(this.timeOut){
+        //         clearTimeout(this.timeOut);
+        //     }
+        //     this.timeOut = setTimeout(this.resized.bind(this), 200)
 
-        },
-        resized: function () {
+        // },
+        // resized: function () {
 
-            this.action = true;
-            clearTimeout(this.timeOut);
+        //     this.action = true;
+        //     clearTimeout(this.timeOut);
             
-        },
+        // },
         startSpaceShipJourney: function () {
             this.storeActiveMode = this.activeMode;
             this.hero.cont.visible = false;
@@ -337,7 +334,7 @@ export default function(obj) {
             this.filterAnimation.filterToggle();
         },
         animateMobile: function () {
-            OrientationChange.animate();
+            this.orientationChange.animate();
             this.animate();
         },
         animateDesktopIpad: function () {

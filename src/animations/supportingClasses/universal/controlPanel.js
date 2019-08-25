@@ -6,8 +6,9 @@ export default function () {
             utils: Utils,
             height: 35,
             borderWidth: 2,
+            buffer: 10,
             init: function (parent) {
-                  console.log(isMobileOnly)
+ 
                   this.height = (!isMobileOnly)?this.height:30;
                   this.leftRightWidth = this.height * 2;
                   this.halfLeftRightWidth = this.leftRightWidth / 2;
@@ -90,7 +91,7 @@ export default function () {
                         this.rightButton.x = (this.utils.canvasWidth / 2) - this.leftRightWidth / 2 - 1;
 
                   } else {
-                        this.uiCont.y = this.utils.canvasHeight- (this.height / 2);
+                        this.uiCont.y = this.utils.canvasHeight - this.height - this.buffer;
                       
 
                         let width = this.utils.canvasWidth - (this.leftRightWidth * 4);

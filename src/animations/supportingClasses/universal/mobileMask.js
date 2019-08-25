@@ -8,7 +8,7 @@ export default function () {
         kingContBackground: Assets.Graphics(),
         utils: Utils,
         setMask: function () {
-            console.log(this.utils.root.kingCont)
+
             let containerToMask = this.utils.root.kingCont;
             let containerToAddFrameTo = this.utils.root.stage;
             let backgroundColor = this.utils.root.backgroundColor;

@@ -43,36 +43,36 @@ export default function(obj) {
         dbData: {},
         levelComplete: LevelComplete(),
         fullStop: false,
-        orientationChange: OrientationChange,
+        orientationChange: OrientationChange(),
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
         init: function (isMobile, isMobileOnly) {
-
+            this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
             this.levelComplete.init();
 
-            if (!this.isMobileOnly) {
+            if (!this.isMobile) {
                 this.utils.getWidthAndHeight();
             } else {
-              
+               
                 let test1 = this.utils.returnCanvasWidth(),
                     test2 = this.utils.returnCanvasHeight();
 
                 if (test1 > test2) {
                     //landscape
-                    OrientationChange.makeLandscape();
+                    this.orientationChange.makeLandscape();
                     
                 } else {
                     // portrait
-                    OrientationChange.makePortrait();
+                    this.orientationChange.makePortrait();
                 }
             }
-            
+        
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
@@ -80,7 +80,6 @@ export default function(obj) {
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
-
             this.stage.addChild(this.kingCont);
         
             this.fpsCounter = new PixiFps();
@@ -147,11 +146,13 @@ export default function(obj) {
                 root: this
             })
             
-             if (this.isMobileOnly) {
+             if (this.isMobile) {
                 this.mobileMask = MobileMask();
                 this.backgroundColor = 0x000000;
                 this.mobileMask.setMask();
+
             }
+
             Assets.init();
 
             this.gears.init().addToStage();
@@ -183,9 +184,9 @@ export default function(obj) {
                 this.controlPanel.addToStage();
             } 
                
-            if (this.isMobileOnly) {
+            if (this.isMobile) {
                 //mobile
-                OrientationChange.init(this);
+                this.orientationChange.init(this);
             } else {
                  window.onresize = this.resize.resizeHandler.bind(this.resize);
             }
@@ -233,7 +234,7 @@ export default function(obj) {
             this.filterAnimation.filterToggle();
         },
         animateMobile: function () {
-            OrientationChange.animate();
+            this.orientationChange.animate();
             this.animate();
         },
         animateDesktopIpad: function () {

@@ -1,7 +1,8 @@
 import Utils from './utils';
 import Config from '../animationsConfig';
 
-export default {
+export default function () {
+  return {
 		utils: Utils,
 		testForHeight: false,
 		init: function (parent) {
@@ -11,26 +12,39 @@ export default {
 		},
 		makeLandscape: function () {
 
-          let val1 = Config.mobileOnlyDimensionsLandscape[0],
-              val2 = Config.mobileOnlyDimensionsLandscape[1];
+          let val1, val2;
+          if (this.utils.root.isMobileOnly) {
+            val1 = Config.mobileOnlyDimensionsLandscape[0];
+            val2 = Config.mobileOnlyDimensionsLandscape[1];
+          } else {
+            val1 = this.utils.returnCanvasWidth();
+            val2 = this.utils.returnCanvasHeight();
+          }
+
           this.canvasWidth = Math.max(val1, val2);
           this.canvasHeight = Math.min(val1, val2);
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
 
-           if (this.utils.isMobileOnly) {
+           if (this.utils.isMobile && this.utils.root.mobileMask) {
                 this.utils.root.mobileMask.setMask();
-            }
+          }
+  
       },
       makePortrait: function () {
-
-          let val1 =  Config.mobileOnlyDimensionsPortrait[0],
-              val2 =  Config.mobileOnlyDimensionsPortrait[1];
+           let val1, val2;
+          if (this.utils.root.isMobileOnly) {
+            val1 = Config.mobileOnlyDimensionsLandscape[0];
+            val2 = Config.mobileOnlyDimensionsLandscape[1];
+          } else {
+            val1 = this.utils.returnCanvasWidth();
+            val2 = this.utils.returnCanvasHeight();
+          }
 
           this.canvasWidth = Math.min(val1, val2);
           this.canvasHeight = Math.max(val1, val2);
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
 
-           if (this.utils.isMobileOnly) {
+           if (this.utils.isMobile && this.utils.root.mobileMask) {
                 this.utils.root.mobileMask.setMask();
             }
       },
@@ -47,24 +61,22 @@ export default {
               this.makePortrait();
           }
           this.utils.setWidthAndHeight(this.canvasWidth, this.canvasHeight)
-          this.parent.resizeBundle();
-          this.parent.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-          this.parent.action = true;
+          this.utils.root.resize.resizeBundle();
+          this.utils.root.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+          this.utils.root.action = true;
       },
       orientationChangeHandler: function (e) {
 
-         
           this.testForHeight = true;
 
       },
-		animate: function () {
+		  animate: function () {
 			 if (this.testForHeight) {
                this.action = false;
-              // console.log('animate h', this.utils.returnCanvasHeight());
-              // console.log('animate w', this.utils.returnCanvasWidth());
               this.determinePortraitOrLandscape();
               this.testForHeight = false;
             }
-		}
+		  }
+  }
 	
 }

@@ -16,7 +16,7 @@ import Tokens from './supportingClasses/universal/tokens/tokenIndex';
 import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
-
+import Resize from './supportingClasses/jump/jumpResize';
 export default function(obj) {
     return {
         activeModeIndex: 0,
@@ -44,14 +44,15 @@ export default function(obj) {
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
+        orientationChange: OrientationChange(),
+        resize: Resize(),
         init: function (isMobile, isMobileOnly) {
             
             Tweens.killAll();
 
-            if (Config.testingBounce) {
-                this.mode = ['bounce'];
-            }
 
+            this.utils.root = this;
+            this.activeMode = this.jump;
             this.isMobile = isMobile;
             this.isMobileOnly = isMobileOnly;
 
@@ -66,11 +67,11 @@ export default function(obj) {
 
                 if (test1 > test2) {
                     //landscape
-                    OrientationChange.makeLandscape();
+                    this.orientationChange.makeLandscape();
                     
                 } else {
                     // portrait
-                    OrientationChange.makePortrait();
+                    this.orientationChange.makePortrait();
                 }
             }
 
@@ -155,9 +156,9 @@ export default function(obj) {
                
             if (this.isMobileOnly) {
                 //mobile
-                OrientationChange.init(this);
+                this.orientationChange.init(this);
             } else {
-                 window.onresize = this.resizeHandler.bind(this);
+                 window.onresize = this.resize.resizeHandler.bind(this.resize);
             }
             
             this.startGame();
@@ -213,37 +214,37 @@ export default function(obj) {
             this.action = true;
 
         },
-        resizeBundle: function () {
-            this.clock.resize();
-            this.gears.resize();
-            this.hero.resize();
-            this.jump.resize();
-            this.fpsCounter.x = this.utils.canvasWidth - 75;
-            if (this.isMobile) {
-                this.controlPanel.resize();
-            }    
-        },
-        resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-            this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
+        // resizeBundle: function () {
+        //     this.clock.resize();
+        //     this.gears.resize();
+        //     this.hero.resize();
+        //     this.jump.resize();
+        //     this.fpsCounter.x = this.utils.canvasWidth - 75;
+        //     if (this.isMobile) {
+        //         this.controlPanel.resize();
+        //     }    
+        // },
+        // resizeHandler: function () {
+        //     this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
+        //     this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
 
-            this.utils.resize(this.canvasWidth, this.canvasHeight);
+        //     this.utils.resize(this.canvasWidth, this.canvasHeight);
 
-            this.resizeBundle();
+        //     this.resizeBundle();
            
-            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-            this.action = false;
+        //     this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
+        //     this.action = false;
 
-            if(this.timeOut){
-                clearTimeout(this.timeOut);
-            }
-            this.timeOut = setTimeout(this.resized.bind(this), 200)
+        //     if(this.timeOut){
+        //         clearTimeout(this.timeOut);
+        //     }
+        //     this.timeOut = setTimeout(this.resized.bind(this), 200)
 
-        },
-        resized: function () {
-            this.action = true;
-            clearTimeout(this.timeOut);
-        },
+        // },
+        // resized: function () {
+        //     this.action = true;
+        //     clearTimeout(this.timeOut);
+        // },
         makeJumpActive: function () {
             this.jump.addToStage();
             this.jump.jumpBackground.pause = false;
@@ -278,7 +279,7 @@ export default function(obj) {
             this.filterAnimation.filterToggle();
         },
         animateMobile: function () {
-            OrientationChange.animate();
+            this.orientationChange.animate();
             this.animate();
         },
         animateDesktopIpad: function () {
