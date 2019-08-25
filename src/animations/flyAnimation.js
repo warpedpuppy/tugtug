@@ -19,6 +19,7 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import Resize from './supportingClasses/fly/flyResize';
 
 export default function(obj) {
     return {
@@ -40,14 +41,13 @@ export default function(obj) {
         controlPanel: ControlPanel(),
         grid: Grid(),
         dbData: {},
-        timeOut: undefined,
         levelComplete: LevelComplete(),
         fullStop: false,
-        counter: 0,
         orientationChange: OrientationChange,
         kingCont: Assets.Container(),
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
+        resize: Resize(),
         init: function (isMobile, isMobileOnly) {
 
             this.activeMode = this.mode[this.activeModeIndex];
@@ -82,18 +82,11 @@ export default function(obj) {
             this.stage = app.stage;
 
             this.stage.addChild(this.kingCont);
-            
-          
-           
         
             this.fpsCounter = new PixiFps();
             this.fpsCounter.x = this.utils.canvasWidth - 75;
             
             LoadingAnimation.start(this.kingCont);
-            
-
-            
-
 
             this.kingCont.addChild(this.filterContainer);
 
@@ -162,15 +155,10 @@ export default function(obj) {
             Assets.init();
 
             this.gears.init().addToStage();
-
             this.clock.init().addToStage();
-
             this.tokens.init();
-
             this.grid.init();
-
             this.score.init()
-
             this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
 
             if (this.isMobileOnly) {
@@ -187,7 +175,7 @@ export default function(obj) {
 
             this.keyHandler.init(this);
 
-            this.activeAction = this[this.activeMode].addToStage();   
+            this.activeAction = this.fly.addToStage();   
  
             if (this.isMobile) {
                 //ipad and mobile
@@ -199,7 +187,7 @@ export default function(obj) {
                 //mobile
                 OrientationChange.init(this);
             } else {
-                 window.onresize = this.resizeHandler.bind(this);
+                 window.onresize = this.resize.resizeHandler.bind(this.resize);
             }
             
             this.startGame();
@@ -231,42 +219,6 @@ export default function(obj) {
         },
         resumePlayAfterEarnToken: function () {
             this.action = true;
-        },
-        resizeBundle: function () {
-            
-            this.grid.resize();
-            this.score.resize();
-            this.clock.resize();
-            this.gears.resize();
-            this.hero.resize();
-            this.fly.resize();
-            this.tokens.resize();
-            this.fpsCounter.x = this.utils.canvasWidth - 75;
-            if (this.isMobile) {
-                this.controlPanel.resize();
-            }    
-        },
-        resizeHandler: function () {
-            this.canvasWidth =  this.utils.returnCanvasWidth();
-            this.canvasHeight = this.utils.returnCanvasHeight();
-
-            this.utils.resize(this.canvasWidth, this.canvasHeight);
-
-            this.resizeBundle();
-           
-            this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-
-            this.action = false;
-
-            if (this.timeOut) {
-                clearTimeout(this.timeOut);
-            }
-            this.timeOut = setTimeout(this.resized.bind(this), 200)
-
-        },
-        resized: function () {
-            this.action = true;
-            clearTimeout(this.timeOut);
         },
         reset: function () {
             this.score.nextLevel();
@@ -305,7 +257,7 @@ export default function(obj) {
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-                this[this.activeMode].animate();
+                this.fly.animate();
                 this.grid.animate(this.activeAction.vx, this.activeAction.vy);
             }
         }
