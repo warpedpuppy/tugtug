@@ -63,7 +63,7 @@ export default class HomeCanvas extends React.Component {
 	}
 	render () {
 		this.pauseGame(this.props.action)
-		let canvasClass = (isMobileOnly)?"canvasParent isMobileOnly":"canvasParent";
+		let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
 		return (
 			<div className={canvasClass}>
 				<div id='homeCanvas'></div>

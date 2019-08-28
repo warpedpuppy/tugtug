@@ -9,6 +9,8 @@ export default function () {
         utils: Utils,
         setMask: function () {
 
+            this.border = (this.utils.isMobileOnly)? this.border : 100;
+
             let containerToMask = this.utils.root.kingCont;
             let containerToAddFrameTo = this.utils.root.stage;
             let backgroundColor = this.utils.root.backgroundColor;

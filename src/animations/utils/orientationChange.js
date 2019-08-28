@@ -5,6 +5,8 @@ export default function () {
   return {
 		utils: Utils,
 		testForHeight: false,
+    iPadWidthAdjustment: 0.90,
+    iPadHeightAdjustment: 0.90,
 		init: function (parent) {
 			this.parent = parent;
 			this.orientationChangeHandler = this.orientationChangeHandler.bind(this);
@@ -17,8 +19,8 @@ export default function () {
             val1 = Config.mobileOnlyDimensionsLandscape[0];
             val2 = Config.mobileOnlyDimensionsLandscape[1];
           } else {
-            val1 = this.utils.returnCanvasWidth();
-            val2 = this.utils.returnCanvasHeight();
+            val1 = this.utils.returnCanvasWidth() * this.iPadWidthAdjustment;
+            val2 = this.utils.returnCanvasHeight() * this.iPadHeightAdjustment;
           }
 
           this.canvasWidth = Math.max(val1, val2);
@@ -36,8 +38,8 @@ export default function () {
             val1 = Config.mobileOnlyDimensionsLandscape[0];
             val2 = Config.mobileOnlyDimensionsLandscape[1];
           } else {
-            val1 = this.utils.returnCanvasWidth();
-            val2 = this.utils.returnCanvasHeight();
+            val1 = this.utils.returnCanvasWidth() * this.iPadWidthAdjustment;
+            val2 = this.utils.returnCanvasHeight() * this.iPadHeightAdjustment;
           }
 
           this.canvasWidth = Math.min(val1, val2);

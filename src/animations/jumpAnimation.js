@@ -59,7 +59,7 @@ export default function(obj) {
             this.levelComplete.init();
 
          
-            if (!this.isMobileOnly) {
+            if (!this.isMobile) {
                 this.utils.getWidthAndHeight();
             } else {
                 let test1 = this.utils.returnCanvasWidth(),
@@ -78,7 +78,7 @@ export default function(obj) {
             var app = this.app = Assets.Application( 
                 this.utils.canvasWidth,  
                 this.utils.canvasHeight, 
-                false
+                true
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
@@ -128,7 +128,7 @@ export default function(obj) {
                 root: this
             })
 
-               if (this.isMobileOnly) {
+               if (this.isMobile) {
                 this.mobileMask = MobileMask();
                 this.backgroundColor = 0x000000;
                 this.mobileMask.setMask();
@@ -154,7 +154,7 @@ export default function(obj) {
                 this.controlPanel.init(this);
             } 
                
-            if (this.isMobileOnly) {
+            if (this.isMobile) {
                 //mobile
                 this.orientationChange.init(this);
             } else {
