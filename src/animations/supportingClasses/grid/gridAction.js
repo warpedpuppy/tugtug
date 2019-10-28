@@ -211,13 +211,13 @@ export default function (){
 						if (this.utils.root.all) {
 							if (item.mode === this.utils.root.activeMode) {
 								this.gridBuild.cont.removeChild(item)
-				 				this.utils.root.earnToken(item);
+				 				this.utils.root.tokens.earnToken(item);
 							} else {
 								this.utils.root.tokens.wrongTokenAnimation(item);
 							}
 						} else {
 							this.gridBuild.cont.removeChild(item)
-				 			this.utils.root.earnToken(item);
+				 			this.utils.root.tokens.earnToken(item);
 						}
 					} else if (item.name === 'spaceship') {
 						console.log('spaceshit hit')

@@ -40,6 +40,14 @@ export default function () {
 			this.tokenAnimations.textCont.x = this.utils.canvasWidth / 2;
 			this.tokenAnimations.textCont.y = this.utils.canvasHeight / 2;
 		},
+	   earnToken: function (t) {
+            this.utils.root.action = false;
+            this.utils.root.tokens.fillSlot(t);
+            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
+        },
+        resumePlayAfterEarnToken: function () {
+            this.utils.root.action = true;
+        },
 		animate: function () {
 
 		}

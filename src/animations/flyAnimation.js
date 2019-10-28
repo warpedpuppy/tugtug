@@ -1,10 +1,11 @@
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Config from './animationsConfig';
-import Tweens from './utils/Tweens';
 import OrientationChange from './utils/orientationChange';
+import LoadData from './utils/loadData';
 import Clock from './supportingClasses/universal/clock';
 import Fly from './supportingClasses/fly/indexFly';
+import FlyAnimate from './supportingClasses/fly/flyAnimate';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
@@ -17,8 +18,6 @@ import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import PixiFps from "pixi-fps";
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
 import Resize from './supportingClasses/fly/flyResize';
 
 export default function(obj) {
@@ -48,6 +47,8 @@ export default function(obj) {
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
+        loadData: LoadData(),
+        flyAnimate: FlyAnimate(),
         init: function (isMobile, isMobileOnly) {
             this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
@@ -89,48 +90,25 @@ export default function(obj) {
 
             this.kingCont.addChild(this.filterContainer);
 
-            this.getDatabaseData = this.getDatabaseData.bind(this);
+            this.loadData.getDatabaseData = this.loadData.getDatabaseData.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
-            this.animate = this.animate.bind(this);
-            this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
-            this.animateMobile = this.animateMobile.bind(this)
+            this.flyAnimate.animate = this.flyAnimate.animate.bind(this);
+            this.flyAnimate.animateDesktopIpad = this.flyAnimate.animateDesktopIpad.bind(this);
+            this.flyAnimate.animateMobile = this.flyAnimate.animateMobile.bind(this)
 
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    .load(this.getDatabaseData)
+                    .load(this.loadData.getDatabaseData)
             } else {
-                this.getDatabaseData();
+                this.loadData.getDatabaseData();
             }
 
         },
         pause: function (boolean) {
             this.action = boolean
-        },
-        getDatabaseData: function () {
-
-           let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
-           let next = indexToGet + 1;
-           let requestBoardNumber = (indexToGet === 0)?1:next;
-
-           axios
-           .post(`${API_BASE_URL}/admin/gameLoadGrids`, {board: requestBoardNumber})
-           .then(response => {
-                this.dbData = response.data;
-                if (indexToGet === 0) {
-                    this.grid.boards = [...this.grid.boards, ...response.data.boards];
-                    this.buildGame();
-                 } else {
-                    if (response.data.boards) {
-                        this.grid.boards = [...this.grid.boards, response.data.boards];
-                    }
-                    this.grid.addNewBoardData(this.dbData)
-                 }
-              
-            })
-            .catch(err => console.error(err));  
         },
         buildGame: function () {
             
@@ -196,10 +174,10 @@ export default function(obj) {
         startGame: function () {
 
             if (!this.isMobile) {
-                this.app.ticker.add(this.animateDesktopIpad);
+                this.app.ticker.add(this.flyAnimate.animateDesktopIpad);
                 this.keyHandler.addToStage();
             } else {
-                this.app.ticker.add(this.animateMobile); 
+                this.app.ticker.add(this.flyAnimate.animateMobile); 
             }
 
             this.app.stage.addChild(this.fpsCounter);
@@ -213,54 +191,20 @@ export default function(obj) {
                 this.keyHandler.removeFromStage();
             }
         },
-        earnToken: function (t) {
-            this.action = false;
-            this.tokens.fillSlot(t);
-            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
-        },
-        resumePlayAfterEarnToken: function () {
-            this.action = true;
-        },
         reset: function () {
             this.score.nextLevel();
             this.tokens.reset();
             this[this.activeMode].removeFromStage();
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
-            this.getDatabaseData();
+            this.loadData.getDatabaseData();
             this.fullStop = false;
         },
         filterTest: function () {
             this.filterAnimation.filterToggle();
         },
-        animateMobile: function () {
-            this.orientationChange.animate();
-            this.animate();
-        },
-        animateDesktopIpad: function () {
-            this.animate();
-        },
         levelCompleteHandler: function () {
             this.levelComplete.boardComplete();
-        },
-        animate: function () {
-
-            Tweens.animate();
-
-            if(this.fullStop)return;
-           
-            if (this.action) {
-                if(this.rotateLeftBoolean) {
-                    this.activeAction.rotate('left');
-                } else if(this.rotateRightBoolean) {
-                    this.activeAction.rotate('right');
-                }
-                this.clock.animate();
-                this.filterAnimation.animate();
-                this.gears.animate();
-                this.fly.animate();
-                this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-            }
         }
     }
 }
