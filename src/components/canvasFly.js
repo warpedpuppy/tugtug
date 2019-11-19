@@ -1,14 +1,15 @@
 import React from 'react';
 import './HomeCanvas.css';
+import './CanvasFly.css';
 import FlyAnimation from '../animations/flyAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
+import SiteContext from '../SiteContext';
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
 		super(props);
 		this.home_page = {};
 		this.testFilter = this.testFilter.bind(this);
-		//this.loggedInCheck = this.loggedInCheck.bind(this);
 		this.pauseGame = this.pauseGame.bind(this)
 		this.state = {
 			filterTest: "off",
@@ -18,11 +19,14 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
+	static contextType = SiteContext;
 	componentDidMount () {
-		if (this.state.loggedIn) {
+		//if (this.state.loggedIn) {
+		
 			this.home_page = FlyAnimation();
-			this.home_page.init(isMobile, isMobileOnly);
-		}
+			this.home_page.init(isMobile, isMobileOnly, this.context.ids);
+		//}
+	
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
@@ -76,7 +80,7 @@ export default class HomeCanvas extends React.Component {
 			let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
 			return (
 				<div className={canvasClass}>
-					<div id='homeCanvas'></div>
+					<div id='homeCanvas' className="flyCanvas"></div>
 				</div>
 
 			)

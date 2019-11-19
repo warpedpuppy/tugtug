@@ -1,118 +1,84 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import Menu from './components/Menu.js';
-import Home from './pages/Home.js';
-import About from './pages/About.js';
-import Contact from './pages/Contact.js';
-import Footer from './components/Footer.js';
-import {connect} from 'react-redux';
-import axios from 'axios';
-import { API_BASE_URL } from './config';
-import { addToken, addUserdata } from './actions/tokenActions.js';
-import { addItems } from './actions/avatarActions.js';
-import TempLogIn from './components/loginRegister/tempLogin';
-require('../node_modules/normalize.css/normalize.css');
+import SiteContext from './SiteContext';
+import Home from './pages/Home';
+import Games from './pages/Games';
+import Menu from './components/Menu';
+import CanvasJump from './components/canvasJump';
+import CanvasFly from './components/canvasFly';
+import CanvasSwim from './components/canvasSwim';
+import Admin from './pages/Admin';
+import { Route } from 'react-router-dom';
+import MazeService from './services/maze-service';
+import TokenService from './services/token-service';
 
-class App extends React.Component {
-
+export default class App extends React.Component {
+  
   constructor (props) {
     super(props);
-    this.loggedInCheck = this.loggedInCheck.bind(this);
-    this.pageChange = this.pageChange.bind(this);
     this.state = {
-      loggedIn: true,
-      showStartScreen: true,
-      page: 'page'
+      loggedIn: TokenService.hasAuthToken(),
+      mazes: [],
+      ids: []
     }
-  }
-
-  loggedInCheck () {
-    this.setState({loggedIn:true})
-  }
-
-
-
-  tokenHandler () {
-
-    let lsToken = localStorage.getItem('token')
-    let that = this;
-    if (this.props.token === 'blank' && lsToken) {
-        axios
-        .get(`${API_BASE_URL}/api/auth/validate`, 
-          { headers: {"Authorization" : `Bearer ${lsToken}`} }
-        )
-        .then(function(response){
-          if(response.data.valid) {
-
-            //set store token & userdata
-            that.props.dispatch(addUserdata(response.data.user));
-            that.props.dispatch(addToken(lsToken));
-
-            if (response.data.user) {
-             that.props.dispatch(addItems(response.data.user.accessories));
-            }
-
-          } else {
-            localStorage.removeItem('token')
-          }
-        })
-        .catch((err) => {
-          localStorage.removeItem('token')
-        });  
-    }
-  }
-  componentDidUpdate () {
-    this.tokenHandler();
   }
   componentDidMount () {
-    this.tokenHandler();
-    this.pageChange();
+    MazeService.load_ids()
+    .then( ids => {
+   
+      this.setState({ids})
+    })
   }
-  pageChange () {
-    this.setState({page: window.location.pathname})
-  }
-  render () {
 
-    if (this.state.loggedIn) {
-      return (
-        <Router>
-          <div className="App">
-            <header>
-              <Menu token={this.props.token} />
-            </header>
-            <main>
-              <Route 
-                exact 
-                path="/" 
-                render={(props) => <Home pageChange={this.pageChange}/>}  
-              />
-              <Route 
-                path="/about"  
-                render={(props) => <About pageChange={this.pageChange}/>}  
-              />
-              <Route 
-                path="/contact"  
-                render={(props) => <Contact pageChange={this.pageChange}/>}  
-              />
-            
-            </main>
-            <Footer page={ this.state.page } />
-          </div>
-        </Router>
-      );
+  addMazes = (mazes) => {
+    if (Array.isArray(mazes)) {
+      this.setState({mazes})
     } else {
-      return (
-        <div>
-          <TempLogIn loggedInFunction={this.loggedInCheck}/>
-        </div>
-      )
+      let newMazes = [...this.state.mazes, mazes]
+     
+      this.setState({mazes: newMazes})
     }
+  }
+
+  deleteMazes = (mazeID) => {
+    this.setState({mazes: this.state.mazes.filter( maze => mazeID !== maze.id) });
+  }
+
+  loginHandler = (loggedIn) => {
+    this.setState({loggedIn})
+
+    if (!loggedIn) {
+      TokenService.clearAuthToken();
+    }
+  }
+
+  render () {
+    const contextValue = {
+      loggedIn: this.state.loggedIn,
+      mazes: this.state.mazes,
+      addMazes: this.addMazes,
+      deleteMazes: this.deleteMazes,
+      ids: this.state.ids,
+      loginHandler: this.loginHandler
+     }
+
+     return (
+      <SiteContext.Provider value={contextValue}>
+        <React.Fragment>
+          <header><nav><Menu /></nav></header>
+          <main>
+          <Route exact path={'/'} component={ Home } />
+          <Route exact path={'/games'} component={ Games } />
+          <Route exact path={'/jump-game'} component={ CanvasJump } />
+          <Route exact path={'/fly-game'} component={ CanvasFly } />
+          <Route exact path={'/swim-game'} component={ CanvasSwim } />
+          <Route exact path={'/admin'} component={ Admin } />
+          </main>
+          <footer></footer>
+        </React.Fragment>
+       </SiteContext.Provider>
+     )
   }
 }
 
-export const mapStateToProps = state => ({
-    token: state.tokenReducer.token
-});
 
-export default connect(mapStateToProps)(App);

@@ -1,0 +1,24 @@
+.grid {
+    display: inline-block;
+}
+.row:first-child .cell {
+    background-color: black;
+}
+.row:last-child .cell {
+    background-color: black;
+}
+.cell:first-child {
+    background-color: black;
+}
+.cell:last-child {
+    background-color: black;
+}
+
+fieldset span {
+    display: inline-block;
+    margin: 5px;
+}
+fieldset span label {
+    margin-right: 5px;
+}
+
