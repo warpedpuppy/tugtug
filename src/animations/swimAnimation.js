@@ -20,6 +20,7 @@ import SiteConfig from '../config';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import MobileMask from './supportingClasses/universal/mobileMask';
 import Resize from './supportingClasses/swim/swimResize';
+import MazeServices from '../services/maze-service';
 export default function(obj) {
     return {
         mode: ['swim'],
@@ -97,6 +98,7 @@ export default function(obj) {
             this.kingCont.addChild(this.filterContainer);
 
             this.getDatabaseData = this.getDatabaseData.bind(this);
+            this.loadDB = this.loadDB.bind(this)
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
             this.animate = this.animate.bind(this);
@@ -107,11 +109,27 @@ export default function(obj) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    .load(this.getDatabaseData)
+                    .load(this.loadDB)
             } else {
-                this.getDatabaseData();
+                this.loadDB();
             }
 
+        },
+        loadDB: function() {
+            MazeServices.getOneMaze(18)
+            .then( res => {
+                if (Array.isArray(res)) {
+                    this.grid.boards = [...this.grid.boards, ...res];
+                    this.buildGame();
+                } else {
+                    this.grid.boards = [...this.grid.boards, res];
+                    this.buildGame();
+                }
+                
+            })
+            .catch(error => {
+                console.log(error)
+            });
         },
          pause: function (boolean) {
             this.action = boolean
@@ -119,8 +137,8 @@ export default function(obj) {
         getDatabaseData: function () {
 
            let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
-           let next = indexToGet + 1;
-           let requestBoardNumber = (indexToGet === 0)?1:next;
+           //let next = indexToGet + 1;
+           //let requestBoardNumber = (indexToGet === 0)?1:next;
            axios
            .get(`${SiteConfig.API_ENDPOINT}/api/tugtug/get-grid`, {id: 16})
            .then(response => {

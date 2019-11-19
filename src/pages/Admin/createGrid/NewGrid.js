@@ -1,11 +1,11 @@
 import React from 'react';
 import './NewGrid.css';
 import Select from './Select';
-import MazeService from '../../services/maze-service';
+import MazeService from '../../../services/maze-service';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Grid from './Grid';
-import MazeContext from '../../MazeContext';
+import SiteContext from '../../../SiteContext';
 
 export default class NewGrid extends React.Component {
     state = {
@@ -16,7 +16,7 @@ export default class NewGrid extends React.Component {
         feedback: ''
         
     }
-    static contextType = MazeContext;
+    static contextType = SiteContext;
     changeSize = (dimension, number) => {
         if (dimension === 'rows') {
             this.setState({r: number})
@@ -61,9 +61,9 @@ export default class NewGrid extends React.Component {
                 className.includes('token3') || 
                 className.includes('token4')
             ) {
-                obj[className.substr(5).trim()] = [ parseInt(row), parseInt(cell) ];
+                obj[className.substr(5).trim()] = [ parseInt(row, 10), parseInt(cell, 10) ];
             } else if (className.includes('wall')) {
-                walls.push([ parseInt(row),  parseInt(cell) ]);
+                walls.push([ parseInt(row, 10),  parseInt(cell, 10) ]);
             }
         })
         obj.walls = walls;

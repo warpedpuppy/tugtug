@@ -17,7 +17,7 @@ export default {
 	transitionItemsQ: 5,
 	jumpBlockSize: [400, 400],
 	bounceBlockSize: [1400, 1400],
-	flyBlockSize: [50, 50],
+	flyBlockSize: [200, 200],
 	swimBlockSize: [400, 400],
 	flyWallHit: -1,
 	swimWallHit: -1,

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Login.css';
 import AuthApiService from '../../services/auth-api-services'
-
+import SiteContext from '../../SiteContext';
 export default class Login extends React.Component {
 
     constructor (props) {
@@ -11,16 +11,16 @@ export default class Login extends React.Component {
             errorMessage: ''
         }
     }
+    static contextType = SiteContext;
 
     onSubmit = (e) => {
         e.preventDefault();
         this.setState({errorMessage: ''})
         AuthApiService.postLogin(this.state.password)
         .then( result => {
-            console.log(result);
             this.setState({password: ''})
             if (result.login === true) {
-                this.props.changeLoggedIn();
+                this.context.loginHandler(true);
             } else {
                 this.setState({errorMessage: 'There was a problem.'})
             }

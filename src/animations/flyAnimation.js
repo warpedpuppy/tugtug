@@ -2,7 +2,7 @@ import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Config from './animationsConfig';
 import OrientationChange from './utils/orientationChange';
-import LoadData from './utils/loadData';
+//import LoadData from './utils/loadData';
 import Clock from './supportingClasses/universal/clock';
 import Fly from './supportingClasses/fly/indexFly';
 import FlyAnimate from './supportingClasses/fly/flyAnimate';
@@ -19,6 +19,7 @@ import PixiFps from "pixi-fps";
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import Resize from './supportingClasses/fly/flyResize';
+import MazeServices from '../services/maze-service';
 
 export default function(obj) {
     return {
@@ -47,9 +48,11 @@ export default function(obj) {
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
-        loadData: LoadData(),
+       // loadData: LoadData(),
         flyAnimate: FlyAnimate(),
-        init: function (isMobile, isMobileOnly) {
+        init: function (isMobile, isMobileOnly, ids) {
+            this.ids = ids;
+            console.log(this.ids)
             this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
@@ -90,7 +93,8 @@ export default function(obj) {
 
             this.kingCont.addChild(this.filterContainer);
 
-            this.loadData.getDatabaseData = this.loadData.getDatabaseData.bind(this);
+           // this.loadData.getDatabaseData = this.loadData.getDatabaseData.bind(this);
+            this.loadDB = this.loadDB.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
             this.flyAnimate.animate = this.flyAnimate.animate.bind(this);
@@ -101,11 +105,27 @@ export default function(obj) {
                  this.loader
                     .add("/ss/ss.json")
                     .add("Hobo", "/fonts/hobostd.xml")
-                    .load(this.loadData.getDatabaseData)
+                    .load(this.loadDB)
             } else {
-                this.loadData.getDatabaseData();
+               this.loadDB();
             }
 
+        },
+        loadDB: function() {
+            MazeServices.getOneMaze(this.ids[0].id)
+            .then( res => {
+                if (Array.isArray(res)) {
+                    this.grid.boards = [...this.grid.boards, ...res];
+                    this.buildGame();
+                } else {
+                    this.grid.boards = [...this.grid.boards, res];
+                    this.buildGame();
+                }
+                
+            })
+            .catch(error => {
+                console.log(error)
+            });
         },
         pause: function (boolean) {
             this.action = boolean
@@ -197,7 +217,7 @@ export default function(obj) {
             this[this.activeMode].removeFromStage();
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
-            this.loadData.getDatabaseData();
+          //  this.loadData.getDatabaseData();
             this.fullStop = false;
         },
         filterTest: function () {

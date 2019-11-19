@@ -1,10 +1,10 @@
 import React from 'react';
-import MazeService from '../../services/maze-service';
+import MazeService from '../../../services/maze-service';
 import DisplayMaze from './DisplayMaze';
 import './AllGrids.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import MazeContext from '../../MazeContext';
+import SiteContext from '../../../SiteContext';
 
 export default class AllGrids extends React.Component {
 
@@ -18,7 +18,7 @@ export default class AllGrids extends React.Component {
         this.loadMazes();
         
     }
-    static contextType = MazeContext;
+    static contextType = SiteContext;
     handleClose = () => this.setState({show: false});
 
     handleShow = (id) => {
@@ -45,7 +45,7 @@ export default class AllGrids extends React.Component {
 
     render () {
         return (
-            <>
+            <React.Fragment>
             <div className="all-grids"> 
             {  
             this.context.mazes.map( (mazeObject, index) => {
@@ -70,7 +70,7 @@ export default class AllGrids extends React.Component {
                 </Button>
                 </Modal.Footer>
             </Modal>
-            </>
+            </React.Fragment>
         )
     }
 }

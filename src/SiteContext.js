@@ -1,7 +1,9 @@
 import React from 'react'
 
 const SiteContext = React.createContext({
-  loggedIn: false
+  loggedIn: undefined,
+  mazes: [],
+  ids: []
 })
 
 export default SiteContext
