@@ -122,7 +122,7 @@ export default function(obj) {
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
            axios
-           .post(`${API_BASE_URL}/api/tugtug/grids`, {board: requestBoardNumber})
+           .get(`${API_BASE_URL}/api/tugtug/get-grid`, {id: 16})
            .then(response => {
                
                 this.dbData = response.data;

@@ -77,20 +77,22 @@ export default function () {
 		},
 		createObj: function (board) {
 			let obj = {};
-			for(let arr of board.grid){
+			for(let arr of board.walls){
 				obj[`${arr[0]}_${arr[1]}`] = 'covered';
 			}
-			obj[`${board.token1.i}_${board.token1.j}`] = 'token1';
-			obj[`${board.token2.i}_${board.token2.j}`] = 'token2';
+			obj[`${board.token1[0]}_${board.token1[1]}`] = 'token1';
+			obj[`${board.token2[0]}_${board.token2[1]}`] = 'token2';
 
 			if (!this.utils.root.all) {
-				obj[`${board.token3.i}_${board.token3.j}`] = 'token3';
-				obj[`${board.token4.i}_${board.token4.j}`] = 'token4';
+				obj[`${board.token3[0]}_${board.token3[1]}`] = 'token3';
+				obj[`${board.token4[0]}_${board.token4[1]}`] = 'token4';
 			}
 			
 			return obj;
 		},
 		buildGrid: function (data) {
+
+			console.log('build grid = ', data)
 			
 			this.cont.removeChildren();
 			let mode = this.utils.root.activeMode,
@@ -105,8 +107,8 @@ export default function () {
 			this.buffer = Config[`${mode}Buffer`];    
 			this.blockWidth = Config[`${mode}BlockSize`][0];
 			this.blockHeight = Config[`${mode}BlockSize`][1];
-			this.rowQ = data.rows;
-			this.colQ = data.cols;
+			this.rowQ = data.r;
+			this.colQ = data.c;
 			this.freeSpaces = [];
 			this.coveredSpaces = [];
 			this.coinSpaces = [];
@@ -128,9 +130,13 @@ export default function () {
 			}
 			//console.log(this.blocks)
 			
-			for (let i = 0; i < data.rows; i ++) {
+			for (let i = 0; i < data.r; i ++) {
 				this.blocks[i] = [];
-				for (let j = 0; j < data.cols; j ++) {
+				for (let j = 0; j < data.c; j ++) {
+
+					if(i === 0 || j === 0 || i === data.r - 1 || j === data.c - 1) {
+						obj[`${i}_${j}`] = 'covered'
+					}
 
 					let bool = (obj[`${i}_${j}`] !== 'covered')?false:true;
 
@@ -170,12 +176,12 @@ export default function () {
 					}
 
 					//store free ones
-					let heroSpace = (String(i) === data.hero.i && String(j) === data.hero.j)?true:false;
+					let heroSpace = (String(i) === data.hero[0] && String(j) === data.hero[1])?true:false;
 					
 					if (!bool && !token && !heroSpace) {
 						this.freeSpaces.push([b.x, b.y, b, i, j, gridCircle]);
 					}
-
+					
 					if (bool) {
 						b.texture = this.whiteSquare;
 						b.alpha = 1;
@@ -211,8 +217,8 @@ export default function () {
 
 			SetTileLimits.assignAboveBelowRightLeftCovered();
 			
-			this.heroJ = data.hero.j;
-			this.heroI = data.hero.i;
+			this.heroJ = data.hero[0];
+			this.heroI = data.hero[1];
 			this.placeHero();
 			
 			this.initialPoint = {x: this.cont.x, y: this.cont.y};
@@ -224,8 +230,8 @@ export default function () {
 		},
 		placeHero: function () {
 
-			let i = this.heroI;
-			let j = this.heroJ;
+			let i = this.heroJ;
+			let j = this.heroI;
 			//we know 1,1 is free, so place that beneath the hero
 			i++;
 			j++;
