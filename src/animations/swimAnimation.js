@@ -16,7 +16,7 @@ import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import SiteConfig from '../config';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import MobileMask from './supportingClasses/universal/mobileMask';
 import Resize from './supportingClasses/swim/swimResize';
@@ -122,7 +122,7 @@ export default function(obj) {
            let next = indexToGet + 1;
            let requestBoardNumber = (indexToGet === 0)?1:next;
            axios
-           .get(`${API_BASE_URL}/api/tugtug/get-grid`, {id: 16})
+           .get(`${SiteConfig.API_ENDPOINT}/api/tugtug/get-grid`, {id: 16})
            .then(response => {
                
                 this.dbData = response.data;

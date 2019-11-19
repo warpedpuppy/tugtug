@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import SiteConfig from '../../config';
 export default function () {
   return {
   	getDatabaseData: function () {
@@ -27,7 +27,7 @@ export default function () {
           //   })
           //   .catch(err => console.error(err));  
 
-            fetch(`${API_BASE_URL}/api/tugtug/get-grid`, {
+            fetch(`${SiteConfig.API_BASE_URL}/api/tugtug/get-grid`, {
               method: 'POST',
               headers: {
                 'content-type': 'application/json',

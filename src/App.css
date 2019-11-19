@@ -1,25 +1,6 @@
 * {
-	outline: none;
-}
-body {
-	width:100vw;
-	overflow: hidden;
+	box-sizing: border-box;
 }
 main {
-/*	padding-top: 50px;*/
-	background-color: #333;
-	width: 100vw;
-}
-.hide {
-	opacity: 0;
-	display: none !important;
-}
-.show {
-	opacity: 1;
-	display: inline-block !important;
-}
-.button {
-	padding:10px 20px;
-	border-radius: 3px;
-	cursor: pointer;
+	margin-top: 30px;
 }
