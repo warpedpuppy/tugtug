@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SiteContext from '../SiteContext';
 
 export default class Home extends React.Component {
+
+    static contextType = SiteContext;
 
     render () {
         return (
@@ -12,5 +15,6 @@ export default class Home extends React.Component {
                 <Link to='/swim-game'>swim game</Link>
             </React.Fragment>
         )
+        
     }
 }

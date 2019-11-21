@@ -2,8 +2,10 @@ import React from 'react';
 import './HomeCanvas.css';
 import home_page from '../animations/jumpAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
+import SiteContext from '../SiteContext';
 export default class HomeCanvas extends React.Component {
 
+	static contextType = SiteContext;
 	constructor(props){
 		super(props);
 		this.home_page = {};

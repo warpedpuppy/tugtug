@@ -50,8 +50,8 @@ export default function(obj) {
         resize: Resize(),
        // loadData: LoadData(),
         flyAnimate: FlyAnimate(),
-        init: function (isMobile, isMobileOnly, ids) {
-            this.ids = ids;
+        init: function (isMobile, isMobileOnly, id) {
+            this.id = id;
             console.log(this.ids)
             this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
@@ -112,7 +112,7 @@ export default function(obj) {
 
         },
         loadDB: function() {
-            MazeServices.getOneMaze(this.ids[0].id)
+            MazeServices.getOneMaze(this.id)
             .then( res => {
                 if (Array.isArray(res)) {
                     this.grid.boards = [...this.grid.boards, ...res];

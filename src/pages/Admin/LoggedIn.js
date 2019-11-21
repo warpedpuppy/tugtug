@@ -11,13 +11,16 @@ export default function LoggedIn () {
 
         <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
             <Tab eventKey="home" title="Home">
-                <AdminHome />
+                hello
             </Tab>
             <Tab eventKey="new-grid" title="new grid">
                 <NewGrid />
             </Tab>
             <Tab eventKey="all-grids" title="all grids">
                <AllGrids />
+            </Tab>
+            <Tab eventKey="admin" title="admin">
+            <AdminHome />
             </Tab>
         </Tabs>
 

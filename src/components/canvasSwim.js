@@ -2,8 +2,9 @@ import React from 'react';
 import './HomeCanvas.css';
 import home_page from '../animations/swimAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
+import SiteContext from '../SiteContext';
 export default class HomeCanvas extends React.Component {
-
+	static contextType = SiteContext;
 	constructor(props){
 		super(props);
 		this.home_page = {};
@@ -24,17 +25,17 @@ export default class HomeCanvas extends React.Component {
 
 	}
 	componentDidMount () {
-		if (this.state.loggedIn) {
+		this.context.mazeGameHandler(true);
 			this.home_page = home_page();
 			this.home_page.init(isMobile, isMobileOnly);
-		}
-		
+
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
 		this.home_page.startGame();
 	}
 	componentWillUnmount(){
+		this.context.mazeGameHandler(false);
 		this.home_page.stop();
 	}
 	loggedInCheck () {

@@ -8,10 +8,10 @@ import CanvasJump from './components/canvasJump';
 import CanvasFly from './components/canvasFly';
 import CanvasSwim from './components/canvasSwim';
 import Admin from './pages/Admin';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import MazeService from './services/maze-service';
 import TokenService from './services/token-service';
-
+import NotFound from './pages/NotFound';
 export default class App extends React.Component {
   
   constructor (props) {
@@ -19,14 +19,16 @@ export default class App extends React.Component {
     this.state = {
       loggedIn: TokenService.hasAuthToken(),
       mazes: [],
-      ids: []
+      ids: [],
+      mazeGame: false,
+      activeMazeId: undefined
     }
   }
   componentDidMount () {
     MazeService.load_ids()
     .then( ids => {
-   
-      this.setState({ids})
+      let activeMazeId = ids[0].id
+      this.setState({ids, activeMazeId})
     })
   }
 
@@ -44,6 +46,16 @@ export default class App extends React.Component {
     this.setState({mazes: this.state.mazes.filter( maze => mazeID !== maze.id) });
   }
 
+  deleteMazes = (mazeID) => {
+    this.setState({mazes: this.state.mazes.filter( maze => mazeID !== maze.id) });
+  }
+
+  mazeGameHandler = (mazeGame) => {
+    this.setState({mazeGame});
+  }
+  setActiveMazeId = (activeMazeId) => {
+    this.setState({activeMazeId});
+  }
   loginHandler = (loggedIn) => {
     this.setState({loggedIn})
 
@@ -59,7 +71,11 @@ export default class App extends React.Component {
       addMazes: this.addMazes,
       deleteMazes: this.deleteMazes,
       ids: this.state.ids,
-      loginHandler: this.loginHandler
+      loginHandler: this.loginHandler,
+      mazeGame: this.state.mazeGame,
+      mazeGameHandler: this.mazeGameHandler,
+      activeMazeId: this.state.activeMazeId,
+      setActiveMazeId: this.setActiveMazeId
      }
 
      return (
@@ -67,12 +83,15 @@ export default class App extends React.Component {
         <React.Fragment>
           <header><nav><Menu /></nav></header>
           <main>
-          <Route exact path={'/'} component={ Home } />
-          <Route exact path={'/games'} component={ Games } />
-          <Route exact path={'/jump-game'} component={ CanvasJump } />
-          <Route exact path={'/fly-game'} component={ CanvasFly } />
-          <Route exact path={'/swim-game'} component={ CanvasSwim } />
-          <Route exact path={'/admin'} component={ Admin } />
+            <Switch>
+              <Route exact path={'/'} component={ Home } />
+              <Route exact path={'/games'} component={ Games } />
+              <Route exact path={'/jump-game'} component={ CanvasJump } />
+              <Route exact path={'/fly-game'} component={ CanvasFly } />
+              <Route exact path={'/swim-game'} component={ CanvasSwim } />
+              <Route exact path={'/admin'} component={ Admin } />
+              <Route component={ NotFound } />
+            </Switch>
           </main>
           <footer></footer>
         </React.Fragment>

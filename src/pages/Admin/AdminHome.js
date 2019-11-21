@@ -7,11 +7,9 @@ export default class AdminHome extends React.Component {
 
     logOutHandler = (e) => {
         e.preventDefault();
-        //clear token
-
-        //set context to logged out
         this.context.loginHandler(false);
     }
+    
     render(){
         return (
             <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>

@@ -10,6 +10,7 @@ const MazeService = {
           })
           .then(res => res.json())
           .then( res => {
+            console.log(res)
             return res;
           })
           .catch( error => {
@@ -17,6 +18,7 @@ const MazeService = {
           })
     },
     getOneMaze: function(id) {
+        console.log(id)
         return fetch(`${config.API_ENDPOINT}/tugtug/get-grid`, {
             method: 'POST',
             headers: {

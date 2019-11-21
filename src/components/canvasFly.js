@@ -21,11 +21,12 @@ export default class HomeCanvas extends React.Component {
 	}
 	static contextType = SiteContext;
 	componentDidMount () {
-		//if (this.state.loggedIn) {
 		
-			this.home_page = FlyAnimation();
-			this.home_page.init(isMobile, isMobileOnly, this.context.ids);
-		//}
+		this.context.mazeGameHandler(true);
+		this.home_page = FlyAnimation();
+		console.log("build maze ", this.context.activeMazeId)
+		this.home_page.init(isMobile, isMobileOnly, this.context.activeMazeId);
+
 	
 	}
 	startGame = () => {
@@ -39,6 +40,7 @@ export default class HomeCanvas extends React.Component {
 
 	}
 	componentWillUnmount(){
+		this.context.mazeGameHandler(false);
 		this.home_page.stop();
 	}
 	testFilter () {

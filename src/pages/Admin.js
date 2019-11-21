@@ -10,19 +10,19 @@ class Admin extends React.Component {
   static contextType = SiteContext;
 
   render () {
-    if (this.context.loggedIn) {
+   // if (this.context.loggedIn) {
       return (
           <Container className="App">
             <LoggedIn />
           </Container>
       );
-    } else {
-        return (
-          <Container className="App">
-            <Login />
-          </Container>
-        );
-    }
+    // } else {
+    //     return (
+    //       <Container className="App">
+    //         <Login />
+    //       </Container>
+    //     );
+    // }
   }
 }
 
