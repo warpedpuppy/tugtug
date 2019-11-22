@@ -48,12 +48,12 @@ export default class AllGrids extends React.Component {
             <React.Fragment>
             <div className="all-grids"> 
             {  
-            this.context.mazes.map( (mazeObject, index) => {
-                return <DisplayMaze 
-                    key={ index }
-                    deleteMaze={ this.handleShow }
-                    {...mazeObject} />
-            }) 
+                this.context.mazes.map( (mazeObject, index) => {
+                    return <DisplayMaze 
+                        key={ index }
+                        deleteMaze={ this.handleShow }
+                        {...mazeObject} />
+                }) 
             }
             </div>
             <Modal show={this.state.show} onHide={this.handleClose}>

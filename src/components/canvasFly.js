@@ -4,6 +4,8 @@ import './CanvasFly.css';
 import FlyAnimation from '../animations/flyAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 import SiteContext from '../SiteContext';
+import AllGrids from '../pages/Admin/AllMazes/AllGrids';
+
 export default class HomeCanvas extends React.Component {
 
 	constructor(props){
@@ -80,11 +82,22 @@ export default class HomeCanvas extends React.Component {
 	render () {
 			this.pauseGame(this.props.action)
 			let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
-			return (
-				<div className={canvasClass}>
-					<div id='homeCanvas' className="flyCanvas"></div>
-				</div>
 
-			)
+			if (!this.context.inGameMazeEdit) {
+				return (
+					<div className={canvasClass}>
+						<div id='homeCanvas' className="flyCanvas"></div>
+					</div>
+	
+				)
+			} else {
+				return (
+					<div className={canvasClass}>
+						<div id='homeCanvas' className="flyCanvas"></div>
+						<div className="inGameAllGrids"><AllGrids /></div>
+					</div>
+				)
+			}
+			
 	}
 }

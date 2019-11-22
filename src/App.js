@@ -21,7 +21,8 @@ export default class App extends React.Component {
       mazes: [],
       ids: [],
       mazeGame: false,
-      activeMazeId: undefined
+      activeMazeId: undefined,
+      inGameMazeEdit: false
     }
   }
   componentDidMount () {
@@ -56,6 +57,9 @@ export default class App extends React.Component {
   setActiveMazeId = (activeMazeId) => {
     this.setState({activeMazeId});
   }
+  setInGameMazeEdit = (inGameMazeEdit) => {
+    this.setState({inGameMazeEdit});
+  }
   loginHandler = (loggedIn) => {
     this.setState({loggedIn})
 
@@ -75,7 +79,9 @@ export default class App extends React.Component {
       mazeGame: this.state.mazeGame,
       mazeGameHandler: this.mazeGameHandler,
       activeMazeId: this.state.activeMazeId,
-      setActiveMazeId: this.setActiveMazeId
+      setActiveMazeId: this.setActiveMazeId,
+      inGameMazeEdit: this.state.inGameMazeEdit,
+      setInGameMazeEdit: this.setInGameMazeEdit
      }
 
      return (

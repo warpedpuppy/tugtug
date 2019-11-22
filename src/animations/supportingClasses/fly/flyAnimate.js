@@ -11,12 +11,12 @@ export default function () {
             this.utils.root.flyAnimate.animate();
         },
         animate: function () {
-
+            
             Tweens.animate();
 
             if(this.fullStop)return;
            
-            if (this.action) {
+           if (this.action) {
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');
                 } else if(this.rotateRightBoolean) {
@@ -27,7 +27,7 @@ export default function () {
                 this.gears.animate();
                 this.fly.animate();
                 this.grid.animate(this.activeAction.vx, this.activeAction.vy);
-            }
+           }
         }
 	}
 }

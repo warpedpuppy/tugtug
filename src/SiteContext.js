@@ -5,7 +5,8 @@ const SiteContext = React.createContext({
   mazes: [],
   ids: [],
   mazeGame: false,
-  activeMazeId: undefined
+  activeMazeId: undefined,
+  inGameMazeEdit: false
 })
 
 export default SiteContext
