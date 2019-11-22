@@ -7,12 +7,13 @@ import Button from 'react-bootstrap/Button';
 export default class Menu extends React.Component {
 
 	static contextType = SiteContext;
-	//state = {chooseBuildMaze: false}
+	state = {buttonText: "choose / create maze"}
 
 	chooseMaze = (e) => {
 		e.preventDefault();
-		//this.setState({chooseBuildMaze: true})
-		this.context.setInGameMazeEdit(true);
+		this.setState({buttonText: (this.state.buttonText === "resume")? "choose / create maze" : "resume"})
+		this.context.setInGameMazeEdit(!this.context.inGameMazeEdit);
+		this.context.setMazeGameAction(!this.context.mazeGameAction);
 	}
 
 	render() {
@@ -31,7 +32,7 @@ export default class Menu extends React.Component {
 				<div>
 					<nav id="primary-nav">
 						<Link to="/">home</Link>
-						<Button onClick={this.chooseMaze}>choose / create maze</Button>
+						<Button onClick={this.chooseMaze}>{ this.state.buttonText }</Button>
 						<Link to="/games">exit</Link>
 					</nav>
 				</div>

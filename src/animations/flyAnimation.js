@@ -52,7 +52,6 @@ export default function(obj) {
         flyAnimate: FlyAnimate(),
         init: function (isMobile, isMobileOnly, id) {
             this.id = id;
-            console.log(this.ids)
             this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
@@ -112,6 +111,7 @@ export default function(obj) {
 
         },
         loadDB: function() {
+            console.log('load db')
             MazeServices.getOneMaze(this.id)
             .then( res => {
                 if (Array.isArray(res)) {
@@ -121,7 +121,24 @@ export default function(obj) {
                     this.grid.boards = [...this.grid.boards, res];
                     this.buildGame();
                 }
-                
+                console.log(this.grid.boards)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+
+        },
+        changeGrid: function (id) {
+            this.id = id;
+            MazeServices.getOneMaze(this.id)
+            .then( res => {
+                let test = this.grid.boards.find( item => item.id === res[0].id);
+                if ( test ) {
+                    this.grid.nextBoard(id);
+                } else {
+                    this.grid.boards = [...this.grid.boards, ...res];
+                    this.grid.nextBoard(id);
+                }
             })
             .catch(error => {
                 console.log(error)

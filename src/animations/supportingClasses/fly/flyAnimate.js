@@ -15,7 +15,6 @@ export default function () {
             Tweens.animate();
 
             if(this.fullStop)return;
-           
            if (this.action) {
                 if(this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');

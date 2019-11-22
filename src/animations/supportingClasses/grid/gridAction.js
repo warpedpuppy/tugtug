@@ -111,8 +111,8 @@ export default function (){
 			this.blockWidth = Config[`${this.utils.root.activeMode}BlockSize`][0];
 			this.blockHeight = Config[`${this.utils.root.activeMode}BlockSize`][1];
 
-			this.colQ = this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard].c;
-			this.rowQ = this.utils.root.grid.boards[this.utils.root.grid.gridBuild.currentBoard].r;
+			this.colQ = this.utils.root.grid.gridBuild.currentBoard.c;
+			this.rowQ = this.utils.root.grid.gridBuild.currentBoard.r;
 
 			this.boardWidth = this.colQ * this.blockWidth;
 			this.boardHeight = this.rowQ * this.blockHeight;

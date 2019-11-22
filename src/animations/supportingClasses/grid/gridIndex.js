@@ -58,20 +58,28 @@ export default function () {
 			this.gridBuild.blockWidth = w;
 			this.gridBuild.blockHeight = h;
 
-			console.log(this.boards[this.gridBuild.currentBoard])
+			//console.log(this.boards[this.gridBuild.currentBoard])
 			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
 
 			this.gridAction.setLimits();
 		},
-		nextBoard: function () {
+		nextBoard: function (id) {
 			
 			this.gridBuild.tokens.forEach((item, index) => {
 				item.placed = false;
 			})
-			this.gridBuild.currentBoard = this.boards.length - 1;
+
+			if (!id) {
+				this.gridBuild.currentBoard = this.boards.length - 1;
+			} else {
+				console.log(this.boards, id)
+				this.gridBuild.currentBoard = this.boards.find( board => board.id === id)
+				console.log(this.gridBuild.currentBoard)
+			}
+			
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
-			this.gridBuild.buildGrid(this.boards[this.gridBuild.currentBoard]);
+			this.gridBuild.buildGrid(this.gridBuild.currentBoard);
 			this.gridBuild.resetBaddies();
 			this.gridAction.setLimits();
 		},
