@@ -20,6 +20,7 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import Resize from './supportingClasses/fly/flyResize';
 import MazeServices from '../services/maze-service';
+import DefaultMaze from '../defaults/DefaultMaze'
 
 export default function(obj) {
     return {
@@ -48,10 +49,15 @@ export default function(obj) {
         frame: Assets.Graphics(),
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
-       // loadData: LoadData(),
         flyAnimate: FlyAnimate(),
-        init: function (isMobile, isMobileOnly, id) {
+        init: function (isMobile, isMobileOnly, id, parent) {
             this.id = id;
+
+            if (!this.id) {
+                parent.redirectHome();
+                return;
+            }
+
             this.utils.root = this;
             this.activeMode = this.mode[this.activeModeIndex];
             this.isMobile = isMobile;
@@ -110,28 +116,20 @@ export default function(obj) {
             }
 
         },
-        loadDB: function() {
-            console.log('load db')
-            MazeServices.getOneMaze(this.id)
-            .then( res => {
-                if (Array.isArray(res)) {
-                    this.grid.boards = [...this.grid.boards, ...res];
-                    this.buildGame();
-                } else {
-                    this.grid.boards = [...this.grid.boards, res];
-                    this.buildGame();
-                }
-                console.log(this.grid.boards)
-            })
-            .catch(error => {
-                console.log(error)
-            });
-
+        loadDB: async function() {
+            try {
+                let res = await MazeServices.getOneMaze('asdf')
+                this.grid.boards = [...this.grid.boards, ...res];
+                this.buildGame();
+            } catch (e) {
+                this.grid.boards = [...this.grid.boards, ...DefaultMaze];
+                this.buildGame();
+            }
         },
-        changeGrid: function (id) {
+        changeGrid: async function (id) {
             this.id = id;
-            MazeServices.getOneMaze(this.id)
-            .then( res => {
+            try {
+                let res = await MazeServices.getOneMaze(this.id)
                 let test = this.grid.boards.find( item => item.id === res[0].id);
                 if ( test ) {
                     this.grid.nextBoard(id);
@@ -139,10 +137,11 @@ export default function(obj) {
                     this.grid.boards = [...this.grid.boards, ...res];
                     this.grid.nextBoard(id);
                 }
-            })
-            .catch(error => {
-                console.log(error)
-            });
+            } catch (e) {
+                this.grid.boards = [...this.grid.boards, ...DefaultMaze];
+                this.buildGame();
+            }
+           
         },
         pause: function (boolean) {
             this.action = boolean

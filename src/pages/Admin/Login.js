@@ -2,6 +2,7 @@ import React from 'react';
 import './Login.css';
 import AuthApiService from '../../services/auth-api-services'
 import SiteContext from '../../SiteContext';
+import Button from 'react-bootstrap/Button';
 export default class Login extends React.Component {
 
     constructor (props) {
@@ -12,7 +13,12 @@ export default class Login extends React.Component {
         }
     }
     static contextType = SiteContext;
-
+    
+    logOutHandler = (e) => {
+        e.preventDefault();
+        this.context.loginHandler(false);
+    }
+    
     onSubmit = (e) => {
         e.preventDefault();
         this.setState({errorMessage: ''})
@@ -33,12 +39,18 @@ export default class Login extends React.Component {
     }
 
     render () {
-        return (
-            <form onSubmit={ this.onSubmit }>
-                <input type="password" onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
-                <input type="submit" />
-                <div className="feedback">{ this.state.errorMessage }</div>
-            </form>
-        )
+        if (!this.context.loggedIn) {
+            return (
+                <form onSubmit={ this.onSubmit }>
+                    <input type="password" onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
+                    <input type="submit" />
+                    <div className="feedback">{ this.state.errorMessage }</div>
+                </form>
+            )
+        } else {
+            return (
+                <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
+            )
+        }
     }
 }

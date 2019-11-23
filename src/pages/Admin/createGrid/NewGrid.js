@@ -85,6 +85,9 @@ export default class NewGrid extends React.Component {
         
     }
     render () {
+        let button = (this.context.loggedIn)?
+        <Button variant="success"  onClick={ this.saveMazeHandler }>save maze</Button> :
+        <Button variant="success" >save temporary maze</Button> ;
         return (
             <div>
                 <fieldset><legend>control panel</legend>
@@ -103,7 +106,7 @@ export default class NewGrid extends React.Component {
                     changeSize={ this.addItem }
                     currentValue={ this.state.activeItem  }
                     array={['wall', 'hero', 'token1', 'token2', 'token3', 'token4', 'erase']} />
-                <Button variant="success"  onClick={ this.saveMazeHandler }>save maze</Button>
+               { button }
                 </fieldset>
                 { this.state.feedback} 
                 <hr />

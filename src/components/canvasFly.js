@@ -5,8 +5,7 @@ import FlyAnimation from '../animations/flyAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 import SiteContext from '../SiteContext';
 import AllGrids from '../pages/Admin/AllMazes/AllGrids';
-
-export default class HomeCanvas extends React.Component {
+class CanvasFly extends React.Component {
 
 	constructor(props){
 		super(props);
@@ -27,9 +26,12 @@ export default class HomeCanvas extends React.Component {
 		this.context.mazeGameHandler(true);
 		this.fly_anim = FlyAnimation();
 		console.log("build maze ", this.context.activeMazeId)
-		this.fly_anim.init(isMobile, isMobileOnly, this.context.activeMazeId);
+		this.fly_anim.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
 
 	
+	}
+	redirectHome = () => {
+		this.props.history.push('/');
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
@@ -110,3 +112,5 @@ export default class HomeCanvas extends React.Component {
 			
 	}
 }
+
+export default CanvasFly;

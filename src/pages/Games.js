@@ -1,20 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SiteContext from '../SiteContext';
+import './Games.css';
 
 export default class Home extends React.Component {
-
-    static contextType = SiteContext;
-
     render () {
         return (
-            <React.Fragment>
+            <div className="gamesPage">
                 <h1>games</h1>
-                <Link to='/jump-game'>jump game</Link>
-                <Link to='/fly-game'>fly game</Link>
-                <Link to='/swim-game'>swim game</Link>
-            </React.Fragment>
+                <ul>
+                <li><Link to='/jump-game'>jump game</Link></li>
+                <li><Link to='/fly-game'>fly game</Link></li>
+                <li><Link to='/swim-game'>swim game</Link></li>
+                </ul>
+            </div>
         )
-        
     }
 }

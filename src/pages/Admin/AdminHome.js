@@ -1,20 +1,11 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import SiteContext from '../../SiteContext';
 
-export default class AdminHome extends React.Component {
-    static contextType = SiteContext;
-
-    logOutHandler = (e) => {
-        e.preventDefault();
-        this.context.loginHandler(false);
-    }
-    
-    render(){
+export default function AdminHome (){
         return (
-            <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
+           <div>
+               <p>Hello!</p>
+               <p>In this section you can create a maze that you can use in the fish or dragon games (warning; it will not be saved) or choose from an existing maze.</p>
+           </div>
 
         )
-    }
-  
 }

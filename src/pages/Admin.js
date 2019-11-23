@@ -1,20 +1,29 @@
 import React from 'react';
-import LoggedIn from './Admin/LoggedIn';
-import './Admin.css';
-import Container from 'react-bootstrap/Container';
-import SiteContext from '../SiteContext';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import NewGrid from './Admin/createGrid/NewGrid';
+import AllGrids from './Admin/AllMazes/AllGrids';
+import AdminHome from './Admin/AdminHome';
+import Login from './Admin/Login';
+export default function LoggedIn () {
 
-class Admin extends React.Component {
+    return (
 
-  static contextType = SiteContext;
+        <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+            <Tab eventKey="home" title="Home">
+            <AdminHome />
+            </Tab>
+            <Tab eventKey="new-grid" title="new grid">
+                <NewGrid />
+            </Tab>
+            <Tab eventKey="all-grids" title="all grids">
+               <AllGrids />
+            </Tab>
+            <Tab eventKey="admin" title="admin">
+              <Login />
+            </Tab>
+        </Tabs>
 
-  render () {
-      return (
-          <Container className="App">
-            <LoggedIn />
-          </Container>
-      );
-  }
+    )
+
 }
-
-export default Admin;

@@ -23,7 +23,7 @@ const MazeService = {
             method: 'POST',
             headers: {
               'content-type': 'application/json',
-              'Authorization': `Bearer ${TokenService.getAuthToken()}`
+              //'Authorization': `Bearer ${TokenService.getAuthToken()}`
             },
             body: JSON.stringify({ id }),
           })
