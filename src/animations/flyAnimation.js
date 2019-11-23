@@ -20,7 +20,7 @@ import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
 import Resize from './supportingClasses/fly/flyResize';
 import MazeServices from '../services/maze-service';
-import DefaultMaze from '../defaults/DefaultMaze'
+import DefaultMaze from '../defaults/DefaultMaze';
 
 export default function(obj) {
     return {
@@ -118,7 +118,7 @@ export default function(obj) {
         },
         loadDB: async function() {
             try {
-                let res = await MazeServices.getOneMaze('asdf')
+                let res = await MazeServices.getOneMaze(this.id)
                 this.grid.boards = [...this.grid.boards, ...res];
                 this.buildGame();
             } catch (e) {

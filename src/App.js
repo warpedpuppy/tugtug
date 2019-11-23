@@ -29,7 +29,7 @@ export default class App extends React.Component {
   componentDidMount () {
     MazeService.load_ids()
     .then( ids => {
-      let activeMazeId = ids[0].id
+      let activeMazeId = (ids[0])?ids[0].id:0;
       this.setState({ids, activeMazeId})
     })
   }
@@ -100,7 +100,7 @@ export default class App extends React.Component {
               <Route exact path={'/games'} component={ Games } />
               <Route exact path={'/jump-game'} component={ CanvasJump } />
               <Route exact path={'/fly-game'} render={ ({history}) => <CanvasFly history={history} />} />
-              <Route exact path={'/swim-game'} component={ CanvasSwim } />
+              <Route exact path={'/swim-game'} render={ ({history}) => <CanvasSwim history={history} />}/>
               <Route exact path={'/admin'} component={ Admin } />
               <Route component={ NotFound } />
             </Switch>

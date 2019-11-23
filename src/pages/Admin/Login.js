@@ -3,6 +3,9 @@ import './Login.css';
 import AuthApiService from '../../services/auth-api-services'
 import SiteContext from '../../SiteContext';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 export default class Login extends React.Component {
 
     constructor (props) {
@@ -41,11 +44,19 @@ export default class Login extends React.Component {
     render () {
         if (!this.context.loggedIn) {
             return (
-                <form onSubmit={ this.onSubmit }>
-                    <input type="password" onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
-                    <input type="submit" />
-                    <div className="feedback">{ this.state.errorMessage }</div>
-                </form>
+                <div>
+                <Form  onSubmit={ this.onSubmit }>
+                <Row>
+                  <Col>
+                    <Form.Control type="password"  onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
+                  </Col>
+                  <Col>
+                  <Form.Control type="submit" />
+                  </Col>
+                </Row>
+                <Row><div className="feedback">{ this.state.errorMessage }</div></Row>
+              </Form>
+              </div>
             )
         } else {
             return (

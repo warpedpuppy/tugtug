@@ -25,7 +25,6 @@ class CanvasFly extends React.Component {
 		
 		this.context.mazeGameHandler(true);
 		this.fly_anim = FlyAnimation();
-		console.log("build maze ", this.context.activeMazeId)
 		this.fly_anim.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
 
 	
@@ -79,7 +78,6 @@ class CanvasFly extends React.Component {
 		}
 	}
 	changeGrid (id) {
-		console.log('change grid', id, this.fly_anim.id)
 		if (this.fly_anim.changeGrid && (id !== this.fly_anim.id)) {
 			this.fly_anim.changeGrid(id)
 		}

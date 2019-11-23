@@ -1,13 +1,14 @@
 import React from 'react';
 import './HomeCanvas.css';
-import home_page from '../animations/swimAnimation';
+import swim_game from '../animations/swimAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 import SiteContext from '../SiteContext';
+import AllGrids from '../pages/Admin/AllMazes/AllGrids';
 export default class HomeCanvas extends React.Component {
 	static contextType = SiteContext;
 	constructor(props){
 		super(props);
-		this.home_page = {};
+		this.swim_game = {};
 		this.testFilter = this.testFilter.bind(this);
 		this.loggedInCheck = this.loggedInCheck.bind(this);
 		this.state = {
@@ -18,33 +19,41 @@ export default class HomeCanvas extends React.Component {
 		}
 		
 	}
+	redirectHome = () => {
+		this.props.history.push('/');
+	}
 	pauseGame (bool) {
-		if (this.home_page.pause) {
-			this.home_page.pause(bool)
+		if (this.swim_game.pause) {
+			this.swim_game.pause(bool)
 		}
 
 	}
 	componentDidMount () {
 		this.context.mazeGameHandler(true);
-			this.home_page = home_page();
-			this.home_page.init(isMobile, isMobileOnly);
+		this.swim_game = swim_game();
+		this.swim_game.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
 
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
-		this.home_page.startGame();
+		this.swim_game.startGame();
 	}
 	componentWillUnmount(){
 		this.context.mazeGameHandler(false);
-		this.home_page.stop();
+		this.swim_game.stop();
 	}
 	loggedInCheck () {
 		this.setState({loggedIn:true})
-		this.home_page = home_page();
-		this.home_page.init(isMobile, isMobileOnly);
+		this.swim_game = swim_game();
+		this.swim_game.init(isMobile, isMobileOnly);
+	}
+	changeGrid (id) {
+		if (this.swim_game.changeGrid && (id !== this.swim_game.id)) {
+			this.swim_game.changeGrid(id)
+		}
 	}
 	testFilter () {
-		this.home_page.filterTest();
+		this.swim_game.filterTest();
 		if(this.state.filterTest === "off") {
 			this.setState({filterTest: "on"})
 		} else { 
@@ -52,7 +61,7 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	nightMode () {
-		this.home_page.nightMode();
+		this.swim_game.nightMode();
 		if(this.state.nightMode === "off") {
 			this.setState({nightMode: "on"})
 		} else { 
@@ -60,16 +69,29 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	switchPlayer () {
-		this.home_page.switchPlayer();
+		this.swim_game.switchPlayer();
 	}
 	render () {
-		this.pauseGame(this.props.action)
-		let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
-		return (
-			<div className={canvasClass}>
-				<div id='homeCanvas'></div>
-			</div>
+		
+		this.pauseGame(this.context.mazeGameAction)
 
-		)
+		let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
+
+		if (!this.context.inGameMazeEdit) {
+			return (
+				<div className={canvasClass}>
+					<div id='homeCanvas' className="flyCanvas"></div>
+				</div>
+
+			)
+		} else {
+			this.changeGrid(this.context.activeMazeId)
+			return (
+				<div className={canvasClass}>
+					<div id='homeCanvas' className="flyCanvas"></div>
+					<div className="inGameAllGrids"><AllGrids /></div>
+				</div>
+			)
+		}
 	}
 }

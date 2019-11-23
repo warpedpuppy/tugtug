@@ -72,9 +72,7 @@ export default function () {
 			if (!id) {
 				this.gridBuild.currentBoard = this.boards.length - 1;
 			} else {
-				console.log(this.boards, id)
 				this.gridBuild.currentBoard = this.boards.find( board => board.id === id)
-				console.log(this.gridBuild.currentBoard)
 			}
 			
 			this.gridBuild.cont.removeChildren();

@@ -4,8 +4,6 @@ import Row from './Row';
 
 
 export default class Grid extends React.Component {
-    
-    
     render () {
         let grid = []
         for(let i = 0; i < this.props.r; i ++){
@@ -18,7 +16,7 @@ export default class Grid extends React.Component {
             );
         }
         return (
-            <div className="gridCont">id: {this.props.id} {grid}</div>
+            <div className="gridCont">{grid}</div>
         )
     }
   

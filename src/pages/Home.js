@@ -4,7 +4,9 @@ export default class Home extends React.Component {
 
     render () {
         return (
-            <h1>hello</h1>
+            <div className="general-page-layout">
+                <h1>hello</h1>
+            </div>
         )
     }
 }

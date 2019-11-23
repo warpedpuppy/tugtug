@@ -91,8 +91,6 @@ export default function () {
 			return obj;
 		},
 		buildGrid: function (data) {
-
-			console.log('build grid = ', data)
 			
 			this.cont.removeChildren();
 			let mode = this.utils.root.activeMode,
