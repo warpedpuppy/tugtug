@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Grid from './Grid';
 import SiteContext from '../../../SiteContext';
-import uniqid from 'uniqid';
+import nextId from "react-id-generator";
+
 export default class NewGrid extends React.Component {
     state = {
         r: 20,
@@ -94,7 +95,7 @@ export default class NewGrid extends React.Component {
         this.setState({feedback:''});
 
         let obj = this.createObject();
-        obj.id = uniqid();
+        obj.id = nextId();
         
         console.log(obj.id)
         
