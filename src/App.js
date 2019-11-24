@@ -93,7 +93,7 @@ export default class App extends React.Component {
      return (
       <SiteContext.Provider value={contextValue}>
         <React.Fragment>
-          <header><nav><Menu /></nav></header>
+          <header><Menu /></header>
           <main>
             <Switch>
               <Route exact path={'/'} component={ Home } />

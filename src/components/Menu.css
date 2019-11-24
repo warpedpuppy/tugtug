@@ -8,11 +8,21 @@ nav#primary-nav {
 	width: 100vw;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	
+}
+nav#primary-nav .logo {
+	position: absolute;
+	left: 20px;
+}
+nav#primary-nav .nav-links {
+	position: absolute;
+	right: 0;
 }
 nav#primary-nav a {
 	display: inline-block;
 	margin: 0 20px;
+	color: #333;
+	font-weight: bold;
 }
 
 @media screen and (min-width: 768px) {

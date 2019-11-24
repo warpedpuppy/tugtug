@@ -15,8 +15,6 @@ import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
-import axios from 'axios';
-import SiteConfig from '../config';
 import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import MobileMask from './supportingClasses/universal/mobileMask';
 import Resize from './supportingClasses/swim/swimResize';
@@ -105,7 +103,6 @@ export default function(obj) {
 
             this.kingCont.addChild(this.filterContainer);
 
-            this.getDatabaseData = this.getDatabaseData.bind(this);
             this.loadDB = this.loadDB.bind(this)
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
@@ -133,16 +130,16 @@ export default function(obj) {
                 this.buildGame();
             }
         },
-        changeGrid: async function (id) {
-            this.id = id;
+        changeGrid: function (obj) {
+            this.id = obj.id;
             try {
-                let res = await MazeServices.getOneMaze(this.id)
-                let test = this.grid.boards.find( item => item.id === res[0].id);
+                //let res = await MazeServices.getOneMaze(this.id)
+                let test = this.grid.boards.find( item => item.id === obj.id);
                 if ( test ) {
-                    this.grid.nextBoard(id);
+                    this.grid.nextBoard(obj.id);
                 } else {
-                    this.grid.boards = [...this.grid.boards, ...res];
-                    this.grid.nextBoard(id);
+                    this.grid.boards = [...this.grid.boards, obj];
+                    this.grid.nextBoard(obj.id);
                 }
             } catch (e) {
                 this.grid.boards = [...this.grid.boards, ...DefaultMaze];
@@ -152,30 +149,6 @@ export default function(obj) {
         },
         pause: function (boolean) {
             this.action = boolean
-        },
-        getDatabaseData: function () {
-
-           let indexToGet = (this.grid.boards)?this.grid.boards.length:0;
-           //let next = indexToGet + 1;
-           //let requestBoardNumber = (indexToGet === 0)?1:next;
-           axios
-           .get(`${SiteConfig.API_ENDPOINT}/api/tugtug/get-grid`, {id: 16})
-           .then(response => {
-               
-                this.dbData = response.data;
-                if (indexToGet === 0) {
-                    this.grid.boards = [...this.grid.boards, response.data.boards];
-                    //this.grid.boards = [...this.grid.boards, response.data.boards];
-                    this.buildGame();
-                 } else {
-                    if (response.data.boards) {
-                        this.grid.boards = [...this.grid.boards, response.data.boards];
-                    }
-                    this.grid.addNewBoardData(this.dbData)
-                 }
-              
-            })
-            .catch(err => console.error(err));  
         },
         buildGame: function () {
             
@@ -359,11 +332,10 @@ export default function(obj) {
             this.score.nextLevel();
             this.tokens.reset();
 
-            this[this.activeMode].removeFromStage();
+           // this[this.activeMode].removeFromStage();
           
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
-            this.getDatabaseData();
 
             this.fullStop = false;
         },

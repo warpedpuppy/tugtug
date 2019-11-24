@@ -34,8 +34,8 @@ export default function () {
 		},
 		removeFromStage: function () {
 			if(!this.utils.isMobile)this.ripples.on(false);
-			this.swimBackground.removeFromStage();
-			this.swimAction.airBubbles.resetAirBubbles();
+			//this.swimBackground.removeFromStage();
+			//this.swimAction.airBubbles.resetAirBubbles();
 
 			// this.utils.root.grid.clearGrid();
 			// this.utils.root.grid.removeFromStage();

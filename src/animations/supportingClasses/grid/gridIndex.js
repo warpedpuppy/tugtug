@@ -70,16 +70,17 @@ export default function () {
 			})
 
 			if (!id) {
-				this.gridBuild.currentBoard = this.boards.length - 1;
+				this.gridBuild.currentBoard = this.boards[this.boards.length - 1];
 			} else {
 				this.gridBuild.currentBoard = this.boards.find( board => board.id === id)
-			}
-			
+			}			
 			this.gridBuild.cont.removeChildren();
 			this.gridBuild.blocks = {};
 			this.gridBuild.buildGrid(this.gridBuild.currentBoard);
 			this.gridBuild.resetBaddies();
 			this.gridAction.setLimits();
+
+			this.utils.root.activeAction.vx = this.utils.root.activeAction.vy = 0;
 		},
 		addNewBoardData: function (newData) {
 			// if (newData.boards) {

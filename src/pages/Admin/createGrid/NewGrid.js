@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Grid from './Grid';
 import SiteContext from '../../../SiteContext';
-
+import uniqid from 'uniqid';
 export default class NewGrid extends React.Component {
     state = {
         r: 20,
@@ -45,8 +45,7 @@ export default class NewGrid extends React.Component {
             node.classList.remove("token4");
         });
     }
-    saveMazeHandler = e => {
-        this.setState({feedback:''})
+    createObject = () => {
         let cells = document.querySelectorAll(".newGrid .cell"),
             obj = {},
             walls = [];
@@ -69,10 +68,17 @@ export default class NewGrid extends React.Component {
         obj.walls = walls;
         obj.c = this.state.c;
         obj.r = this.state.r;
-        if (obj['hero'] && obj['token1'] && obj['token2'] && obj['token3'] && obj['token4']){
+
+        return obj
+    }
+    saveMazeHandler = e => {
+        this.setState({feedback:''});
+
+        let obj = this.createObject();
+        
+        if (obj['hero'] && obj['token1'] && obj['token2'] && obj['token3'] && obj['token4']) {
             MazeService.saveMaze(obj)
             .then( res => {
-                console.log(res)
                 if(res.success) {
                     this.context.addMazes(obj);
                     this.clearMaze();
@@ -84,10 +90,27 @@ export default class NewGrid extends React.Component {
         }
         
     }
+    tempSaveMazeHandler = e => {
+        this.setState({feedback:''});
+
+        let obj = this.createObject();
+        obj.id = uniqid();
+        
+        console.log(obj.id)
+        
+        if (obj['hero'] && obj['token1'] && obj['token2'] && obj['token3'] && obj['token4']) {
+           this.context.addMazes(obj);
+           this.clearMaze();
+           this.setState({feedback:<Alert variant="success">temporary maze entered!</Alert>})
+        } else {
+            this.setState({feedback:<Alert variant="warning">you need to add everything</Alert>})
+        }
+        
+    }
     render () {
         let button = (this.context.loggedIn)?
         <Button variant="success"  onClick={ this.saveMazeHandler }>save maze</Button> :
-        <Button variant="success" >save temporary maze</Button> ;
+        <Button variant="success"  onClick={ this.tempSaveMazeHandler }>save temporary maze</Button> ;
         return (
             <div>
                 <fieldset><legend>control panel</legend>

@@ -237,6 +237,7 @@ export default function () {
 			let halfHeight = this.utils.canvasHeight / 2;
 			this.cont.x = halfWidth - (j * this.blockWidth) + (this.blockWidth / 2);
 			this.cont.y = halfHeight - (i * this.blockHeight) + (this.blockHeight /2);
+			
 		}
 	}
 }

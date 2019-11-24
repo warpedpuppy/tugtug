@@ -33,31 +33,37 @@ export default function () {
 			this.cont.addChild(this.headCont);
 
 			 for (let i = 0; i < this.segmentsQ; i++) {
-                let segment = this.fishBodySegment(this.segmentHeight, 0xFFFF00, i, this.fishArray[i]);
+				let segment = this.fishBodySegment(this.segmentHeight, 0xFFFF00, i, this.fishArray[i]);
+				segment.scale.set(0.5);
                 this.fish.push(segment);
                 this.cont.addChildAt(segment, 0);
             }
 
 
             let rightFin = this.rightFin = Assets.Sprite('swimFin.png');
-            this.rightFin.x = this.fishRadius + 20;
-            this.rightFin.y = 25;
-            let index = this.cont.children.length - 2;
+			this.rightFin.x =  20;
+			rightFin.scale.set(0.5);
+            this.rightFin.y = 15;
             rightFin.scale.x = -1;
-            this.finCont.addChild(rightFin)
+			this.finCont.addChild(rightFin);
+			
             let leftFin = this.leftFin = Assets.Sprite('swimFin.png');
-            this.leftFin.x = -this.fishRadius - 20;
-            leftFin.y = 25;
+			this.leftFin.x =  -20;
+			leftFin.scale.set(0.5);
+            leftFin.y = 15;
             this.finCont.addChild(leftFin);
-            this.cont.addChildAt(this.finCont, index);
+            this.cont.addChildAt(this.finCont, 0);
 
             let rightEye = this.rightEye = Assets.Sprite('swimEye.png');
-            rightEye.anchor.set(0.5);
-            this.rightEye.x = this.fishRadius;
-            this.eyeCont.addChild(rightEye)
+			rightEye.anchor.set(0.5);
+			rightEye.scale.set(0.5);
+            this.rightEye.x = 10;
+			this.eyeCont.addChild(rightEye)
+			
             let leftEye = this.leftEye = Assets.Sprite('swimEye.png');
-            this.leftEye.x = -this.fishRadius;
-            leftEye.anchor.set(0.5);
+            this.leftEye.x = -10;
+			leftEye.anchor.set(0.5);
+			leftEye.scale.set(0.5);
             this.eyeCont.addChild(leftEye);
             this.cont.addChild(this.eyeCont)
 

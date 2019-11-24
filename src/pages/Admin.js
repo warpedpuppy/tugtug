@@ -16,7 +16,7 @@ export default class LoggedIn extends React.Component {
                 <div className="general-page-layout">
                     <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
                         <Tab eventKey="home" title="Home">
-                        <AdminHome />
+                            <AdminHome />
                         </Tab>
                         <Tab eventKey="new-grid" title="new grid">
                             <NewGrid />
@@ -38,6 +38,9 @@ export default class LoggedIn extends React.Component {
                     <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
                         <Tab eventKey="home" title="Home">
                         <AdminHome />
+                        </Tab>
+                        <Tab eventKey="new-grid" title="new grid">
+                            <NewGrid />
                         </Tab>
                         <Tab eventKey="all-grids" title="all grids">
                         <AllGrids />

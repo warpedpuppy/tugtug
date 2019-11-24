@@ -15,10 +15,13 @@ export default class AllGrids extends React.Component {
             show: false,
             idToDelete: undefined
         }
-        this.loadMazes();
+        
         
     }
     static contextType = SiteContext;
+    componentDidMount () {
+        this.loadMazes();
+    }
     handleClose = () => this.setState({show: false});
 
     handleShow = (id) => {
@@ -36,11 +39,13 @@ export default class AllGrids extends React.Component {
     }
 
     loadMazes = () => {
-        MazeService.loadAllMazes()
-        .then( data => {
-            //this.setState({mazes: data.mazes})
-            this.context.addMazes(data.mazes)
-        })
+        if (!this.context.mazes.length) {
+            MazeService.loadAllMazes()
+            .then( data => {
+                //this.setState({mazes: data.mazes})
+                this.context.addMazes(data.mazes)
+            })
+        } 
     }
 
     render () {

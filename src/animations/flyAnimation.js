@@ -126,16 +126,16 @@ export default function(obj) {
                 this.buildGame();
             }
         },
-        changeGrid: async function (id) {
-            this.id = id;
+        changeGrid: function (obj) {
+            this.id = obj.id;
             try {
-                let res = await MazeServices.getOneMaze(this.id)
-                let test = this.grid.boards.find( item => item.id === res[0].id);
+                //let res = await MazeServices.getOneMaze(this.id)
+                let test = this.grid.boards.find( item => item.id === obj.id);
                 if ( test ) {
-                    this.grid.nextBoard(id);
+                    this.grid.nextBoard(obj.id);
                 } else {
-                    this.grid.boards = [...this.grid.boards, ...res];
-                    this.grid.nextBoard(id);
+                    this.grid.boards = [...this.grid.boards, obj];
+                    this.grid.nextBoard(obj.id);
                 }
             } catch (e) {
                 this.grid.boards = [...this.grid.boards, ...DefaultMaze];

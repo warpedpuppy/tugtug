@@ -19,23 +19,25 @@ export default class Menu extends React.Component {
 	render() {
 		if (!this.context.mazeGame) {
 			return (
-				<div>
-					<nav id="primary-nav">
+				<nav id="primary-nav">
+					<div className="logo"><Link to="/">tugtug</Link></div>
+					<div className="nav-links">
 						<Link to="/">home</Link>
 						<Link to="/games">games</Link>
 						<Link to="/admin">admin</Link>
-					</nav>
-				</div>
+					</div>
+				</nav>
 			);
 		} else {
 			return (
-				<div>
-					<nav id="primary-nav">
+				<nav id="primary-nav">
+					<div className="logo"><Link to="/">tugtug</Link></div>
+					<div className="nav-links">
 						<Link to="/">home</Link>
 						<Button size="sm" onClick={this.chooseMaze}>{ this.state.buttonText }</Button>
 						<Link to="/games">exit</Link>
-					</nav>
-				</div>
+						</div>
+				</nav>
 			);
 		}
 	   

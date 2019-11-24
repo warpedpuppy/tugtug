@@ -44,23 +44,27 @@ export default class Login extends React.Component {
     render () {
         if (!this.context.loggedIn) {
             return (
-                <div>
-                <Form  onSubmit={ this.onSubmit }>
-                <Row>
-                  <Col>
-                    <Form.Control type="password"  onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
-                  </Col>
-                  <Col>
-                  <Form.Control type="submit" />
-                  </Col>
-                </Row>
-                <Row><div className="feedback">{ this.state.errorMessage }</div></Row>
-              </Form>
+                <div className="login-form">
+                    <Form  onSubmit={ this.onSubmit }>
+                        <Row>
+                            <Col>
+                                <Form.Control type="password"  onChange={ e => this.onChangeHandler(e) } value={this.state.password} />
+                            </Col>
+                            <Col>
+                                <Form.Control type="submit" />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <div className="feedback">{ this.state.errorMessage }</div>
+                        </Row>
+                </Form>
               </div>
             )
         } else {
             return (
-                <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
+                <div className="login-form">
+                    <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
+                </div>
             )
         }
     }

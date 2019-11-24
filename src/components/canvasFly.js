@@ -79,7 +79,8 @@ class CanvasFly extends React.Component {
 	}
 	changeGrid (id) {
 		if (this.fly_anim.changeGrid && (id !== this.fly_anim.id)) {
-			this.fly_anim.changeGrid(id)
+			let obj = this.context.mazes.find( maze => maze.id === id);
+			this.fly_anim.changeGrid(obj)
 		}
 	}
 	switchPlayer () {

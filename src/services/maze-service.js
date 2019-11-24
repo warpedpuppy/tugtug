@@ -19,6 +19,7 @@ const MazeService = {
     },
     getOneMaze: function(id) {
         //console.log(id)
+        
         return fetch(`${config.API_ENDPOINT}/tugtug/get-grid`, {
             method: 'POST',
             headers: {

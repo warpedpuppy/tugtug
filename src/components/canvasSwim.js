@@ -49,7 +49,8 @@ export default class HomeCanvas extends React.Component {
 	}
 	changeGrid (id) {
 		if (this.swim_game.changeGrid && (id !== this.swim_game.id)) {
-			this.swim_game.changeGrid(id)
+			let obj = this.context.mazes.find( maze => maze.id === id);
+			this.swim_game.changeGrid(obj)
 		}
 	}
 	testFilter () {
