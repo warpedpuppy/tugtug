@@ -2,12 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Menu.css';
 import SiteContext from '../SiteContext';
-import Button from 'react-bootstrap/Button';
-
-export default class Menu extends React.Component {
+import { withRouter } from 'react-router-dom';
+class Menu extends React.Component {
 
 	static contextType = SiteContext;
-	state = {buttonText: "choose maze"}
+	state = {
+		buttonText: "choose maze", 
+		dropDown: false
+	}
+	goto = (url) => {
+		this.props.history.push(url);
+		this.setState({dropDown: false})
+	}
 
 	chooseMaze = (e) => {
 		e.preventDefault();
@@ -15,16 +21,28 @@ export default class Menu extends React.Component {
 		this.context.setInGameMazeEdit(!this.context.inGameMazeEdit);
 		this.context.setMazeGameAction(!this.context.mazeGameAction);
 	}
-
+	hamburgerClickHandler = (e) => {
+		this.setState({dropDown: !this.state.dropDown})
+	}
 	render() {
 		if (!this.context.mazeGame) {
+			let classRef = (this.state.dropDown)?'change':'';
 			return (
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
-					<div className="nav-links">
-						<Link to="/">home</Link>
-						<Link to="/games">games</Link>
-						<Link to="/admin">admin</Link>
+					<div className="dropdown-screen"></div>
+					<div className={`nav-links ${classRef}`}>
+						<span onClick={() => this.goto("/")}>home</span>
+						<span onClick={() => this.goto("/games")}>games</span>
+						<span onClick={() => this.goto("/admin")}>admin</span>
+						{/* <Link to="/" onClick={this.hamburgerClickHandler}>home</Link>
+						<Link to="/games" onClick={this.hamburgerClickHandler}>games</Link>
+						<Link to="/admin" onClick={this.hamburgerClickHandler}>admin</Link> */}
+					</div>
+					<div className="hamburger" onClick={this.hamburgerClickHandler}>
+						<span className={classRef}></span>
+						<span className={classRef}></span>
+						<span className={classRef}></span>
 					</div>
 				</nav>
 			);
@@ -33,9 +51,9 @@ export default class Menu extends React.Component {
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
 					<div className="nav-links">
-						<Link to="/">home</Link>
-						<Button size="sm" onClick={this.chooseMaze}>{ this.state.buttonText }</Button>
-						<Link to="/games">exit</Link>
+						<span onClick={() => this.goto("/")}>home</span>
+						<span size="sm" onClick={this.chooseMaze}>{ this.state.buttonText }</span>
+						<span onClick={() => this.goto("/games")}>exit</span>
 						</div>
 				</nav>
 			);
@@ -44,6 +62,6 @@ export default class Menu extends React.Component {
 	  }
 }
 
-
+export default withRouter( Menu );
 
 
