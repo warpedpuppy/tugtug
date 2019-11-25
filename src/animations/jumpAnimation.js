@@ -214,37 +214,6 @@ export default function(obj) {
             this.action = true;
 
         },
-        // resizeBundle: function () {
-        //     this.clock.resize();
-        //     this.gears.resize();
-        //     this.hero.resize();
-        //     this.jump.resize();
-        //     this.fpsCounter.x = this.utils.canvasWidth - 75;
-        //     if (this.isMobile) {
-        //         this.controlPanel.resize();
-        //     }    
-        // },
-        // resizeHandler: function () {
-        //     this.canvasWidth =  this.utils.returnCanvasWidth(this.isMobileOnly);
-        //     this.canvasHeight = this.utils.returnCanvasHeight(this.isMobileOnly);
-
-        //     this.utils.resize(this.canvasWidth, this.canvasHeight);
-
-        //     this.resizeBundle();
-           
-        //     this.app.renderer.resize(this.canvasWidth, this.canvasHeight);
-        //     this.action = false;
-
-        //     if(this.timeOut){
-        //         clearTimeout(this.timeOut);
-        //     }
-        //     this.timeOut = setTimeout(this.resized.bind(this), 200)
-
-        // },
-        // resized: function () {
-        //     this.action = true;
-        //     clearTimeout(this.timeOut);
-        // },
         makeJumpActive: function () {
             this.jump.addToStage();
             this.jump.jumpBackground.pause = false;

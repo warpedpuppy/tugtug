@@ -1,14 +1,14 @@
 import React from 'react';
 import './HomeCanvas.css';
-import home_page from '../animations/jumpAnimation';
-import {isMobile, isMobileOnly} from 'react-device-detect';
+import jump_game from '../animations/jumpAnimation';
+import { isMobile, isMobileOnly } from 'react-device-detect';
 import SiteContext from '../SiteContext';
 export default class HomeCanvas extends React.Component {
 
 	static contextType = SiteContext;
 	constructor(props){
 		super(props);
-		this.home_page = {};
+		this.jump_game = {};
 		this.testFilter = this.testFilter.bind(this);
 		this.loggedInCheck = this.loggedInCheck.bind(this);
 		this.state = {
@@ -20,33 +20,32 @@ export default class HomeCanvas extends React.Component {
 		
 	}
 	pauseGame (bool) {
-		if (this.home_page.pause) {
-			this.home_page.pause(bool)
+		if (this.jump_game.pause) {
+			this.jump_game.pause(bool)
 		}
-
 	}
 	componentDidMount () {
 		if (this.state.loggedIn) {
-			this.home_page = home_page();
-			this.home_page.init(isMobile, isMobileOnly);
+			this.jump_game = jump_game();
+			this.jump_game.init(isMobile, isMobileOnly);
 		}
 		
 	}
 	startGame = () => {
 		this.setState({showStartScreen: false})
-		this.home_page.startGame();
+		this.jump_game.startGame();
 	}
 	componentWillUnmount(){
-		this.home_page.stop();
+		this.jump_game.stop();
 		
 	}
 	loggedInCheck () {
 		this.setState({loggedIn:true})
-		this.home_page = home_page();
-		this.home_page.init(isMobile, isMobileOnly);
+		this.jump_game = jump_game();
+		this.jump_game.init(isMobile, isMobileOnly);
 	}
 	testFilter () {
-		this.home_page.filterTest();
+		this.jump_game.filterTest();
 		if(this.state.filterTest === "off") {
 			this.setState({filterTest: "on"})
 		} else { 
@@ -54,7 +53,7 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	nightMode () {
-		this.home_page.nightMode();
+		this.jump_game.nightMode();
 		if(this.state.nightMode === "off") {
 			this.setState({nightMode: "on"})
 		} else { 
@@ -62,10 +61,10 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	switchPlayer () {
-		this.home_page.switchPlayer();
+		this.jump_game.switchPlayer();
 	}
 	render () {
-		this.pauseGame(this.props.action)
+		this.pauseGame(this.context.mazeGameAction)
 		let canvasClass = (isMobile)?"canvasParent isMobileOnly":"canvasParent";
 			return (
 				<div className={canvasClass}>

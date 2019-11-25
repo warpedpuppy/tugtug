@@ -43,6 +43,7 @@ export default function () {
 
 			let gremlin = this.gremlin.buildGremlin(background.width);
 			gremlin.rotation = this.utils.deg2rad(-90);
+			gremlin.bodyCont.y = -30;
 			gremlin.hit = false;
 			this.cont.addChild(gremlin);
 			this.cont.gremlin = gremlin;

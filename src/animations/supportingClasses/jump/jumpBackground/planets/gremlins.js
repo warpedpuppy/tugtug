@@ -8,10 +8,8 @@ export default function (){
 		init: function () {
 		},
 		addToStage: function () {
-
 		},
 		removeFromStage: function () {
-
 		},
 		buildGremlin: function (height) {
 
@@ -55,8 +53,9 @@ export default function (){
 			bodyCont.addChild(this.mouth);
 
 			this.grimaceMouth();
-
+			cont.scale.set(0.5)
 			cont.addChild(bodyCont);
+			cont.bodyCont = bodyCont;
 			return cont
 
 		},
