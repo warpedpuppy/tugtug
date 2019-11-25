@@ -24,7 +24,7 @@ export default function () {
 		pause: false,
 		dotEatBoolean: true,
 		spacer: 250,
-		startScale: 0.25,
+		startScale: 0.1,
 		orbListen: true,
 		heroCollisionDetectObject: {},	
 		init: function (parentCont, action) {

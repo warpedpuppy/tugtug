@@ -5,7 +5,7 @@ import Config from '../../../../animationsConfig';
 export default function () {
 	return {
 		utils: Utils,
-		radius: 5, 
+		radius: 1, 
 		collisionDetect: {},
 		build: function (planetWidth) {
 

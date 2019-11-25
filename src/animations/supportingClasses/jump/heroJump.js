@@ -100,7 +100,6 @@ export default function () {
 			this.cont.addChild(this.feet);
 
 			let body = Assets.Sprite('jumpBody.png');
-			//body.scale.set(0.75);
 			body.anchor.set(0.5)
 			body.y = -40;
 			this.body = body;
@@ -118,7 +117,7 @@ export default function () {
 			this.mouth = this.cont.mouth = this.smileyMouth();
 			this.mouth.y = -25;
 			this.cont.addChild(this.mouth);
-
+			this.cont.scale.set(0.5)
 			this.grimaceMouth();
 
 		},

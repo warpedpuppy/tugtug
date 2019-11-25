@@ -35,9 +35,6 @@ class Menu extends React.Component {
 						<span onClick={() => this.goto("/")}>home</span>
 						<span onClick={() => this.goto("/games")}>games</span>
 						<span onClick={() => this.goto("/admin")}>admin</span>
-						{/* <Link to="/" onClick={this.hamburgerClickHandler}>home</Link>
-						<Link to="/games" onClick={this.hamburgerClickHandler}>games</Link>
-						<Link to="/admin" onClick={this.hamburgerClickHandler}>admin</Link> */}
 					</div>
 					<div className="hamburger" onClick={this.hamburgerClickHandler}>
 						<span className={classRef}></span>
@@ -62,6 +59,5 @@ class Menu extends React.Component {
 	  }
 }
 
-export default withRouter( Menu );
-
+export default withRouter(Menu)
 
