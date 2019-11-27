@@ -53,7 +53,7 @@ export default function (){
 			bodyCont.addChild(this.mouth);
 
 			this.grimaceMouth();
-			cont.scale.set(0.5)
+			cont.scale.set(0.25)
 			cont.addChild(bodyCont);
 			cont.bodyCont = bodyCont;
 			return cont

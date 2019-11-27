@@ -117,7 +117,7 @@ export default function () {
 			this.mouth = this.cont.mouth = this.smileyMouth();
 			this.mouth.y = -25;
 			this.cont.addChild(this.mouth);
-			this.cont.scale.set(0.5)
+			this.cont.scale.set(0.25)
 			this.grimaceMouth();
 
 		},

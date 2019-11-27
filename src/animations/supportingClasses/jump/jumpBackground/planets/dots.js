@@ -12,7 +12,7 @@ export default function () {
 			let dotsCont = Assets.Container();
 			let dotsArray = [];
 			let dotQ = this.dotQ = Config.spaceDotsPerPlanet;
-			let dist = this.dist = (planetWidth / 2) + 20;
+			let dist = this.dist = (planetWidth / 2) + 10;
 	
 			dotsCont.dist = dist;
 			
