@@ -12,7 +12,9 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             password: '',
-            errorMessage: ''
+            errorMessage: '',
+            showForm: false,
+            codeEnter: ''
         }
     }
     static contextType = SiteContext;
@@ -31,9 +33,26 @@ export default class Login extends React.Component {
             if (result.login === true) {
                 this.context.loginHandler(true);
             } else {
-                this.setState({errorMessage: 'There was a problem.'})
+                this.setState({errorMessage: 'This was not correct.'})
             }
         })
+
+    }
+    buttonClicked = (e) => {
+        if (this.state.codeEnter.length < 4) {
+            this.setState({codeEnter: this.state.codeEnter + e.target.innerHTML})
+        } else {
+            let removeLeftDigit = this.state.codeEnter.substr(1) + e.target.innerHTML
+            this.setState({codeEnter: removeLeftDigit})
+        }
+    }
+    submitCode = async (e) => {
+       let result =  await AuthApiService.showLoginForm(this.state.codeEnter);
+       
+       if (result.success) {
+        this.setState({showForm: true})
+       }
+
 
     }
 
@@ -42,7 +61,28 @@ export default class Login extends React.Component {
     }
 
     render () {
-        if (!this.context.loggedIn) {
+        let buttons = Array.from(Array(9).keys()).map( item => {
+            let buttonNum = item + 1;
+            return <span onClick={this.buttonClicked} key={buttonNum}>{buttonNum}</span>
+        })
+        if (this.context.loggedIn) {
+            return (
+                <div className="login-form">
+                    <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
+                </div>
+            )
+        
+        } else if (!this.state.showForm) {
+            return (
+                <div className="keyPad">
+                    <div>
+                     {buttons}
+                     </div>
+                     <div><Button onClick={this.submitCode}>submit code</Button></div>
+                     <div>{this.state.codeEnter}</div>
+                </div>
+            )
+        } else if (!this.context.loggedIn) {
             return (
                 <div className="login-form">
                     <Form  onSubmit={ this.onSubmit }>
@@ -61,11 +101,7 @@ export default class Login extends React.Component {
               </div>
             )
         } else {
-            return (
-                <div className="login-form">
-                    <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
-                </div>
-            )
+           
         }
     }
 }

@@ -95,6 +95,7 @@ export default class App extends React.Component {
         <React.Fragment>
           <header><Menu /></header>
           <main>
+            <div id="test"></div>
             <Switch>
               <Route exact path={'/'} component={ Home } />
               <Route exact path={'/games'} component={ Games } />
