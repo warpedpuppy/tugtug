@@ -23,7 +23,7 @@ export default function () {
 		utils: Utils,
 		pause: false,
 		dotEatBoolean: true,
-		spacer: 250,
+		spacer: 150,
 		startScale: 0.1,
 		orbListen: true,
 		heroCollisionDetectObject: {},	
