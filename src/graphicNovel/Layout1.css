@@ -1,0 +1,12 @@
+.block-division {
+    display: flex;
+    /* border: 1px solid red; */
+}
+
+
+@media (min-width: 1024px) {
+    .block-division {
+    
+    
+    }
+}

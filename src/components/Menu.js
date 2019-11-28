@@ -33,6 +33,7 @@ class Menu extends React.Component {
 					<div className="dropdown-screen"></div>
 					<div className={`nav-links ${classRef}`}>
 						<span onClick={() => this.goto("/")}>home</span>
+						<span onClick={() => this.goto("/graphic-novel")}>graphic novel layouts</span>
 						<span onClick={() => this.goto("/games")}>games</span>
 						<span onClick={() => this.goto("/admin")}>admin</span>
 					</div>
@@ -48,7 +49,6 @@ class Menu extends React.Component {
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
 					<div className="nav-links">
-						<span onClick={() => this.goto("/")}>home</span>
 						<span size="sm" onClick={this.chooseMaze}>{ this.state.buttonText }</span>
 						<span onClick={() => this.goto("/games")}>exit</span>
 						</div>

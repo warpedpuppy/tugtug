@@ -36,9 +36,11 @@
 .keyPad span:active {
     transform: scale(0.7); 
 }
+.keyPad div.feedback,
 .feedback {
     color: orange;
     text-align: center;
     font-style: italic;
     margin: 10px auto;
+    display: block;
 }

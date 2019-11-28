@@ -7,6 +7,7 @@ import Menu from './components/Menu';
 import CanvasJump from './components/canvasJump';
 import CanvasFly from './components/canvasFly';
 import CanvasSwim from './components/canvasSwim';
+import GraphicNovel from './pages/GraphicNovel';
 import Admin from './pages/Admin';
 import { Switch, Route } from 'react-router-dom';
 import MazeService from './services/maze-service';
@@ -102,6 +103,7 @@ export default class App extends React.Component {
               <Route exact path={'/jump-game'} component={ CanvasJump } />
               <Route exact path={'/fly-game'} render={ ({history}) => <CanvasFly history={history} />} />
               <Route exact path={'/swim-game'} render={ ({history}) => <CanvasSwim history={history} />}/>
+              <Route exact path={'/graphic-novel/:id'} component={ GraphicNovel }/>
               <Route exact path={'/admin'} component={ Admin } />
               <Route component={ NotFound } />
             </Switch>
