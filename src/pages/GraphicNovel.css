@@ -7,16 +7,16 @@
 .pagination-shell-inner {
     display: inline-block;
 }
-.layout-shell-outer {
+.layout-shell {
     display:inline-block;
 }
-.layout-shell {
+
+.layout{
     display: flex;
     flex-direction: column;
 }
-
-@media (min-width: 1268px) {
-    .layout-shell  {
+@media (min-width: 1263px) {
+    .layout {
         flex-direction: row;
     }
 }

@@ -33,7 +33,7 @@ class Menu extends React.Component {
 					<div className="dropdown-screen"></div>
 					<div className={`nav-links ${classRef}`}>
 						<span onClick={() => this.goto("/")}>home</span>
-						<span onClick={() => this.goto("/graphic-novel")}>graphic novel layouts</span>
+						<span onClick={() => this.goto("/graphic-novel/1")}>graphic novel layouts</span>
 						<span onClick={() => this.goto("/games")}>games</span>
 						<span onClick={() => this.goto("/admin")}>admin</span>
 					</div>

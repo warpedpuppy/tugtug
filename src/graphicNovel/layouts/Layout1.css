@@ -1,0 +1,13 @@
+/* .layout-1 {
+    display: flex;
+    flex-direction: column;
+} */
+.block-division {
+    display: flex;
+}
+
+@media (min-width: 1263px) {
+    /* .layout-1 {
+        flex-direction: row;
+    } */
+}

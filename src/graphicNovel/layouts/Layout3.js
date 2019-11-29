@@ -1,13 +1,14 @@
 import React from 'react';
 import './Layout1.css';
-import Square from './Square';
-export default class Layout1 extends React.Component{
+import Square from '../Square';
+export default class Layout3 extends React.Component{
     render () {
         return (
-            <React.Fragment>
+            <div className='layout layout-3'>
                 <div className="block-division">
                     <div>
-                        <Square w={300} h={600}/>
+                        <Square  w={300} h={300}/>
+                        <Square w={300} h={300}/>
                     </div>
                     <div>
                         <Square  w={300} h={300}/>
@@ -17,7 +18,7 @@ export default class Layout1 extends React.Component{
                 <div className="block-division">
                     <Square  w={600} h={600}/>
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 }

@@ -103,7 +103,7 @@ export default class App extends React.Component {
               <Route exact path={'/jump-game'} component={ CanvasJump } />
               <Route exact path={'/fly-game'} render={ ({history}) => <CanvasFly history={history} />} />
               <Route exact path={'/swim-game'} render={ ({history}) => <CanvasSwim history={history} />}/>
-              <Route exact path={'/graphic-novel/:id'} component={ GraphicNovel }/>
+              <Route exact path={'/graphic-novel/:id?'} component={ GraphicNovel }/>
               <Route exact path={'/admin'} component={ Admin } />
               <Route component={ NotFound } />
             </Switch>
