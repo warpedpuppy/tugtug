@@ -14,7 +14,8 @@ export default class Login extends React.Component {
             password: '',
             errorMessage: '',
             showForm: false,
-            codeEnter: ''
+            codeEnter: '',
+            codeFeedback: ''
         }
     }
     static contextType = SiteContext;
@@ -39,6 +40,7 @@ export default class Login extends React.Component {
 
     }
     buttonClicked = (e) => {
+        this.setState({codeFeedback: ''})
         if (this.state.codeEnter.length < 4) {
             this.setState({codeEnter: this.state.codeEnter + e.target.innerHTML})
         } else {
@@ -51,9 +53,9 @@ export default class Login extends React.Component {
        
        if (result.success) {
         this.setState({showForm: true})
+       } else {
+        this.setState({codeFeedback: "not the right code"})
        }
-
-
     }
 
     onChangeHandler = (e) => {
@@ -80,6 +82,7 @@ export default class Login extends React.Component {
                      </div>
                      <div><Button onClick={this.submitCode}>submit code</Button></div>
                      <div>{this.state.codeEnter}</div>
+                     <div className="feedback">{this.state.codeFeedback}</div>
                 </div>
             )
         } else if (!this.context.loggedIn) {
