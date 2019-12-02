@@ -50,9 +50,9 @@ export default function () {
 
             parentCont.addChild(this.cont);
             this.heroSwim.init(this.cont);
-            this.heroJump.init(this.cont);
+           // this.heroJump.init(this.cont);
             this.heroFly.init(this.cont);
-            this.heroBounce.init(this.cont);
+            //this.heroBounce.init(this.cont);
 
 
             return this;
