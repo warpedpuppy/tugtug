@@ -9,7 +9,6 @@ import Jump from './supportingClasses/jump/indexJump';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
-import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
@@ -29,7 +28,6 @@ export default function(obj) {
         hero: Hero(),
         transitionAnimationPlaying: false,
         utils: Utils,
-        score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
         jump: Jump(),
@@ -230,7 +228,7 @@ export default function(obj) {
             this.app.stage.addChild(this.fpsCounter);
         },
         reset: function () {
-            this.score.nextLevel();
+           
             this.tokens.reset();
             this.jump.reset();
             this.bounce.reset();
@@ -238,7 +236,7 @@ export default function(obj) {
             this[this.activeMode].removeFromStage();
             this.switchPlayer(this.mode[0]);
            
-           // this.grid.nextBoard(); 
+
             this.keyHandler.addToStage();  
             this.getDatabaseData();
 

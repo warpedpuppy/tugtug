@@ -7,13 +7,12 @@ export default function () {
         resizeBundle: function () {
             let root = this.utils.root;
             root.grid.resize();
-            root.score.resize();
             root.clock.resize();
             root.gears.resize();
             root.hero.resize();
             root.fly.resize();
             root.tokens.resize();
-            root.fpsCounter.x = root.utils.canvasWidth - 75;
+            // root.fpsCounter.x = root.utils.canvasWidth - 75;
             if (root.isMobile) {
                 root.controlPanel.resize();
             }    

@@ -88,14 +88,13 @@ export default function(obj) {
             this.stage = app.stage;
             this.stage.addChild(this.kingCont);
         
-            this.fpsCounter = new PixiFps();
-            this.fpsCounter.x = this.utils.canvasWidth - 75;
+            // this.fpsCounter = new PixiFps();
+            // this.fpsCounter.x = this.utils.canvasWidth - 75;
             
             LoadingAnimation.start(this.kingCont);
 
             this.kingCont.addChild(this.filterContainer);
 
-           // this.loadData.getDatabaseData = this.loadData.getDatabaseData.bind(this);
             this.loadDB = this.loadDB.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
@@ -212,7 +211,7 @@ export default function(obj) {
                 this.app.ticker.add(this.flyAnimate.animateMobile); 
             }
 
-            this.app.stage.addChild(this.fpsCounter);
+            // this.app.stage.addChild(this.fpsCounter);
 
            LoadingAnimation.stop(this.kingCont);
         },
@@ -224,12 +223,11 @@ export default function(obj) {
             }
         },
         reset: function () {
-            this.score.nextLevel();
+    
             this.tokens.reset();
             this[this.activeMode].removeFromStage();
             this.grid.nextBoard(); 
             this.keyHandler.addToStage();  
-          //  this.loadData.getDatabaseData();
             this.fullStop = false;
         },
         filterTest: function () {

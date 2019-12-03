@@ -10,23 +10,30 @@ export default class Home extends React.Component {
         this.home_buttons.stop();
     }
     gotoGame = (game) => {
-        this.props.history.push(game)
+        console.log("click")
+        this.props.history.push(game);
     }
     render () {
         return (
             <div className="general-page-layout">
+
                 <div className="home-page-buttons">
-                    <div 
-                    onClick={() => this.gotoGame('fly-game')} 
-                    className="gameShell fly" 
-                    id="fly-home"></div>
-                    <div 
-                    onClick={() => this.gotoGame('jump-game')} 
-                    className="gameShell jump" 
-                    id="jump-home"></div>
-                    <div 
-                    onClick={() => this.gotoGame('swim-game')} 
-                    className="gameShell swim" id="swim-home"></div>
+
+                    <div class="home-button-cont" onClick={() => this.gotoGame('fly-game')} >
+                        <div className="gameShell fly" id="fly-home"></div>
+                        <div className="screen"></div>
+                    </div>
+
+                    <div class="home-button-cont" onClick={() => this.gotoGame('jump-game')} >
+                        <div className="gameShell jump" id="jump-home"></div>
+                        <div className="screen"></div>
+                    </div>
+
+                    <div class="home-button-cont" onClick={() => this.gotoGame('swim-game')} >
+                        <div className="gameShell swim" id="swim-home"></div>
+                        <div className="screen"></div>
+                    </div>
+                    
                 </div>
             </div>
         )

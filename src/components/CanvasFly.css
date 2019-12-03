@@ -3,7 +3,17 @@
 }
 
 .canvasParent .inGameAllGrids {
-    background: black;
-    position: relative;
+    background-color: rgba(255, 255, 255, 0.65);
+    position: fixed;
+    top: 30px;
+    left: 0;
     z-index: 1000;
+    width: 100vw;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.canvasParent .inGameAllGrids .displayDiv {
+    float: none;
+    display: inline-block;
 }

@@ -10,6 +10,13 @@ import SiteContext from '../SiteContext';
 export default class LoggedIn extends React.Component {
     static contextType = SiteContext;
 
+    componentDidMount () {
+        this.context.mazeGameHandler('admin');
+    }
+    componentWillUnmount () {
+        this.context.mazeGameHandler('');
+    }
+
     render(){
         if(this.context.loggedIn) {
             return (

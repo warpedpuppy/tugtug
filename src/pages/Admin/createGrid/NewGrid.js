@@ -114,7 +114,7 @@ export default class NewGrid extends React.Component {
         <Button variant="success"  onClick={ this.tempSaveMazeHandler }>save temporary maze</Button> ;
         return (
             <div>
-                <fieldset><legend>control panel</legend>
+                <fieldset><legend>build a new grid</legend>
                 <Select 
                     title={ "rows" } 
                     changeSize={ this.changeSize } 

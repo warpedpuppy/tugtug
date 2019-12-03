@@ -10,7 +10,7 @@ export default function () {
             root.gears.resize();
             root.hero.resize();
             root.jump.resize();
-            root.fpsCounter.x = root.utils.canvasWidth - 75;
+            // root.fpsCounter.x = root.utils.canvasWidth - 75;
             if (root.isMobile) {
                 root.controlPanel.resize();
             }    

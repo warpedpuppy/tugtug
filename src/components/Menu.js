@@ -51,7 +51,7 @@ class Menu extends React.Component {
 					</div>
 				</nav>
 			);
-		} else if (this.context.game === 'jump' ) {
+		} else if (this.context.game === 'jump' || this.context.game === 'admin' ) {
 			return (
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>

@@ -22,4 +22,11 @@
     background-color: orange;
     
 }
+.active-maze {
+    background-color: lightgreen;
+}
+.btn.delete-maze-button {
+    display:block;
+    margin: 15px auto;
+}
 

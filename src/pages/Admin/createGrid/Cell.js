@@ -46,6 +46,7 @@ export default class Cell extends React.Component {
     render () {
 
         let { hero, token1, token2, token3, token4 } = this.props;
+
         let heroClass = (hero && (hero[0] === this.props.rowval && hero[1] === this.props.cellval))?'hero':'';
         let token1Class = (token1 && (token1[0] === this.props.rowval && token1[1] === this.props.cellval))?'token1':'';
         let token2Class = (token2 && (token2[0] === this.props.rowval && token2[1] === this.props.cellval))?'token2':'';
