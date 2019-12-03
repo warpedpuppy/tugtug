@@ -1,119 +1,26 @@
-div.homePage {
-	/*min-height: calc(100vh - 100px);*/
-/*	background-color: #FF00FF;*/
+.home-page-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-div.homePage h1 {
-	margin:0;
+.home-page-buttons .gameShell {
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  border: 3px solid black;
+  cursor: pointer;
+  transition: background-color 0.5s;
 }
-div.buttonDivCont {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+.home-page-buttons .gameShell:hover {
+ background: orange;
 }
-.textCont {
-	width: 70%;
-	margin:150px auto;
-	color: #FF8D27;
-	position: relative;
-}
-.textCont svg {
-	position: absolute;
-	right:0;
-}
-#fpsChecker {
-	width: 300px;
-	margin:100px auto;
-	text-align: center;
-	border:10px solid white;
-	border-radius: 10px;
-	box-shadow: 0 10px 10px rgba(0,0,0,0.5);
-	font-size: 20px;
-	background-color: black;
-	color:white;
-	padding:20px;
-}
-.homeCont {
-	position: relative;
-	background-color: hsl(2, 57%, 40%);
-background-color:hsla(274, 100%, 31%, 1);
-background-image: 
-  
- repeating-linear-gradient(
-    140deg,
-    transparent, 
-    transparent 40px, 
-    rgba(0,0,0,.4) 40px, 
-    
-    rgba(0,0,0,.4) 43px, 
-    
-    transparent 43px, 
-    
-    transparent 53px, 
-    rgba(0,0,0,.4) 53px, 
-    rgba(0,0,0,.4) 56px, 
-    
-    transparent 56px, 
-    transparent 106px, 
-    
-    rgba(0,0,0,.5) 106px, 
-    rgba(0,0,0,.5) 156px, 
-    rgba(255,255,255,.2) 156px, 
-    rgba(255,255,255,.2) 159px, 
-    rgba(0,0,0,.5) 159px, 
-    rgba(0,0,0,.5) 169px, 
-    rgba(255,255,255,.2) 169px, 
-    rgba(255,255,255,.2) 172px, 
-
-    rgba(0,0,0,.5) 172px, 
-    rgba(0,0,0,.5) 222px, 
-    
-    transparent 222px),
-  
-/*  verticals */
-repeating-linear-gradient(
-  -140deg, 
-  transparent, 
-  transparent 50px, 
-  rgba(0,0,0,.4) 50px, 
-  rgba(0,0,0,.4) 53px, 
-  transparent 53px, 
-  transparent 63px, 
-  rgba(0,0,0,.4) 63px, 
-  rgba(0,0,0,.4) 66px, 
-  transparent 66px, 
-  transparent 116px, 
-  rgba(0,0,0,.5) 116px, 
-  rgba(0,0,0,.5) 166px, 
-  rgba(255,255,255,.2) 166px, 
-  rgba(255,255,255,.2) 169px, 
-  rgba(0,0,0,.5) 169px, 
-  rgba(0,0,0,.5) 179px, 
-  rgba(255,255,255,.2) 179px, 
-  rgba(255,255,255,.2) 182px, 
-  rgba(0,0,0,.5) 182px, 
-  rgba(0,0,0,.5) 232px, 
-  transparent 232px),
- 
-/*   diagonals */
-repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);
-
-  width: 100vw;
-	height: 100vh;
+.gameShell.jump {
+  background: darkblue;
 }
 
-@media (min-width: 1024px) {
-
-	.textCont {
-		width: 700px;
-	}
-	.homeMenuButtonDiv {
-		display: flex;
-		
-	}
-	.homeMenuButton {
-		padding: 20px;
-	}
-
-
-
+@media (min-width: 768px) {
+  .home-page-buttons {
+    flex-direction: row;
+  }
 }

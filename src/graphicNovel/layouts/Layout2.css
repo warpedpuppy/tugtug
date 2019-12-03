@@ -1,6 +1,4 @@
-
 .layout-2  .block-division {
-    display: flex;
     flex-direction: column;
 }
 .layout-2  .block-division div div:not(.square) {

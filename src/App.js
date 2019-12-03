@@ -21,7 +21,7 @@ export default class App extends React.Component {
       loggedIn: TokenService.hasAuthToken(),
       mazes: [],
       ids: [],
-      mazeGame: false,
+      game: '',
       activeMazeId: undefined,
       inGameMazeEdit: false,
       mazeGameAction: true
@@ -53,8 +53,8 @@ export default class App extends React.Component {
     this.setState({mazes: this.state.mazes.filter( maze => mazeID !== maze.id) });
   }
 
-  mazeGameHandler = (mazeGame) => {
-    this.setState({mazeGame});
+  mazeGameHandler = (game) => {
+    this.setState({game});
   }
   setActiveMazeId = (activeMazeId) => {
     this.setState({activeMazeId});
@@ -81,7 +81,7 @@ export default class App extends React.Component {
       deleteMazes: this.deleteMazes,
       ids: this.state.ids,
       loginHandler: this.loginHandler,
-      mazeGame: this.state.mazeGame,
+      game: this.state.game,
       mazeGameHandler: this.mazeGameHandler,
       activeMazeId: this.state.activeMazeId,
       setActiveMazeId: this.setActiveMazeId,

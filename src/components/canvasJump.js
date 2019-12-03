@@ -25,6 +25,7 @@ export default class HomeCanvas extends React.Component {
 		}
 	}
 	componentDidMount () {
+		this.context.mazeGameHandler('jump');
 		if (this.state.loggedIn) {
 			this.jump_game = jump_game();
 			this.jump_game.init(isMobile, isMobileOnly);
@@ -36,8 +37,8 @@ export default class HomeCanvas extends React.Component {
 		this.jump_game.startGame();
 	}
 	componentWillUnmount(){
+		this.context.mazeGameHandler('');
 		this.jump_game.stop();
-		
 	}
 	loggedInCheck () {
 		this.setState({loggedIn:true})

@@ -40,7 +40,7 @@ export default function () {
             this.vy = this.utils.randomNumberBetween(3,5);
 
             if(items){
-            	  for(let i = 0; i < items.length; i ++){
+            	  for (let i = 0; i < items.length; i ++) {
 	            	var item = Assets.Sprite(items[i].url);
 	            	if (items[i].active) {
 		            	this.cont.addChild(item);
@@ -52,7 +52,7 @@ export default function () {
             this.heroSwim.init(this.cont);
             this.heroJump.init(this.cont);
             this.heroFly.init(this.cont);
-            this.heroBounce.init(this.cont);
+            //this.heroBounce.init(this.cont);
 
 
             return this;

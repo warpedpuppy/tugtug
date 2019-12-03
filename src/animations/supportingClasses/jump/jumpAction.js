@@ -46,7 +46,6 @@ export default function () {
 			}
 		},
 		animate: function () {
-
 			if(this.pause)return;
 	
 			for (let i = 0; i < this.bkgd.rainbowSwirlsQ; i ++) {
