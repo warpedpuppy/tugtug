@@ -4,7 +4,7 @@ nav#primary-nav {
 	left: 0;
 	height: 30px;
 	background: white;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.35);
+	/* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.35); */
 	width: 100vw;
 	display: flex;
 	align-items: center;
@@ -19,7 +19,7 @@ nav#primary-nav .dropdown-screen {
 	display: none;
 	width: 100vw;
 	height: 30px;
-	background-color: white;
+	/* background-color: white; */
 	position: absolute;
 	top: 0;
 	left: 0;

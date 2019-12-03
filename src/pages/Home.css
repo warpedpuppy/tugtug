@@ -10,13 +10,19 @@
   margin: 10px;
   border: 3px solid black;
   cursor: pointer;
-  transition: background-color 0.5s;
+  transition: box-shadow 0.5s;
 }
 .home-page-buttons .gameShell:hover {
- background: orange;
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+.gameShell.fly {
+  background: yellow;
 }
 .gameShell.jump {
   background: darkblue;
+}
+.gameShell.swim {
+  background: red;
 }
 
 @media (min-width: 768px) {
