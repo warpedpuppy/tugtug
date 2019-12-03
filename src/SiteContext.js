@@ -4,7 +4,7 @@ const SiteContext = React.createContext({
   loggedIn: undefined,
   mazes: [],
   ids: [],
-  mazeGame: false,
+  game: '',
   activeMazeId: undefined,
   inGameMazeEdit: false,
   mazeGameAction: true

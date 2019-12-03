@@ -29,7 +29,7 @@ export default class HomeCanvas extends React.Component {
 
 	}
 	componentDidMount () {
-		this.context.mazeGameHandler(true);
+		this.context.mazeGameHandler('swim');
 		this.swim_game = swim_game();
 		this.swim_game.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
 
@@ -39,7 +39,7 @@ export default class HomeCanvas extends React.Component {
 		this.swim_game.startGame();
 	}
 	componentWillUnmount(){
-		this.context.mazeGameHandler(false);
+		this.context.mazeGameHandler('');
 		this.swim_game.stop();
 	}
 	loggedInCheck () {

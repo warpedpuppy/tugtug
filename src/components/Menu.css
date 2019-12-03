@@ -16,7 +16,7 @@ nav#primary-nav .logo {
 	z-index: 4;
 }
 nav#primary-nav .dropdown-screen {
-	display: block;
+	display: none;
 	width: 100vw;
 	height: 30px;
 	background-color: white;
@@ -26,20 +26,23 @@ nav#primary-nav .dropdown-screen {
 	z-index: 2;
 }
 nav#primary-nav .nav-links {
-	width: 100vw;
-	background: rgba(0, 0, 0, 0.75);
+	/* width: 100vw;
+	background: rgba(0, 0, 0, 0.75); */
 	position: relative;
-	top:-100px;
-	left: 0;
-	transition: top 0.5s;
+	right: 10px;
+	/* top:-100px; */
+	/* left: 0;
+	transition: top 0.5s; */
 	z-index: 1;
 }
 nav#primary-nav .nav-links span {
 	cursor: pointer;
+	display: inline-block;
+	margin: 0 15px;
 }
 
 nav#primary-nav .nav-links.change {
-	top:103px;
+	top:30px;
 }
 nav#primary-nav .nav-links.change span {
 	display: block;
@@ -53,6 +56,7 @@ nav#primary-nav .nav-links.change span {
 
 /* hamburger */
 .hamburger {
+	display:none;
 	position: absolute;
 	z-index: 3;
 	right: 10px;

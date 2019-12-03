@@ -24,7 +24,7 @@ export default class LoggedIn extends React.Component {
                         <Tab eventKey="all-grids" title="all grids">
                         <AllGrids />
                         </Tab>
-                        <Tab eventKey="admin" title="admin">
+                        <Tab eventKey="admin" title="admin's admin">
                         <Login />
                         </Tab>
                     </Tabs>
@@ -45,7 +45,7 @@ export default class LoggedIn extends React.Component {
                         <Tab eventKey="all-grids" title="all grids">
                         <AllGrids />
                         </Tab>
-                        <Tab eventKey="admin" title="admin">
+                        <Tab eventKey="admin" title="admin's admin">
                         <Login />
                         </Tab>
                     </Tabs>

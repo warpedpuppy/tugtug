@@ -25,15 +25,13 @@ class Menu extends React.Component {
 		this.setState({dropDown: !this.state.dropDown})
 	}
 	render() {
-		if (!this.context.mazeGame) {
+		if (this.context.game === '') {
 			let classRef = (this.state.dropDown)?'change':'';
 			return (
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
 					<div className="dropdown-screen"></div>
 					<div className={`nav-links ${classRef}`}>
-						<span onClick={() => this.goto("/")}>home</span>
-						<span onClick={() => this.goto("/games")}>games</span>
 						<span onClick={() => this.goto("/admin")}>admin</span>
 					</div>
 					<div className="hamburger" onClick={this.hamburgerClickHandler}>
@@ -43,14 +41,20 @@ class Menu extends React.Component {
 					</div>
 				</nav>
 			);
-		} else {
+		} else if (this.context.game === 'swim' || this.context.game === 'fly') {
 			return (
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
 					<div className="nav-links">
-						<span size="sm" onClick={this.chooseMaze}>{ this.state.buttonText }</span>
-						<span onClick={() => this.goto("/games")}>exit</span>
-						</div>
+						<span onClick={this.chooseMaze}>{ this.state.buttonText }</span>
+						<span onClick={() => this.goto("/")}>exit</span>
+					</div>
+				</nav>
+			);
+		} else if (this.context.game === 'jump' ) {
+			return (
+				<nav id="primary-nav">
+					<div className="logo"><Link to="/">tugtug</Link></div>
 				</nav>
 			);
 		}

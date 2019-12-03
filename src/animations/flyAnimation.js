@@ -2,14 +2,12 @@ import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Config from './animationsConfig';
 import OrientationChange from './utils/orientationChange';
-//import LoadData from './utils/loadData';
 import Clock from './supportingClasses/universal/clock';
 import Fly from './supportingClasses/fly/indexFly';
 import FlyAnimate from './supportingClasses/fly/flyAnimate';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
-import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import MobileMask from './supportingClasses/universal/mobileMask';
@@ -34,7 +32,6 @@ export default function(obj) {
         filterAnimation: FilterAnimation(),
         hero: Hero(),
         utils: Utils,
-        score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
         fly: Fly(),
@@ -173,7 +170,6 @@ export default function(obj) {
             this.clock.init().addToStage();
             this.tokens.init();
             this.grid.init();
-            this.score.init()
             this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
 
             if (this.isMobileOnly) {

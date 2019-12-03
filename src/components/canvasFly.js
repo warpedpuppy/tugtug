@@ -23,7 +23,7 @@ class CanvasFly extends React.Component {
 	static contextType = SiteContext;
 	componentDidMount () {
 		
-		this.context.mazeGameHandler(true);
+		this.context.mazeGameHandler('fly');
 		this.fly_anim = FlyAnimation();
 		this.fly_anim.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
 
@@ -43,7 +43,7 @@ class CanvasFly extends React.Component {
 
 	}
 	componentWillUnmount(){
-		this.context.mazeGameHandler(false);
+		this.context.mazeGameHandler('');
 		this.fly_anim.stop();
 	}
 	testFilter () {

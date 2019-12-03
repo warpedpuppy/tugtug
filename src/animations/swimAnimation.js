@@ -7,7 +7,6 @@ import Swim from './supportingClasses/swim/indexSwim';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
 import Hero from './supportingClasses/universal/hero';
-import Score from '../animations/supportingClasses/universal/score/scoreIndex';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
@@ -34,7 +33,6 @@ export default function(obj) {
         hero: Hero(),
         transitionAnimationPlaying: false,
         utils: Utils,
-        score: Score(),
         loader: Assets.Loader(),
         activeAction: undefined,
         swim: Swim(),
@@ -178,8 +176,6 @@ export default function(obj) {
             this.tokens.init();
 
             this.grid.init();
-
-            this.score.init()
 
             this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
 

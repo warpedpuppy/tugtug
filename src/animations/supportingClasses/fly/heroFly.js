@@ -5,6 +5,7 @@ export default function () {
 	return {
 		cont: Assets.Container(),
 		dragon: [],
+		pos: [],
 		utils: Utils,
 		segmentsQ: 10,
 		dyeLot: [],
