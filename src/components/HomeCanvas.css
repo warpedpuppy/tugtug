@@ -67,7 +67,7 @@
 
 .canvasParent.isMobileOnly {
 	position: absolute;
-	top: 30px;
+	top: 0;
 	width: 100vw;
 	text-align: center;
 }
