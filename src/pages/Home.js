@@ -20,7 +20,6 @@ export default class Home extends React.Component {
     }
 
     render () {
-        let spirals = (this.state.counter === 0)?`screen spiral`:`screen spiral`;
         return (
             <div className="general-page-layout">
 

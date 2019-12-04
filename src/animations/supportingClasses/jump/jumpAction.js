@@ -48,9 +48,9 @@ export default function () {
 		animate: function () {
 			if(this.pause)return;
 	
-			for (let i = 0; i < this.bkgd.rainbowSwirlsQ; i ++) {
-				this.bkgd.rainbowSwirlInstances[i].animate();
-			}
+			// for (let i = 0; i < this.bkgd.rainbowSwirlsQ; i ++) {
+			// 	this.bkgd.rainbowSwirlInstances[i].animate();
+			// }
 
 			let globalPoint = this.utils.hero.activeHero.body.toGlobal(this.utils.app.stage);
 			this.heroCollisionDetectObject.x = globalPoint.x;

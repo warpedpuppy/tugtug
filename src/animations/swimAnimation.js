@@ -49,6 +49,7 @@ export default function(obj) {
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
         orientationChange: OrientationChange(),
+        showFPS: false,
         init: function (isMobile, isMobileOnly, id, parent) {
             this.id = id;
 
@@ -92,10 +93,12 @@ export default function(obj) {
             
           
            
-        
-            // const fpsCounter = this.fpsCounter = new PixiFps();
-            // this.fpsCounter.x = this.utils.canvasWidth - 75;
-            // app.stage.addChild(fpsCounter);
+            if (this.showFPS) {
+                this.fpsCounter = new PixiFps();
+                this.fpsCounter.x = this.utils.canvasWidth - 75;
+            }
+            
+
 
             LoadingAnimation.start(this.kingCont);
 
@@ -221,8 +224,7 @@ export default function(obj) {
             if (Config.testingJump) {
                 this.makeJumpActive();
             }
-            
-            // this.app.stage.addChild(this.fpsCounter);
+            if (this.showFPS)this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
             LoadingAnimation.stop(this.kingCont);
         },

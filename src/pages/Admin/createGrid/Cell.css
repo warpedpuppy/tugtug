@@ -1,6 +1,6 @@
 .cell {
-    width: 20px;
-    height: 20px;
+    width: 5px;
+    height: 5px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
     display:flex;
@@ -40,4 +40,9 @@
     content: "4";
 }
 
-
+@media (min-width: 768px) {
+    .cell {
+        width: 20px;
+        height: 20px;
+    }
+}

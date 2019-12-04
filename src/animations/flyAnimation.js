@@ -47,6 +47,7 @@ export default function(obj) {
         kingContBackground: Assets.Graphics(),
         resize: Resize(),
         flyAnimate: FlyAnimate(),
+        showFPS: false,
         init: function (isMobile, isMobileOnly, id, parent) {
             this.id = id;
 
@@ -87,9 +88,12 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
             this.stage.addChild(this.kingCont);
-        
-            // this.fpsCounter = new PixiFps();
-            // this.fpsCounter.x = this.utils.canvasWidth - 75;
+            
+            if (this.showFPS) {
+                this.fpsCounter = new PixiFps();
+                this.fpsCounter.x = this.utils.canvasWidth - 75;
+            }
+           
             
             LoadingAnimation.start(this.kingCont);
 
@@ -211,7 +215,7 @@ export default function(obj) {
                 this.app.ticker.add(this.flyAnimate.animateMobile); 
             }
 
-            // this.app.stage.addChild(this.fpsCounter);
+            if (this.showFPS) this.app.stage.addChild(this.fpsCounter);
 
            LoadingAnimation.stop(this.kingCont);
         },

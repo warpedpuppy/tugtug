@@ -1,3 +1,6 @@
 #uncontrolled-tab-example-tabpane-home {
     margin: 20px;
 }
+.general-page-layout .nav {
+    flex-wrap: nowrap;
+}
