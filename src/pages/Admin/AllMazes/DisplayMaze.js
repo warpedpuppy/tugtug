@@ -15,7 +15,7 @@ export default class DisplayMaze extends React.Component {
         let active = (this.props.id === this.context.activeMazeId)?
         <Alert variant="success">active maze</Alert>
         : 
-        <Alert variant="primary">click to make active</Alert>
+        <Alert variant="primary">click maze to make active</Alert>
         ;
         if (this.context.loggedIn){
             return (

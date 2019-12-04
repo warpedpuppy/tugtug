@@ -21,13 +21,13 @@ class CanvasFly extends React.Component {
 		
 	}
 	static contextType = SiteContext;
+
 	componentDidMount () {
-		
+		this.context.setMazeGameAction(true);
+		this.context.setInGameMazeEdit(false);
 		this.context.mazeGameHandler('fly');
 		this.fly_anim = FlyAnimation();
 		this.fly_anim.init(isMobile, isMobileOnly, this.context.activeMazeId, this);
-
-	
 	}
 	redirectHome = () => {
 		this.props.history.push('/');
@@ -56,7 +56,6 @@ class CanvasFly extends React.Component {
 	}
 	leftHit (e) {
 		e.preventDefault()
-		console.log("left down")
 		this.fly_anim.keyHandler.leftHit(e);
 	}
 	rightHit (e) {

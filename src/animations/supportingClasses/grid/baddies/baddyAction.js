@@ -42,18 +42,6 @@ export default function () {
 				if (onScreen) {
 					this.onScreenSoldiers.push(s);
 
-					//let spear = this.spears[i];
-					
-					// if (spear.visible && this.spearHit(spear)) {
-					// 	spear.classRef.disable();
-					// 	this.utils.root.score.gridWeaponHit();		
-					// } else if (!spear.visible) {
-					// 	spear.classRef.counter ++;
-					// 	if (spear.classRef.counter == spear.classRef.counterLimit) {
-					// 		spear.classRef.reenable();
-					// 	}
-					// }
-
 					//prevent overlap
 					for (let j = 0; j < this.soldiers.length; j ++) {
 						let s2 = this.soldiers[j];

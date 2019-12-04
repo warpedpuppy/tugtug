@@ -29,6 +29,8 @@ export default class HomeCanvas extends React.Component {
 
 	}
 	componentDidMount () {
+		this.context.setInGameMazeEdit(false);
+		this.context.setMazeGameAction(true);
 		this.context.mazeGameHandler('swim');
 		this.swim_game = swim_game();
 		this.swim_game.init(isMobile, isMobileOnly, this.context.activeMazeId, this);

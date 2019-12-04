@@ -179,9 +179,6 @@ export default function (){
 						//remove item from stage
 						item.parent.removeChild(item)
 
-						//readd to score
-						this.utils.root.score.gridScore.treasureChange('up');
-
 						//splice from array
 						this.gridBuild.coins.onGridCoins[this.utils.root.activeMode].splice(index, 1);
 					}
@@ -206,7 +203,6 @@ export default function (){
 						this.gridBuild.omnibusArray.splice(i, 1);
 						let index = this[`${this.utils.root.activeMode}TreasureChests`].indexOf(item);
 						this[`${this.utils.root.activeMode}TreasureChests`].splice(index, 1);
-						this.utils.root.score.gridScore.treasureIncrease();
 					} else if (item.name === 'token') {
 						if (this.utils.root.all) {
 							if (item.mode === this.utils.root.activeMode) {

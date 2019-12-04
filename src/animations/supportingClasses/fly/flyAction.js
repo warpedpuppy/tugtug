@@ -36,7 +36,7 @@ export default function () {
 
 		},
 		createPool: function () {
-			let obj = Assets.createPool(this.flames, 'star.png', this.colors, [0.025, 0.5]);
+			let obj = Assets.createPool(this.flames, 'star.png', this.colors, [0.25, 0.5]);
 			this.flameArray = obj.flameArray;
 			this.flameQ = obj.flameQ;
 			this.flames.visible = false;
@@ -90,7 +90,8 @@ export default function () {
 			        let determineContinue = Math.floor(Math.random()*10);
 					if(determineContinue < 9) continue;
 			        	item.x += item.vx;
-			        	item.y += item.vy;
+						item.y += item.vy;
+						item.rotation += 0.5;
 			        	item.alpha -= item.fade;
 			        	if (Math.abs(item.y) > item.maxDistance) {
 			        		item.x = 0;

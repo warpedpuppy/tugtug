@@ -7,17 +7,16 @@ class Menu extends React.Component {
 
 	static contextType = SiteContext;
 	state = {
-		buttonText: "choose maze", 
+		//buttonText: "choose maze", 
 		dropDown: false
 	}
 	goto = (url) => {
 		this.props.history.push(url);
 		this.setState({dropDown: false})
 	}
-
 	chooseMaze = (e) => {
 		e.preventDefault();
-		this.setState({buttonText: (this.state.buttonText === "resume")? "choose maze" : "resume"})
+		//this.setState({buttonText: (this.context.inGameMazeEdit)? "choose maze" : "resume"})
 		this.context.setInGameMazeEdit(!this.context.inGameMazeEdit);
 		this.context.setMazeGameAction(!this.context.mazeGameAction);
 	}
@@ -25,6 +24,7 @@ class Menu extends React.Component {
 		this.setState({dropDown: !this.state.dropDown})
 	}
 	render() {
+		let text = (this.context.inGameMazeEdit)?  "resume game" : "choose maze" ;
 		if (this.context.game === '') {
 			let classRef = (this.state.dropDown)?'change':'';
 			return (
@@ -46,7 +46,7 @@ class Menu extends React.Component {
 				<nav id="primary-nav">
 					<div className="logo"><Link to="/">tugtug</Link></div>
 					<div className="nav-links">
-						<span onClick={this.chooseMaze}>{ this.state.buttonText }</span>
+						<span onClick={this.chooseMaze}>{ text }</span>
 						<span onClick={() => this.goto("/")}>exit</span>
 					</div>
 				</nav>
