@@ -16,8 +16,6 @@
 .home-page-buttons .gameShell {
   width: 200px;
   height: 200px;
- 
- 
   position: relative;
  
 }
@@ -26,12 +24,15 @@
 }
 .gameShell.fly {
   background: yellow;
+ 
 }
 .gameShell.jump {
   background: darkblue;
+ 
 }
 .gameShell.swim {
   background: red;
+  
 }
 .screen {
   height: 200px;
@@ -39,6 +40,12 @@
   position: absolute;
   top: 0;
   left: 0;
+  transition: background-image 1s;
+}
+.spiral {
+  background-image: url('/bmps/vortex.png');
+  background-size: 120%;
+  background-position: center;
 }
 @media (min-width: 768px) {
   .home-page-buttons {

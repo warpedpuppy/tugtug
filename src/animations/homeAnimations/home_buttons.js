@@ -4,7 +4,8 @@ import HeroFly from '../supportingClasses/fly/heroFly';
 import HeroSwim from '../supportingClasses/swim/heroSwim';
 import HeroJump from '../supportingClasses/jump/heroJump';
 import Planets from '../supportingClasses/jump/jumpBackground/planets/planet';
-export default function() {
+import Tweens from '../utils/Tweens';
+export default function(clearSpiral) {
     return {
         heroFly: HeroFly(),
         heroSwim: HeroSwim(),
@@ -22,14 +23,17 @@ export default function() {
             this.flyApp = Assets.Application( 200, 200,  true);
             document.getElementById('fly-home').appendChild(this.flyApp.view);
             this.flyStage = this.flyApp.stage;
+            this.flyStage.alpha = 0;
 
             this.swimApp = Assets.Application( 200, 200,  true);
             document.getElementById('swim-home').appendChild(this.swimApp.view);
             this.swimStage = this.swimApp.stage;
+            this.swimStage.alpha = 0;
 
             this.jumpApp = Assets.Application( 200, 200,  true);
             document.getElementById('jump-home').appendChild(this.jumpApp.view);
             this.jumpStage = this.jumpApp.stage;
+            this.jumpStage.alpha = 0;
 
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
@@ -77,9 +81,13 @@ export default function() {
             this.jumpApp.ticker.add(this.animate.bind(this)); 
 
             this.maxLength = this.increment * this.heroFly.segmentsQ;
+
+            Tweens.tween(this.flyStage, 1, {"alpha": [0,1]}, undefined, "linear")
+            Tweens.tween(this.swimStage, 1, {"alpha": [0,1]}, undefined, "linear")
+            Tweens.tween(this.jumpStage, 1, {"alpha": [0,1]}, undefined, "linear")
         },
         animate: function () {
-           
+           Tweens.animate();
             this.heroFly.eyeCont.rotation = this.radius;
             this.heroFly.headCont.rotation = this.radius;
             
@@ -123,7 +131,9 @@ export default function() {
             
         },
         stop: function () {
-            if(this.app)this.app.destroy(true);
+            this.flyApp.destroy(true);
+            this.swimApp.destroy(true);
+            this.jumpApp.destroy(true);
         }
     }
 }
