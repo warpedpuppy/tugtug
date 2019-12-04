@@ -1,5 +1,5 @@
 import React from 'react';
-import './HomeCanvas.css';
+import './AllCanvas.css';
 import './CanvasFly.css';
 import FlyAnimation from '../animations/flyAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';

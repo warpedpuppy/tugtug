@@ -190,7 +190,6 @@ export default function (gridBuild) {
 					if (xDiff < this.buffer && yDiff < this.buffer) {
 						this.resetSpear();
 						this.utils.hero.activeHero.hit();
-						this.utils.root.score.gridScore.gridWeaponHit();
 					}
 				}
 				

@@ -1,5 +1,5 @@
 import React from 'react';
-import './HomeCanvas.css';
+import './AllCanvas.css';
 import swim_game from '../animations/swimAnimation';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 import SiteContext from '../SiteContext';

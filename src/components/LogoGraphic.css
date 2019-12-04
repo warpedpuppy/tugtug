@@ -1,1 +1,6 @@
-
+.logoGraphic {
+    position: fixed;
+    top: -5px;
+    left: -25px;
+    z-index: -2;;
+}

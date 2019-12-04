@@ -15,6 +15,22 @@
 
 }
 */
+
+.canvasParent .inGameAllGrids {
+    background-color: rgba(255, 255, 255, 0.65);
+    top: 30px;
+	left: 0;
+	position: relative;
+    z-index: 4;
+    width: 100vw;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.canvasParent .inGameAllGrids .displayDiv {
+    float: none;
+    display: inline-block;
+}
 .closeButton {
   position: absolute;
   right: 32px;

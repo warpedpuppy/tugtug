@@ -1,5 +1,5 @@
 import React from 'react';
-import './HomeCanvas.css';
+import './AllCanvas.css';
 import jump_game from '../animations/jumpAnimation';
 import { isMobile, isMobileOnly } from 'react-device-detect';
 import SiteContext from '../SiteContext';
