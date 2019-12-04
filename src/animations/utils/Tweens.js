@@ -73,8 +73,13 @@ export default {
 				this.tweenArray.forEach((item, index) => {
 					if (!item.obj) {
 						item.isTweening = false;
-						 if (item.onComplete) {
-							item.onComplete();
+						 if (item && item.onComplete) {
+							try {
+								item.onComplete();
+							} catch (e) {
+								console.error(e)
+							}
+							
 						}
 						this.tweenArray.splice(index, 1)
 					}

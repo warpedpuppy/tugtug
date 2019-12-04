@@ -81,11 +81,8 @@ export default function(obj) {
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
 
-             this.stage.addChild(this.kingCont);
+            this.stage.addChild(this.kingCont);
             
-          
-         
-        
             LoadingAnimation.start(this.kingCont);
 
             this.fpsCounter = new PixiFps();
@@ -126,7 +123,7 @@ export default function(obj) {
                 root: this
             })
 
-               if (this.isMobile) {
+            if (this.isMobile) {
                 this.mobileMask = MobileMask();
                 this.backgroundColor = 0x000000;
                 this.mobileMask.setMask();

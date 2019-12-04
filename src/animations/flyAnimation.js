@@ -162,7 +162,7 @@ export default function(obj) {
             
              if (this.isMobile) {
                 this.mobileMask = MobileMask();
-                this.backgroundColor = 0x000000;
+                this.backgroundColor = 0xFFFFFF;
                 this.mobileMask.setMask();
 
             }

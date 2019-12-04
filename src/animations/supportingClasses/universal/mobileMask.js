@@ -15,6 +15,7 @@ export default function () {
             let containerToAddFrameTo = this.utils.root.stage;
             let backgroundColor = this.utils.root.backgroundColor;
             containerToMask.mask = null;
+            
             let mask = Assets.Graphics();
             let halfBorder = this.border / 2;
             let maskWidth = this.utils.canvasWidth - this.border;
@@ -31,7 +32,7 @@ export default function () {
             let frameBoxHeight = maskHeight + (this.frameWidth * 2);
             let frameX = halfBorder - this.frameWidth;
             let frameY = halfBorder - this.frameWidth;
-            this.frame.beginFill(0xFFFFFF).drawRoundedRect(frameX, frameY, frameBoxWidth, frameBoxHeight, 5).endFill();
+            this.frame.beginFill(0x000000).drawRoundedRect(frameX, frameY, frameBoxWidth, frameBoxHeight, 5).endFill();
             containerToAddFrameTo.addChildAt(this.frame, 0)
         },
     }

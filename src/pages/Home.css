@@ -19,9 +19,7 @@
   position: relative;
  
 }
-.home-page-buttons .home-button-cont:hover {
-  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.5);
-}
+
 .gameShell.fly {
   background: yellow;
  
@@ -50,5 +48,8 @@
 @media (min-width: 768px) {
   .home-page-buttons {
     flex-direction: row;
+  }
+  .home-page-buttons .home-button-cont:hover {
+    box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.5);
   }
 }
