@@ -132,7 +132,7 @@ export default function(obj) {
             this.hero.init(this.stage);
 
             if (this.isMobileOnly) {
-                this.hero.cont.scale.set(Config.mobileOnlyScaling)
+                this.hero.cont.scale.set(Config.mobileOnlyScalingJump)
             }
 
             this.utils.setHero(this.hero);
@@ -147,6 +147,7 @@ export default function(obj) {
             if (this.isMobile) {
                 //ipad and mobile
                 this.controlPanel.init(this);
+                this.controlPanel.addToStage();
             } 
                
             if (this.isMobile) {

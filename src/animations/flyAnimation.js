@@ -174,7 +174,7 @@ export default function(obj) {
             this.hero.init(this.kingCont);
 
             if (this.isMobileOnly) {
-                this.hero.cont.scale.set(Config.mobileOnlyScaling)
+                this.hero.cont.scale.set(Config.mobileOnlyScalingFly)
             }
             
             this.utils.setHero(this.hero);

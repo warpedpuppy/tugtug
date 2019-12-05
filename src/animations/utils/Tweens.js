@@ -77,7 +77,7 @@ export default {
 							try {
 								item.onComplete();
 							} catch (e) {
-								console.error(e)
+								// console.error(e)
 							}
 							
 						}
