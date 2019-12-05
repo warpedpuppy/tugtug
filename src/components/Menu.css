@@ -3,7 +3,7 @@ nav#primary-nav {
 	top: 0;
 	left: 0;
 	height: 30px;
-	background: white;
+	/* background: white; */
 	/* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.35); */
 	width: 100vw;
 	display: flex;
@@ -57,6 +57,11 @@ nav#primary-nav .nav-links.change span {
 	padding: 10px 0;
 }
 
+nav#primary-nav .nav-links span.adminLink {
+	font-size: 40px;
+	color: #CCC;
+	margin: 0;
+}
 
 
 /* hamburger */

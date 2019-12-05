@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import GameCanvas from '../components/GameCanvas';
+import GameCanvas from '../../components/GameCanvas';
 import { connect } from 'react-redux';
 import { closeMenu, changePage } from '../actions/themeActions.js';
 

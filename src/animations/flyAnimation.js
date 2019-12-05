@@ -7,7 +7,7 @@ import Fly from './supportingClasses/fly/indexFly';
 import FlyAnimate from './supportingClasses/fly/flyAnimate';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
-import Hero from './supportingClasses/universal/hero';
+import Hero from './supportingClasses/fly/heroFly';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import MobileMask from './supportingClasses/universal/mobileMask';
@@ -109,7 +109,6 @@ export default function(obj) {
             if (!this.loader.resources["/ss/ss.json"]) {
                  this.loader
                     .add("/ss/ss.json")
-                    .add("Hobo", "/fonts/hobostd.xml")
                     .load(this.loadDB)
             } else {
                this.loadDB();
@@ -129,7 +128,6 @@ export default function(obj) {
         changeGrid: function (obj) {
             this.id = obj.id;
             try {
-                //let res = await MazeServices.getOneMaze(this.id)
                 let test = this.grid.boards.find( item => item.id === obj.id);
                 if ( test ) {
                     this.grid.nextBoard(obj.id);
@@ -173,7 +171,7 @@ export default function(obj) {
             this.clock.init().addToStage();
             this.tokens.init();
             this.grid.init();
-            this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
+            this.hero.init(this.kingCont);
 
             if (this.isMobileOnly) {
                 this.hero.cont.scale.set(Config.mobileOnlyScaling)
@@ -217,7 +215,8 @@ export default function(obj) {
 
             if (this.showFPS) this.app.stage.addChild(this.fpsCounter);
 
-           LoadingAnimation.stop(this.kingCont);
+            this.hero.addToStage();
+            LoadingAnimation.stop(this.kingCont);
         },
         stop: function () {
             window.onresize = undefined;

@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import './Menu.css';
 import TugTug from '../svgs/TugTug.svg';
-import LogoGraphic from './LogoGraphic';
+import LogoGraphic from '../src/components/LogoGraphic';
 import { deleteToken, testUser } from '../actions/tokenActions.js';
 import { deleteAll } from '../actions/avatarActions.js';
 import { toggleMenu, closeMenu } from '../actions/themeActions.js';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import {API_BASE_URL} from '../config';
+import {API_BASE_URL} from '../src/config';
 
 class Menu extends Component {
 	

@@ -1,7 +1,7 @@
 import React from 'react';
-import Layout1 from '../graphicNovel/layouts/Layout1';
-import Layout2 from '../graphicNovel/layouts/Layout2';
-import Layout3 from '../graphicNovel/layouts/Layout3';
+import Layout1 from '../../graphicNovel/layouts/Layout1';
+import Layout2 from '../../graphicNovel/layouts/Layout2';
+import Layout3 from '../../graphicNovel/layouts/Layout3';
 import './GraphicNovel.css';
 import Pagination from 'react-bootstrap/Pagination';
 

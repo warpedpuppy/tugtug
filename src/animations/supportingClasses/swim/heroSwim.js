@@ -71,6 +71,8 @@ export default function () {
 			
 			this.cont.radius = 0;
 			this.segments = this.fish;
+
+			this.activeHero = this;
 			
 		},
 		hit: function () {
@@ -106,13 +108,16 @@ export default function () {
             return cont;
 		},
 		addToStage: function () {
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
-
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
 		},
 		animate: function () {
 

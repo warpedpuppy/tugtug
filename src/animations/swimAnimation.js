@@ -6,7 +6,7 @@ import Clock from './supportingClasses/universal/clock';
 import Swim from './supportingClasses/swim/indexSwim';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
-import Hero from './supportingClasses/universal/hero';
+import Hero from './supportingClasses/swim/heroSwim';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
@@ -180,7 +180,7 @@ export default function(obj) {
 
             this.grid.init();
 
-            this.hero.init(undefined, this.kingCont).switchPlayer(this.mode[this.activeModeIndex]);
+            this.hero.init(this.kingCont);
 
             if (this.isMobileOnly) {
                 this.hero.cont.scale.set(Config.mobileOnlyScaling)
@@ -226,6 +226,8 @@ export default function(obj) {
             }
             if (this.showFPS)this.app.stage.addChild(this.fpsCounter);
             //this.animations.circles({start: true, expand: true});
+
+            this.hero.addToStage();
             LoadingAnimation.stop(this.kingCont);
         },
         stop: function () {

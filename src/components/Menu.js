@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Menu.css';
 import SiteContext from '../SiteContext';
 import { withRouter } from 'react-router-dom';
-import LogoGraphic from './LogoGraphic';
+
 class Menu extends React.Component {
 
 	static contextType = SiteContext;
@@ -30,11 +30,11 @@ class Menu extends React.Component {
 			let classRef = (this.state.dropDown)?'change':'';
 			return (
 				<nav id="primary-nav">
-					<div className="logo"><LogoGraphic /><Link to="/">tugtug</Link></div>
+					<div className="logo"><Link to="/">tugtug</Link></div>
 					
 					<div className="dropdown-screen"></div>
 					<div className={`nav-links ${classRef}`}>
-						<span onClick={() => this.goto("/admin")}>admin</span>
+						<span className="adminLink" onClick={() => this.goto("/admin")}>&#9881;</span>
 					</div>
 					<div className="hamburger" onClick={this.hamburgerClickHandler}>
 						<span className={classRef}></span>
@@ -62,7 +62,7 @@ class Menu extends React.Component {
 		} else if (this.context.game === 'admin' ) {
 			return (
 				<nav id="primary-nav">
-					<div className="logo"><LogoGraphic /><Link to="/">tugtug</Link></div>
+					<div className="logo"><Link to="/">tugtug</Link></div>
 				</nav>
 			);
 		}

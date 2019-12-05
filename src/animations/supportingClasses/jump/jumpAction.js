@@ -62,7 +62,7 @@ export default function () {
 				this.bkgd.orbs[i].classRef.animate(this.bkgd, this.heroCollisionDetectObject);
 			}
 
-			this.hero.cont.rotation += this.utils.deg2rad(this.vx);
+			this.hero.shell.rotation += this.utils.deg2rad(this.vx);
 			this.hero.activeHero.cont.y += this.vy;
 			if(this.hero.activeHero.cont.y > this.hero.activeHero.floor) {
 				this.hero.activeHero.cont.y = this.hero.activeHero.floor;

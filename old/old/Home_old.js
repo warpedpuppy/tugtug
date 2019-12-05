@@ -1,11 +1,11 @@
 import React from 'react';
 import './Home.css';
-import HomeCanvas from '../components/HomeCanvas';
-import CanvasJump from '../components/canvasJump';
-import CanvasFly from '../components/canvasFly';
-import CanvasSwim from '../components/canvasSwim';
-import SideMenu from '../components/sideMenu';
-import Welcome from '../components/welcome';
+import HomeCanvas from '../HomeCanvas';
+import CanvasJump from '../../src/components/canvasJump';
+import CanvasFly from '../../src/components/canvasFly';
+import CanvasSwim from '../../src/components/canvasSwim';
+import SideMenu from '../sideMenu';
+import Welcome from '../welcome';
 import { connect } from 'react-redux';
 import {isMobileOnly} from 'react-device-detect';
 class Home extends React.Component {

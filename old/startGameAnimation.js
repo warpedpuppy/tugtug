@@ -1,5 +1,5 @@
-import Utils from './utils/utils';
-import Assets from './utils/assetCreation';
+import Utils from '../src/animations/utils/utils';
+import Assets from '../src/animations/utils/assetCreation';
 import PixiFps from "pixi-fps";
 
 export default function () {

@@ -2,17 +2,16 @@ import React from 'react';
 import './App.css';
 import SiteContext from './SiteContext';
 import Home from './pages/Home';
-import Games from './pages/Games';
 import Menu from './components/Menu';
 import CanvasJump from './components/canvasJump';
 import CanvasFly from './components/canvasFly';
 import CanvasSwim from './components/canvasSwim';
-import GraphicNovel from './pages/GraphicNovel';
 import Admin from './pages/Admin';
 import { Switch, Route } from 'react-router-dom';
 import MazeService from './services/maze-service';
 import TokenService from './services/token-service';
 import NotFound from './pages/NotFound';
+import LogoGraphic from './components/LogoGraphic';
 export default class App extends React.Component {
   
   constructor (props) {
@@ -94,15 +93,14 @@ export default class App extends React.Component {
      return (
       <SiteContext.Provider value={contextValue}>
         <React.Fragment>
+        <LogoGraphic />
           <header><Menu /></header>
           <main>
             <Switch>
               <Route exact path={'/'} component={ Home } />
-              <Route exact path={'/games'} component={ Games } />
               <Route exact path={'/jump-game'} component={ CanvasJump } />
               <Route exact path={'/fly-game'} render={ ({history}) => <CanvasFly history={history} />} />
               <Route exact path={'/swim-game'} render={ ({history}) => <CanvasSwim history={history} />}/>
-              <Route exact path={'/graphic-novel/:id?'} component={ GraphicNovel }/>
               <Route exact path={'/admin'} component={ Admin } />
               <Route component={ NotFound } />
             </Switch>

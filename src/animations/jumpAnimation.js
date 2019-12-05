@@ -8,7 +8,7 @@ import LoadingAnimation from './supportingClasses/universal/loadingAnimation';
 import Jump from './supportingClasses/jump/indexJump';
 import FilterAnimation from './supportingClasses/grid/items/magic/filterAnimation';
 import Gears from './supportingClasses/universal/gears';
-import Hero from './supportingClasses/universal/hero';
+import Hero from './supportingClasses/jump/heroJump';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
@@ -47,7 +47,7 @@ export default function(obj) {
         init: function (isMobile, isMobileOnly) {
             
             Tweens.killAll();
-
+            this.activeAction = this.jump.jumpAction;
 
             this.utils.root = this;
             this.activeMode = this.jump;
@@ -91,7 +91,6 @@ export default function(obj) {
 
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
-            this.switchPlayer = this.switchPlayer.bind(this);
             this.animate = this.animate.bind(this);
             this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
             this.animateMobile = this.animateMobile.bind(this)
@@ -130,7 +129,8 @@ export default function(obj) {
             }
             Assets.init();
 
-            this.hero.init(undefined, this.stage).switchPlayer('jump');
+            this.hero.init(this.stage);
+
             if (this.isMobileOnly) {
                 this.hero.cont.scale.set(Config.mobileOnlyScaling)
             }
@@ -160,8 +160,6 @@ export default function(obj) {
         },
         startGame: function () {
 
-            this.switchPlayer('jump');
-
             if (!this.isMobile) {
                 this.app.ticker.add(this.animateDesktopIpad);
                 this.keyHandler.addToStage();
@@ -170,7 +168,7 @@ export default function(obj) {
             }
           
             this.makeJumpActive();
-           
+            this.hero.addToStage();
             LoadingAnimation.stop(this.kingCont);
             //this.animations.circles({start: true, expand: true});
         },
@@ -181,42 +179,12 @@ export default function(obj) {
                 this.keyHandler.removeFromStage();
             }
         },
-        switchPlayer: function (str) {
-           
-            if (str) {
-                this.activeMode = str;
-            } else {
-                this.increaseIndex();
-            }
- 
-           this.hero.switchPlayer(this.activeMode);
-
-           if (this.activeMode === 'jump') {
-                this.activeAction = this.jump.jumpAction;
-            } else {
-                this.activeAction = this[this.activeMode].addToStage();   
-            }
-
-            if (this.isMobile) {
-                if (this.activeMode === 'bounce') {
-                    this.controlPanel.removeFromStage();
-                } else {
-                    this.controlPanel.addToStage();
-                }
-            }
-          
-            this.transitionAnimationPlaying = false;
-            this.action = true;
-
-        },
         makeJumpActive: function () {
             this.jump.addToStage();
             this.jump.jumpBackground.pause = false;
             this.jump.jumpAction.pause = false;
             this.hero.cont.visible = true;
  
-            this.switchPlayer("jump");
-
              if (Config.testingJump) {
                 let background = this.utils.root.jump.jumpBackground.orbsCont;
                 background.scale.set(1)
@@ -269,7 +237,7 @@ export default function(obj) {
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-                this[this.activeMode].animate();
+                this.jump.animate();
                
             }
         }

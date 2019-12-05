@@ -3,7 +3,7 @@ import './HomeCanvas.css';
 import testAnim from '../animations/three_of_a_kind_test';
 import {isMobile, isMobileOnly} from 'react-device-detect';
 import axios from 'axios';
-import {API_BASE_URL} from '../config';
+import {API_BASE_URL} from '../src/config';
 export default class HomeCanvas extends React.Component {
 
 	constructor (props) {

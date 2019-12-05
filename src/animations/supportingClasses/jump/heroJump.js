@@ -3,6 +3,7 @@ import Assets from '../../utils/assetCreation';
 export default function () {
 	return {
 		cont: Assets.Container(),
+		shell: Assets.Container(),
 		w: 60,
 		h: 14,
 		spacer: 0,
@@ -25,7 +26,9 @@ export default function () {
 		init: function (parentCont) {
 			this.parentCont = parentCont;
 			this.spritesheet = this.utils.spritesheet;
+			this.activeHero = this.heroJump = this;
 			this.buildHero();
+			this.shell.addChild(this.cont);
 		},
 		smileyEye: function () {
 			let cont = Assets.Container();
@@ -117,21 +120,22 @@ export default function () {
 			this.mouth = this.cont.mouth = this.smileyMouth();
 			this.mouth.y = -25;
 			this.cont.addChild(this.mouth);
-			this.cont.scale.set(0.25)
+			this.cont.scale.set(0.5)
 			this.grimaceMouth();
 
 		},
 		addToStage: function () {
-			//console.log('add hero jump to stage')
-			// let radius = (this.utils.hero.activeHero.body.width / 2) * this.utils.root.hero.cont.scale.x;
-			// this.heroCollisionDetectObject.radius = radius;
-			this.parentCont.addChild(this.cont);
+			this.shell.x = this.utils.canvasWidth / 2;
+			this.shell.y = this.utils.canvasHeight / 2;
+			
+			this.parentCont.addChild(this.shell);
 		},
 		removeFromStage: function () {
-			this.parentCont.removeChild(this.cont);
+			this.parentCont.removeChild(this.shell);
 		},
 		resize: function () {
-
+			this.shell.x = this.utils.canvasWidth / 2;
+			this.shell.y = this.utils.canvasHeight / 2;
 		}
 	}
 }

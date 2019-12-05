@@ -1,10 +1,10 @@
 import React from 'react';
-import ItemModule from '../components/store/itemModule.js';
+import ItemModule from '../../components/store/itemModule.js';
 import './Store.css';
 import '../components/store/floatGrid.css';
 import axios from 'axios';
-import {API_BASE_URL} from '../config';
-import CheckForToken from '../components/utils/CheckForToken.js';
+import {API_BASE_URL} from '../../config';
+import CheckForToken from '../../components/utils/CheckForToken.js';
 import { connect } from 'react-redux';
 import { addItem } from '../actions/avatarActions.js';
 

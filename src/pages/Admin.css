@@ -4,3 +4,7 @@
 .general-page-layout .nav {
     flex-wrap: nowrap;
 }
+.nav.nav-tabs {
+    position: relative;
+    z-index: 2000;
+}

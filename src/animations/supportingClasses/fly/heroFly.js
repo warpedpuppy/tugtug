@@ -123,7 +123,7 @@ export default function () {
 			this.cont.scale.set(0.5);
 			this.dye(0x000000);
 
-			
+			this.activeHero = this;
 		},
 		dye: function (color) {
 			for(let part of this.dyeLot){
@@ -178,13 +178,16 @@ export default function () {
             return cont;
 		},
 		addToStage: function () {
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
 			this.parentCont.addChild(this.cont);
 		},
 		removeFromStage: function () {
 			this.parentCont.removeChild(this.cont);
 		},
 		resize: function () {
-
+			this.cont.x = this.utils.canvasWidth / 2;
+            this.cont.y = this.utils.canvasHeight / 2;
 		},
 		animate: function () {
 

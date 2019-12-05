@@ -3,7 +3,7 @@ import './GameCanvas.css';
 import game_code from '../animations/game_animation';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {API_BASE_URL} from '../config';
+import {API_BASE_URL} from '../src/config';
 import faker from 'faker';
 
 class GameCanvas extends React.Component {

@@ -17,7 +17,7 @@ export default function () {
 		times: [50, 100], 
 		setupBubbles: function (cont) {
 			this.wh = this.utils.wh;
-			let hero = this.hero = this.utils.hero.heroSwim;
+			let hero = this.hero = this.utils.hero;
 			let startTimes = [0,10, 20,30];
 			this.bubblesCont.x = this.wh.canvasWidth / 2;
 			this.bubblesCont.y = this.wh.canvasHeight / 2;

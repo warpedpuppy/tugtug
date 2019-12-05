@@ -1,7 +1,7 @@
 import React from 'react';
 import './Contact.css'
 import axios from 'axios';
-import {API_BASE_URL} from '../config';
+import {API_BASE_URL} from '../../config';
 export default class Contact extends React.Component {
 
 	constructor(props){
