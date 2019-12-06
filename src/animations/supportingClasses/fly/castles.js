@@ -1,21 +1,21 @@
 import Utils from '../../utils/utils';
-import Assets from '../../utils/assetCreation';
-//import Config from './animationsConfig';
+
 export default {
-		utils:Utils,
-		init: function (parent) {
-			let castleTexture = this.utils.spritesheet.textures['castle.png'];
-		},
-		addToStage: function () {
+    utils: Utils,
+    init() {
+        const castleTexture = this.utils.spritesheet.textures['castle.png'];
+        return castleTexture;
+    },
+    addToStage() {
 
-		},
-		removeFromStage: function () {
+    },
+    removeFromStage() {
 
-		},
-		resize: function () {
+    },
+    resize() {
 
-		},
-		animate: function () {
+    },
+    animate() {
 
-		}
-}
+    },
+};

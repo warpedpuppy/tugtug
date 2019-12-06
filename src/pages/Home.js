@@ -3,45 +3,73 @@ import './Home.css';
 import HomeButtons from '../animations/homeAnimations/home_buttons';
 
 export default class Home extends React.Component {
-    state = {counter: 0}
-    componentDidMount () {
+    componentDidMount() {
         this.home_buttons = HomeButtons(this.clearSpiral);
         this.home_buttons.init();
     }
-    clearSpiral = () => {
-        this.setState({counter:1})
-        console.log(this.counter)
-    }
-    componentWillUnmount () {
+
+    componentWillUnmount() {
         this.home_buttons.stop();
     }
-    gotoGame = (game) => {
-        this.props.history.push(game);
-    }
 
-    render () {
-        return (
-            <div className="general-page-layout">
+  gotoGame = (game) => {
+      const { history } = this.props;
+      history.push(game);
+  }
 
-                <div className="home-page-buttons">
+  keyHitHandler = (e, game) => {
+      if (e.key === 'Enter') {
+          this.gotoGame(game);
+      }
+  }
 
-                    <div className="home-button-cont" onClick={() => this.gotoGame('fly-game')} >
-                        <div className="gameShell fly" id="fly-home"></div>
-                        <div className="screen"></div>
-                    </div>
+  render() {
+      return (
+          <div className="general-page-layout">
 
-                    <div className="home-button-cont " onClick={() => this.gotoGame('jump-game')} >
-                        <div className="gameShell jump" id="jump-home"></div>
-                        <div className="screen"></div>
-                    </div>
+              <div className="home-page-buttons">
 
-                    <div className="home-button-cont" onClick={() => this.gotoGame('swim-game')} >
-                        <div className="gameShell swim" id="swim-home"></div>
-                        <div className="screen"></div>
-                    </div>
-                    
-                </div>
-            </div>
-        )
-    }
+                  <div
+                      id="tab_1"
+                      tabIndex="0"
+                      role="button"
+                      aria-controls="tabpanel_1"
+                      className="home-button-cont"
+                      onKeyPress={(e) => this.keyHitHandler(e, 'fly-game')}
+                      onClick={() => this.gotoGame('fly-game')}
+                  >
+                      <div className="gameShell fly" id="fly-home" />
+                      <div className="screen" />
+                  </div>
+
+                  <div
+                      id="tab_2"
+                      tabIndex="0"
+                      role="button"
+                      aria-controls="tabpanel_2"
+                      className="home-button-cont"
+                      onKeyPress={(e) => this.keyHitHandler(e, 'jump-game')}
+                      onClick={() => this.gotoGame('jump-game')}
+                  >
+                      <div className="gameShell jump" id="jump-home" />
+                      <div className="screen" />
+                  </div>
+
+                  <div
+                      id="tab_3"
+                      tabIndex="0"
+                      role="button"
+                      aria-controls="tabpanel_3"
+                      className="home-button-cont"
+                      onKeyPress={(e) => this.keyHitHandler(e, 'swim-game')}
+                      onClick={() => this.gotoGame('swim-game')}
+                  >
+                      <div className="gameShell swim" id="swim-home" />
+                      <div className="screen" />
+                  </div>
+
+              </div>
+          </div>
+      );
+  }
 }

@@ -9,12 +9,11 @@ export default class Logout extends React.Component {
         e.preventDefault();
         this.context.loginHandler(false);
     }
-    
-    render(){
-        return (
-            <Button variant="danger" onClick={ this.logOutHandler }>log out</Button>
 
-        )
+    render() {
+        return (
+            <Button variant="danger" onClick={this.logOutHandler}>log out</Button>
+
+        );
     }
-  
 }

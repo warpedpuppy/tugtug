@@ -3,13 +3,13 @@ import Assets from '../../utils/assetCreation';
 import Tweens from '../../utils/Tweens';
 import Config from '../../animationsConfig';
 
-export default function (){
+export default function () {
     return {
-	 	cont: Assets.Container(),
+        cont: Assets.Container(),
         utils: Utils,
         dots: [],
- 		colQ: Config.spaceColQ,
-		rowQ: Config.spaceRowQ,
+        colQ: Config.spaceColQ,
+        rowQ: Config.spaceRowQ,
         temp: [],
         tempCounter: 0,
         delayTimes: 0,
@@ -17,176 +17,157 @@ export default function (){
         setUp: true,
         dot1: undefined,
         dot2: undefined,
-        init: function (arr, spacer, colors, startScale, cont, listeners) {
-        	this.done = this.done.bind(this)
-        	this.completeHandler1 = this.completeHandler1.bind(this)
-        	this.completeHandler2 = this.completeHandler2.bind(this)
-        	this.mainArr = arr;
-        	this.spacer = spacer;
-        	this.rainbowColors = Config.colors;
-        	this.startScale = startScale;
-        	this.cont = cont;
-        	this.cont.visible = false;
-        	this.listeners = listeners;
-        	return this;
+        init(arr, spacer, colors, startScale, cont, listeners) {
+            this.done = this.done.bind(this);
+            this.completeHandler1 = this.completeHandler1.bind(this);
+            this.completeHandler2 = this.completeHandler2.bind(this);
+            this.mainArr = arr;
+            this.spacer = spacer;
+            this.rainbowColors = Config.colors;
+            this.startScale = startScale;
+            this.cont = cont;
+            this.cont.visible = false;
+            this.listeners = listeners;
+            return this;
         },
-	 	completeHandler1: function () {
+        completeHandler1() {
+            const result = this.lookForThreeOfAKind() || [[], ''];
 
-            let result = this.lookForThreeOfAKind() || [[], ""];
-           
-            let arr = result[0];
-            let direction = result[1];
+            const arr = result[0];
+            const direction = result[1];
             // if(this.dot1)this.dot1.scale.set(this.startScale);
-                
+
             // if(this.dot2)this.dot2.scale.set(this.startScale);
             this.listeners(false);
-            if(!arr.length) {
-                //this.touchPower(true);
-               // console.log("done");
+            if (!arr.length) {
+                // this.touchPower(true);
+                // console.log("done");
                 this.listeners(true);
                 if (this.setUp) {
                     this.setUp = false;
                     this.delayTimes = this.activeDelayTimes;
                     this.cont.visible = true;
                 }
-
             } else {
+                this.temp = [];
+                this.tempCounter = 0;
 
-	            this.temp = [];
-	            this.tempCounter = 0;
+                if (!this.setUp) {
+                    arr.forEach((item) => {
+                        item.scaleIt('big');
+                    });
+                }
 
-	            if (!this.setUp) {
-		            arr.forEach(item => {
-		                item.scaleIt('big');
-		            })
-		        }
-
-	            let obj = {arr, direction}
-	            setTimeout(this.completeHandler2.bind(this, obj), this.delayTimes)
+                const obj = { arr, direction };
+                setTimeout(this.completeHandler2.bind(this, obj), this.delayTimes);
             }
-
-          
-
         },
-          completeHandler2: function (obj) {
-          
-           let arr = obj.arr;
-           let direction = obj.direction; 
-           let mainArr = this.mainArr;
+        completeHandler2(obj) {
+            const { arr } = obj;
+            const { direction } = obj;
+            const { mainArr } = this;
 
-            arr.forEach(item => {
+            arr.forEach((item) => {
                 item.scaleIt();
-            }) 
+            });
 
-           if (direction === 'horiz') {
-                arr.forEach(item => {
-                        let index = mainArr.indexOf(item);
-                        while (mainArr[index]) {
+            if (direction === 'horiz') {
+                arr.forEach((item) => {
+                    let index = mainArr.indexOf(item);
+                    while (mainArr[index]) {
+                        const dot = mainArr[index];
+                        this.temp.push(dot);
 
-                            let dot = mainArr[index];
-                            this.temp.push(dot)
+                        const targetIndex = index - this.colQ;
 
-                            let targetIndex = index - this.colQ;
-
-                            if (targetIndex >= 0) {
-                                dot.background.tint = mainArr[targetIndex].background.tint;
-                                dot.color = mainArr[targetIndex].color;
-                            } else {
-                                let item = this.utils.randomItemFromArray(this.rainbowColors);
-                                dot.background.tint = item;
-                                dot.color = item;
-                            }
-
-                           if(!this.setUp){
-                                mainArr[index].startY = mainArr[index].y;
-                                mainArr[index].y -= this.spacer;
-                            }
-                            
-                            index = targetIndex;
+                        if (targetIndex >= 0) {
+                            dot.background.tint = mainArr[targetIndex].background.tint;
+                            dot.color = mainArr[targetIndex].color;
+                        } else {
+                            const item = this.utils.randomItemFromArray(this.rainbowColors);
+                            dot.background.tint = item;
+                            dot.color = item;
                         }
-                })
-             } else if (direction === 'vert') {
 
+                        if (!this.setUp) {
+                            mainArr[index].startY = mainArr[index].y;
+                            mainArr[index].y -= this.spacer;
+                        }
+
+                        index = targetIndex;
+                    }
+                });
+            } else if (direction === 'vert') {
                 let index = mainArr.indexOf(arr.pop());
-                let firstIndex = mainArr.indexOf(arr[0]);
+                const firstIndex = mainArr.indexOf(arr[0]);
                 let firstNonComboIndex = firstIndex - this.colQ;
-                let riseAmount = (arr.length + 1)  * this.spacer;
-   
+                const riseAmount = (arr.length + 1) * this.spacer;
+
 
                 while (mainArr[index]) {
-                	
-                    let dot = mainArr[index];
-                    if (!this.setUp){
+                    const dot = mainArr[index];
+                    if (!this.setUp) {
                         dot.y -= riseAmount;
                     }
-                    this.temp.push(dot)
+                    this.temp.push(dot);
 
                     if (firstNonComboIndex >= 0) {
                         dot.background.tint = mainArr[firstNonComboIndex].background.tint;
                         dot.color = mainArr[firstNonComboIndex].color;
                     } else {
-                        let item = this.utils.randomItemFromArray(this.rainbowColors);
+                        const item = this.utils.randomItemFromArray(this.rainbowColors);
 
-                        dot.background.tint = item;//[0];
-                        dot.color = item;//1];
+                        dot.background.tint = item;// [0];
+                        dot.color = item;// 1];
                     }
-                  
+
                     firstNonComboIndex -= this.colQ;
                     index -= this.colQ;
                 }
-
-
-
             }
-            if(!this.setUp){
-                this.temp.forEach(item => {
-                    Tweens.tween(item, 0.5, {y: [item.y, item.startY]}, this.done, 'easeOutBounce')
-                })
-             } else {
-                 this.completeHandler1();
-             }
-          
-
+            if (!this.setUp) {
+                this.temp.forEach((item) => {
+                    Tweens.tween(item, 0.5, { y: [item.y, item.startY] }, this.done, 'easeOutBounce');
+                });
+            } else {
+                this.completeHandler1();
+            }
         },
-        done: function () {
-           
-            this.tempCounter ++;
+        done() {
+            this.tempCounter++;
 
             if (this.tempCounter === this.temp.length) {
-
-                this.temp.forEach(item => {
+                this.temp.forEach((item) => {
                     item.y = item.startY;
-                })
+                });
 
                 setTimeout(this.completeHandler1, this.delayTimes);
                 this.tempCounter = 0;
-
             }
         },
-	   lookForThreeOfAKind: function () {
-            let horiz = [],
-                vert = [],
-                counter = 0,
-                testVerts = true,
-                arr = this.mainArr;
+        lookForThreeOfAKind() {
+            let horiz = [];
+            let vert = [];
+            let counter = 0;
+            let testVerts = true;
+            const arr = this.mainArr;
 
             // there are two events that prompt the returning of the array:
             // 1) the end of a row if it found three of a kind
             // 2) the introduction of a new color after three or more had been put into an array
 
-            for (let i = 0; i < arr.length; i ++) {
-
-                let dot = arr[i];
-                let lastHorizItem = horiz[horiz.length - 1];
+            for (let i = 0; i < arr.length; i++) {
+                const dot = arr[i];
+                const lastHorizItem = horiz[horiz.length - 1];
 
                 if (lastHorizItem && dot.color === lastHorizItem.color) {
                     horiz.push(dot);
                     if (counter === this.colQ - 1 && horiz.length >= 3) {
-                             return [horiz, "horiz"];
+                        return [horiz, 'horiz'];
                     }
                 } else {
-                     if (horiz.length >= 3) {
-                        return [horiz, "horiz"];
+                    if (horiz.length >= 3) {
+                        return [horiz, 'horiz'];
                     }
 
                     horiz = [dot];
@@ -195,35 +176,32 @@ export default function (){
                 if (testVerts) {
                     let loopQ = 0;
                     while (loopQ < this.rowQ) {
+                        const x = i + (this.colQ * loopQ);
 
-                        let x = i + (this.colQ * loopQ)
-
-                        let lastVertItem = vert[vert.length - 1];
+                        const lastVertItem = vert[vert.length - 1];
                         if (lastVertItem && arr[x].color === lastVertItem.color) {
                             vert.push(arr[x]);
-                            if(loopQ === (this.rowQ -1 ) && vert.length >= 3){
-                                    return [vert, "vert"];
+                            if (loopQ === (this.rowQ - 1) && vert.length >= 3) {
+                                return [vert, 'vert'];
                             }
                         } else {
-                            if(vert.length >= 3){
-                                    return [vert, "vert"];
+                            if (vert.length >= 3) {
+                                return [vert, 'vert'];
                             }
                             vert = [arr[x]];
                         }
-                        loopQ ++;
+                        loopQ++;
                     }
                     vert = [];
                 }
 
-                counter ++;
+                counter++;
                 if (counter === this.colQ) {
                     testVerts = false;
                     counter = 0;
                     horiz = [];
                 }
             }
-        }
-}
-
-
+        },
+    };
 }

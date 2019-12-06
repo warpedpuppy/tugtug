@@ -1,31 +1,32 @@
 import Assets from '../../../../utils/assetCreation';
 import Utils from '../../../../utils/utils';
+
 export default function () {
     return {
         app: undefined,
         count: 0,
         enabled: false,
         utils: Utils,
-        init: function (container) {
+        init(container) {
             this.app = this.utils.app;
-            var filter = this.filter = Assets.ColorFilter();
+            const filter = this.filter = Assets.ColorFilter();
             this.wh = this.utils.wh;
 
             container.x = this.wh.canvasWidth / 2;
             container.y = this.wh.canvasHeight / 2;
 
 
-            var light2 = this.light2 = Assets.Sprite('/radial_1.png');
+            const light2 = this.light2 = Assets.Sprite('/radial_1.png');
             light2.visible = false;
             light2.anchor.set(0.5);
             container.addChild(light2);
 
-            var light1 = this.light1 = Assets.Sprite('/radial_2.png');
+            const light1 = this.light1 = Assets.Sprite('/radial_2.png');
             light1.visible = false;
             light1.anchor.set(0.5);
             container.addChild(light1);
 
-             var light3 = this.light3 = Assets.Sprite('/radial_3.png');
+            const light3 = this.light3 = Assets.Sprite('/radial_3.png');
             light3.visible = false;
             light3.anchor.set(0.5);
             container.addChild(light3);
@@ -36,19 +37,19 @@ export default function () {
 
             this.container = container;
         },
-        resize: function (wh) {
+        resize(wh) {
             this.wh = wh;
             this.container.x = this.wh.canvasWidth / 2;
             this.container.y = this.wh.canvasHeight / 2;
         },
-        filterToggle: function () {
+        filterToggle() {
             this.enabled = !this.enabled;
             this.app.stage.filters = this.enabled ? [this.filter] : null;
             this.light1.visible = !this.light1.visible;
             this.light2.visible = !this.light2.visible;
             this.light3.visible = !this.light3.visible;
         },
-        shutOff: function () {
+        shutOff() {
             this.enabled = false;
             this.app.stage.filters = null;
             this.light1.visible = false;
@@ -56,15 +57,15 @@ export default function () {
             this.light3.visible = false;
             this.count = 0;
         },
-        animate: function () {
-            if(this.enabled){
+        animate() {
+            if (this.enabled) {
                 this.light1.rotation += 0.02;
                 this.light2.rotation += 0.01;
                 this.light3.rotation += 0.03;
-              
+
                 this.count += 0.1;
 
-                var matrix = this.filter.matrix;
+                const { matrix } = this.filter;
 
                 matrix[1] = Math.sin(this.count) * 3;
                 matrix[2] = Math.cos(this.count);
@@ -72,13 +73,10 @@ export default function () {
                 matrix[4] = Math.sin(this.count / 3) * 2;
                 matrix[5] = Math.sin(this.count / 2);
                 matrix[6] = Math.sin(this.count / 4);
-                if(this.count > 20){
+                if (this.count > 20) {
                     this.shutOff();
                 }
             }
-           
-
-        }
-    }
+        },
+    };
 }
-

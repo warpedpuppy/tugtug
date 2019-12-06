@@ -1,3 +1,4 @@
+import PixiFps from 'pixi-fps';
 import Utils from './utils/utils';
 import Assets from './utils/assetCreation';
 import Tweens from './utils/Tweens';
@@ -10,7 +11,6 @@ import Hero from './supportingClasses/swim/heroSwim';
 import ControlPanel from './supportingClasses/universal/controlPanel';
 import LevelComplete from './supportingClasses/universal/levelComplete';
 import Tokens from './supportingClasses/universal/tokens/tokenIndex';
-import PixiFps from "pixi-fps";
 import Config from './animationsConfig';
 import KeyHandler from './supportingClasses/universal/keyHandler';
 import Grid from './supportingClasses/grid/gridIndex';
@@ -20,7 +20,7 @@ import Resize from './supportingClasses/swim/swimResize';
 import MazeServices from '../services/maze-service';
 import DefaultMaze from '../defaults/DefaultMaze';
 
-export default function(obj) {
+export default function () {
     return {
         mode: ['swim'],
         activeModeIndex: 0,
@@ -50,7 +50,7 @@ export default function(obj) {
         resize: Resize(),
         orientationChange: OrientationChange(),
         showFPS: false,
-        init: function (isMobile, isMobileOnly, id, parent) {
+        init(isMobile, isMobileOnly, id, parent) {
             this.id = id;
 
             if (!this.id) {
@@ -65,65 +65,61 @@ export default function(obj) {
 
             this.levelComplete.init();
 
-         
+
             if (!this.isMobile) {
                 this.utils.getWidthAndHeight();
             } else {
-                let test1 = this.utils.returnCanvasWidth(),
-                    test2 = this.utils.returnCanvasHeight();
+                const test1 = this.utils.returnCanvasWidth();
+                const test2 = this.utils.returnCanvasHeight();
 
                 if (test1 > test2) {
-                    //landscape
+                    // landscape
                     this.orientationChange.makeLandscape();
-                    
                 } else {
                     // portrait
                     this.orientationChange.makePortrait();
                 }
             }
 
-            var app = this.app = Assets.Application( 
-                this.utils.canvasWidth,  
-                this.utils.canvasHeight, 
-                true
+            const app = this.app = Assets.Application(
+                this.utils.canvasWidth,
+                this.utils.canvasHeight,
+                true,
             );
             document.getElementById('homeCanvas').appendChild(app.view);
             this.stage = app.stage;
             this.stage.addChild(this.kingCont);
-            
-          
-           
+
+
             if (this.showFPS) {
                 this.fpsCounter = new PixiFps();
                 this.fpsCounter.x = this.utils.canvasWidth - 75;
             }
-            
 
 
             LoadingAnimation.start(this.kingCont);
 
             this.kingCont.addChild(this.filterContainer);
 
-            this.loadDB = this.loadDB.bind(this)
+            this.loadDB = this.loadDB.bind(this);
             this.buildGame = this.buildGame.bind(this);
             this.startGame = this.startGame.bind(this);
             this.animate = this.animate.bind(this);
             this.animateDesktopIpad = this.animateDesktopIpad.bind(this);
-            this.animateMobile = this.animateMobile.bind(this)
+            this.animateMobile = this.animateMobile.bind(this);
 
-            if (!this.loader.resources["/ss/ss.json"]) {
-                 this.loader
-                    .add("/ss/ss.json")
-                    .add("Hobo", "/fonts/hobostd.xml")
-                    .load(this.loadDB)
+            if (!this.loader.resources['/ss/ss.json']) {
+                this.loader
+                    .add('/ss/ss.json')
+                    .add('Hobo', '/fonts/hobostd.xml')
+                    .load(this.loadDB);
             } else {
                 this.loadDB();
             }
-
         },
-        loadDB: async function() {
+        async loadDB() {
             try {
-                let res = await MazeServices.getOneMaze(this.id)
+                const res = await MazeServices.getOneMaze(this.id);
                 this.grid.boards = [...this.grid.boards, ...res];
                 this.buildGame();
             } catch (e) {
@@ -131,12 +127,12 @@ export default function(obj) {
                 this.buildGame();
             }
         },
-        changeGrid: function (obj) {
+        changeGrid(obj) {
             this.id = obj.id;
             try {
-                //let res = await MazeServices.getOneMaze(this.id)
-                let test = this.grid.boards.find( item => item.id === obj.id);
-                if ( test ) {
+                // let res = await MazeServices.getOneMaze(this.id)
+                const test = this.grid.boards.find((item) => item.id === obj.id);
+                if (test) {
                     this.grid.nextBoard(obj.id);
                 } else {
                     this.grid.boards = [...this.grid.boards, obj];
@@ -146,24 +142,22 @@ export default function(obj) {
                 this.grid.boards = [...this.grid.boards, ...DefaultMaze];
                 this.buildGame();
             }
-           
         },
-        pause: function (boolean) {
-            this.action = boolean
+        pause(boolean) {
+            this.action = boolean;
         },
-        buildGame: function () {
-            
-            let spritesheet = this.loader.resources["/ss/ss.json"].spritesheet;
+        buildGame() {
+            const { spritesheet } = this.loader.resources['/ss/ss.json'];
 
-             this.utils.setProperties({
+            this.utils.setProperties({
                 isMobileOnly: this.isMobileOnly,
                 isMobile: this.isMobile,
                 spritesheet,
                 canvasWidth: this.utils.canvasWidth,
                 canvasHeight: this.utils.canvasHeight,
                 app: this.app,
-                root: this
-            })
+                root: this,
+            });
 
             if (this.isMobile) {
                 this.mobileMask = MobileMask();
@@ -183,56 +177,55 @@ export default function(obj) {
             this.hero.init(this.kingCont);
 
             if (this.isMobileOnly) {
-                this.hero.cont.scale.set(Config.mobileOnlyScalingSwim)
+                this.hero.cont.scale.set(Config.mobileOnlyScalingSwim);
             }
 
             this.utils.setHero(this.hero);
 
             this.filterAnimation.init(this.filterContainer);
-            
+
             this.swim.init(this.kingCont);
 
             this.keyHandler = KeyHandler();
 
             this.keyHandler.init(this);
 
-            this.activeAction = this[this.activeMode].addToStage(); 
-           
+            this.activeAction = this[this.activeMode].addToStage();
+
             if (this.isMobile) {
                 this.controlPanel.init(this);
                 this.controlPanel.addToStage();
-            } 
-               
+            }
+
             if (this.isMobile) {
-                //mobile
+                // mobile
                 this.orientationChange.init(this);
             } else {
-                 window.onresize = this.resize.resizeHandler.bind(this.resize);
+                window.onresize = this.resize.resizeHandler.bind(this.resize);
             }
-            
+
             this.startGame();
         },
-        startGame: function () {
-
+        startGame() {
             if (!this.isMobile) {
                 this.app.ticker.add(this.animateDesktopIpad);
                 this.keyHandler.addToStage();
             } else {
-                this.app.ticker.add(this.animateMobile); 
+                this.app.ticker.add(this.animateMobile);
             }
 
             if (Config.testingJump) {
                 this.makeJumpActive();
             }
-            if (this.showFPS)this.app.stage.addChild(this.fpsCounter);
-            //this.animations.circles({start: true, expand: true});
+            if (this.showFPS) this.app.stage.addChild(this.fpsCounter);
+            // this.animations.circles({start: true, expand: true});
 
             this.hero.addToStage();
             LoadingAnimation.stop(this.kingCont);
         },
-        stop: function () {
+        stop() {
             window.onresize = undefined;
-            
+
             if (this.app) this.app.destroy(true);
 
             if (!this.isMobile && this.keyHandler) {
@@ -241,103 +234,97 @@ export default function(obj) {
 
             Tweens.killAll();
         },
-        earnToken: function (t) {
+        earnToken(t) {
             this.action = false;
             this.tokens.fillSlot(t);
-            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000)
+            setTimeout(this.resumePlayAfterEarnToken.bind(this), 2000);
         },
-        resumePlayAfterEarnToken: function () {
-           // this.tokens.clearText();
+        resumePlayAfterEarnToken() {
+            // this.tokens.clearText();
             this.action = true;
         },
-        startSpaceShipJourney: function () {
+        startSpaceShipJourney() {
             this.storeActiveMode = this.activeMode;
             this.hero.cont.visible = false;
             this.activeAction.vx = this.activeAction.vy = 0;
             this.grid.gridAction.pause = true;
             this[this.activeMode].startSpaceShipJourney();
         },
-        endSpaceShipJourney: function () {
-
+        endSpaceShipJourney() {
             this.jump.removeFromStage();
-            
+
             this.switchPlayer(this.storeActiveMode);
-           
+
             this.grid.gridBuild.placeHero();
-  
+
             this.grid.gridBuild.cont.addChild(this.grid.gridBuild.spaceShip);
 
             this.grid.gridAction.pause = false;
-       
+
             this.activeAction.vx = this.activeAction.vy = 0;
 
             this.activeAction.radius = this.activeAction.storeRadius = 0;
 
             this[this.activeMode].endSpaceShipJourney();
         },
-        makeJumpActive: function () {
+        makeJumpActive() {
             this.jump.jumpBackground.pause = false;
             this.jump.jumpAction.pause = false;
             this.hero.cont.visible = true;
-            //this.ship.parent.removeChild(this.ship);
-            
-            this.switchPlayer("jump");
+            // this.ship.parent.removeChild(this.ship);
+
+            this.switchPlayer('jump');
             this.jump.jumpBackground.setUp();
 
-             if (Config.testingJump) {
-                let background = this.utils.root.jump.jumpBackground.orbsCont;
-                background.scale.set(1)
+            if (Config.testingJump) {
+                const background = this.utils.root.jump.jumpBackground.orbsCont;
+                background.scale.set(1);
                 this.jump.addToStage();
             }
-
         },
-        reset: function () {
+        reset() {
             this.tokens.reset();
 
-           // this[this.activeMode].removeFromStage();
-          
-            this.grid.nextBoard(); 
-            this.keyHandler.addToStage();  
+            // this[this.activeMode].removeFromStage();
+
+            this.grid.nextBoard();
+            this.keyHandler.addToStage();
 
             this.fullStop = false;
         },
-        filterTest: function () {
+        filterTest() {
             this.filterAnimation.filterToggle();
         },
-        animateMobile: function () {
+        animateMobile() {
             this.orientationChange.animate();
             this.animate();
         },
-        animateDesktopIpad: function () {
+        animateDesktopIpad() {
             this.animate();
         },
-        levelCompleteHandler: function () {
+        levelCompleteHandler() {
             this.levelComplete.boardComplete();
-
-
         },
-        animate: function () {
-
+        animate() {
             Tweens.animate();
 
-            if(this.fullStop)return;
+            if (this.fullStop) return;
 
             if (this.action) {
-                if(this.rotateLeftBoolean) {
+                if (this.rotateLeftBoolean) {
                     this.activeAction.rotate('left');
-                } else if(this.rotateRightBoolean) {
+                } else if (this.rotateRightBoolean) {
                     this.activeAction.rotate('right');
                 }
                 this.clock.animate();
                 this.filterAnimation.animate();
                 this.gears.animate();
-               // this.activeAction.animate();
+                // this.activeAction.animate();
                 this[this.activeMode].animate();
                 if (this.activeMode === 'swim' || this.activeMode === 'fly') {
                     this.grid.animate(this.activeAction.vx, this.activeAction.vy);
                 }
-               
             }
-        }
-    }
+        },
+    };
 }

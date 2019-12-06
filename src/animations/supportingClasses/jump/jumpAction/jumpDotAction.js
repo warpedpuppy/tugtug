@@ -14,9 +14,9 @@
 // 					let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
 // 					this.dotCollisionDetectObject.x = globalPoint2.x;
 // 					this.dotCollisionDetectObject.y = globalPoint2.y;
-	
+
 // 					if(dot.visible &&
-// 					   this.dotEatBoolean && 
+// 					   this.dotEatBoolean &&
 // 						this.utils.circleToCircleCollisionDetection(this.heroCollisionDetectObject, this.dotCollisionDetectObject)[0]) {
 // 						dot.visible = false;
 // 						//dot.parent.removeChild(dot);

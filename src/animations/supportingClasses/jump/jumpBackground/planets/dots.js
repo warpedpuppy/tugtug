@@ -3,69 +3,68 @@ import Utils from '../../../../utils/utils';
 import Config from '../../../../animationsConfig';
 
 export default function () {
-	return {
-		utils: Utils,
-		radius: 1, 
-		collisionDetect: {},
-		build: function (planetWidth) {
+    return {
+        utils: Utils,
+        radius: 1,
+        collisionDetect: {},
+        build(planetWidth) {
+            const dotsCont = Assets.Container();
+            const dotsArray = [];
+            const dotQ = this.dotQ = Config.spaceDotsPerPlanet;
+            const dist = this.dist = (planetWidth / 2) + 10;
 
-			let dotsCont = Assets.Container();
-			let dotsArray = [];
-			let dotQ = this.dotQ = Config.spaceDotsPerPlanet;
-			let dist = this.dist = (planetWidth / 2) + 10;
-	
-			dotsCont.dist = dist;
-			
-			for (let k = 0; k < dotQ; k++) {
-				let dot = this.dot();
-				dot.radius = this.radius;
-				dot.dist = this.dist;
-	            dot.x = dot.startX =  this.dist * Math.cos( ( 2 * Math.PI) * k /  this.dotQ);
-	            dot.y = dot.startY =  this.dist * Math.sin( ( 2 * Math.PI) * k /  this.dotQ);
-	            //cont.dots.push(dot);
-	            dotsCont.addChild(dot);
-	            //this.dotOP.push(dot);
-	            dotsArray.push(dot);
-	        }
-	        dotsCont.dots = dotsArray;
-	        dotsCont.rotate = 0.02;
-	        //dotsCont.x = cont.x;
-	        //dotsCont.y = cont.y;
-	        //this.orbsCont.addChild(dotsCont);
-	        //this.dotsContArray.push(dotsCont);
+            dotsCont.dist = dist;
+
+            for (let k = 0; k < dotQ; k++) {
+                const dot = this.dot();
+                dot.radius = this.radius;
+                dot.dist = this.dist;
+                dot.x = dot.startX = this.dist * Math.cos((2 * Math.PI) * k / this.dotQ);
+                dot.y = dot.startY = this.dist * Math.sin((2 * Math.PI) * k / this.dotQ);
+                // cont.dots.push(dot);
+                dotsCont.addChild(dot);
+                // this.dotOP.push(dot);
+                dotsArray.push(dot);
+            }
+            dotsCont.dots = dotsArray;
+            dotsCont.rotate = 0.02;
+            // dotsCont.x = cont.x;
+            // dotsCont.y = cont.y;
+            // this.orbsCont.addChild(dotsCont);
+            // this.dotsContArray.push(dotsCont);
 
 
-			return dotsCont;
-		},
-		dot: function () {
-			let dot = Assets.Graphics();
-			dot.beginFill(0xFFFF00).drawCircle(0,0,this.radius).endFill();
-			return dot;
-		},
-		// collisionDetect: function (heroObject, dot) {
-		// 	let globalPoint = dot.toGlobal(this.utils.app.stage);
-		// 	this.collisionDetect.x = globalPoint.x
-		// 	this.collisionDetect.y = globalPoint.y;
-		// 	this.collisionDetect.radius = this.radius;
-		// 	if(dot.visible &&
-		// 	   this.dotEatBoolean && 
-		// 		this.utils.circleToCircleCollisionDetection(heroObject, this.collisionDetect)[0]) 
-		// 	{
-		// 		console.log("hit")
-		// 		dot.visible = false;
-		// 	}
-		// },
-		addToStage: function () {
+            return dotsCont;
+        },
+        dot() {
+            const dot = Assets.Graphics();
+            dot.beginFill(0xFFFF00).drawCircle(0, 0, this.radius).endFill();
+            return dot;
+        },
+        // collisionDetect: function (heroObject, dot) {
+        // 	let globalPoint = dot.toGlobal(this.utils.app.stage);
+        // 	this.collisionDetect.x = globalPoint.x
+        // 	this.collisionDetect.y = globalPoint.y;
+        // 	this.collisionDetect.radius = this.radius;
+        // 	if(dot.visible &&
+        // 	   this.dotEatBoolean &&
+        // 		this.utils.circleToCircleCollisionDetection(heroObject, this.collisionDetect)[0])
+        // 	{
+        // 		console.log("hit")
+        // 		dot.visible = false;
+        // 	}
+        // },
+        addToStage() {
 
-		},
-		removeFromStage: function () {
+        },
+        removeFromStage() {
 
-		},
-		resize: function () {
+        },
+        resize() {
 
-		},
-		animate: function () {
+        },
+        animate() {
 
-		}
-	}
+        },
+    };
 }

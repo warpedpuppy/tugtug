@@ -53,7 +53,6 @@
 // 		this.button.finalDest = 0;
 // 		this.button.rotateSpeed = 0.5;
 // 		this.utils.app.stage.addChild(this.cont);
-		
 
 
 // 		this.popUp = Assets.Container();
@@ -97,7 +96,7 @@
 // 		this.bouncePoints = 0;
 
 // 		this.scoreTexts.flyText.text = `dragon points: ${this.flyPoints} / ${this.flyTotal}`;
-// 		this.scoreTexts.swimText.text = `fish points: ${this.swimPoints} / ${this.swimTotal}`; 
+// 		this.scoreTexts.swimText.text = `fish points: ${this.swimPoints} / ${this.swimTotal}`;
 // 		this.scoreTexts.jumpText.text = `space points: ${this.jumpPoints} / ${this.jumpTotal}`;
 // 		this.scoreTexts.bounceText.text=`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
 // 		this.scoreTexts.grandTotal.text= `grand total: ${this.grandTotal}`;
@@ -131,7 +130,7 @@
 // 			// this.cont.addChild(current)
 // 			this.switchMode();
 // 		}
-		
+
 // 	},
 // 	switchMode: function () {
 // 		this.cont.removeChildren();
@@ -160,7 +159,7 @@
 // 		this.grandTotal = this.flyPoints + this.swimPoints + this.jumpPoints + this.bouncePoints;
 // 		return {
 // 				flyText:  Assets.BitmapText(`dragon points: ${this.flyPoints} / ${this.flyTotal}`),
-// 				swimText:  Assets.BitmapText(`fish points: ${this.swimPoints}/ ${this.swimTotal}`), 
+// 				swimText:  Assets.BitmapText(`fish points: ${this.swimPoints}/ ${this.swimTotal}`),
 // 				jumpText:  Assets.BitmapText(`space points: ${this.jumpPoints} / ${this.jumpTotal}`),
 // 				bounceText:  Assets.BitmapText(`bounce points: ${this.bouncePoints} / ${this.bounceTotal}`),
 // 				grandTotal: Assets.BitmapText(`grand total: ${this.grandTotal}`)
@@ -177,7 +176,7 @@
 // 		this.popUp.y = this.utils.canvasHeight / 2;
 // 	},
 // 	bounceRingHit: function () {
-		
+
 // 		this.bouncePoints ++;
 // 		this.scoreTexts.bounceText.text =  `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
 
@@ -187,13 +186,13 @@
 // 		}
 // 	},
 // 	bounceSpikeHit: function (q) {
-		
+
 // 			let store = this.bouncePoints
 // 			q = (q > this.bouncePoints)? this.bouncePoints: q;
 // 			this.bouncePoints -= q;
 // 			this.scoreTexts.bounceText.text = `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
-		
-		
+
+
 // 	},
 // 	treasureIncrease: function () {
 // 		let activeMode = this.utils.root.activeMode;
@@ -203,7 +202,7 @@
 // 	},
 // 	treasureChange: function (str) {
 // 		let activeMode = this.utils.root.activeMode;
-		
+
 // 		if(str === 'down') {
 // 			this[`${activeMode}Points`] --;
 // 		} else if (str === 'up') {
@@ -217,7 +216,7 @@
 // 		let activeMode = this.utils.root.activeMode;
 // 		let jumpBackground = this.utils.root.jump.jumpBackground;
 // 		let dotsEaten = this.utils.root.jump.jumpBackground.eatenDots.length;
-	
+
 // 		this[`${activeMode}Points`] = dotsEaten;
 
 // 		this.scoreTexts[`${activeMode}Text`].text = `space points: ${this[`${activeMode}Points`]} / ${this[`${activeMode}Total`]}`;
@@ -248,9 +247,6 @@
 // 		//add ring to loop for collision detection to be readded
 
 
-
 // 	}
 // }
 // }
-
-

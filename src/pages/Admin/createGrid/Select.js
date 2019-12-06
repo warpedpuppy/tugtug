@@ -1,20 +1,43 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function Select (props) {
-    let dropDowns = [];
-    for(let i = 0; i < props.array.length; i ++){
-        dropDowns.push(<option key={i} val={props.array[i]}>{props.array[i]}</option>);
-    }
-    let select = (e) => {
-        props.changeSize(props.title, e.target.value)
-    }
+export default function Select(props) {
+    const {
+        array, title, currentValue, changeSize,
+    } = props;
+    let counter = 0;
+    const dropDowns = array.map((item) => {
+        counter += 1;
+        return <option key={`op${counter}`} val={item}>{item}</option>;
+    });
+
+    const select = (e) => {
+        changeSize(props.title, e.target.value);
+    };
+
+
     return (
         <span>
-            <label>{props.title}: </label>
-            <select id={props.title} onChange={ e => select(e) } value={props.currentValue}>
-                {  dropDowns  }
+            <label htmlFor={title}>
+                {title}
+:
+                {' '}
+            </label>
+            <select id={title} onChange={(e) => select(e)} value={currentValue}>
+                { dropDowns }
             </select>
         </span>
-       
-    )
+    );
 }
+Select.propTypes = {
+    array: PropTypes.instanceOf(Array),
+    title: PropTypes.string,
+    changeSize: PropTypes.func,
+    currentValue: PropTypes.string,
+};
+Select.defaultProps = {
+    array: [],
+    title: '',
+    changeSize() {},
+    currentValue: 0 || '',
+};

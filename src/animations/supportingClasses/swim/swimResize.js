@@ -1,32 +1,32 @@
- import Utils from '../../utils/utils';
+import Utils from '../../utils/utils';
 
 export default function () {
     return {
         utils: Utils,
         timeOut: undefined,
-        resizeBundle: function () {
-            let root = this.utils.root;
+        resizeBundle() {
+            const { root } = this.utils;
             root.grid.resize();
             root.clock.resize();
             root.gears.resize();
             root.hero.resize();
             root.swim.resize();
             root.tokens.resize();
-    
+
             if (root.isMobile) {
                 root.controlPanel.resize();
-            }    
+            }
         },
-        resizeHandler: function () {
-            let root = this.utils.root;
+        resizeHandler() {
+            const { root } = this.utils;
 
-            this.canvasWidth =  this.utils.returnCanvasWidth();
+            this.canvasWidth = this.utils.returnCanvasWidth();
             this.canvasHeight = this.utils.returnCanvasHeight();
 
             this.utils.resize(this.canvasWidth, this.canvasHeight);
 
             this.resizeBundle();
-           
+
             root.app.renderer.resize(this.canvasWidth, this.canvasHeight);
 
             root.action = false;
@@ -34,13 +34,12 @@ export default function () {
             if (this.timeOut) {
                 clearTimeout(this.timeOut);
             }
-            this.timeOut = setTimeout(this.resized.bind(this), 200)
-
+            this.timeOut = setTimeout(this.resized.bind(this), 200);
         },
-        resized: function () {
-            let root = this.utils.root;
+        resized() {
+            const { root } = this.utils;
             root.action = true;
             clearTimeout(this.timeOut);
-        }
-    }
+        },
+    };
 }

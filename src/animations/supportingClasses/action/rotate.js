@@ -1,16 +1,17 @@
 import Utils from '../../utils/utils';
 import Config from '../../animationsConfig';
+
 export default function () {
     return {
-		utils: Utils,
-		config: Config,
+        utils: Utils,
+        config: Config,
         movementQ: 0.1,
-		init: function (parentCont) {
-		},
-		rotate: function (str, activeAction) {
+        init() {
+        },
+        rotate(str, activeAction) {
             // leaving this here for now because this really relates to the background current
             let returnObj = {};
-            
+
 
             if (str === 'right') {
                 this.idle = false;
@@ -19,8 +20,7 @@ export default function () {
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;
-                returnObj = {vx: -this.vx, vy: -this.vy};
-              
+                returnObj = { vx: -this.vx, vy: -this.vy };
             } else if (str === 'left') {
                 this.idle = false;
                 activeAction.radius -= this.movementQ;
@@ -28,26 +28,24 @@ export default function () {
                 this.vx = this.velocity * Math.sin(activeAction.radius);
                 this.vy = -this.velocity * Math.cos(activeAction.radius);
                 activeAction.storeRadius = activeAction.radius;
-                returnObj = {vx: -this.vx, vy: -this.vy};
-               
+                returnObj = { vx: -this.vx, vy: -this.vy };
             }
-            //console.log(activeAction.radius)
+            // console.log(activeAction.radius)
 
-            //console.log(returnObj)
+            // console.log(returnObj)
             return returnObj;
         },
-		addToStage: function () {
+        addToStage() {
 
-		},
-		removeFromStage: function () {
+        },
+        removeFromStage() {
 
-		},
-		resize: function () {
+        },
+        resize() {
 
-		},
-		animate: function () {
+        },
+        animate() {
 
-		}
-    }
-	
+        },
+    };
 }
