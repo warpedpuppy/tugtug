@@ -9,7 +9,6 @@
 // 		}
 // 		animate: function (currentOrb, i) {
 
-
 // 					let dot = this.currentOrb.dots[i]
 // 					let globalPoint2 = dot.toGlobal(this.app.stage, undefined, true);
 // 					this.dotCollisionDetectObject.x = globalPoint2.x;
@@ -25,7 +24,6 @@
 // 						//this.utils.root.score.jumpScore.jumpDotHit();
 // 					}
 // 				}
-
 
 // 	}
 

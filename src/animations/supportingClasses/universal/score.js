@@ -41,7 +41,6 @@
 
 // 		this.scoreTexts = this.stringCreate();
 
-
 // 		//TOP BAR
 // 		this.topBackground = Assets.Sprite('scoreBackground.png');
 // 		this.button = Assets.Sprite('arrow.png');
@@ -53,7 +52,6 @@
 // 		this.button.finalDest = 0;
 // 		this.button.rotateSpeed = 0.5;
 // 		this.utils.app.stage.addChild(this.cont);
-
 
 // 		this.popUp = Assets.Container();
 // 		this.popUpBackground1 = Assets.Graphics();
@@ -192,7 +190,6 @@
 // 			this.bouncePoints -= q;
 // 			this.scoreTexts.bounceText.text = `bounce points: ${this.bouncePoints} / ${this.bounceTotal}`;
 
-
 // 	},
 // 	treasureIncrease: function () {
 // 		let activeMode = this.utils.root.activeMode;
@@ -245,7 +242,6 @@
 // 		//make sure upon grid build all the coins that should be on there are
 
 // 		//add ring to loop for collision detection to be readded
-
 
 // 	}
 // }

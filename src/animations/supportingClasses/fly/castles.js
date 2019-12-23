@@ -1,21 +1,21 @@
-import Utils from '../../utils/utils';
+import Utils from '../../utils/utils'
 
 export default {
-    utils: Utils,
-    init() {
-        const castleTexture = this.utils.spritesheet.textures['castle.png'];
-        return castleTexture;
-    },
-    addToStage() {
+  utils: Utils,
+  init () {
+    const castleTexture = this.utils.spritesheet.textures['castle.png']
+    return castleTexture
+  },
+  addToStage () {
 
-    },
-    removeFromStage() {
+  },
+  removeFromStage () {
 
-    },
-    resize() {
+  },
+  resize () {
 
-    },
-    animate() {
+  },
+  animate () {
 
-    },
-};
+  }
+}

@@ -1,3 +1,7 @@
+#home_page {
+  display:none;
+}
+
 .home-page-buttons {
   display: flex;
   flex-direction: column;
@@ -38,7 +42,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  transition: background-image 1s;
+  /* transition: background-image 1s; */
 }
 .spiral {
   background-image: url('/bmps/vortex.png');

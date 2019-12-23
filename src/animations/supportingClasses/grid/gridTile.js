@@ -105,7 +105,6 @@
 // 				let coin = Assets.Sprite(`jewel${num}.png`);
 // 				coin.hit = false;
 
-
 // 				coin.anchor.set(0.5);
 // 				coin.tint = 0xB29700;
 // 				this.onGridCoins[this.utils.root.activeMode].push(coin);
@@ -113,7 +112,6 @@
 // 				//add to stage
 // 				this.placeCoin(coin);
 // 			}
-
 
 // 		},
 // 		buildGrid: function (data) {
@@ -145,7 +143,6 @@
 // 				this.spaceShip,
 // 				this.microscope
 // 			];
-
 
 // 			if (mode === 'fly') {
 // 				texture = this.flyTexture;
@@ -180,7 +177,6 @@
 // 					gridCircle.height = this.blockHeight;
 // 					gridCircle.x = j * this.blockWidth + (this.blockWidth / 2);
 // 					gridCircle.y = i * this.blockHeight + (this.blockHeight / 2);
-
 
 // 					let token = false;
 // 					if (obj[`${i}_${j}`] && obj[`${i}_${j}`].includes('token')) {
@@ -275,7 +271,6 @@
 // 				//console.log('add coin to new free space')
 // 				//place it on a free space
 
-
 // 				let i = Math.floor(Math.random()*this.freeSpaces.length);
 // 				console.log(this.freeSpaces.length, i)
 
@@ -367,9 +362,7 @@
 // 				'easeOutBounce'
 // 				)
 
-
 // 			this.freeSpaces.push(item.currentSpace);
-
 
 // 			//get new space for item
 // 			let i = Math.floor(Math.random() * this.freeSpaces.length);
