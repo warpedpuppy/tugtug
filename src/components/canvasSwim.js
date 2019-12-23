@@ -22,6 +22,8 @@ export default class CanvasSwim extends React.Component {
     }
 
     redirectHome = () => {
+      this.context.mazeGameHandler('')
+      this.swim_game.stop()
       this.props.history.push('/')
     }
 

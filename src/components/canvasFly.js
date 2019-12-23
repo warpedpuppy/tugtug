@@ -31,7 +31,6 @@ export default class CanvasFly extends React.Component {
     }
 
     redirectHome = () => {
-      console.log('redirect')
       this.context.mazeGameHandler('')
       this.fly_anim.stop()
       this.props.history.push('/')
