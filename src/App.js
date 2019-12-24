@@ -33,6 +33,11 @@ export default class App extends React.Component {
         const activeMazeId = (ids[0]) ? ids[0].id : 0
         this.setState({ ids, activeMazeId })
       })
+      .catch(error => error)
+  }
+
+  setIdsAndActiveMazeId = (ids, activeMazeId) => {
+    this.setState({ ids, activeMazeId })
   }
 
   addMazes = (mazes) => {
@@ -92,7 +97,8 @@ export default class App extends React.Component {
       inGameMazeEdit: this.state.inGameMazeEdit,
       setInGameMazeEdit: this.setInGameMazeEdit,
       mazeGameAction: this.state.mazeGameAction,
-      setMazeGameAction: this.setMazeGameAction
+      setMazeGameAction: this.setMazeGameAction,
+      setIdsAndActiveMazeId: this.setIdsAndActiveMazeId
     }
 
     return (

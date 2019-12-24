@@ -8,6 +8,7 @@ import Login from './Admin/Login'
 import './Admin.css'
 import SiteContext from '../SiteContext'
 
+
 export default class LoggedIn extends React.Component {
   componentDidMount () {
     const { mazeGameHandler } = this.context

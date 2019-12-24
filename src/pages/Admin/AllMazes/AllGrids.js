@@ -5,7 +5,7 @@ import './AllGrids.css'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import SiteContext from '../../../SiteContext'
-
+import Spinners from '../../../components/Spinners';
 export default class AllGrids extends React.Component {
   constructor (props) {
     super(props)
@@ -42,41 +42,54 @@ export default class AllGrids extends React.Component {
       if (!this.context.mazes.length) {
         MazeService.loadAllMazes()
           .then((data) => {
-            // this.setState({mazes: data.mazes})
             this.context.addMazes(data.mazes)
           })
+      }
+
+      if(!this.context.activeMazeId){
+        MazeService.load_ids()
+        .then((ids) => {
+          const activeMazeId = (ids[0]) ? ids[0].id : 0
+          this.context.setIdsAndActiveMazeId(ids, activeMazeId )
+        })
+        .catch(error => error)
       }
     }
 
     render () {
-      return (
-        <React.Fragment>
-          <div className="all-grids">
-            {
-              this.context.mazes.map((mazeObject, index) => (
-                <DisplayMaze
-                  key={index}
-                  deleteMaze={this.handleShow}
-                  {...mazeObject}
-                />
-              ))
-            }
-          </div>
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Maze Deleterizer</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>You are sure you want to delete?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="danger" onClick={this.deleteMazeHandler}>
-                    confirm delete
-              </Button>
-              <Button variant="warning" onClick={this.handleClose}>
-                    cancel delete
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </React.Fragment>
-      )
+      if(this.context.activeMazeId){
+          return (
+          <React.Fragment>
+            <div className="all-grids">
+              {
+                this.context.mazes.map((mazeObject, index) => (
+                  <DisplayMaze
+                    key={index}
+                    deleteMaze={this.handleShow}
+                    {...mazeObject}
+                  />
+                ))
+              }
+            </div>
+            <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Maze Deleterizer</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>You are sure you want to delete?</Modal.Body>
+              <Modal.Footer>
+                <Button variant="danger" onClick={this.deleteMazeHandler}>
+                      confirm delete
+                </Button>
+                <Button variant="warning" onClick={this.handleClose}>
+                      cancel delete
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </React.Fragment>
+        )
+      } else {
+        return (<Spinners />)
+      }
+      
     }
 }

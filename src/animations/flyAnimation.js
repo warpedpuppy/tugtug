@@ -50,7 +50,6 @@ export default function () {
     showFPS: false,
     init (isMobile, isMobileOnly, id, parent) {
       this.id = id
-
       if (!this.id) {
         parent.redirectHome()
         return
